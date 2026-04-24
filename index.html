@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>تشخيص أمراض الفم والأسنان</title>
+    
+    <!-- 🖼️ إعدادات الأيقونة (تظهر عند الحفظ على سطح المكتب/الجوال) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230ea5e9'/%3E%3Ccircle cx='50' cy='45' r='35' fill='none' stroke='white' stroke-width='6'/%3E%3Cline x1='75' y1='70' x2='85' y2='80' stroke='white' stroke-width='8' stroke-linecap='round'/%3E%3Cpath d='M38 35c0-6 12-6 12 0v15c0 4-3 7-6 7s-6-3-6-7V35zm12 0c0-6 12-6 12 0v15c0 4-3 7-6 7s-6-3-6-7V35z' fill='white' transform='translate(6, 10)'/%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230ea5e9'/%3E%3Ccircle cx='50' cy='45' r='35' fill='none' stroke='white' stroke-width='6'/%3E%3Cline x1='75' y1='70' x2='85' y2='80' stroke='white' stroke-width='8' stroke-linecap='round'/%3E%3Cpath d='M38 35c0-6 12-6 12 0v15c0 4-3 7-6 7s-6-3-6-7V35zm12 0c0-6 12-6 12 0v15c0 4-3 7-6 7s-6-3-6-7V35z' fill='white' transform='translate(6, 10)'/%3E%3C/svg%3E">
+
     <style>
         :root {
             --bg-grad: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
             --card: #ffffff; --primary: #2563eb; --primary-dark: #1d4ed8;
-            --success: #10b981; --danger: #ef4444; --text: #0f172a; --muted: #64748b;
-            --border: #e2e8f0; --radius: 20px; --shadow: 0 10px 40px rgba(0,0,0,0.15);
+            --success: #10b981; --danger: #ef4444; --warn: #f59e0b;
+            --text: #0f172a; --muted: #64748b; --border: #e2e8f0;
+            --radius: 20px; --shadow: 0 10px 40px rgba(0,0,0,0.15);
             --transition: all 0.3s ease;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
@@ -35,24 +41,13 @@
         .toast.show { opacity: 1; }
 
         /* 🖥️ الهيدر النظيف */
-        header { 
-            background: linear-gradient(135deg, #2563eb, #1e40af); 
-            color: white; 
-            padding: 12px 20px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            position: sticky; 
-            top: 0; 
-            z-index: 100; 
-            box-shadow: 0 4px 12px rgba(37,99,235,0.25);
-        }
-        .logo { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 1.1rem; color: white; }        .logo svg { filter: brightness(0) invert(1); }
+        header { background: linear-gradient(135deg, #2563eb, #1e40af); color: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 12px rgba(37,99,235,0.25); }
+        .logo { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 1.1rem; color: white; }
+        .logo svg { filter: brightness(0) invert(1); }
         .nav-actions { display: flex; align-items: center; gap: 12px; }
         .notif-btn { background: rgba(255,255,255,0.15); border: none; cursor: pointer; padding: 8px; border-radius: 50%; position: relative; color: white; transition: var(--transition); }
         .notif-btn:hover { background: rgba(255,255,255,0.25); }
-        .notif-dot { position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; background: var(--danger); border-radius: 50%; border: 2px solid white; display: none; }
-        .notif-dot.show { display: block; animation: pulse 2s infinite; }
+        .notif-dot { position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; background: var(--danger); border-radius: 50%; border: 2px solid white; display: none; }        .notif-dot.show { display: block; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
         .user-menu { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.15); padding: 4px 12px 4px 4px; border-radius: 20px; }
         .avatar { width: 32px; height: 32px; background: white; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
@@ -80,6 +75,7 @@
         .action-btn { padding: 6px 12px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.82rem; font-weight: 600; transition: var(--transition); }
         .action-btn.approve { background: var(--success); color: white; }
         .action-btn.reject { background: var(--danger); color: white; }
+        .action-btn.suspend { background: var(--warn); color: white; }
         .action-btn:hover { opacity: 0.9; transform: translateY(-1px); }
         
         table { width: 100%; border-collapse: separate; border-spacing: 0 6px; margin-top: 10px; font-size: 0.88rem; }
@@ -89,6 +85,7 @@
         .badge-active { background: #d1fae5; color: #065f46; }
         .badge-pending { background: #fef3c7; color: #92400e; }
         .badge-rejected { background: #fee2e2; color: #991b1b; }
+        .badge-disabled { background: #f1f5f9; color: #475569; }
         
         .form-group { margin-bottom: 16px; text-align: right; }
         .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: var(--primary-dark); }
@@ -96,10 +93,10 @@
         textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(2,132,199,0.1); background: white; }
         
         .result-box { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 16px; border-radius: 12px; margin: 16px 0; }
-        .result-box h4 { color: #047857; margin-bottom: 8px; font-size: 1.1rem; }        .ai-badge { display: inline-block; background: #eff6ff; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 12px; font-weight: 600; }
+        .result-box h4 { color: #047857; margin-bottom: 8px; font-size: 1.1rem; }
+        .ai-badge { display: inline-block; background: #eff6ff; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 12px; font-weight: 600; }
         .warning { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; padding: 10px; border-radius: 8px; margin-top: 12px; text-align: center; font-size: 0.9rem; }
-        
-        .ai-config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+                .ai-config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
         .provider-btn { padding: 12px; border: 2px solid var(--border); border-radius: 8px; background: white; cursor: pointer; font-weight: 600; transition: var(--transition); text-align: center; }
         .provider-btn.active { border-color: var(--primary); background: #eff6ff; color: var(--primary); }
         .provider-btn:hover { border-color: var(--primary); }
@@ -145,10 +142,10 @@
                 <circle cx="50" cy="65" r="18" fill="rgba(255,255,255,0.3)" stroke="white" stroke-width="3"/>
                 <text x="50" y="70" text-anchor="middle" fill="white" font-size="16" font-weight="bold">AI</text>
             </svg>
-            <span>تشخيص أمراض الفم والأسنان</span>        </div>
+            <span>تشخيص أمراض الفم والأسنان</span>
+        </div>
         <div class="nav-actions">
-            <button class="notif-btn" id="notif-btn" style="display:none;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <button class="notif-btn" id="notif-btn" style="display:none;">                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
                 <span class="notif-dot" id="notif-dot"></span>
             </button>
             <div class="user-menu">
@@ -195,9 +192,9 @@
 
             <button class="main-btn" style="margin-top:12px; background:linear-gradient(135deg, #10b981, #059669);" onclick="switchToDoctorView()">🔍 الانتقال لواجهة التشخيص</button>
         </div>
+
         <!-- 🩺 واجهة الطبيب / التشخيص -->
-        <div id="doc-view" class="view">
-            <div class="card">
+        <div id="doc-view" class="view">            <div class="card">
                 <h3>📋 وصف الحالة السريرية</h3>
                 <div id="ai-status-badge" class="ai-badge hide">🤖 الذكاء الاصطناعي مُفعّل</div>
                 <div class="form-group">
@@ -241,12 +238,12 @@
         let adminAIProvider = localStorage.getItem('ai_provider') || 'deepseek';
         let adminAIKey = localStorage.getItem('ai_key') || '';
 
-        // ✅ دوال عامة (Global) لتعمل مع onclick
+        // ✅ دوال عامة (Global)
         function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
-                function toggleAuth(mode) {
+        
+        function toggleAuth(mode) {
             document.getElementById('login-card').classList.toggle('hide', mode !== 'login');
-            document.getElementById('register-card').classList.toggle('hide', mode !== 'register');
-        }
+            document.getElementById('register-card').classList.toggle('hide', mode !== 'register');        }
         
         function setRole(role) {
             currentRole = role;
@@ -293,9 +290,9 @@
         function handleLogin() {
             const pass = document.getElementById('login-pass').value.trim();
             if (!pass) return showToast('أدخل كلمة المرور');
+
             if (currentRole === 'admin') {
-                if (pass !== ADMIN_PASS) return showToast('❌ كلمة مرور المدير غير صحيحة');
-                currentUser = { name: 'الإدارة', role: 'admin', email: 'salematto@gmail.com' };
+                if (pass !== ADMIN_PASS) return showToast('❌ كلمة مرور المدير غير صحيحة');                currentUser = { name: 'الإدارة', role: 'admin', email: 'salematto@gmail.com' };
                 localStorage.setItem('dental_session', JSON.stringify(currentUser));
                 enterApp();
             } else {
@@ -307,7 +304,9 @@
                     });
                     
                     if (!found) return showToast('❌ بيانات الطبيب غير صحيحة');
-                    if (found.status !== 'active') return showToast('⏳ حسابك قيد المراجعة');
+                    if (found.status === 'pending') return showToast('⏳ حسابك قيد المراجعة');
+                    if (found.status === 'rejected') return showToast('❌ تم رفض الطلب');
+                    if (found.status === 'disabled') return showToast('🚫 تم تعطيل حسابك من قبل الإدارة');
                     
                     currentUser = { ...found, role: 'doctor' };
                     localStorage.setItem('dental_session', JSON.stringify(currentUser));
@@ -341,10 +340,12 @@
             
             if (currentUser.role === 'admin') {
                 document.getElementById('notif-btn').style.display = 'block';
-                document.getElementById('admin-view').classList.add('active');                document.getElementById('admin-ai-key').value = adminAIKey;
-                document.querySelectorAll('.provider-btn').forEach(b => b.classList.remove('active'));
-                const activeBtn = document.querySelector(`.provider-btn[onclick*="${adminAIProvider}"]`);
-                if(activeBtn) activeBtn.classList.add('active');
+                document.getElementById('admin-view').classList.add('active');
+                document.getElementById('admin-ai-key').value = adminAIKey;                const activeBtn = document.querySelector(`.provider-btn[onclick*="${adminAIProvider}"]`);
+                if(activeBtn) {
+                    document.querySelectorAll('.provider-btn').forEach(b => b.classList.remove('active'));
+                    activeBtn.classList.add('active');
+                }
                 listenForAdminUpdates();
             } else {
                 document.getElementById('notif-btn').style.display = 'none';
@@ -369,9 +370,13 @@
                     pending.map(u => `<div class="req-item"><div class="req-info"><strong>${u.name}</strong><small>${u.email}</small></div><div class="req-actions"><button class="action-btn approve" onclick="updateStatus('${u.id}', 'active')">✅ تفعيل</button><button class="action-btn reject" onclick="updateStatus('${u.id}', 'rejected')">❌ رفض</button></div></div>`).join('');
 
                 document.getElementById('u-tbl').innerHTML = users.map(u => {
-                    let sc = u.status === 'active' ? 'badge-active' : u.status === 'pending' ? 'badge-pending' : 'badge-rejected';
-                    let st = u.status === 'active' ? 'نشط' : u.status === 'pending' ? 'معلق' : 'مرفوض';
-                    return `<tr><td>${u.name}</td><td>${u.email}</td><td><span class="badge ${sc}">${st}</span></td><td><button onclick="delUser('${u.id}')" style="color:red;border:none;background:none;cursor:pointer">🗑️</button></td></tr>`;
+                    let sc, st, actions;
+                    if(u.status === 'active') { sc='badge-active'; st='نشط'; actions=`<button class="action-btn suspend" onclick="disableUser('${u.id}')">🚫 تعطيل</button> <button onclick="delUser('${u.id}')" style="color:red;border:none;background:none;cursor:pointer">🗑️</button>`; }
+                    else if(u.status === 'disabled') { sc='badge-disabled'; st='معطل'; actions=`<button class="action-btn approve" onclick="updateStatus('${u.id}', 'active')">✅ تفعيل</button> <button onclick="delUser('${u.id}')" style="color:red;border:none;background:none;cursor:pointer">🗑️</button>`; }
+                    else if(u.status === 'pending') { sc='badge-pending'; st='معلق'; actions=`<button class="action-btn approve" onclick="updateStatus('${u.id}', 'active')">✅</button> <button class="action-btn reject" onclick="updateStatus('${u.id}', 'rejected')">❌</button>`; }
+                    else { sc='badge-rejected'; st='مرفوض'; actions=`<button onclick="delUser('${u.id}')" style="color:red;border:none;background:none;cursor:pointer">🗑️</button>`; }
+                    
+                    return `<tr><td>${u.name}</td><td>${u.email}</td><td><span class="badge ${sc}">${st}</span></td><td>${actions}</td></tr>`;
                 }).join('');
             });
         }
@@ -379,7 +384,13 @@
         function updateStatus(id, status) { 
             db.ref('users/' + id).update({ status }).then(() => showToast(status === 'active' ? '✅ تم التفعيل' : '❌ تم الرفض')); 
         }
-        function delUser(id) { 
+        
+        function disableUser(id) { 
+            if(confirm('هل تريد تعطيل حساب هذا المستخدم؟')) {
+                db.ref('users/' + id).update({ status: 'disabled' }).then(() => showToast('🚫 تم تعطيل الحساب')); 
+            }
+        }
+                function delUser(id) { 
             if(confirm('حذف نهائي؟')) db.ref('users/' + id).remove(); 
         }
 
@@ -390,7 +401,8 @@
             const DB = [
                 {k:["ألم","بارد","ساخن","تسوس","نخر"], t:"تسوس سني (نخر) - إزالة النخر وحشوة ترميمية. راجع الشعاعية لتقييم العمق."},
                 {k:["ألم","نابض","ليل","مضغ","جذر","طرق"], t:"التهاب لبّي لا رجعي أو خراج ذروي - علاج لبّي (جذر) أو خلع مع تقييم شعاعي."},
-                {k:["كسر","تشقق","سقوط","جزء","حاد","رض"], t:"كسر سني - قيّم الامتداد (تاجي/جذري) شعاعياً وسريرياً لتحديد الخطة."},                {k:["نزيف","فرشاة","لثة","احمرار","تورم","جير"], t:"التهاب لثة (Gingivitis) - تحسين النظافة، إزالة الجير/البلاك، متابعة أسبوعين."},
+                {k:["كسر","تشقق","سقوط","جزء","حاد","رض"], t:"كسر سني - قيّم الامتداد (تاجي/جذري) شعاعياً وسريرياً لتحديد الخطة."},
+                {k:["نزيف","فرشاة","لثة","احمرار","تورم","جير"], t:"التهاب لثة (Gingivitis) - تحسين النظافة، إزالة الجير/البلاك، متابعة أسبوعين."},
                 {k:["جيوب","ارتشاف","عظم","حركة","أسنان","دواعم"], t:"التهاب دواعم السن - قياس الجيوب، كشط جذري، متابعة دورية مع اختصاصي."},
                 {k:["قرحة","بيضاء","صفراء","وجع","قلاعية"], t:"آفة قلاعية فموية - ذاتية الشفاء 10-14 يوم. غسول كلورهيكسيدين أو كورتيكوستيرويد موضعي."},
                 {k:["أبيض","لا يُكشط","تدخين","لويحة","صلب"], t:"طلاوة بيضاء (Leukoplakia) - محتملة التسرطن. خزعة فورية واستبعاد مهيجات."},
@@ -427,8 +439,7 @@
             
             try {
                 let endpoint, headers, body;
-                if (adminAIProvider === 'deepseek') {
-                    endpoint = "https://api.deepseek.com/chat/completions";
+                if (adminAIProvider === 'deepseek') {                    endpoint = "https://api.deepseek.com/chat/completions";
                     headers = { 'Authorization': 'Bearer ' + apiKey, 'Content-Type': 'application/json' };
                     body = { model: "deepseek-chat", messages: [{role:"user", content:prompt}], temperature:0.3, max_tokens:400 };
                 } else if (adminAIProvider === 'openrouter') {
@@ -439,7 +450,8 @@
                     endpoint = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2";
                     headers = { 'Authorization': 'Bearer ' + apiKey, 'Content-Type': 'application/json' };
                     body = { inputs: "<s>[INST] " + prompt + " [/INST]", parameters: {max_new_tokens:350, temperature:0.3} };
-                } else {                    endpoint = "https://api.together.xyz/v1/chat/completions";
+                } else {
+                    endpoint = "https://api.together.xyz/v1/chat/completions";
                     headers = { 'Authorization': 'Bearer ' + apiKey, 'Content-Type': 'application/json' };
                     body = { model: "meta-llama/Llama-3.3-70B-Instruct-Turbo", messages: [{role:"user", content:prompt}], temperature:0.3, max_tokens:400 };
                 }
