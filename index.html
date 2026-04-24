@@ -1,1 +1,556 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تشخيص أمراض الفم والأسنان</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --primary: #0284c7;
+            --primary-light: #38bdf8;
+            --primary-dark: #0369a1;
+            --accent: #10b981;
+            --danger: #ef4444;
+            --gold: #f59e0b;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --radius: 14px;
+            --shadow: 0 4px 12px rgba(0,0,0,0.06);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.1);
+            --transition: all 0.25s ease;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+        
+        /* الهيدر الموحد */
+        header {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.15rem; color: var(--primary-dark); }
+        .logo svg { width: 42px; height: 42px; }
+        .nav-actions { display: flex; align-items: center; gap: 12px; }
+        .notif-wrapper { position: relative; }
+        .notif-btn { background: none; border: none; cursor: pointer; padding: 6px; border-radius: 50%; transition: var(--transition); position: relative; }
+        .notif-btn:hover { background: #f1f5f9; }
+        .notif-badge { position: absolute; top: 2px; right: 2px; background: var(--danger); color: white; font-size: 0.7rem; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        .notif-dropdown { position: absolute; top: 40px; left: 0; background: white; border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow-lg); width: 260px; z-index: 110; display: none; padding: 8px 0; }
+        .notif-dropdown.show { display: block; }
+        .notif-item { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 0.88rem; display: flex; align-items: center; gap: 8px; }        .notif-item:last-child { border-bottom: none; }
+        .notif-icon { width: 28px; height: 28px; background: #eff6ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; }
+        .user-menu { display: flex; align-items: center; gap: 10px; }
+        .user-avatar { width: 34px; height: 34px; background: var(--primary-light); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.9rem; }
+        .user-name { font-weight: 500; font-size: 0.9rem; display: none; }
+        @media(min-width:600px) { .user-name { display: block; } }
+        .logout-btn { background: #f1f5f9; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; transition: var(--transition); }
+        .logout-btn:hover { background: #e2e8f0; }
 
+        main { flex: 1; padding: 24px 16px; max-width: 900px; margin: auto; width: 100%; }
+        .view { display: none; animation: fadeIn 0.3s ease; }
+        .view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* شاشة الدخول الموحدة */
+        .login-container { max-width: 420px; margin: 40px auto; background: var(--card); padding: 32px; border-radius: var(--radius); box-shadow: var(--shadow-lg); text-align: center; }
+        .login-container h1 { color: var(--primary-dark); margin-bottom: 8px; font-size: 1.5rem; }
+        .login-container p { color: var(--muted); margin-bottom: 24px; font-size: 0.92rem; }
+        .form-group { margin-bottom: 16px; text-align: right; }
+        .form-group label { display: block; margin-bottom: 6px; font-size: 0.88rem; font-weight: 500; color: var(--text); }
+        .form-control { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; font-size: 0.95rem; transition: var(--transition); background: #fafbfc; }
+        .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(2,132,199,0.1); background: white; }
+        .btn { width: 100%; padding: 13px; border: none; border-radius: 10px; font-size: 0.95rem; cursor: pointer; font-weight: 600; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; }
+        .btn:hover { transform: translateY(-1px); }
+        .btn:active { transform: translateY(0); }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-secondary { background: #f1f5f9; color: var(--text); }
+        .btn-secondary:hover { background: #e2e8f0; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-success { background: var(--accent); color: white; }
+        .btn-outline { background: transparent; border: 1.5px solid var(--primary); color: var(--primary); }
+        .btn-outline:hover { background: var(--primary); color: white; }
+        .divider { display: flex; align-items: center; margin: 20px 0; color: var(--muted); font-size: 0.85rem; }
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .divider span { padding: 0 10px; }
+        .link { color: var(--primary); cursor: pointer; text-decoration: none; font-weight: 500; }
+        .link:hover { text-decoration: underline; }
+
+        /* البطاقات والجداول */
+        .card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; margin-bottom: 20px; }
+        .card h3 { color: var(--primary-dark); margin-bottom: 12px; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 20px; }
+        .stat-card { background: #f8fafc; padding: 14px; border-radius: 10px; text-align: center; border: 1px solid var(--border); }
+        .stat-num { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
+        .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+        
+        .request-list { display: flex; flex-direction: column; gap: 10px; }
+        .request-item { background: #fffbeb; border: 1px solid #fcd34d; padding: 14px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .req-info strong { display: block; color: #92400e; font-size: 0.95rem; }        .req-info small { color: #b45309; font-size: 0.82rem; }
+        .req-actions { display: flex; gap: 6px; }
+        .action-btn { padding: 6px 10px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.82rem; font-weight: 600; transition: var(--transition); }
+        .action-btn.approve { background: var(--accent); color: white; }
+        .action-btn.reject { background: var(--danger); color: white; }
+        .action-btn:hover { opacity: 0.9; }
+
+        table { width: 100%; border-collapse: separate; border-spacing: 0 6px; margin-top: 10px; font-size: 0.88rem; }
+        th { padding: 10px; color: var(--muted); font-weight: 600; text-align: right; font-size: 0.82rem; }
+        td { padding: 12px; background: white; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); text-align: right; vertical-align: middle; }
+        .status-badge { padding: 4px 8px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+        .status-active { background: #d1fae5; color: #065f46; }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-rejected { background: #fee2e2; color: #991b1b; }
+
+        /* واجهة الطبيب */
+        .textarea-wrap { position: relative; }
+        textarea { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 0.95rem; resize: vertical; line-height: 1.5; min-height: 120px; background: #fafbfc; transition: var(--transition); }
+        textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(2,132,199,0.1); background: white; }
+        .img-upload { border: 2px dashed var(--border); padding: 20px; border-radius: 10px; text-align: center; background: #fafbfc; cursor: pointer; transition: var(--transition); margin-bottom: 12px; }
+        .img-upload:hover { border-color: var(--primary-light); background: #f0f9ff; }
+        .img-grid { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+        .img-thumb { width: 70px; height: 70px; border-radius: 8px; overflow: hidden; position: relative; border: 1px solid var(--border); }
+        .img-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .img-remove { position: absolute; top: 3px; left: 3px; background: var(--danger); color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        
+        .result-box { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 16px; border-radius: 12px; margin: 16px 0; line-height: 1.6; }
+        .result-box h4 { color: #047857; margin-bottom: 6px; }
+        .ai-box { background: #faf5ff; border: 1px solid #d8b4fe; padding: 16px; border-radius: 12px; margin: 16px 0; line-height: 1.6; }
+        .ai-box h4 { color: #7e22ce; margin-bottom: 6px; }
+        .warning { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; padding: 10px; border-radius: 8px; margin-top: 12px; font-size: 0.85rem; text-align: center; }
+
+        footer { background: var(--card); border-top: 1px solid var(--border); padding: 16px; text-align: center; font-size: 0.85rem; color: var(--muted); margin-top: auto; }
+        
+        .hide { display: none !important; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--text); color: white; padding: 12px 20px; border-radius: 10px; font-size: 0.9rem; z-index: 1000; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .toast.show { opacity: 1; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="50" cy="55" rx="35" ry="40" fill="none" stroke="#0284c7" stroke-width="2.5"/>
+                <ellipse cx="38" cy="42" rx="5" ry="3" fill="#0284c7"/>
+                <ellipse cx="62" cy="42" rx="5" ry="3" fill="#0284c7"/>
+                <ellipse cx="50" cy="65" rx="12" ry="10" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+                <path d="M 40 58 Q 43 62 46 58 Q 48 62 50 58 Q 52 62 54 58 Q 57 62 60 58" fill="none" stroke="#0284c7" stroke-width="2"/>
+                <path d="M 42 72 Q 45 68 48 72 Q 50 68 52 72 Q 55 68 58 72" fill="none" stroke="#0284c7" stroke-width="2"/>
+                <circle cx="50" cy="65" r="18" fill="rgba(255,255,255,0.8)" stroke="#0284c7" stroke-width="3"/>                <line x1="63" y1="78" x2="73" y2="88" stroke="#0284c7" stroke-width="5" stroke-linecap="round"/>
+                <text x="50" y="69" text-anchor="middle" fill="#0284c7" font-size="15" font-weight="bold" font-family="Arial">AI</text>
+            </svg>
+            <span>تشخيص أمراض الفم والأسنان</span>
+        </div>
+        <div class="nav-actions" id="nav-actions" style="display:none;">
+            <div class="notif-wrapper" id="notif-wrapper" style="display:none;">
+                <button class="notif-btn" onclick="toggleNotif()">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                    <span class="notif-badge hide" id="notif-badge">0</span>
+                </button>
+                <div class="notif-dropdown" id="notif-dropdown">
+                    <div id="notif-list" style="max-height:140px;overflow-y:auto"></div>
+                </div>
+            </div>
+            <div class="user-menu">
+                <div class="user-avatar" id="user-avatar">م</div>
+                <span class="user-name" id="user-name">مستخدم</span>
+                <button class="logout-btn" onclick="doLogout()">خروج</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- 1. واجهة الدخول الموحدة -->
+        <div id="login-view" class="view active">
+            <div class="login-container">
+                <h1>مرحباً بك</h1>
+                <p>سجّل دخولك للوصول إلى لوحة التشخيص أو الإدارة</p>
+                <div class="form-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" id="login-email" class="form-control" placeholder="example@email.com" autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label>كلمة المرور</label>
+                    <input type="password" id="login-pass" class="form-control" placeholder="••••••••" autocomplete="current-password">
+                </div>
+                <button class="btn btn-primary" onclick="handleLogin()">🔐 تسجيل الدخول</button>
+                <div class="divider"><span>أو</span></div>
+                <button class="btn btn-outline" onclick="goToRegister()">📝 إنشاء حساب جديد</button>
+                <p style="margin-top:16px; font-size:0.82rem; color:var(--muted)">حساب الإدارة التجريبي:<br><code>salematto@gmail.com</code> / <code>zak959</code></p>
+            </div>
+        </div>
+
+        <!-- 2. شاشة التسجيل -->
+        <div id="register-view" class="view">
+            <div class="login-container">
+                <h1>إنشاء حساب جديد</h1>
+                <p>سيتم مراجعة طلبك من قبل الإدارة وتفعيله فور الموافقة</p>
+                <div class="form-group"><label>الاسم الكامل</label><input type="text" id="reg-name" class="form-control" placeholder="الاسم الثلاثي"></div>                <div class="form-group"><label>البريد الإلكتروني</label><input type="email" id="reg-email" class="form-control" placeholder="example@email.com"></div>
+                <div class="form-group"><label>كلمة المرور</label><input type="password" id="reg-pass" class="form-control" placeholder="6 أحرف على الأقل"></div>
+                <div class="form-group"><label>تأكيد كلمة المرور</label><input type="password" id="reg-pass2" class="form-control" placeholder="أعد الكتابة"></div>
+                <button class="btn btn-success" onclick="handleRegister()">📤 إرسال الطلب</button>
+                <button class="btn btn-secondary" onclick="goToLogin()" style="margin-top:8px">← العودة للدخول</button>
+            </div>
+        </div>
+
+        <!-- 3. لوحة الإدارة -->
+        <div id="admin-view" class="view">
+            <div class="card">
+                <h3>📊 لوحة التحكم الإدارية</h3>
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-num" id="stat-pending">0</div><div class="stat-label">طلبات معلقة</div></div>
+                    <div class="stat-card"><div class="stat-num" id="stat-active">0</div><div class="stat-label">مستخدم نشط</div></div>
+                    <div class="stat-card"><div class="stat-num" id="stat-total">0</div><div class="stat-label">إجمالي المسجلين</div></div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>📥 طلبات التسجيل الجديدة</h3>
+                <div id="pending-list" class="request-list"></div>
+            </div>
+            <div class="card">
+                <h3>👥 سجل المستخدمين</h3>
+                <div style="overflow-x:auto">
+                    <table><thead><tr><th>الاسم</th><th>البريد</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="users-tbl"></tbody></table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. واجهة الطبيب/الطالب -->
+        <div id="doctor-view" class="view">
+            <div class="card">
+                <h3>📋 وصف الحالة السريرية</h3>
+                <div class="form-group">
+                    <label>الأعراض والعلامات</label>
+                    <textarea id="sym-text" placeholder="اكتب الأعراض بدقة... مثال: ألم نابض عند المضغ مع تورم الخد..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>📷 الصور السريرية (اختياري - حتى 3)</label>
+                    <div class="img-upload" onclick="document.getElementById('file-input').click()">📤 اضغط لاختيار أو التقاط صور</div>
+                    <input type="file" id="file-input" accept="image/*" multiple style="display:none" onchange="handleFiles(this)">
+                    <div id="img-grid" class="img-grid"></div>
+                </div>
+                <div class="card" style="background:#f8fafc; border:1px solid var(--border); padding:14px; margin:12px 0;">
+                    <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-weight:500; color:var(--primary-dark);">
+                        <input type="checkbox" id="ai-toggle" style="width:18px;height:18px;accent-color:var(--primary)" onchange="toggleAI()">
+                        تفعيل الذكاء الاصطناعي المتقدم
+                    </label>
+                    <div id="ai-wrap" class="hide" style="margin-top:10px">                        <input type="password" id="ai-key" class="form-control" placeholder="الصق مفتاح API هنا" style="margin-bottom:8px">
+                        <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:6px;">
+                            <button class="action-btn" style="background:var(--primary);color:white" onclick="setAI('deepseek')">DeepSeek</button>
+                            <button class="action-btn" style="background:#64748b;color:white" onclick="setAI('openrouter')">OpenRouter</button>
+                            <button class="action-btn" style="background:#f59e0b;color:white" onclick="setAI('hf')">HuggingFace</button>
+                            <button class="action-btn" style="background:#7c3aed;color:white" onclick="setAI('together')">Together</button>
+                        </div>
+                        <small style="color:var(--muted);font-size:0.75rem">المفتاح يُحفظ محلياً فقط. <a href="https://platform.deepseek.com/api_keys" target="_blank" style="color:var(--primary)">احصل على مفتاح مجاني</a></small>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="runDiagnosis()">🔍 تحليل التشخيص</button>
+            </div>
+            <div id="result-area"></div>
+        </div>
+    </main>
+
+    <footer>© 2026 جميع الحقوق محفوظة | منصة تعليمية لتشخيص أمراض الفم والأسنان</footer>
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ⚙️ الإعدادات والثوابت
+        const ADMIN_EMAIL = "salematto@gmail.com";
+        const ADMIN_PASS = "zak959";
+        let currentUser = null;
+        let caseImages = [];
+        let aiProvider = 'deepseek';
+        
+        // 📚 بنك المعلومات الموسع
+        const DB = [
+            {k:["ألم","بارد","ساخن","حساس","تسوس","نخر","ثقب","أسود"], t:"تسوس سني - إزالة النخر وحشوة ترميمية. راجع الشعاعية لتقييم العمق."},
+            {k:["ألم","نابض","ليل","مضغ","جذر","طرق","ضغط"], t:"التهاب لبّي لا رجعي أو خراج ذروي - علاج لبّي أو خلع مع تقييم شعاعي."},
+            {k:["كسر","تشقق","سقوط","جزء","حاد","رض","اصطدام"], t:"كسر سني - قيّم الامتداد شعاعياً وسريرياً لتحديد الخطة العلاجية."},
+            {k:["حساس","تآكل","عنق","فرشاة","حمض","تراجع","انكشاف"], t:"تآكل عنقي/انكشاف عاجي - تصحيح التفريش، مواد حساسية أو حشوة أيونية."},
+            {k:["بقع","بيضاء","بنية","فلور","تتراسيكلين","لون","تصبّغ"], t:"تبدلات لونية - تبييض، قشور خزفية، أو حشوات تجميلية حسب الشدة."},
+            {k:["ضرس","عقل","ألم","تورم","صعوبة","فتح","بلع","التهاب"], t:"التهاب حول التاجي - غسول كلورهيكسيدين، مسكنات، مضاد حيوي إن لزم، تقييم الاستئصال."},
+            {k:["نزيف","فرشاة","لثة","احمرار","تورم","جير","بلاك"], t:"التهاب لثة - تحسين النظافة، إزالة الجير/البلاك، متابعة أسبوعين."},
+            {k:["جيوب","ارتشاف","عظم","حركة","أسنان","دواعم","عمق"], t:"التهاب دواعم السن - قياس الجيوب، كشط جذري، متابعة دورية مع اختصاصي."},
+            {k:["انحسار","جذر","ظاهر","حساس","فرشاة","قوي","خاطئة"], t:"انحسار لثوي - تقييم السبب، خيارات طعم لثوي أو مراقبة."},
+            {k:["تضخم","لثة","دواء","فينيتوين","سيكلوسبورين","أدوية"], t:"تضخم لثوي دوائي - مراجعة التاريخ الدوائي، تنسيق مع الطبيب المعالج."},
+            {k:["خراج","لثة","موضعي","صديد","ألم","محدّد","انتفاخ"], t:"خراج لثوي - تصريف فوري، مضاد حيوي إن لزم، إزالة المسبب."},
+            {k:["قرحة","بيضاء","صفراء","وجع","قلاعية","مؤلمة","دائرية"], t:"آفة قلاعية فموية - ذاتية الشفاء 10-14 يوم. غسول أو كورتيكوستيرويد موضعي."},
+            {k:["أبيض","لا يُكشط","تدخين","لويحة","بلاك","صلب"], t:"طلاوة بيضاء - محتملة التسرطن. خزعة فورية واستبعاد مهيجات."},
+            {k:["أحمر","مخملية","لا يُكشط","لسان","أرضية","فم","حُمامى"], t:"حُمامى مبقعة - خطر تسرطن عالي. تحويل عاجل لأخذ خزعة."},
+            {k:["بثور","ماء","حرق","هربس","شفاه","تقرّح","فيروسي"], t:"هربس شفوي/التهاب لثة فموي هربسي - أسيكلوفير خلال 72 ساعة، علاج عرضي."},
+            {k:["حرق","أبيض","قابل","إزالة","مضاد","فطر","كانديدا","قلاع"], t:"داء المبيضات الفموي - نيستاتين أو فلوكونازول مع تقييم العوامل المناعية."},
+            {k:["تورم","شفاه","لسان","تنفس","حساسية","صعوبة","بلع"], t:"وذمة وعائية تحسسية - طوارئ! صعوبة تنفس → إبلاغ الطوارئ وإبينفرين."},
+            {k:["نتوء","عظم","صلب","غير","مؤلم","حنك","فك","تورس"], t:"نتوء عظمي (تورس) - تشريحي حميد، علاج فقط إن تداخل مع التعويضات."},
+            {k:["كتلة","صلبة","غير","مؤلمة","بطيئة","نمو","تحت","مخاطية"], t:"آفة تحت مخاطية - تقييم شعاعي/خزعة لتحديد الطبيعة الحميدة أو الخبيثة."},
+            {k:["تقرح","لا","يلتئم","3","أسابيع","صلب","نزف","حواف"], t:"آفة مشبوهة للتسرطن - تحويل عاجل لأخذ خزعة. لا تؤجل >أسبوعين."},
+            {k:["أزرق","لين","سائل","شفاه","خد","موكوسيل","كيسة"], t:"كيسة مخاطية - حميدة غالباً. مراقبة، استئصال بسيط أو ليزر."},            {k:["ورم","عظم","ألم","تنميل","فك","توسّع","عظمي"], t:"آفة عظمية فكية - CBCT وإحالة فورية لجراحة الوجه والفكين."},
+            {k:["جفاف","فم","عينا","روماتويد","شوكرن","لعاب","قليل"], t:"جفاف فموي - تقييم الأدوية، بدائل لعاب، مراقبة خطر التسوس."},
+            {k:["لثة","نزيف","كدمات","تعب","دم","شاحب","لوكيميا"], t:"تظاهرات دموية محتملة - تحويل عاجل لفحص CBC وتقييم جهازى."},
+            {k:["خطوط","بيضاء","شبكية","خد","لا","يُكشط","ليكن"], t:"حزاز مسطح فموي - آفة مناعية مزمنة. مراقبة أو كورتيكوستيرويد موضعي."},
+            {k:["تقرحات","متكررة","أمعاء","إسهال","كرون","كوليت"], t:"تظاهرات التهاب الأمعاء - تنسيق مع باطنة لتقييم النشاط الجهازي."},
+            {k:["تضخم","لثة","حمل","هرمون","نزيف","حامل"], t:"تضخم لثوي حملي - تحسين نظافة، تنظيف احترافي، يتراجع غالباً بعد الولادة."},
+            {k:["رائحة","فم","كيتون","سكري","عَطَش","بول","كثير"], t:"رائحة كيتونية (سكري غير مضبوط) - قياس سكر، تحويل لباطنة إن لزم."},
+            {k:["شحوب","فم","شفاه","أبيض","فقر","دم","أنيميا"], t:"شحوب أغشية مخاطية - محتمل فقر دم. تحويل لـ CBC وتقييم غذائي."},
+            {k:["صريف","أسنان","ليل","طحن","إجهاد","فك","صداع"], t:"صريف أسنان - واقي ليلي، إدارة إجهاد، علاج فيزيائي للفك."},
+            {k:["مفصل","فك","ألم","طقطقة","صعوبة","فتح","TMD"], t:"اضطراب مفصل الفك - راحة، كمادات، مسكنات، إحالة اختصاصي إن استمر."},
+            {k:["رائحة","فم","كريهة","بخر","فموي","نظافة","لسان"], t:"بخر فموي - تحسين نظافة، تنظيف لسان، معالجة تسوس/لثة، تقييم أسباب جهازية."}
+        ];
+
+        // 🧠 دوال النظام الأساسية
+        function getUsers() { try { return JSON.parse(localStorage.getItem('dental_users')) || []; } catch { return []; } }
+        function saveUsers(u) { localStorage.setItem('dental_users', JSON.stringify(u)); }
+        function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
+        function switchView(id) { document.querySelectorAll('.view').forEach(v => v.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+        function goToLogin() { switchView('login-view'); document.getElementById('nav-actions').style.display = 'none'; }
+        function goToRegister() { switchView('register-view'); }
+
+        // 🔐 نظام الدخول الموحد
+        function handleLogin() {
+            const email = document.getElementById('login-email').value.trim().toLowerCase();
+            const pass = document.getElementById('login-pass').value.trim();
+            if (!email || !pass) return showToast('يرجى ملء جميع الحقول');
+
+            // دخول الإدارة
+            if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
+                currentUser = { name: 'المدير', email, role: 'admin' };
+                localStorage.setItem('dental_session', JSON.stringify(currentUser));
+                initApp();
+                return;
+            }
+
+            // دخول المستخدمين
+            const users = getUsers();
+            const user = users.find(u => u.email === email && u.pass === pass);
+            if (!user) return showToast('❌ بيانات الدخول غير صحيحة');
+            if (user.status === 'pending') return showToast('⏳ حسابك قيد المراجعة من قبل الإدارة');
+            if (user.status === 'rejected') return showToast('❌ تم رفض طلب التسجيل. تواصل مع الإدارة');
+
+            currentUser = { ...user, role: 'doctor' };
+            localStorage.setItem('dental_session', JSON.stringify(currentUser));
+            initApp();
+        }
+
+        function doLogout() {
+            localStorage.removeItem('dental_session');
+            currentUser = null;            goToLogin();
+        }
+
+        // 📝 نظام التسجيل الموثوق
+        function handleRegister() {
+            const name = document.getElementById('reg-name').value.trim();
+            const email = document.getElementById('reg-email').value.trim().toLowerCase();
+            const pass = document.getElementById('reg-pass').value;
+            const pass2 = document.getElementById('reg-pass2').value;
+
+            if (!name || !email || !pass) return showToast('أكمل جميع الحقول المطلوبة');
+            if (!email.includes('@')) return showToast('بريد إلكتروني غير صحيح');
+            if (pass.length < 6) return showToast('كلمة المرور يجب أن تكون 6 أحرف على الأقل');
+            if (pass !== pass2) return showToast('كلمتا المرور غير متطابقتين');
+            if (email === ADMIN_EMAIL) return showToast('لا يمكن استخدام بريد الإدارة');
+
+            const users = getUsers();
+            if (users.some(u => u.email === email)) return showToast('هذا البريد مسجل مسبقاً');
+
+            const code = Math.floor(100000 + Math.random() * 900000).toString();
+            users.push({ name, email, pass, status: 'pending', code, date: Date.now() });
+            saveUsers(users);
+
+            showToast('✅ تم إرسال طلبك بنجاح! كود التفعيل: ' + code);
+            setTimeout(goToLogin, 1500);
+        }
+
+        //  تهيئة التطبيق وتوجيه الشاشات
+        function initApp() {
+            document.getElementById('nav-actions').style.display = 'flex';
+            document.getElementById('user-avatar').textContent = currentUser.name.charAt(0);
+            document.getElementById('user-name').textContent = currentUser.name;
+
+            if (currentUser.role === 'admin') {
+                document.getElementById('notif-wrapper').style.display = 'block';
+                switchView('admin-view');
+                refreshAdminData();
+                // تحديث تلقائي كل 4 ثوانٍ لضمان ظهور الإشعارات فوراً
+                clearInterval(window.adminInterval);
+                window.adminInterval = setInterval(refreshAdminData, 4000);
+            } else {
+                document.getElementById('notif-wrapper').style.display = 'none';
+                switchView('doctor-view');
+                document.getElementById('sym-text').focus();
+            }
+            updateNotifBadge();
+        }
+
+        // 🔔 نظام الإشعارات المضمون
+        function updateNotifBadge() {            if (currentUser?.role !== 'admin') return;
+            const pending = getUsers().filter(u => u.status === 'pending').length;
+            const badge = document.getElementById('notif-badge');
+            badge.textContent = pending;
+            badge.classList.toggle('hide', pending === 0);
+        }
+        function toggleNotif() { document.getElementById('notif-dropdown').classList.toggle('show'); renderNotifList(); }
+        function renderNotifList() {
+            const list = document.getElementById('notif-list');
+            const pending = getUsers().filter(u => u.status === 'pending');
+            list.innerHTML = pending.length === 0 ? '<div style="padding:12px;text-align:center;color:var(--muted)">لا توجد إشعارات جديدة</div>' :
+                pending.map(u => `<div class="notif-item"><div class="notif-icon">📝</div><div><strong>طلب جديد: ${u.name}</strong><br><small>${u.email}</small></div></div>`).join('');
+        }
+        document.addEventListener('click', e => { if (!e.target.closest('.notif-wrapper')) document.getElementById('notif-dropdown').classList.remove('show'); });
+
+        // 🛠️ لوحة الإدارة
+        function refreshAdminData() {
+            if (currentUser?.role !== 'admin') return;
+            const users = getUsers();
+            const pending = users.filter(u => u.status === 'pending');
+            const active = users.filter(u => u.status === 'active').length;
+
+            document.getElementById('stat-pending').textContent = pending.length;
+            document.getElementById('stat-active').textContent = active;
+            document.getElementById('stat-total').textContent = users.length;
+            updateNotifBadge();
+
+            // قائمة الطلبات المعلقة
+            const pendDiv = document.getElementById('pending-list');
+            pendDiv.innerHTML = pending.length === 0 ? '<div class="card" style="text-align:center;color:var(--muted)">لا توجد طلبات جديدة بانتظار المراجعة</div>' :
+                pending.map(u => `
+                    <div class="request-item">
+                        <div class="req-info">
+                            <strong>${u.name}</strong>
+                            <small>${u.email} • ${new Date(u.date).toLocaleDateString('ar')}</small>
+                        </div>
+                        <div class="req-actions">
+                            <button class="action-btn approve" onclick="approveUser('${u.email}')">✅ قبول</button>
+                            <button class="action-btn reject" onclick="rejectUser('${u.email}')">❌ رفض</button>
+                        </div>
+                    </div>`).join('');
+
+            // جدول المستخدمين
+            const tbl = document.getElementById('users-tbl');
+            tbl.innerHTML = users.map(u => {
+                const sc = u.status === 'active' ? 'status-active' : u.status === 'pending' ? 'status-pending' : 'status-rejected';
+                const st = u.status === 'active' ? 'نشط' : u.status === 'pending' ? 'معلق' : 'مرفوض';
+                return `<tr>
+                    <td>${u.name}</td>
+                    <td>${u.email}</td>                    <td><span class="status-badge ${sc}">${st}</span></td>
+                    <td><button class="action-btn reject" onclick="deleteUser('${u.email}')">🗑️</button></td>
+                </tr>`;
+            }).join('');
+        }
+
+        function approveUser(email) {
+            const users = getUsers();
+            const idx = users.findIndex(u => u.email === email);
+            if (idx === -1) return;
+            users[idx].status = 'active';
+            saveUsers(users);
+            showToast('✅ تم قبول وتفعيل الحساب. كود التفعيل: ' + users[idx].code);
+            refreshAdminData();
+        }
+        function rejectUser(email) {
+            if (!confirm('هل تريد رفض هذا الطلب؟')) return;
+            const users = getUsers();
+            const idx = users.findIndex(u => u.email === email);
+            if (idx === -1) return;
+            users[idx].status = 'rejected';
+            saveUsers(users);
+            showToast('❌ تم رفض الطلب');
+            refreshAdminData();
+        }
+        function deleteUser(email) {
+            if (!confirm('حذف نهائي؟')) return;
+            const users = getUsers().filter(u => u.email !== email);
+            saveUsers(users);
+            showToast('🗑️ تم الحذف');
+            refreshAdminData();
+        }
+
+        //  واجهة الطبيب والتشخيص
+        function toggleAI() { document.getElementById('ai-wrap').classList.toggle('hide', !document.getElementById('ai-toggle').checked); }
+        function setAI(p) { aiProvider = p; showToast('تم اختيار: ' + p); }
+        function handleFiles(input) {
+            if (caseImages.length + input.files.length > 3) return showToast('بحد أقصى 3 صور');
+            for (let f of input.files) {
+                if (!f.type.startsWith('image/')) continue;
+                const r = new FileReader();
+                r.onload = e => { caseImages.push(e.target.result); renderImages(); };
+                r.readAsDataURL(f);
+            }
+            input.value = '';
+        }
+        function renderImages() {
+            const g = document.getElementById('img-grid');
+            g.innerHTML = caseImages.map((src, i) => `<div class="img-thumb"><img src="${src}"><button class="img-remove" onclick="caseImages.splice(${i},1);renderImages()">×</button></div>`).join('');
+        }
+        function runDiagnosis() {
+            const text = document.getElementById('sym-text').value.trim();
+            if (!text) return showToast('اكتب الأعراض أولاً');
+
+            let best = null, max = 0;
+            DB.forEach(d => {
+                let s = 0;
+                d.k.forEach(k => { if (text.includes(k)) s += k.length > 3 ? 2 : 1; if (text.includes(k) && text.indexOf(k) < 50) s++; });
+                if (s > max) { max = s; best = d; }
+            });
+
+            const resArea = document.getElementById('result-area');
+            let html = `<div class="card"><div class="result-box"><h4>📚 التشخيص المحلي</h4><p>${best ? best.t : 'لم يتطابق مع قاعدة البيانات. جرب وصفاً أدق أو فعّل الذكاء الاصطناعي.'}</p></div>`;
+
+            if (document.getElementById('ai-toggle').checked) {
+                const key = document.getElementById('ai-key').value.trim();
+                if (!key) html += `<div class="ai-box"><h4>🤖 الذكاء الاصطناعي</h4><p>ℹ️ يرجى إدخال مفتاح API للتفعيل</p></div>`;
+                else {
+                    html += `<div class="ai-box"><h4>🤖 جاري تحليل الذكاء الاصطناعي...</h4><div id="ai-output"></div></div>`;
+                    runAI(text, key);
+                }
+            }
+            html += `<div class="warning">⚠️ هذا التشخيص للأغراض التعليمية فقط ولا يُغني عن الفحص السريري المهني</div></div>`;
+            resArea.innerHTML = html;
+        }
+
+        async function runAI(text, key) {
+            const out = document.getElementById('ai-output');
+            out.innerHTML = '<span style="color:var(--muted)">⏳ جاري الاتصال...</span>';
+            const ctrl = new AbortController();
+            const tid = setTimeout(() => ctrl.abort(), 12000);
+            const pr = `أنت خبير تعليمي في طب الأسنان. مريض يصف: "${text}". قدّم: 1. 3 تشخيصات تفاضلية مرتبة. 2. سبب علمي مختصر. 3. خطوة تأكيدية. 4. تحذير تعليمي. أجب بالعربية وبشكل منظم ومختصر.`;
+            
+            try {
+                let ep, h, b;
+                if (aiProvider === 'deepseek') { ep = "https://api.deepseek.com/chat/completions"; h = { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' }; b = { model: "deepseek-chat", messages: [{ role: "user", content: pr }], temperature: 0.3, max_tokens: 400 }; }
+                else if (aiProvider === 'openrouter') { ep = "https://openrouter.ai/api/v1/chat/completions"; h = { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' }; b = { model: "meta-llama/llama-3.1-8b-instruct:free", messages: [{ role: "user", content: pr }], temperature: 0.3, max_tokens: 400 }; }
+                else if (aiProvider === 'hf') { ep = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2"; h = { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' }; b = { inputs: "<s>[INST] " + pr + " [/INST]", parameters: { max_new_tokens: 350, temperature: 0.3 } }; }
+                else { ep = "https://api.together.xyz/v1/chat/completions"; h = { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' }; b = { model: "meta-llama/Llama-3.3-70B-Instruct-Turbo", messages: [{ role: "user", content: pr }], temperature: 0.3, max_tokens: 400 }; }
+
+                const res = await fetch(ep, { method: 'POST', headers: h, body: JSON.stringify(b), signal: ctrl.signal });
+                clearTimeout(tid);
+                if (!res.ok) throw new Error(`خطأ ${res.status}`);
+                const data = await res.json();
+                let reply = aiProvider === 'hf' ? (Array.isArray(data) ? data[0]?.generated_text : data?.generated_text) : data.choices?.[0]?.message?.content;
+                if (!reply) throw new Error('لم يتم استلام رد');
+                out.innerHTML = reply.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+            } catch (e) {
+                clearTimeout(tid);                out.innerHTML = `<span style="color:var(--danger)">⚠️ تعذر الاتصال: ${e.message}</span>`;
+            }
+        }
+
+        // 🚀 التشغيل الأولي
+        window.onload = () => {
+            const session = localStorage.getItem('dental_session');
+            if (session) {
+                currentUser = JSON.parse(session);
+                initApp();
+            } else {
+                goToLogin();
+            }
+        };
+    </script>
+</body>
+</html>
