@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تشخيص أمراض الفم والأسنان | د. زكريا محمد عطوني</title>
+    <style>
+        :root {
+            --bg: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0891b2 100%);
+            --card: rgba(255, 255, 255, 0.92);
+            --card-border: rgba(255, 255, 255, 0.3);
+            --primary: #2563eb; --primary-dark: #1d4ed8;
+            --accent: #0ea5e9; --gold: #f59e0b;
+            --text: #0f172a; --muted: #475569; --light: #f8fafc;
+            --radius: 16px; --shadow: 0 8px 32px rgba(0,0,0,0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; padding: 20px; }
+        
+        header { 
+            background: rgba(255,255,255,0.1); border: 1px solid var(--card-border); border-radius: var(--radius); 
+            padding: 12px 20px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;
+            color: white; box-shadow: var(--shadow); position: sticky; top: 10px; z-index: 100; backdrop-filter: blur(12px);
+        }
+        .logo { font-weight: 700; font-size: 1.1rem; display: flex; gap: 12px; align-items: center; line-height: 1.2; }
+        .logo-svg { width: 48px; height: 48px; }
+        .user-info { font-size: 0.85rem; display: flex; align-items: center; gap: 10px; color: #e2e8f0; }
+        .user-info button { background: rgba(255,255,255,0.2); border: none; color: white; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-weight: 500; transition: var(--transition); }
+        .user-info button:hover { background: rgba(255,255,255,0.3); transform: translateY(-1px); }
+
+        main { flex: 1; display: flex; justify-content: center; align-items: flex-start; width: 100%; }
+        .wrap { 
+            background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius); 
+            box-shadow: var(--shadow); width: 100%; max-width: 580px; padding: 28px; position: relative; overflow: hidden;
+        }
+        .wrap::before {
+            content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 100%; 
+            background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%); pointer-events: none;
+        }
+
+        h1 { text-align: center; color: var(--primary-dark); margin-bottom: 8px; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px; }
+        h2 { text-align: center; color: var(--muted); font-size: 0.95rem; margin-bottom: 24px; font-weight: 400; }
+        
+        .f { margin-bottom: 16px; position: relative; }
+        label { display: block; margin-bottom: 6px; font-size: 0.85rem; font-weight: 600; color: var(--primary-dark); }
+        input, textarea { 
+            width: 100%; padding: 12px 14px; border: 2px solid #e2e8f0; border-radius: 12px; 
+            font-size: 0.95rem; background: #ffffff; transition: var(--transition); color: var(--text);
+        }        input:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15); transform: translateY(-1px); }
+        textarea { min-height: 120px; resize: vertical; line-height: 1.6; }
+        
+        .btn { 
+            width: 100%; padding: 13px; border: none; border-radius: 12px; font-size: 0.95rem; cursor: pointer; 
+            margin-top: 8px; font-weight: 600; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.15); }
+        .btn:active { transform: translateY(0); }
+        .b-p { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; }
+        .b-s { background: linear-gradient(135deg, #64748b, #475569); color: white; }
+        .b-ok { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .b-err { background: linear-gradient(135deg, #ef4444, #b91c1c); color: white; }
+        .b-out { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        
+        .box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 12px; margin: 16px 0; text-align: center; font-size: 0.9rem; color: var(--muted); }
+        .box-ai { background: linear-gradient(135deg, #f0f9ff, #e0f2fe); border: 1px solid #bae6fd; padding: 14px; border-radius: 12px; margin: 18px 0; }
+        .box-d { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; padding: 10px; border-radius: 10px; margin-top: 10px; font-size: 0.85rem; text-align: center; white-space: pre-line; display: none; font-family: monospace; }
+        
+        .res { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1px solid #bbf7d0; padding: 16px; border-radius: 14px; margin: 14px 0; }
+        .res h3 { color: #047857; margin-bottom: 6px; font-size: 1rem; font-weight: 700; }
+        .sym { background: #ffffff; padding: 10px; border-radius: 10px; border-right: 4px solid var(--accent); margin: 10px 0; font-size: 0.92rem; line-height: 1.5; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+        
+        .ai-box { background: linear-gradient(135deg, #faf5ff, #f3e8ff); border: 1px solid #d8b4fe; padding: 16px; border-radius: 14px; margin: 14px 0; line-height: 1.6; }
+        .ai-box h3 { color: #7e22ce; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-size: 1rem; }
+        .ai-loading { text-align: center; color: var(--muted); font-size: 0.9rem; padding: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .spinner { width: 18px; height: 18px; border: 2px solid rgba(126,34,206,0.3); border-radius: 50%; border-top-color: #7e22ce; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .img-upload-area { 
+            border: 2px dashed #cbd5e1; padding: 20px; border-radius: 12px; text-align: center; 
+            background: #f8fafc; transition: var(--transition); cursor: pointer; margin-bottom: 12px;
+        }
+        .img-upload-area:hover { border-color: var(--accent); background: #f0f9ff; transform: scale(1.01); }
+        .img-preview-grid { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+        .img-item { position: relative; width: 85px; height: 85px; border-radius: 10px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: var(--transition); }
+        .img-item:hover { transform: scale(1.05); }
+        .img-item img { width: 100%; height: 100%; object-fit: cover; }
+        .img-remove { position: absolute; top: 4px; left: 4px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; }
+        
+        .provider-select { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+        .provider-btn { 
+            padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 20px; background: #ffffff; 
+            font-size: 0.78rem; cursor: pointer; transition: var(--transition); font-weight: 500;
+        }
+        .provider-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .provider-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 10px rgba(37,99,235,0.3); }
+        
+        footer { 
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: var(--radius);             padding: 16px; text-align: center; font-size: 0.9rem; margin-top: 24px; color: #e2e8f0;
+        }
+        footer .sig { color: var(--gold); font-weight: 700; margin-top: 4px; font-size: 0.95rem; }
+        footer a { color: #93c5fd; text-decoration: none; margin: 0 6px; transition: var(--transition); }
+        footer a:hover { color: white; }
+        
+        .hide { display: none !important; }
+        .fade-in { animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        
+        table { width: 100%; border-collapse: separate; border-spacing: 0 6px; margin: 12px 0; font-size: 0.85rem; }
+        th { padding: 10px; color: var(--muted); font-weight: 600; text-align: right; }
+        td { padding: 12px; background: #ffffff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: right; }
+        
+        @media (max-width: 500px) {
+            body { padding: 12px; }
+            .wrap { padding: 20px; margin: 0; border-radius: 14px; }
+            h1 { font-size: 1.4rem; }
+            .btn { padding: 12px; font-size: 0.9rem; }
+            header { padding: 10px 14px; top: 6px; }
+            .logo span { font-size: 0.95rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <!-- اللوجو: مكبرة شفافة عليها AI أمام فم مفتوح -->
+            <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <!-- الوجه -->
+                <ellipse cx="50" cy="55" rx="35" ry="40" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+                <!-- العينين -->
+                <ellipse cx="38" cy="42" rx="5" ry="3" fill="rgba(255,255,255,0.6)"/>
+                <ellipse cx="62" cy="42" rx="5" ry="3" fill="rgba(255,255,255,0.6)"/>
+                <!-- الفم المفتوح -->
+                <ellipse cx="50" cy="65" rx="12" ry="10" fill="rgba(255,255,255,0.4)" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"/>
+                <!-- الأسنان العلوية -->
+                <path d="M 40 58 Q 43 62 46 58 Q 48 62 50 58 Q 52 62 54 58 Q 57 62 60 58" fill="none" stroke="white" stroke-width="1.5"/>
+                <!-- الأسنان السفلية -->
+                <path d="M 42 72 Q 45 68 48 72 Q 50 68 52 72 Q 55 68 58 72" fill="none" stroke="white" stroke-width="1.5"/>
+                
+                <!-- المكبرة -->
+                <circle cx="50" cy="65" r="18" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.9)" stroke-width="2.5"/>
+                <!-- مقبض المكبرة -->
+                <line x1="63" y1="78" x2="72" y2="87" stroke="rgba(255,255,255,0.7)" stroke-width="4" stroke-linecap="round"/>
+                <!-- نص AI داخل المكبرة -->
+                <text x="50" y="69" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="Arial, sans-serif">AI</text>
+            </svg>
+            <span>تشخيص أمراض الفم والأسنان</span>
+        </div>        <div class="user-info"><span id="u-name">ضيف</span><button onclick="doLogout()">خروج</button></div>
+    </header>
+    <main>
+        <div class="wrap fade-in">
+            <div id="scr-login">
+                <h1>🔐 تسجيل الدخول</h1><h2>منصة تعليمية متقدمة لطلاب وخريجي طب الأسنان</h2>
+                <div class="box">👤 حساب تجريبي جاهز:<br><code style="background:#e0f2fe;padding:2px 6px;border-radius:6px;color:#0369a1">salematto@gmail.com</code> / <code style="background:#e0f2fe;padding:2px 6px;border-radius:6px;color:#0369a1">zak959</code></div>
+                <div class="f"><label>البريد الإلكتروني</label><input type="email" id="in-mail" placeholder="أدخل بريدك" autocomplete="email" onkeydown="if(event.key==='Enter')doLogin()"></div>
+                <div class="f"><label>كلمة المرور</label><input type="password" id="in-pass" placeholder="كلمة المرور" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+                <button class="btn b-p" onclick="doLogin()">✅ دخول</button>
+                <button class="btn b-out" onclick="go('scr-reg')" style="margin-top:10px">📝 إنشاء حساب جديد</button>
+                <button class="btn b-s" onclick="go('scr-admin')" style="margin-top:8px">🔧 لوحة الإدارة</button>
+            </div>
+            
+            <div id="scr-reg" class="hide">
+                <h1>📝 إنشاء حساب</h1>
+                <div class="f"><label>البريد الإلكتروني</label><input type="email" id="reg-mail" placeholder="example@email.com"></div>
+                <div class="f"><label>كلمة المرور</label><input type="password" id="reg-pass" placeholder="6 أحرف على الأقل"></div>
+                <div class="f"><label>تأكيد كلمة المرور</label><input type="password" id="reg-pass2" placeholder="أعد الكتابة"></div>
+                <button class="btn b-ok" onclick="doRegister()">📤 إرسال</button>
+                <button class="btn b-s" onclick="go('scr-login')">← العودة للدخول</button>
+            </div>
+            
+            <div id="scr-act" class="hide">
+                <h1>🔑 تفعيل الحساب</h1>
+                <div class="box" style="background:#fffbeb;border-color:#fcd34d;color:#92400e">كود التفعيل:<br><strong id="act-show" style="letter-spacing:4px; font-size:1.3rem;display:block;margin-top:6px"></strong></div>
+                <div class="f"><input type="text" id="act-in" placeholder="أدخل الكود" inputmode="numeric" maxlength="6" style="text-align:center; letter-spacing:6px; font-weight:700; font-size:1.2rem"></div>
+                <button class="btn b-p" onclick="doActivate()">✅ تفعيل الحساب</button>
+                <button class="btn b-s" onclick="go('scr-login')">← العودة للدخول</button>
+            </div>
+            
+            <div id="scr-sym" class="hide">
+                <h1>📋 وصف الحالة السريرية</h1>
+                <div class="f"><label>الأعراض والعلامات</label><textarea id="sym-text" placeholder="اكتب الأعراض بدقة... مثال: ألم نابض عند المضغ مع تورم الخد وحمى خفيفة..." autofocus></textarea></div>
+                <div class="f">
+                    <label>📷 الصور السريرية (اختياري - حتى 3)</label>
+                    <div class="img-upload-area" onclick="document.getElementById('file-upload').click()">
+                        📤 اضغط لاختيار صور أو التقاطها
+                        <input type="file" id="file-upload" accept="image/*" multiple style="display:none" onchange="handleImages(this)">
+                    </div>
+                    <div id="img-grid" class="img-preview-grid"></div>
+                </div>
+                
+                <div class="box-ai">
+                    <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-weight:600;color:#0369a1">
+                        <input type="checkbox" id="ai-toggle" style="width:18px;height:18px;accent-color:var(--primary)" onchange="toggleAIKey()">
+                        تفعيل الذكاء الاصطناعي المتقدم
+                    </label>
+                    <div id="ai-key-wrap" class="hide" style="margin-top:12px">
+                        <label>🔑 مفتاح API:</label>                        <input type="password" id="ai-key" placeholder="الصق المفتاح هنا" oninput="saveAIKey()">
+                        
+                        <label style="margin-top:10px;display:block;">اختر المزود:</label>
+                        <div class="provider-select">
+                            <button type="button" class="provider-btn active" onclick="selectProvider('deepseek')" id="btn-deepseek">🧠 DeepSeek</button>
+                            <button type="button" class="provider-btn" onclick="selectProvider('openrouter')" id="btn-openrouter">🌐 OpenRouter</button>
+                            <button type="button" class="provider-btn" onclick="selectProvider('hf')" id="btn-hf">🤗 HF</button>
+                            <button type="button" class="provider-btn" onclick="selectProvider('together')" id="btn-together">⚡ Together</button>
+                        </div>
+                        <small style="color:var(--muted);display:block;margin-top:8px;font-size:0.72rem;line-height:1.4">
+                            🔹 DeepSeek: <a href="https://platform.deepseek.com/api_keys" target="_blank" style="color:var(--primary)">مفتاح مجاني</a> | 
+                            🔹 OpenRouter: <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--primary)">خطة يومية مجانية</a><br>
+                            🔹 HuggingFace: <a href="https://huggingface.co/settings/tokens" target="_blank" style="color:var(--primary)">مفتاح قراءة</a> | 
+                            🔹 Together: <a href="https://api.together.ai/settings" target="_blank" style="color:var(--primary)">رصيد $5</a><br>
+                            <em>يُحفظ محلياً ولا يُشارك مع أي طرف</em>
+                        </small>
+                    </div>
+                </div>
+                <button class="btn b-ok" onclick="doAnalyze()">🔍 تحليل التشخيص</button>
+                <button class="btn b-s" onclick="doLogout()">🚪 خروج</button>
+            </div>
+            
+            <div id="scr-res" class="hide">
+                <h1>🩺 التقرير التشخيصي</h1>
+                <label style="font-weight:600;color:var(--muted)">الأعراض المدخلة:</label>
+                <div class="sym" id="res-sym"></div>
+                
+                <label style="margin-top:12px;display:block;font-weight:600;color:var(--muted)">📷 الصور المرفقة:</label>
+                <div id="res-imgs" class="img-preview-grid" style="margin-bottom:14px"></div>
+                
+                <div class="res"><h3>📚 التشخيص المحلي:</h3><p id="res-local" style="line-height:1.6"></p></div>
+                <div id="ai-result-box" class="hide ai-box">
+                    <h3>🤖 تحليل الذكاء الاصطناعي (<span id="ai-provider-name">DeepSeek</span>)</h3>
+                    <div id="ai-loading" class="ai-loading hide"><span class="spinner"></span> جاري المعالجة...</div>
+                    <div id="ai-content" style="white-space: pre-line; font-size:0.92rem;"></div>
+                </div>
+                <div class="box-d" style="display:block; color:#b91c1c; margin-top:14px; font-weight:500">⚠️ للأغراض التعليمية فقط - لا يُغني عن الفحص السريري المهني</div>
+                <button class="btn b-p" onclick="go('scr-sym'); clearImages()">🔄 حالة جديدة</button>
+                <button class="btn b-err" onclick="doLogout()">🚪 خروج</button>
+            </div>
+            
+            <div id="scr-admin" class="hide">
+                <h1>🔧 لوحة الإدارة</h1>
+                <div class="f"><input type="password" id="adm-pass" placeholder="كلمة مرور المسؤول"></div>
+                <button class="btn b-p" onclick="admCheck()">دخول</button>
+                <div id="adm-panel" class="hide" style="margin-top:16px">
+                    <table><thead><tr><th>البريد</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="adm-tbl"></tbody></table>
+                    <button class="btn b-s" onclick="go('scr-login')" style="margin-top:12px">← العودة</button>
+                </div>
+            </div>        </div>
+    </main>
+    <footer>
+        <div>© 2026 جميع الحقوق محفوظة</div>
+        <div class="sig">إعداد وتطوير: د. زكريا محمد عطوني 🦷</div>
+        <div style="margin-top:6px"><a href="#">شروط الاستخدام</a> | <a href="#">تواصل مع المطور</a></div>
+    </footer>
+
+    <script>
+        var D_USER = "salematto@gmail.com", D_PASS = "zak959", A_PASS = "zak959", PEND_EMAIL = "";
+        var caseImages = []; var currentProvider = 'deepseek';
+        var DB = [
+            {k:["ألم","بارد","ساخن","حساس","تسوس"], t:"تسوس سني أو حساسية عاجية. يتطلب حشوة ترميمية أو علاج لب."},
+            {k:["ألم","نابض","ليل","مضغ","جذر"], t:"التهاب لبّي لا رجعي أو خراج ذروي. يحتاج علاج جذر أو خلع."},
+            {k:["نزيف","لثة","تورم","احمرار"], t:"التهاب لثة. يحتاج تنظيف احترافي وتحسين تقنية التفريش."},
+            {k:["قرحة","بيضاء","وجع","قلاعية"], t:"آفة قلاعية فموية. عادةً ذاتية الشفاء خلال 10-14 يوم."},
+            {k:["أبيض","لا يُكشط","تدخين"], t:"طلاوة بيضاء. آفة محتملة التسرطن، تستدعي خزعة ومتابعة."},
+            {k:["تورم","حمى","صديد","رائحة"], t:"خراج سني حاد. حالة طارئة تتطلب تصريف ومضاد حيوي."}
+        ];
+
+        function go(id) {
+            document.querySelectorAll('.wrap > div').forEach(d=>d.classList.add('hide'));
+            document.getElementById(id).classList.remove('hide');
+            setTimeout(()=>{ const f = document.getElementById(id).querySelector('input:not([type=hidden]):not([type=file]), textarea'); if(f) f.focus(); }, 80);
+        }
+        function getU() { try { return JSON.parse(localStorage.getItem('dental_users')) || []; } catch(e) { return []; } }
+        function saveU(u) { try { localStorage.setItem('dental_users', JSON.stringify(u)); } catch(e) {} }
+        function rand() { return Math.floor(100000 + Math.random() * 900000).toString(); }
+        
+        function handleImages(input) {
+            if (caseImages.length + input.files.length > 3) return alert("بحد أقصى 3 صور.");
+            for (let i = 0; i < input.files.length; i++) {
+                if (!input.files[i].type.startsWith('image/')) continue;
+                let r = new FileReader(); r.onload = e => { caseImages.push(e.target.result); renderImages(); };
+                r.readAsDataURL(input.files[i]);
+            }
+            input.value = '';
+        }
+        function renderImages() {
+            const g = document.getElementById('img-grid'); g.innerHTML = '';
+            caseImages.forEach((src, idx) => { g.innerHTML += `<div class="img-item"><img src="${src}"><button class="img-remove" onclick="removeImg(${idx})">×</button></div>`; });
+        }
+        function removeImg(i) { caseImages.splice(i, 1); renderImages(); }
+        function clearImages() { caseImages = []; renderImages(); }
+
+        function toggleAIKey() { document.getElementById('ai-key-wrap').classList.toggle('hide', !document.getElementById('ai-toggle').checked); }
+        function selectProvider(p) {
+            currentProvider = p;
+            ['deepseek','openrouter','hf','together'].forEach(x => document.getElementById('btn-'+x).classList.toggle('active', x===p));
+            document.getElementById('ai-provider-name').textContent = {deepseek:'DeepSeek',openrouter:'OpenRouter',hf:'HuggingFace',together:'Together.ai'}[p];            document.getElementById('ai-key').value = localStorage.getItem('ai_key_'+p) || '';
+        }
+        function saveAIKey() { let k = document.getElementById('ai-key').value.trim(); if(k) localStorage.setItem('ai_key_'+currentProvider, k); }
+        
+        function doLogin() {
+            let e = document.getElementById('in-mail').value.trim().toLowerCase(), p = document.getElementById('in-pass').value.trim();
+            if(e === D_USER && p === D_PASS) { alert("✅ تم الدخول بنجاح"); document.getElementById('u-name').textContent = "د. زكريا"; go('scr-sym'); return; }
+            let users = getU(), found = users.find(u => u.email === e && u.pass === p);
+            if(!found) return alert("❌ البيانات غير صحيحة");
+            if(found.status !== 'active') { alert("⚠️ الحساب غير مفعل"); PEND_EMAIL = found.email; document.getElementById('act-show').textContent = found.code || 'غير متوفر'; go('scr-act'); return; }
+            found.last = Date.now(); saveU(users); document.getElementById('u-name').textContent = found.email.split('@')[0]; go('scr-sym');
+        }
+        function doLogout() { document.getElementById('u-name').textContent = "ضيف"; document.getElementById('in-mail').value = ''; document.getElementById('in-pass').value = ''; go('scr-login'); }
+        function doRegister() {
+            let e = document.getElementById('reg-mail').value.trim().toLowerCase(), p1 = document.getElementById('reg-pass').value, p2 = document.getElementById('reg-pass2').value;
+            if(!e.includes('@')) return alert("أدخل بريد صحيح"); if(p1.length<6) return alert("كلمة المرور قصيرة"); if(p1!==p2) return alert("كلمتا المرور غير متطابقتين");
+            if(getU().some(u=>u.email===e)) return alert("البريد مسجل مسبقاً");
+            let code = rand(); getU().push({email:e, pass:p1, status:'pending', code, date:Date.now()}); saveU(getU());
+            PEND_EMAIL = e; document.getElementById('act-show').textContent = code; alert("✅ تم الحفظ! أدخل الكود في الشاشة التالية"); go('scr-act');
+        }
+        function doActivate() {
+            let code = document.getElementById('act-in').value.trim(); if(!PEND_EMAIL) return alert("لا يوجد طلب معلق");
+            let users = getU(), idx = users.findIndex(u=>u.email===PEND_EMAIL);
+            if(idx===-1 || users[idx].code!==code) return alert("❌ كود غير صحيح");
+            users[idx].status = 'active'; users[idx].code = null; saveU(users); alert("🎉 تم التفعيل بنجاح"); PEND_EMAIL = ""; go('scr-login');
+        }
+        function doAnalyze() {
+            let t = document.getElementById('sym-text').value.trim(); if(!t) return alert("اكتب الأعراض أولاً");
+            let best = null, sc = 0;
+            DB.forEach(d => { let s = d.k.filter(k=>t.includes(k)).length; if(s>sc){sc=s;best=d;} });
+            document.getElementById('res-sym').textContent = t; 
+            document.getElementById('res-local').textContent = best ? best.t : "لم يتطابق مع قاعدة البيانات. جرب وصفاً أدق.";
+            let ri = document.getElementById('res-imgs'); ri.innerHTML = '';
+            caseImages.forEach(s => ri.innerHTML += `<div class="img-item" style="width:75px;height:75px"><img src="${s}"></div>`);
+            if(!caseImages.length) ri.innerHTML = '<span style="font-size:0.8rem;color:var(--muted)">لم تُرفق صور</span>';
+            
+            if(document.getElementById('ai-toggle').checked) { document.getElementById('ai-result-box').classList.remove('hide'); runAI(t); }
+            else { document.getElementById('ai-result-box').classList.add('hide'); }
+            go('scr-res');
+        }
+        async function runAI(text) {
+            let key = localStorage.getItem('ai_key_'+currentProvider) || '';
+            let cd = document.getElementById('ai-content'), ld = document.getElementById('ai-loading');
+            if(!key) { cd.innerHTML = "ℹ️ أدخل مفتاح المنصة المختارة أولاً."; ld.classList.add('hide'); return; }
+            ld.classList.remove('hide'); cd.innerHTML = '';
+            let ctrl = new AbortController(), tid = setTimeout(()=>ctrl.abort(), 15000);
+            let pr = "أنت خبير تعليمي في طب الأسنان. مريض يصف: \""+text+"\". قدّم: 1. 3 تشخيصات تفاضلية. 2. سبب علمي مختصر. 3. خطوة تأكيدية. 4. تحذير تعليمي. أجب بالعربية وبشكل منظم.";
+            try {
+                let ep, h, b;
+                if(currentProvider==='deepseek') { ep="https://api.deepseek.com/chat/completions"; h={'Authorization':'Bearer '+key,'Content-Type':'application/json'}; b={model:"deepseek-chat",messages:[{role:"user",content:pr}],temperature:0.3,max_tokens:500}; }                else if(currentProvider==='openrouter') { ep="https://openrouter.ai/api/v1/chat/completions"; h={'Authorization':'Bearer '+key,'Content-Type':'application/json'}; b={model:"meta-llama/llama-3.1-8b-instruct:free",messages:[{role:"user",content:pr}],temperature:0.3,max_tokens:500}; }
+                else if(currentProvider==='hf') { ep="https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2"; h={'Authorization':'Bearer '+key,'Content-Type':'application/json'}; b={inputs:"<s>[INST] "+pr+" [/INST]",parameters:{max_new_tokens:400,temperature:0.3}}; }
+                else if(currentProvider==='together') { ep="https://api.together.xyz/v1/chat/completions"; h={'Authorization':'Bearer '+key,'Content-Type':'application/json'}; b={model:"meta-llama/Llama-3.3-70B-Instruct-Turbo",messages:[{role:"user",content:pr}],temperature:0.3,max_tokens:500}; }
+                
+                let res = await fetch(ep, {method:'POST',headers:h,body:JSON.stringify(b),signal:ctrl.signal});
+                clearTimeout(tid); if(!res.ok) throw new Error(`خطأ (${res.status})`);
+                let data = await res.json(), reply;
+                reply = currentProvider==='hf' ? (Array.isArray(data)?data[0]?.generated_text:data?.generated_text) : data.choices?.[0]?.message?.content;
+                if(!reply) throw new Error("لم يتم استلام رد");
+                cd.innerHTML = reply.replace(/\*\*(.*?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');
+            } catch(e) {
+                clearTimeout(tid); cd.innerHTML = `⚠️ تعذر الاتصال: ${e.message}. اعتمد على التشخيص المحلي.`;
+            } finally { ld.classList.add('hide'); }
+        }
+        function admCheck() {
+            if(document.getElementById('adm-pass').value !== A_PASS) return alert("❌ كلمة مرور خاطئة");
+            document.getElementById('adm-panel').classList.remove('hide'); document.getElementById('adm-pass').value = '';
+            let tbl = document.getElementById('adm-tbl'); tbl.innerHTML = `<tr><td>${D_USER}</td><td>🟢 تجريبي</td><td>-</td></tr>`;
+            getU().forEach((u,i) => {
+                let st = u.status==='active'?'🟢 مفعل':'🟡 معلق';
+                tbl.innerHTML += `<tr><td>${u.email}</td><td>${st}</td><td><button onclick="delUser(${i})" style="background:#ef4444;color:#fff;border:none;padding:4px 10px;border-radius:6px;cursor:pointer">حذف</button></td></tr>`;
+            });
+        }
+        function delUser(i) { if(!confirm("حذف المستخدم؟")) return; let u=getU(); u.splice(i,1); saveU(u); admCheck(); }
+        window.onload = () => go('scr-login');
+    </script>
+</body>
+</html>
