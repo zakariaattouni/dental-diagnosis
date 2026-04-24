@@ -1,1 +1,489 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تشخيص أمراض الفم والأسنان</title>
+    <style>
+        :root {
+            --bg: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0891b2 100%);
+            --card: rgba(255, 255, 255, 0.94);
+            --card-border: rgba(255, 255, 255, 0.4);
+            --primary: #2563eb; --primary-dark: #1d4ed8;
+            --accent: #0ea5e9; --gold: #f59e0b; --success: #10b981; --danger: #ef4444;
+            --text: #0f172a; --muted: #475569;
+            --radius: 16px; --shadow: 0 10px 30px rgba(0,0,0,0.18);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; padding: 16px; }
+        
+        header { 
+            background: rgba(255,255,255,0.12); border: 1px solid var(--card-border); border-radius: var(--radius); 
+            padding: 12px 18px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;
+            color: white; box-shadow: var(--shadow); position: sticky; top: 8px; z-index: 100; backdrop-filter: blur(14px);
+        }
+        .logo { font-weight: 700; font-size: 1.1rem; display: flex; gap: 10px; align-items: center; line-height: 1.2; }
+        .logo-svg { width: 46px; height: 46px; }
+        .user-info { display: flex; align-items: center; gap: 12px; font-size: 0.85rem; color: #e2e8f0; }
+        .user-info button { background: rgba(255,255,255,0.2); border: none; color: white; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-weight: 500; transition: var(--transition); }
+        .user-info button:hover { background: rgba(255,255,255,0.35); }
+        .notif-badge { background: var(--danger); color: white; border-radius: 50%; min-width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; padding: 0 5px; cursor: pointer; position: relative; }
+        .notif-panel { position: absolute; top: 32px; left: 0; background: white; color: var(--text); border-radius: 12px; box-shadow: var(--shadow); padding: 12px; width: 280px; z-index: 110; display: none; }
+        .notif-panel.show { display: block; }
+        .notif-item { padding: 8px 0; border-bottom: 1px solid #e2e8f0; font-size: 0.85rem; }
+        .notif-item:last-child { border-bottom: none; }
 
+        main { flex: 1; display: flex; justify-content: center; align-items: flex-start; width: 100%; }
+        .wrap { 
+            background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius); 
+            box-shadow: var(--shadow); width: 100%; max-width: 580px; padding: 26px; position: relative; overflow: hidden;
+        }
+        .wrap::before { content: ''; position: absolute; top: -60%; right: -60%; width: 120%; height: 120%; background: radial-gradient(circle, rgba(255,255,255,0.35) 0%, transparent 70%); pointer-events: none; }
+
+        h1 { text-align: center; color: var(--primary-dark); margin-bottom: 6px; font-size: 1.55rem; font-weight: 800; }
+        h2 { text-align: center; color: var(--muted); font-size: 0.92rem; margin-bottom: 22px; font-weight: 400; }
+        
+        .f { margin-bottom: 14px; }
+        label { display: block; margin-bottom: 5px; font-size: 0.85rem; font-weight: 600; color: var(--primary-dark); }
+        input, textarea, select { 
+            width: 100%; padding: 11px 13px; border: 2px solid #e2e8f0; border-radius: 11px;             font-size: 0.95rem; background: #ffffff; transition: var(--transition);
+        }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15); }
+        textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
+        
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 11px; font-size: 0.95rem; cursor: pointer; margin-top: 7px; font-weight: 600; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+        .btn:active { transform: translateY(0); }
+        .b-p { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; }
+        .b-s { background: linear-gradient(135deg, #64748b, #475569); color: white; }
+        .b-ok { background: linear-gradient(135deg, var(--success), #059669); color: white; }
+        .b-err { background: linear-gradient(135deg, var(--danger), #b91c1c); color: white; }
+        .b-warn { background: linear-gradient(135deg, var(--gold), #d97706); color: white; }
+        .b-out { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        .b-demo { background: linear-gradient(135deg, #7c3aed, #4f46e5); color: white; margin-top: 12px; }
+        
+        .box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px; border-radius: 10px; margin: 14px 0; text-align: center; font-size: 0.88rem; color: var(--muted); }
+        .box-ai { background: linear-gradient(135deg, #f0f9ff, #e0f2fe); border: 1px solid #bae6fd; padding: 12px; border-radius: 11px; margin: 16px 0; }
+        .box-d { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; padding: 9px; border-radius: 9px; margin-top: 8px; font-size: 0.82rem; text-align: center; white-space: pre-line; display: none; font-family: monospace; }
+        .alert { padding: 10px; border-radius: 10px; margin: 10px 0; font-weight: 600; font-size: 0.9rem; }
+        .alert-info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+        .alert-warn { background: #fffbeb; border: 1px solid #fcd34d; color: #92400e; }
+        
+        .res { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1px solid #bbf7d0; padding: 14px; border-radius: 13px; margin: 12px 0; }
+        .res h3 { color: #047857; margin-bottom: 5px; font-size: 1rem; font-weight: 700; }
+        .sym { background: #ffffff; padding: 9px; border-radius: 9px; border-right: 4px solid var(--accent); margin: 8px 0; font-size: 0.9rem; line-height: 1.4; box-shadow: 0 2px 5px rgba(0,0,0,0.04); }
+        
+        .ai-box { background: linear-gradient(135deg, #faf5ff, #f3e8ff); border: 1px solid #d8b4fe; padding: 14px; border-radius: 13px; margin: 12px 0; line-height: 1.5; }
+        .ai-box h3 { color: #7e22ce; margin-bottom: 6px; display: flex; align-items: center; gap: 7px; font-size: 1rem; }
+        .ai-loading { text-align: center; color: var(--muted); font-size: 0.88rem; padding: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .spinner { width: 16px; height: 16px; border: 2px solid rgba(126,34,206,0.3); border-radius: 50%; border-top-color: #7e22ce; animation: spin 0.7s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .img-upload-area { border: 2px dashed #cbd5e1; padding: 18px; border-radius: 11px; text-align: center; background: #f8fafc; transition: var(--transition); cursor: pointer; margin-bottom: 10px; }
+        .img-upload-area:hover { border-color: var(--accent); background: #f0f9ff; }
+        .img-preview-grid { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 6px; }
+        .img-item { position: relative; width: 80px; height: 80px; border-radius: 9px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 3px 8px rgba(0,0,0,0.08); }
+        .img-item img { width: 100%; height: 100%; object-fit: cover; }
+        .img-remove { position: absolute; top: 3px; left: 3px; background: var(--danger); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; }
+        
+        .provider-select { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+        .provider-btn { padding: 5px 9px; border: 1px solid #cbd5e1; border-radius: 18px; background: #ffffff; font-size: 0.76rem; cursor: pointer; transition: var(--transition); font-weight: 500; }
+        .provider-btn:hover { border-color: var(--accent); }
+        .provider-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        
+        footer { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: var(--radius); padding: 14px; text-align: center; font-size: 0.88rem; margin-top: 20px; color: #cbd5e1; }
+        footer a { color: #93c5fd; text-decoration: none; margin: 0 5px; }
+        
+        .hide { display: none !important; }
+        .fade-in { animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1); }        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        
+        table { width: 100%; border-collapse: separate; border-spacing: 0 5px; margin: 10px 0; font-size: 0.82rem; }
+        th { padding: 8px; color: var(--muted); font-weight: 600; text-align: right; }
+        td { padding: 10px; background: #ffffff; border-radius: 9px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); text-align: right; vertical-align: middle; }
+        .status-badge { padding: 3px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 600; display: inline-block; }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-active { background: #d1fae5; color: #065f46; }
+        .status-rejected { background: #fee2e2; color: #991b1b; }
+        .action-btn { padding: 3px 7px; margin: 0 2px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.72rem; font-weight: 600; }
+        .action-btn.approve { background: var(--success); color: white; }
+        .action-btn.reject { background: var(--danger); color: white; }
+        
+        .pending-card { background: #fffbeb; border: 1px solid #fcd34d; padding: 12px; border-radius: 10px; margin: 8px 0; display: flex; justify-content: space-between; align-items: center; }
+        .pending-card strong { display: block; color: #92400e; }
+        .pending-card small { color: #b45309; }
+
+        @media (max-width: 500px) {
+            body { padding: 10px; }
+            .wrap { padding: 18px; margin: 0; border-radius: 14px; }
+            h1 { font-size: 1.35rem; }
+            .btn { padding: 11px; font-size: 0.9rem; }
+            header { padding: 10px 12px; top: 6px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="50" cy="55" rx="35" ry="40" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2.5"/>
+                <ellipse cx="38" cy="42" rx="5" ry="3" fill="rgba(255,255,255,0.7)"/>
+                <ellipse cx="62" cy="42" rx="5" ry="3" fill="rgba(255,255,255,0.7)"/>
+                <ellipse cx="50" cy="65" rx="12" ry="10" fill="rgba(255,255,255,0.3)" stroke="rgba(255,255,255,0.9)" stroke-width="2"/>
+                <path d="M 40 58 Q 43 62 46 58 Q 48 62 50 58 Q 52 62 54 58 Q 57 62 60 58" fill="none" stroke="white" stroke-width="2"/>
+                <path d="M 42 72 Q 45 68 48 72 Q 50 68 52 72 Q 55 68 58 72" fill="none" stroke="white" stroke-width="2"/>
+                <circle cx="50" cy="65" r="18" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.95)" stroke-width="3"/>
+                <line x1="63" y1="78" x2="73" y2="88" stroke="rgba(255,255,255,0.8)" stroke-width="5" stroke-linecap="round"/>
+                <text x="50" y="69" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="Arial, sans-serif">AI</text>
+            </svg>
+            <span>تشخيص أمراض الفم والأسنان</span>
+        </div>
+        <div class="user-info">
+            <div class="notif-badge hide" id="notif-badge" onclick="toggleNotifPanel()">0</div>
+            <div class="notif-panel" id="notif-panel"><div id="notif-list" style="max-height:150px;overflow-y:auto"></div></div>
+            <span id="u-name">ضيف</span>
+            <button onclick="doLogout()">خروج</button>
+        </div>
+    </header>
+    <main>        <div class="wrap fade-in">
+            <div id="scr-login">
+                <h1>🔐 تسجيل الدخول</h1><h2>منصة تعليمية متقدمة لطلاب وخريجي طب الأسنان</h2>
+                
+                <button class="btn b-demo" onclick="quickDemoLogin()">⚡ دخول تجريبي سريع (بدون كتابة)</button>
+                
+                <div class="box" style="margin-top:12px">👤 أو أدخل يدوياً:<br><code style="background:#e0f2fe;padding:2px 5px;border-radius:5px;color:#0369a1">salematto@gmail.com</code> / <code style="background:#e0f2fe;padding:2px 5px;border-radius:5px;color:#0369a1">zak959</code></div>
+                
+                <div class="f"><label>البريد الإلكتروني</label><input type="email" id="in-mail" placeholder="أدخل بريدك" autocomplete="email" onkeydown="if(event.key==='Enter')doLogin()"></div>
+                <div class="f"><label>كلمة المرور</label><input type="password" id="in-pass" placeholder="كلمة المرور" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+                <button class="btn b-p" onclick="doLogin()">✅ دخول</button>
+                <button class="btn b-out" onclick="go('scr-reg')" style="margin-top:10px">📝 إنشاء حساب جديد</button>
+                <button class="btn b-s" onclick="go('scr-admin')" style="margin-top:8px">🔧 لوحة الإدارة</button>
+            </div>
+            
+            <div id="scr-reg" class="hide">
+                <h1>📝 طلب انضمام جديد</h1>
+                <div class="alert alert-info">📌 سيتم مراجعة طلبك من قبل الإدارة. سيظهر إشعار فوري عند القبول أو الرفض.</div>
+                <div class="f"><label>البريد الإلكتروني *</label><input type="email" id="reg-mail" placeholder="example@email.com"></div>
+                <div class="f"><label>كلمة المرور * (6 أحرف على الأقل)</label><input type="password" id="reg-pass" placeholder="********"></div>
+                <div class="f"><label>تأكيد كلمة المرور *</label><input type="password" id="reg-pass2" placeholder="********"></div>
+                <div class="f"><label>الاسم الكامل *</label><input type="text" id="reg-name" placeholder="الاسم الثلاثي"></div>
+                <button class="btn b-ok" onclick="doRegister()">📤 إرسال الطلب</button>
+                <button class="btn b-s" onclick="go('scr-login')">← العودة</button>
+            </div>
+            
+            <div id="scr-act" class="hide">
+                <h1>🔑 تفعيل الحساب</h1>
+                <div class="box alert-warn">كود التفعيل الخاص بك:<br><strong id="act-show" style="letter-spacing:4px; font-size:1.4rem;display:block;margin-top:6px;color:var(--danger)"></strong></div>
+                <div class="f"><input type="text" id="act-in" placeholder="أدخل الكود" inputmode="numeric" maxlength="6" style="text-align:center; letter-spacing:6px; font-weight:700; font-size:1.2rem"></div>
+                <button class="btn b-p" onclick="doActivate()">✅ تفعيل</button>
+                <button class="btn b-s" onclick="go('scr-login')">← العودة</button>
+            </div>
+            
+            <div id="scr-sym" class="hide">
+                <h1>📋 وصف الحالة السريرية</h1>
+                <div class="f"><label>الأعراض والعلامات</label><textarea id="sym-text" placeholder="اكتب الأعراض بدقة... مثال: ألم نابض عند المضغ مع تورم الخد وحمى خفيفة..." autofocus></textarea></div>
+                <div class="f">
+                    <label>📷 الصور السريرية (اختياري - حتى 3)</label>
+                    <div class="img-upload-area" onclick="document.getElementById('file-upload').click()">
+                        📤 اضغط لاختيار صور أو التقاطها
+                        <input type="file" id="file-upload" accept="image/*" multiple style="display:none" onchange="handleImages(this)">
+                    </div>
+                    <div id="img-grid" class="img-preview-grid"></div>
+                </div>
+                <div class="box-ai">
+                    <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-weight:600;color:#0369a1">
+                        <input type="checkbox" id="ai-toggle" style="width:18px;height:18px;accent-color:var(--primary)" onchange="toggleAIKey()">
+                        تفعيل الذكاء الاصطناعي
+                    </label>                    <div id="ai-key-wrap" class="hide" style="margin-top:10px">
+                        <label>🔑 مفتاح API:</label>
+                        <input type="password" id="ai-key" placeholder="الصق المفتاح هنا" oninput="saveAIKey()">
+                        <label style="margin-top:8px;display:block;">المزود:</label>
+                        <div class="provider-select">
+                            <button type="button" class="provider-btn active" onclick="selectProvider('deepseek')" id="btn-deepseek">🧠 DeepSeek</button>
+                            <button type="button" class="provider-btn" onclick="selectProvider('openrouter')" id="btn-openrouter">🌐 OpenRouter</button>
+                            <button type="button" class="provider-btn" onclick="selectProvider('hf')" id="btn-hf">🤗 HF</button>
+                            <button type="button" class="provider-btn" onclick="selectProvider('together')" id="btn-together">⚡ Together</button>
+                        </div>
+                        <small style="color:var(--muted);display:block;margin-top:6px;font-size:0.7rem;line-height:1.3">
+                            🔹 DeepSeek: <a href="https://platform.deepseek.com/api_keys" target="_blank" style="color:var(--primary)">مفتاح</a> | 
+                            🔹 OpenRouter: <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--primary)">مفتاح</a><br>
+                            🔹 HF: <a href="https://huggingface.co/settings/tokens" target="_blank" style="color:var(--primary)">مفتاح</a> | 
+                            🔹 Together: <a href="https://api.together.ai/settings" target="_blank" style="color:var(--primary)">مفتاح</a>
+                        </small>
+                    </div>
+                </div>
+                <button class="btn b-ok" onclick="doAnalyze()">🔍 تحليل التشخيص</button>
+                <button class="btn b-s" onclick="doLogout()">🚪 خروج</button>
+            </div>
+            
+            <div id="scr-res" class="hide">
+                <h1>🩺 التقرير التشخيصي</h1>
+                <label style="font-weight:600;color:var(--muted)">الأعراض:</label>
+                <div class="sym" id="res-sym"></div>
+                <label style="margin-top:10px;display:block;font-weight:600;color:var(--muted)">📷 الصور:</label>
+                <div id="res-imgs" class="img-preview-grid" style="margin-bottom:12px"></div>
+                <div class="res"><h3>📚 التشخيص المحلي:</h3><p id="res-local" style="line-height:1.5"></p></div>
+                <div id="ai-result-box" class="hide ai-box">
+                    <h3>🤖 الذكاء الاصطناعي (<span id="ai-provider-name">DeepSeek</span>)</h3>
+                    <div id="ai-loading" class="ai-loading hide"><span class="spinner"></span> جاري المعالجة...</div>
+                    <div id="ai-content" style="white-space: pre-line; font-size:0.9rem;"></div>
+                </div>
+                <div class="box-d" style="display:block; color:#b91c1c; margin-top:12px; font-weight:500">⚠️ للأغراض التعليمية فقط - لا يُغني عن الفحص السريري</div>
+                <button class="btn b-p" onclick="go('scr-sym'); clearImages()">🔄 حالة جديدة</button>
+                <button class="btn b-err" onclick="doLogout()">🚪 خروج</button>
+            </div>
+            
+            <div id="scr-admin" class="hide">
+                <h1>🔧 لوحة الإدارة</h1>
+                <div class="f"><input type="password" id="adm-pass" placeholder="كلمة مرور المسؤول" onkeydown="if(event.key==='Enter')admCheck()"></div>
+                <button class="btn b-p" onclick="admCheck()">دخول</button>
+                <div id="adm-panel" class="hide" style="margin-top:14px">
+                    <div class="alert alert-warn">📥 الطلبات الجديدة تنتظر المراجعة</div>
+                    <div id="pending-list"></div>
+                    <h3 style="margin:12px 0 6px;color:var(--primary-dark)">👥 سجل المستخدمين</h3>
+                    <table><thead><tr><th>البريد</th><th>الاسم</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="adm-tbl"></tbody></table>
+                    <button class="btn b-s" onclick="go('scr-login')" style="margin-top:10px">← العودة</button>
+                </div>            </div>
+        </div>
+    </main>
+    <footer>
+        <div>© 2026 جميع الحقوق محفوظة</div>
+        <div style="margin-top:4px"><a href="#">شروط</a> | <a href="#">تواصل</a></div>
+    </footer>
+
+    <script>
+        var D_USER = "salematto@gmail.com", D_PASS = "zak959", A_PASS = "zak959", PEND_EMAIL = "";
+        var caseImages = []; var currentProvider = 'deepseek';
+        
+        // بنك معلومات موسع ودقيق
+        var DB = [
+            {k:["ألم","بارد","ساخن","حساس","تسوس","نخر","ثقب","أسود","بقعة","حفر"], t:"تسوس سني (نخر) - إزالة النخر وحشوة ترميمية. راجع الشعاعية لتقييم العمق."},
+            {k:["ألم","نابض","ليل","مضغ","جذر","طرق","ضغط","نبض"], t:"التهاب لبّي لا رجعي أو خراج ذروي - علاج لبّي (جذر) أو خلع مع تقييم شعاعي."},
+            {k:["كسر","تشقق","سقوط","جزء","حاد","رض","اصطدام","انكسار"], t:"كسر سني - قيّم الامتداد (تاجي/جذري) شعاعياً وسريرياً لتحديد الخطة."},
+            {k:["حساس","تآكل","عنق","فرشاة","حمض","تراجع","انكشاف","تفريش"], t:"تآكل عنقي/انكشاف عاجي - تصحيح تقنية التفريش، مواد حساسية أو حشوة أيونية."},
+            {k:["بقع","بيضاء","بنية","فلور","تتراسيكلين","لون","تصبّغ","تبييض"], t:"تبدلات لونية (فلوروز/تتراسيكلين) - تبييض، قشور خزفية، أو حشوات تجميلية."},
+            {k:["ضرس","عقل","ألم","تورم","صعوبة","فتح","بلع","التهاب","تاجي","بيريكورونitis"], t:"التهاب حول التاجي لضرس العقل - غسول كلورهيكسيدين، مسكنات، مضاد حيوي إن لزم، تقييم الاستئصال."},
+            {k:["نزيف","فرشاة","لثة","احمرار","تورم","جير","بلاك","رائحة","تفريش"], t:"التهاب لثة (Gingivitis) - تحسين النظافة، إزالة الجير/البلاك، متابعة أسبوعين."},
+            {k:["جيوب","ارتشاف","عظم","حركة","أسنان","دواعم","عمق","قياس","فترة"], t:"التهاب دواعم السن - قياس الجيوب، كشط جذري، متابعة دورية مع اختصاصي."},
+            {k:["انحسار","جذر","ظاهر","حساس","فرشاة","قوي","خاطئة","تراجع"], t:"انحسار لثوي - تقييم السبب (رضي/تشريحي/تفريش)، خيارات طعم أو مراقبة."},
+            {k:["تضخم","لثة","دواء","فينيتوين","سيكلوسبورين","نيفيديبين","أدوية"], t:"تضخم لثوي دوائي - مراجعة التاريخ الدوائي، تنسيق مع الطبيب المعالج."},
+            {k:["خراج","لثة","موضعي","صديد","ألم","محدّد","انتفاخ","تقيّح"], t:"خراج لثوي - تصريف فوري، مضاد حيوي إن لزم، إزالة المسبب."},
+            {k:["قرحة","بيضاء","صفراء","وجع","قلاعية","مؤلمة","دائرية","أفتا"], t:"آفة قلاعية فموية - ذاتية الشفاء 10-14 يوم. غسول كلورهيكسيدين أو كورتيكوستيرويد موضعي."},
+            {k:["أبيض","لا يُكشط","تدخين","لويحة","بلاك","صلب","ليوكوبلاكيا"], t:"طلاوة بيضاء (Leukoplakia) - محتملة التسرطن. خزعة فورية واستبعاد مهيجات."},
+            {k:["أحمر","مخملية","لا يُكشط","لسان","أرضية","فم","حُمامى"], t:"حُمامى مبقعة (Erythroplakia) - خطر تسرطن عالي. تحويل عاجل لأخذ خزعة."},
+            {k:["بثور","ماء","حرق","هربس","شفاه","تقرّح","فيروسي","هربسي"], t:"هربس شفوي/التهاب لثة فموي هربسي - أسيكلوفير خلال 72 ساعة، علاج عرضي."},
+            {k:["حرق","أبيض","قابل","إزالة","مضاد","فطر","كانديدا","قلاع","فطري"], t:"داء المبيضات الفموي - نيستاتين أو فلوكونازول مع تقييم العوامل المناعية."},
+            {k:["تورم","شفاه","لسان","تنفس","حساسية","صعوبة","بلع","وذمة"], t:"وذمة وعائية تحسسية - طوارئ! صعوبة تنفس → إبلاغ الطوارئ وإبينفرين."},
+            {k:["نتوء","عظم","صلب","غير","مؤلم","حنك","فك","سفلي","تورس"], t:"نتوء عظمي (تورس) - تشريحي حميد، علاج فقط إن تداخل مع التعويضات."},
+            {k:["كتلة","صلبة","غير","مؤلمة","بطيئة","نمو","تحت","مخاطية","ورم"], t:"آفة تحت مخاطية (ورم ليفي/غدة) - تقييم شعاعي/خزعة لتحديد الطبيعة."},
+            {k:["تقرح","لا","يلتئم","3","أسابيع","صلب","نزف","حواف","سرطان"], t:"آفة مشبوهة للتسرطن - تحويل عاجل لأخذ خزعة. لا تؤجل >أسبوعين."},
+            {k:["أزرق","لين","سائل","شفاه","خد","موكوسيل","كيسة","مخاطية"], t:"كيسة مخاطية (موكوسيل) - حميدة غالباً. مراقبة، استئصال بسيط أو ليزر."},
+            {k:["ورم","عظم","ألم","تنميل","فك","توسّع","عظمي","فكي"], t:"آفة عظمية فكية - CBCT وإحالة فورية لجراحة الوجه والفكين."},
+            {k:["جفاف","فم","عينا","روماتويد","شوكرن","لعاب","قليل","زيرستوميا"], t:"جفاف فموي (شوغرن/دوائي) - تقييم الأدوية، بدائل لعاب، مراقبة التسوس."},
+            {k:["لثة","نزيف","كدمات","تعب","دم","شاحب","لوكيميا","صفائح"], t:"تظاهرات دموية محتملة - تحويل عاجل لفحص CBC وتقييم جهازى."},
+            {k:["خطوط","بيضاء","شبكية","خد","لا","يُكشط","ليكن","مناعي"], t:"حزاز مسطح فموي - آفة مناعية مزمنة. مراقبة أو كورتيكوستيرويد موضعي."},
+            {k:["تقرحات","متكررة","أمعاء","إسهال","كرون","كوليت","التهاب"], t:"تظاهرات التهاب الأمعاء - تنسيق مع باطنة لتقييم النشاط الجهازي."},
+            {k:["تضخم","لثة","حمل","هرمون","نزيف","حامل"], t:"تضخم لثوي حملي - تحسين نظافة، تنظيف احترافي، يتراجع غالباً بعد الولادة."},
+            {k:["رائحة","فم","كيتون","سكري","عَطَش","بول","كثير","جلوكوز"], t:"رائحة كيتونية (سكري غير مضبوط) - قياس سكر، تحويل لباطنة إن لزم."},
+            {k:["شحوب","فم","شفاه","أبيض","فقر","دم","أنيميا","هيموغلوبين"], t:"شحوب أغشية مخاطية - محتمل فقر دم. تحويل لـ CBC وتقييم غذائي."},
+            {k:["صريف","أسنان","ليل","طحن","إجهاد","فك","صداع","بروكسزم"], t:"صريف أسنان (Bruxism) - واقي ليلي، إدارة إجهاد، علاج فيزيائي للفك."},
+            {k:["مفصل","فك","ألم","طقطقة","صعوبة","فتح","TMD","صدغي"], t:"اضطراب مفصل الفك (TMD) - راحة، كمادات، مسكنات، إحالة اختصاصي إن استمر."},
+            {k:["رائحة","فم","كريهة","بخر","فموي","نظافة","لسان","تسوس"], t:"بخر فموي - تحسين نظافة، تنظيف لسان، معالجة تسوس/لثة، تقييم أسباب جهازية."}
+        ];
+
+        function go(id) {
+            document.querySelectorAll('.wrap > div').forEach(d=>d.classList.add('hide'));            document.getElementById(id).classList.remove('hide');
+            setTimeout(()=>{ const f = document.getElementById(id).querySelector('input:not([type=hidden]):not([type=file]), textarea'); if(f) f.focus(); }, 70);
+        }
+        function getU() { try { return JSON.parse(localStorage.getItem('dental_users')) || []; } catch(e) { return []; } }
+        function saveU(u) { try { localStorage.setItem('dental_users', JSON.stringify(u)); } catch(e) {} }
+        function rand() { return Math.floor(100000 + Math.random() * 900000).toString(); }
+        
+        function updateNotifBadge() {
+            const users = getU();
+            const pending = users.filter(u => u.status === 'pending').length;
+            const badge = document.getElementById('notif-badge');
+            if(pending > 0) { badge.textContent = pending; badge.classList.remove('hide'); }
+            else badge.classList.add('hide');
+            
+            // تحديث قائمة الإشعارات
+            const list = document.getElementById('notif-list');
+            const pendUsers = users.filter(u => u.status === 'pending');
+            if(pendUsers.length === 0) list.innerHTML = '<div style="padding:8px;color:#64748b">لا توجد إشعارات جديدة</div>';
+            else list.innerHTML = pendUsers.map(u => `<div class="notif-item">📝 طلب جديد: <b>${u.name}</b><br><small>${u.email}</small></div>`).join('');
+        }
+        function toggleNotifPanel() { document.getElementById('notif-panel').classList.toggle('show'); }
+        document.addEventListener('click', e => { if(!e.target.closest('.user-info')) document.getElementById('notif-panel').classList.remove('show'); });
+        
+        function handleImages(input) {
+            if (caseImages.length + input.files.length > 3) return alert("بحد أقصى 3 صور.");
+            for (let i = 0; i < input.files.length; i++) {
+                if (!input.files[i].type.startsWith('image/')) continue;
+                let r = new FileReader(); r.onload = e => { caseImages.push(e.target.result); renderImages(); };
+                r.readAsDataURL(input.files[i]);
+            }
+            input.value = '';
+        }
+        function renderImages() {
+            const g = document.getElementById('img-grid'); g.innerHTML = '';
+            caseImages.forEach((src, idx) => { g.innerHTML += `<div class="img-item"><img src="${src}"><button class="img-remove" onclick="removeImg(${idx})">×</button></div>`; });
+        }
+        function removeImg(i) { caseImages.splice(i, 1); renderImages(); }
+        function clearImages() { caseImages = []; renderImages(); }
+
+        function toggleAIKey() { document.getElementById('ai-key-wrap').classList.toggle('hide', !document.getElementById('ai-toggle').checked); }
+        function selectProvider(p) {
+            currentProvider = p;
+            ['deepseek','openrouter','hf','together'].forEach(x => document.getElementById('btn-'+x).classList.toggle('active', x===p));
+            document.getElementById('ai-provider-name').textContent = {deepseek:'DeepSeek',openrouter:'OpenRouter',hf:'HuggingFace',together:'Together.ai'}[p];
+            document.getElementById('ai-key').value = localStorage.getItem('ai_key_'+p) || '';
+        }
+        function saveAIKey() { let k = document.getElementById('ai-key').value.trim(); if(k) localStorage.setItem('ai_key_'+currentProvider, k); }
+        
+        // ✅ دخول تجريبي مضمون بضغطة زر
+        function quickDemoLogin() {            localStorage.setItem('dental_session', 'admin');
+            document.getElementById('u-name').textContent = "المسؤول";
+            updateNotifBadge();
+            go('scr-sym');
+        }
+        
+        function doLogin() {
+            let e = document.getElementById('in-mail').value.trim().toLowerCase().replace(/\s/g, '');
+            let p = document.getElementById('in-pass').value.trim();
+            
+            // حساب المدير/التجريبي
+            if((e === D_USER || e === 'salematto@gmail.com') && p === D_PASS) {
+                localStorage.setItem('dental_session', 'admin');
+                document.getElementById('u-name').textContent = "المسؤول";
+                document.getElementById('in-mail').value = ''; document.getElementById('in-pass').value = '';
+                updateNotifBadge();
+                go('scr-sym');
+                return;
+            }
+            
+            // المستخدمون المسجلون
+            let users = getU(), found = users.find(u => u.email === e && u.pass === p);
+            if(!found) return alert("❌ البيانات غير صحيحة");
+            if(found.status === 'pending') return alert("⏳ حسابك قيد المراجعة. سيصلك إشعار عند التفعيل.");
+            if(found.status === 'rejected') return alert("❌ تم رفض الطلب. تواصل مع الإدارة.");
+            
+            found.last = Date.now(); saveU(users); 
+            document.getElementById('u-name').textContent = found.name || found.email.split('@')[0]; 
+            go('scr-sym');
+        }
+        function doLogout() { 
+            localStorage.removeItem('dental_session'); 
+            document.getElementById('u-name').textContent = "ضيف"; 
+            document.getElementById('in-mail').value = ''; document.getElementById('in-pass').value = ''; 
+            go('scr-login'); 
+        }
+        function doRegister() {
+            let e = document.getElementById('reg-mail').value.trim().toLowerCase().replace(/\s/g, '');
+            let p1 = document.getElementById('reg-pass').value, p2 = document.getElementById('reg-pass2').value, name = document.getElementById('reg-name').value.trim();
+            if(!e.includes('@')) return alert("أدخل بريد صحيح"); 
+            if(p1.length<6) return alert("كلمة المرور قصيرة"); 
+            if(p1!==p2) return alert("كلمتا المرور غير متطابقتين"); 
+            if(!name) return alert("أدخل الاسم الكامل");
+            if(getU().some(u=>u.email===e)) return alert("البريد مسجل مسبقاً");
+            
+            let code = rand(); 
+            getU().push({email:e, pass:p1, name:name, status:'pending', code, date:Date.now(), notified:false}); 
+            saveU(getU());
+            
+            alert(`✅ تم إرسال طلبك بنجاح!\n📧 البريد: ${e}\n🔑 كود التفعيل: ${code}\n\nسيتم مراجعته من قبل الإدارة.`);            go('scr-login');
+        }
+        function doActivate() {
+            let code = document.getElementById('act-in').value.trim(); if(!PEND_EMAIL) return alert("لا يوجد طلب معلق");
+            let users = getU(), idx = users.findIndex(u=>u.email===PEND_EMAIL);
+            if(idx===-1) return alert("خطأ في البيانات");
+            if(users[idx].status !== 'active') return alert("⏳ حسابك لم يُفعّل بعد من قبل الإدارة.");
+            if(users[idx].code!==code) return alert("❌ كود غير صحيح");
+            users[idx].code = null; saveU(users); alert("🎉 تم تفعيل حسابك بنجاح!\nيمكنك الدخول الآن."); PEND_EMAIL = ""; go('scr-login');
+        }
+        function doAnalyze() {
+            let t = document.getElementById('sym-text').value.trim(); if(!t) return alert("اكتب الأعراض أولاً");
+            let best = null, sc = 0;
+            DB.forEach(d => {
+                let s = 0;
+                d.k.forEach(k => {
+                    if(t.includes(k)) s += k.length > 3 ? 2 : 1;
+                    if(t.includes(k) && t.indexOf(k) < 60) s += 1;
+                });
+                if(s>sc){sc=s;best=d;}
+            });
+            document.getElementById('res-sym').textContent = t; 
+            document.getElementById('res-local').textContent = best ? best.t : "لم يتطابق مع قاعدة البيانات. جرب وصفاً أدق أو فعّل الذكاء الاصطناعي.";
+            let ri = document.getElementById('res-imgs'); ri.innerHTML = '';
+            caseImages.forEach(s => ri.innerHTML += `<div class="img-item" style="width:70px;height:70px"><img src="${s}"></div>`);
+            if(!caseImages.length) ri.innerHTML = '<span style="font-size:0.8rem;color:var(--muted)">لم تُرفق صور</span>';
+            if(document.getElementById('ai-toggle').checked) { document.getElementById('ai-result-box').classList.remove('hide'); runAI(t); }
+            else { document.getElementById('ai-result-box').classList.add('hide'); }
+            go('scr-res');
+        }
+        async function runAI(text) {
+            let key = localStorage.getItem('ai_key_'+currentProvider) || '';
+            let cd = document.getElementById('ai-content'), ld = document.getElementById('ai-loading');
+            if(!key) { cd.innerHTML = "ℹ️ أدخل مفتاح المنصة أولاً."; ld.classList.add('hide'); return; }
+            ld.classList.remove('hide'); cd.innerHTML = '';
+            let ctrl = new AbortController(), tid = setTimeout(()=>ctrl.abort(), 15000);
+            let pr = "أنت خبير تعليمي في طب الأسنان. مريض يصف: \""+text+"\". قدّم: 1. 3 تشخيصات تفاضلية مرتبة. 2. سبب علمي مختصر. 3. خطوة تأكيدية. 4. تحذير تعليمي. أجب بالعربية وبشكل منظم.";
+            try {
+                let ep, h, b;
+                if(currentProvider==='deepseek') { ep="https://api.deepseek.com/chat/completions"; h={'Authorization':'Bearer '+key,'Content-Type':'application/json'}; b={model:"deepseek-chat",messages:[{role:"user",content:pr}],temperature:0.3,max_tokens:500}; }
+                else if(currentProvider==='openrouter') { ep="https://openrouter.ai/api/v1/chat/completions"; h={'Authorization':'Bearer '+key,'Content-Type':'application/json'}; b={model:"meta-llama/llama-3.1-8b-instruct:free",messages:[{role:"user",content:pr}],temperature:0.3,max_tokens:500}; }
+                else if(currentProvider==='hf') { ep="https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2"; h={'Authorization':'Bearer '+key,'Content-Type':'application/json'}; b={inputs:"<s>[INST] "+pr+" [/INST]",parameters:{max_new_tokens:400,temperature:0.3}}; }
+                else if(currentProvider==='together') { ep="https://api.together.xyz/v1/chat/completions"; h={'Authorization':'Bearer '+key,'Content-Type':'application/json'}; b={model:"meta-llama/Llama-3.3-70B-Instruct-Turbo",messages:[{role:"user",content:pr}],temperature:0.3,max_tokens:500}; }
+                let res = await fetch(ep, {method:'POST',headers:h,body:JSON.stringify(b),signal:ctrl.signal});
+                clearTimeout(tid); if(!res.ok) throw new Error(`خطأ (${res.status})`);
+                let data = await res.json(), reply;
+                reply = currentProvider==='hf' ? (Array.isArray(data)?data[0]?.generated_text:data?.generated_text) : data.choices?.[0]?.message?.content;
+                if(!reply) throw new Error("لم يتم استلام رد");
+                cd.innerHTML = reply.replace(/\*\*(.*?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');
+            } catch(e) {                clearTimeout(tid); cd.innerHTML = `⚠️ تعذر الاتصال: ${e.message}. اعتمد على التشخيص المحلي.`;
+            } finally { ld.classList.add('hide'); }
+        }
+        function admCheck() {
+            if(document.getElementById('adm-pass').value !== A_PASS) return alert("❌ كلمة مرور خاطئة");
+            document.getElementById('adm-panel').classList.remove('hide'); document.getElementById('adm-pass').value = '';
+            renderAdmin();
+        }
+        function renderAdmin() {
+            updateNotifBadge();
+            const users = getU();
+            const pending = users.filter(u => u.status === 'pending');
+            const pendDiv = document.getElementById('pending-list');
+            pendDiv.innerHTML = pending.length === 0 ? '<div class="box">لا توجد طلبات جديدة</div>' : 
+                pending.map(u => `<div class="pending-card"><div><strong>${u.name}</strong><small>${u.email}<br>${new Date(u.date).toLocaleDateString('ar')}</small></div><div><button class="action-btn approve" onclick="approveUser('${u.email}')">✅ قبول</button><button class="action-btn reject" onclick="rejectUser('${u.email}')">❌ رفض</button></div></div>`).join('');
+            
+            let tbl = document.getElementById('adm-tbl'); tbl.innerHTML = '';
+            users.forEach(u => {
+                let sc = u.status==='active'?'status-active':u.status==='pending'?'status-pending':'status-rejected';
+                let st = u.status==='active'?'نشط':u.status==='pending'?'قيد المراجعة':'مرفوض';
+                tbl.innerHTML += `<tr><td>${u.email}</td><td>${u.name||'-'}</td><td><span class="status-badge ${sc}">${st}</span></td><td><button onclick="delUser('${u.email}')" style="background:#ef4444;color:#fff;border:none;padding:3px 7px;border-radius:5px;cursor:pointer;font-size:0.7rem">حذف</button></td></tr>`;
+            });
+        }
+        function approveUser(email) {
+            let users = getU(), idx = users.findIndex(u=>u.email===email); if(idx===-1) return;
+            users[idx].status = 'active'; saveU(users);
+            alert(`✅ تم قبول وتفعيل: ${email}\n🔑 كود التفعيل: ${users[idx].code}\nأرسل الكود للمستخدم.`);
+            renderAdmin();
+        }
+        function rejectUser(email) {
+            if(!confirm(`رفض طلب: ${email}؟`)) return;
+            let users = getU(), idx = users.findIndex(u=>u.email===email); if(idx===-1) return;
+            users[idx].status = 'rejected'; saveU(users);
+            alert(`❌ تم رفض: ${email}`); renderAdmin();
+        }
+        function delUser(email) { if(!confirm("حذف نهائي؟")) return; let u=getU(); u.splice(u.findIndex(x=>x.email===email),1); saveU(u); renderAdmin(); }
+        window.onload = () => { 
+            go('scr-login'); 
+            updateNotifBadge();
+            // استعادة الجلسة إن وجدت
+            if(localStorage.getItem('dental_session')==='admin') {
+                document.getElementById('u-name').textContent = "المسؤول";
+                updateNotifBadge();
+            }
+        };
+    </script>
+</body>
+</html>
