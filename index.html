@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>تشخيص أمراض الفم والأسنان</title>
-    
-    <!-- 🖼️ إعدادات الأيقونة (تظهر عند الحفظ على سطح المكتب/الجوال) -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230ea5e9'/%3E%3Ccircle cx='50' cy='45' r='35' fill='none' stroke='white' stroke-width='6'/%3E%3Cline x1='75' y1='70' x2='85' y2='80' stroke='white' stroke-width='8' stroke-linecap='round'/%3E%3Cpath d='M38 35c0-6 12-6 12 0v15c0 4-3 7-6 7s-6-3-6-7V35zm12 0c0-6 12-6 12 0v15c0 4-3 7-6 7s-6-3-6-7V35z' fill='white' transform='translate(6, 10)'/%3E%3C/svg%3E">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230ea5e9'/%3E%3Ccircle cx='50' cy='45' r='35' fill='none' stroke='white' stroke-width='6'/%3E%3Cline x1='75' y1='70' x2='85' y2='80' stroke='white' stroke-width='8' stroke-linecap='round'/%3E%3Cpath d='M38 35c0-6 12-6 12 0v15c0 4-3 7-6 7s-6-3-6-7V35zm12 0c0-6 12-6 12 0v15c0 4-3 7-6 7s-6-3-6-7V35z' fill='white' transform='translate(6, 10)'/%3E%3C/svg%3E">
-
+    <link rel="icon" type="image/svg+xml" href="image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230ea5e9'/%3E%3Ccircle cx='50' cy='45' r='35' fill='none' stroke='white' stroke-width='6'/%3E%3Cline x1='75' y1='70' x2='85' y2='80' stroke='white' stroke-width='8' stroke-linecap='round'/%3E%3Cpath d='M38 35c0-6 12-6 12 0v15c0 4-3 7-6 7s-6-3-6-7V35zm12 0c0-6 12-6 12 0v15c0 4-3 7-6 7s-6-3-6-7V35z' fill='white' transform='translate(6, 10)'/%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230ea5e9'/%3E%3Ccircle cx='50' cy='45' r='35' fill='none' stroke='white' stroke-width='6'/%3E%3Cline x1='75' y1='70' x2='85' y2='80' stroke='white' stroke-width='8' stroke-linecap='round'/%3E%3Cpath d='M38 35c0-6 12-6 12 0v15c0 4-3 7-6 7s-6-3-6-7V35zm12 0c0-6 12-6 12 0v15c0 4-3 7-6 7s-6-3-6-7V35z' fill='white' transform='translate(6, 10)'/%3E%3C/svg%3E">
     <style>
         :root {
             --bg-grad: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
@@ -21,7 +18,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
         body { background: var(--bg-grad); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
         
-        /* 🔐 واجهة الدخول */
         .auth-screen { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .auth-card { background: var(--card); border-radius: var(--radius); padding: 40px 30px; width: 100%; max-width: 380px; box-shadow: var(--shadow); text-align: center; }
         .tooth-icon { width: 70px; height: 70px; background: linear-gradient(135deg, #60a5fa, #2563eb); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 36px; color: white; }
@@ -34,28 +30,27 @@
         .input-field:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
         .main-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #3b82f6, #2563eb); border: none; border-radius: 12px; color: white; font-size: 18px; font-weight: 700; cursor: pointer; transition: var(--transition); box-shadow: 0 4px 15px rgba(37,99,235,0.3); }
         .main-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,99,235,0.4); }
+        .main-btn:active { transform: translateY(0); }
         .link-text { margin-top: 18px; font-size: 14px; color: var(--primary); cursor: pointer; font-weight: 500; }
         .link-text:hover { text-decoration: underline; }
         .hide { display: none !important; }
         .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #0f172a; color: white; padding: 12px 20px; border-radius: 10px; font-size: 0.9rem; z-index: 1000; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
         .toast.show { opacity: 1; }
 
-        /* 🖥️ الهيدر النظيف */
         header { background: linear-gradient(135deg, #2563eb, #1e40af); color: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 12px rgba(37,99,235,0.25); }
         .logo { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 1.1rem; color: white; }
         .logo svg { filter: brightness(0) invert(1); }
         .nav-actions { display: flex; align-items: center; gap: 12px; }
         .notif-btn { background: rgba(255,255,255,0.15); border: none; cursor: pointer; padding: 8px; border-radius: 50%; position: relative; color: white; transition: var(--transition); }
         .notif-btn:hover { background: rgba(255,255,255,0.25); }
-        .notif-dot { position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; background: var(--danger); border-radius: 50%; border: 2px solid white; display: none; }        .notif-dot.show { display: block; animation: pulse 2s infinite; }
+        .notif-dot { position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; background: var(--danger); border-radius: 50%; border: 2px solid white; display: none; }
+        .notif-dot.show { display: block; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
         .user-menu { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.15); padding: 4px 12px 4px 4px; border-radius: 20px; }
-        .avatar { width: 32px; height: 32px; background: white; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
-        .uname { font-weight: 600; font-size: 0.9rem; color: white; }
+        .avatar { width: 32px; height: 32px; background: white; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }        .uname { font-weight: 600; font-size: 0.9rem; color: white; }
         .logout-btn { background: rgba(255,255,255,0.2); border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; color: white; font-size: 0.85rem; transition: var(--transition); }
         .logout-btn:hover { background: rgba(255,255,255,0.3); }
 
-        /* المحتوى الرئيسي */
         main { flex: 1; padding: 24px 16px; max-width: 900px; margin: auto; width: 100%; }
         .view { display: none; animation: fadeIn 0.3s ease; }
         .view.active { display: block; }
@@ -96,29 +91,26 @@
         .result-box h4 { color: #047857; margin-bottom: 8px; font-size: 1.1rem; }
         .ai-badge { display: inline-block; background: #eff6ff; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 12px; font-weight: 600; }
         .warning { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; padding: 10px; border-radius: 8px; margin-top: 12px; text-align: center; font-size: 0.9rem; }
-                .ai-config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+        
+        .ai-config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
         .provider-btn { padding: 12px; border: 2px solid var(--border); border-radius: 8px; background: white; cursor: pointer; font-weight: 600; transition: var(--transition); text-align: center; }
         .provider-btn.active { border-color: var(--primary); background: #eff6ff; color: var(--primary); }
         .provider-btn:hover { border-color: var(--primary); }
-        
-        footer { background: rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.2); padding: 16px; text-align: center; font-size: 0.85rem; color: rgba(255,255,255,0.9); margin-top: auto; }
+                footer { background: rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.2); padding: 16px; text-align: center; font-size: 0.85rem; color: rgba(255,255,255,0.9); margin-top: auto; }
     </style>
 </head>
 <body>
-    <!-- 🔐 واجهة الدخول -->
     <div id="auth-wrapper" class="auth-screen">
         <div class="auth-card" id="login-card">
             <div class="tooth-icon">🦷</div>
             <h1 class="app-title">تشخيص أمراض الفم والأسنان</h1>
             <p class="app-sub">نظام إدارة العيادة السنية</p>
-            
             <div class="role-toggle">
-                <button class="role-btn active" id="btn-admin" onclick="setRole('admin')">مدير</button>
-                <button class="role-btn" id="btn-doctor" onclick="setRole('doctor')">طبيب</button>
+                <button type="button" class="role-btn active" id="btn-admin" onclick="setRole('admin')">مدير</button>
+                <button type="button" class="role-btn" id="btn-doctor" onclick="setRole('doctor')">طبيب</button>
             </div>
-            
             <input type="password" id="login-pass" class="input-field" placeholder="كلمة مرور المدير">
-            <button class="main-btn" onclick="handleLogin()">دخول</button>
+            <button type="button" class="main-btn" onclick="handleLogin()">دخول</button>
             <div class="link-text" onclick="toggleAuth('register')">إنشاء حساب جديد للطبيب</div>
         </div>
 
@@ -129,12 +121,11 @@
             <input type="text" id="reg-name" class="input-field" placeholder="الاسم الكامل">
             <input type="email" id="reg-email" class="input-field" placeholder="البريد الإلكتروني">
             <input type="password" id="reg-pass" class="input-field" placeholder="كلمة المرور (6 أحرف)">
-            <button class="main-btn" onclick="handleRegister()">إرسال الطلب</button>
+            <button type="button" class="main-btn" onclick="handleRegister()">إرسال الطلب</button>
             <div class="link-text" onclick="toggleAuth('login')">← العودة للدخول</div>
         </div>
     </div>
 
-    <!-- 🖥️ الهيدر -->
     <header id="main-header" class="hide">
         <div class="logo">
             <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -145,19 +136,18 @@
             <span>تشخيص أمراض الفم والأسنان</span>
         </div>
         <div class="nav-actions">
-            <button class="notif-btn" id="notif-btn" style="display:none;">                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <button type="button" class="notif-btn" id="notif-btn" style="display:none;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
                 <span class="notif-dot" id="notif-dot"></span>
             </button>
             <div class="user-menu">
                 <div class="avatar" id="avatar">م</div>
                 <span class="uname" id="uname">مستخدم</span>
-                <button class="logout-btn" onclick="doLogout()">خروج</button>
+                <button type="button" class="logout-btn" onclick="doLogout()">خروج</button>
             </div>
-        </div>
-    </header>
+        </div>    </header>
 
     <main id="main-content" class="hide">
-        <!--  لوحة الإدارة -->
         <div id="admin-view" class="view">
             <div class="card">
                 <h3>📊 لوحة التحكم الإدارية</h3>
@@ -167,58 +157,49 @@
                     <div class="stat"><div class="stat-num" id="st-all">0</div><div class="stat-label">إجمالي</div></div>
                 </div>
             </div>
-            
             <div class="card">
                 <h3>📥 طلبات التفعيل اليدوي</h3>
                 <div id="pend-list" class="req-list"></div>
             </div>
-            
             <div class="card">
                 <h3>👥 سجل المستخدمين</h3>
                 <div style="overflow-x:auto"><table><thead><tr><th>الاسم</th><th>البريد</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="u-tbl"></tbody></table></div>
             </div>
-
             <div class="card">
-                <h3>🤖 إعدادات الذكاء الاصطناعي (للمدير فقط)</h3>
+                <h3>🤖 إعدادات الذكاء الاصطناعي</h3>
                 <div class="ai-config-grid">
-                    <button class="provider-btn active" onclick="setAdminAI('deepseek', this)">🧠 DeepSeek</button>
-                    <button class="provider-btn" onclick="setAdminAI('openrouter', this)">🌐 OpenRouter</button>
-                    <button class="provider-btn" onclick="setAdminAI('hf', this)">🤗 HuggingFace</button>
-                    <button class="provider-btn" onclick="setAdminAI('together', this)">⚡ Together.ai</button>
+                    <button type="button" class="provider-btn active" onclick="setAdminAI('deepseek', this)">🧠 DeepSeek</button>
+                    <button type="button" class="provider-btn" onclick="setAdminAI('openrouter', this)">🌐 OpenRouter</button>
+                    <button type="button" class="provider-btn" onclick="setAdminAI('hf', this)">🤗 HF</button>
+                    <button type="button" class="provider-btn" onclick="setAdminAI('together', this)">⚡ Together</button>
                 </div>
                 <input type="password" id="admin-ai-key" class="input-field" placeholder="الصق مفتاح API هنا">
-                <button class="main-btn" onclick="saveAIConfig()">💾 حفظ الإعدادات وتفعيلها للكل</button>
+                <button type="button" class="main-btn" onclick="saveAIConfig()">💾 حفظ وتفعيل</button>
             </div>
-
-            <button class="main-btn" style="margin-top:12px; background:linear-gradient(135deg, #10b981, #059669);" onclick="switchToDoctorView()">🔍 الانتقال لواجهة التشخيص</button>
+            <button type="button" class="main-btn" style="margin-top:12px; background:linear-gradient(135deg, #10b981, #059669);" onclick="switchToDoctorView()">🔍 الانتقال للتشخيص</button>
         </div>
 
-        <!-- 🩺 واجهة الطبيب / التشخيص -->
-        <div id="doc-view" class="view">            <div class="card">
+        <div id="doc-view" class="view">
+            <div class="card">
                 <h3>📋 وصف الحالة السريرية</h3>
                 <div id="ai-status-badge" class="ai-badge hide">🤖 الذكاء الاصطناعي مُفعّل</div>
                 <div class="form-group">
                     <label>الأعراض والعلامات</label>
                     <textarea id="sym-txt" placeholder="اكتب الأعراض بدقة... مثال: ألم نابض عند المضغ مع تورم الخد وحمى خفيفة"></textarea>
                 </div>
-                <button class="main-btn" onclick="diagnose()">🔍 تحليل التشخيص</button>
+                <button type="button" class="main-btn" onclick="diagnose()">🔍 تحليل التشخيص</button>
             </div>
             <div id="res-area"></div>
-            
-            <!-- زر العودة للإدارة يظهر فقط للمدير -->
-            <button class="main-btn hide" id="back-to-admin-btn" style="margin-top:12px; background:linear-gradient(135deg, #64748b, #475569);" onclick="switchToAdminView()">⚙️ العودة للوحة الإدارة</button>
+            <button type="button" class="main-btn hide" id="back-to-admin-btn" style="margin-top:12px; background:linear-gradient(135deg, #64748b, #475569);" onclick="switchToAdminView()">⚙️ العودة للإدارة</button>
         </div>
     </main>
 
-    <footer id="main-footer" class="hide">© 2026 جميع الحقوق محفوظة | منصة تعليمية</footer>
-    <div class="toast" id="toast"></div>
+    <footer id="main-footer" class="hide">© 2026 جميع الحقوق محفوظة | منصة تعليمية</footer>    <div class="toast" id="toast"></div>
 
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
     <script>
-        // 🔥 إعدادات Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE",
             authDomain: "diagnosis-6ea4b.firebaseapp.com",
@@ -233,18 +214,22 @@
         const db = firebase.database();
 
         const ADMIN_PASS = "zak959";
-        let currentRole = 'admin';
-        let currentUser = null;
+        let currentRole = 'admin', currentUser = null;
         let adminAIProvider = localStorage.getItem('ai_provider') || 'deepseek';
         let adminAIKey = localStorage.getItem('ai_key') || '';
 
-        // ✅ دوال عامة (Global)
-        function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
-        
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
         function toggleAuth(mode) {
             document.getElementById('login-card').classList.toggle('hide', mode !== 'login');
-            document.getElementById('register-card').classList.toggle('hide', mode !== 'register');        }
-        
+            document.getElementById('register-card').classList.toggle('hide', mode !== 'register');
+        }
+
         function setRole(role) {
             currentRole = role;
             document.getElementById('btn-admin').classList.toggle('active', role === 'admin');
@@ -255,14 +240,10 @@
         function switchToDoctorView() {
             document.getElementById('admin-view').classList.remove('active');
             document.getElementById('doc-view').classList.add('active');
-            if(currentUser && currentUser.role === 'admin') {
-                document.getElementById('back-to-admin-btn').classList.remove('hide');
-                if(adminAIKey) document.getElementById('ai-status-badge').classList.remove('hide');
-            } else {
-                document.getElementById('back-to-admin-btn').classList.add('hide');
-                if(adminAIKey) document.getElementById('ai-status-badge').classList.remove('hide');
-            }
-        }
+            if(currentUser.role === 'admin') document.getElementById('back-to-admin-btn').classList.remove('hide');
+            else document.getElementById('back-to-admin-btn').classList.add('hide');
+            if(adminAIKey) document.getElementById('ai-status-badge').classList.remove('hide');
+            else document.getElementById('ai-status-badge').classList.add('hide');        }
 
         function switchToAdminView() {
             document.getElementById('doc-view').classList.remove('active');
@@ -282,7 +263,7 @@
             adminAIKey = key;
             localStorage.setItem('ai_provider', adminAIProvider);
             localStorage.setItem('ai_key', adminAIKey);
-            showToast('✅ تم حفظ الإعدادات وتفعيلها بنجاح');
+            showToast('✅ تم حفظ الإعدادات');
         }
 
         function doLogout() { localStorage.removeItem('dental_session'); location.reload(); }
@@ -290,24 +271,19 @@
         function handleLogin() {
             const pass = document.getElementById('login-pass').value.trim();
             if (!pass) return showToast('أدخل كلمة المرور');
-
             if (currentRole === 'admin') {
-                if (pass !== ADMIN_PASS) return showToast('❌ كلمة مرور المدير غير صحيحة');                currentUser = { name: 'الإدارة', role: 'admin', email: 'salematto@gmail.com' };
+                if (pass !== ADMIN_PASS) return showToast('❌ كلمة مرور المدير غير صحيحة');
+                currentUser = { name: 'الإدارة', role: 'admin', email: 'salematto@gmail.com' };
                 localStorage.setItem('dental_session', JSON.stringify(currentUser));
                 enterApp();
             } else {
                 db.ref('users').once('value').then(snap => {
                     let found = null;
-                    snap.forEach(c => { 
-                        let u = c.val(); 
-                        if(u.pass === pass) found = {id: c.key, ...u}; 
-                    });
-                    
+                    snap.forEach(c => { let u = c.val(); if(u.pass === pass) found = {id: c.key, ...u}; });
                     if (!found) return showToast('❌ بيانات الطبيب غير صحيحة');
                     if (found.status === 'pending') return showToast('⏳ حسابك قيد المراجعة');
                     if (found.status === 'rejected') return showToast('❌ تم رفض الطلب');
-                    if (found.status === 'disabled') return showToast('🚫 تم تعطيل حسابك من قبل الإدارة');
-                    
+                    if (found.status === 'disabled') return showToast('🚫 تم تعطيل حسابك');
                     currentUser = { ...found, role: 'doctor' };
                     localStorage.setItem('dental_session', JSON.stringify(currentUser));
                     enterApp();
@@ -316,17 +292,18 @@
         }
 
         function handleRegister() {
-            const name = document.getElementById('reg-name').value.trim();
-            const email = document.getElementById('reg-email').value.trim().toLowerCase();
+            const name = document.getElementById('reg-name').value.trim();            const email = document.getElementById('reg-email').value.trim().toLowerCase();
             const pass = document.getElementById('reg-pass').value;
-            if (!name || !email || !pass) return showToast('أكمل جميع الحقول');
-            if (pass.length < 6) return showToast('كلمة المرور قصيرة');
+            
+            if (!name || !email || !pass) return showToast('⚠️ يرجى تعبئة جميع الحقول');
+            if (pass.length < 6) return showToast('⚠️ كلمة المرور قصيرة (6 أحرف على الأقل)');
             
             db.ref('users').orderByChild('email').equalTo(email).once('value').then(snap => {
-                if (snap.exists()) return showToast('البريد مسجل مسبقاً');
+                if (snap.exists()) return showToast('⚠️ هذا البريد مسجل مسبقاً');
                 db.ref('users').push({ name, email, pass, status: 'pending', date: Date.now() })
-                  .then(() => { showToast('✅ تم إرسال الطلب! بانتظار تفعيل الإدارة'); toggleAuth('login'); });
-            });
+                  .then(() => { showToast('✅ تم إرسال الطلب بنجاح!'); toggleAuth('login'); })
+                  .catch(err => showToast('❌ خطأ في الاتصال: ' + err.message));
+            }).catch(err => showToast('❌ خطأ: ' + err.message));
         }
 
         function enterApp() {
@@ -334,18 +311,15 @@
             document.getElementById('main-header').classList.remove('hide');
             document.getElementById('main-content').classList.remove('hide');
             document.getElementById('main-footer').classList.remove('hide');
-            
             document.getElementById('avatar').textContent = currentUser.name.charAt(0);
             document.getElementById('uname').textContent = currentUser.name;
             
             if (currentUser.role === 'admin') {
                 document.getElementById('notif-btn').style.display = 'block';
                 document.getElementById('admin-view').classList.add('active');
-                document.getElementById('admin-ai-key').value = adminAIKey;                const activeBtn = document.querySelector(`.provider-btn[onclick*="${adminAIProvider}"]`);
-                if(activeBtn) {
-                    document.querySelectorAll('.provider-btn').forEach(b => b.classList.remove('active'));
-                    activeBtn.classList.add('active');
-                }
+                document.getElementById('admin-ai-key').value = adminAIKey;
+                const activeBtn = document.querySelector(`.provider-btn[onclick*="${adminAIProvider}"]`);
+                if(activeBtn) { document.querySelectorAll('.provider-btn').forEach(b => b.classList.remove('active')); activeBtn.classList.add('active'); }
                 listenForAdminUpdates();
             } else {
                 document.getElementById('notif-btn').style.display = 'none';
@@ -358,7 +332,6 @@
             db.ref('users').on('value', snapshot => {
                 const users = [];
                 snapshot.forEach(child => users.push({ id: child.key, ...child.val() }));
-                
                 const pending = users.filter(u => u.status === 'pending');
                 document.getElementById('st-pend').textContent = pending.length;
                 document.getElementById('st-act').textContent = users.filter(u => u.status === 'active').length;
@@ -367,67 +340,41 @@
 
                 document.getElementById('pend-list').innerHTML = pending.length === 0 ? 
                     '<div class="card" style="text-align:center;color:var(--muted)">لا توجد طلبات جديدة</div>' :
-                    pending.map(u => `<div class="req-item"><div class="req-info"><strong>${u.name}</strong><small>${u.email}</small></div><div class="req-actions"><button class="action-btn approve" onclick="updateStatus('${u.id}', 'active')">✅ تفعيل</button><button class="action-btn reject" onclick="updateStatus('${u.id}', 'rejected')">❌ رفض</button></div></div>`).join('');
-
+                    pending.map(u => `<div class="req-item"><div class="req-info"><strong>${u.name}</strong><small>${u.email}</small></div><div class="req-actions"><button type="button" class="action-btn approve" onclick="updateStatus('${u.id}', 'active')">✅ تفعيل</button><button type="button" class="action-btn reject" onclick="updateStatus('${u.id}', 'rejected')">❌ رفض</button></div></div>`).join('');
                 document.getElementById('u-tbl').innerHTML = users.map(u => {
                     let sc, st, actions;
-                    if(u.status === 'active') { sc='badge-active'; st='نشط'; actions=`<button class="action-btn suspend" onclick="disableUser('${u.id}')">🚫 تعطيل</button> <button onclick="delUser('${u.id}')" style="color:red;border:none;background:none;cursor:pointer">🗑️</button>`; }
-                    else if(u.status === 'disabled') { sc='badge-disabled'; st='معطل'; actions=`<button class="action-btn approve" onclick="updateStatus('${u.id}', 'active')">✅ تفعيل</button> <button onclick="delUser('${u.id}')" style="color:red;border:none;background:none;cursor:pointer">🗑️</button>`; }
-                    else if(u.status === 'pending') { sc='badge-pending'; st='معلق'; actions=`<button class="action-btn approve" onclick="updateStatus('${u.id}', 'active')">✅</button> <button class="action-btn reject" onclick="updateStatus('${u.id}', 'rejected')">❌</button>`; }
+                    if(u.status === 'active') { sc='badge-active'; st='نشط'; actions=`<button type="button" class="action-btn suspend" onclick="disableUser('${u.id}')">🚫 تعطيل</button> <button onclick="delUser('${u.id}')" style="color:red;border:none;background:none;cursor:pointer">🗑️</button>`; }
+                    else if(u.status === 'disabled') { sc='badge-disabled'; st='معطل'; actions=`<button type="button" class="action-btn approve" onclick="updateStatus('${u.id}', 'active')">✅ تفعيل</button> <button onclick="delUser('${u.id}')" style="color:red;border:none;background:none;cursor:pointer">🗑️</button>`; }
+                    else if(u.status === 'pending') { sc='badge-pending'; st='معلق'; actions=`<button type="button" class="action-btn approve" onclick="updateStatus('${u.id}', 'active')">✅</button> <button type="button" class="action-btn reject" onclick="updateStatus('${u.id}', 'rejected')">❌</button>`; }
                     else { sc='badge-rejected'; st='مرفوض'; actions=`<button onclick="delUser('${u.id}')" style="color:red;border:none;background:none;cursor:pointer">🗑️</button>`; }
-                    
                     return `<tr><td>${u.name}</td><td>${u.email}</td><td><span class="badge ${sc}">${st}</span></td><td>${actions}</td></tr>`;
                 }).join('');
             });
         }
 
-        function updateStatus(id, status) { 
-            db.ref('users/' + id).update({ status }).then(() => showToast(status === 'active' ? '✅ تم التفعيل' : '❌ تم الرفض')); 
-        }
-        
-        function disableUser(id) { 
-            if(confirm('هل تريد تعطيل حساب هذا المستخدم؟')) {
-                db.ref('users/' + id).update({ status: 'disabled' }).then(() => showToast('🚫 تم تعطيل الحساب')); 
-            }
-        }
-                function delUser(id) { 
-            if(confirm('حذف نهائي؟')) db.ref('users/' + id).remove(); 
-        }
+        function updateStatus(id, status) { db.ref('users/' + id).update({ status }).then(() => showToast(status === 'active' ? '✅ تم التفعيل' : '❌ تم الرفض')); }
+        function disableUser(id) { if(confirm('هل تريد تعطيل هذا الحساب؟')) db.ref('users/' + id).update({ status: 'disabled' }).then(() => showToast('🚫 تم التعطيل')); }
+        function delUser(id) { if(confirm('حذف نهائي؟')) db.ref('users/' + id).remove(); }
 
         function diagnose() {
             const txt = document.getElementById('sym-txt').value.trim();
             if (!txt) return showToast('اكتب الأعراض أولاً');
-            
             const DB = [
-                {k:["ألم","بارد","ساخن","تسوس","نخر"], t:"تسوس سني (نخر) - إزالة النخر وحشوة ترميمية. راجع الشعاعية لتقييم العمق."},
-                {k:["ألم","نابض","ليل","مضغ","جذر","طرق"], t:"التهاب لبّي لا رجعي أو خراج ذروي - علاج لبّي (جذر) أو خلع مع تقييم شعاعي."},
-                {k:["كسر","تشقق","سقوط","جزء","حاد","رض"], t:"كسر سني - قيّم الامتداد (تاجي/جذري) شعاعياً وسريرياً لتحديد الخطة."},
-                {k:["نزيف","فرشاة","لثة","احمرار","تورم","جير"], t:"التهاب لثة (Gingivitis) - تحسين النظافة، إزالة الجير/البلاك، متابعة أسبوعين."},
-                {k:["جيوب","ارتشاف","عظم","حركة","أسنان","دواعم"], t:"التهاب دواعم السن - قياس الجيوب، كشط جذري، متابعة دورية مع اختصاصي."},
-                {k:["قرحة","بيضاء","صفراء","وجع","قلاعية"], t:"آفة قلاعية فموية - ذاتية الشفاء 10-14 يوم. غسول كلورهيكسيدين أو كورتيكوستيرويد موضعي."},
-                {k:["أبيض","لا يُكشط","تدخين","لويحة","صلب"], t:"طلاوة بيضاء (Leukoplakia) - محتملة التسرطن. خزعة فورية واستبعاد مهيجات."},
-                {k:["تورم","شفاه","لسان","تنفس","حساسية"], t:"وذمة وعائية تحسسية - طوارئ! صعوبة تنفس → إبلاغ الطوارئ وإبينفرين."},
-                {k:["بثور","ماء","حرق","هربس","شفاه"], t:"هربس شفوي/التهاب لثة فموي هربسي - أسيكلوفير خلال 72 ساعة، علاج عرضي."},
-                {k:["جفاف","فم","عينا","شوكرن","لعاب"], t:"جفاف فموي (شوغرن/دوائي) - تقييم الأدوية، بدائل لعاب، مراقبة التسوس."},
-                {k:["مفصل","فك","ألم","طقطقة","صعوبة","TMD"], t:"اضطراب مفصل الفك (TMD) - راحة، كمادات، مسكنات، إحالة اختصاصي إن استمر."},
-                {k:["صريف","ليل","طحن","إجهاد","فك"], t:"صريف أسنان (Bruxism) - واقي ليلي، إدارة إجهاد، علاج فيزيائي للفك."},
-                {k:["رائحة","فم","كريهة","بخر","لسان"], t:"بخر فموي - تحسين نظافة، تنظيف لسان، معالجة تسوس/لثة، تقييم أسباب جهازية."}
+                {k:["ألم","بارد","ساخن","تسوس","نخر"], t:"تسوس سني - إزالة النخر وحشوة ترميمية."},
+                {k:["ألم","نابض","ليل","مضغ","جذر"], t:"التهاب لبّي لا رجعي - علاج جذر أو خلع."},
+                {k:["نزيف","لثة","تورم","جير"], t:"التهاب لثة - تنظيف احترافي وتحسين النظافة."},
+                {k:["قرحة","بيضاء","وجع"], t:"آفة قلاعية - ذاتية الشفاء عادة."},
+                {k:["تورم","صديد","حمى"], t:"خراج سني - طوارئ تحتاج تصريف."}
             ];
-            
             let best = null, max = 0;
-            DB.forEach(d => {
-                let s = 0;
-                d.k.forEach(k => { if(txt.includes(k)) s += k.length > 3 ? 2 : 1; if(txt.includes(k) && txt.indexOf(k) < 50) s++; });
-                if(s > max) { max = s; best = d; }
-            });
-
-            let html = `<div class="card"><div class="result-box"><h4>📚 التشخيص المحلي</h4><p>${best ? best.t : 'لم يتطابق مع قاعدة البيانات. جرب وصفاً أدق.'}</p></div>`;
-
+            DB.forEach(d => { let s = 0; d.k.forEach(k => { if(txt.includes(k)) s++; }); if(s>max) { max=s; best=d; } });
+            
+            let html = `<div class="card"><div class="result-box"><h4>📚 التشخيص المحلي</h4><p>${best ? best.t : 'لم يتطابق. جرب وصفاً أدق.'}</p></div>`;
             if (adminAIKey) {
-                html += `<div class="ai-box"><h4>🤖 تحليل الذكاء الاصطناعي (${adminAIProvider})</h4><div id="ai-output" style="color:var(--muted)">⏳ جاري الاتصال...</div></div>`;
+                html += `<div class="ai-box"><h4>🤖 الذكاء الاصطناعي</h4><div id="ai-output" style="color:var(--muted)">⏳ جاري الاتصال...</div></div>`;
                 runAIAnalysis(txt, adminAIKey);
             }
-            html += `<div class="warning">⚠️ للأغراض التعليمية فقط - لا يُغني عن الفحص السريري المهني</div></div>`;
+            html += `<div class="warning">⚠️ للأغراض التعليمية فقط</div></div>`;
             document.getElementById('res-area').innerHTML = html;
         }
 
@@ -435,49 +382,24 @@
             const out = document.getElementById('ai-output');
             const ctrl = new AbortController();
             const tid = setTimeout(() => ctrl.abort(), 15000);
-            const prompt = `أنت خبير تعليمي في طب الأسنان. مريض يصف: "${text}". قدّم: 1. 3 تشخيصات تفاضلية مرتبة. 2. سبب علمي مختصر. 3. خطوة تأكيدية. 4. تحذير تعليمي. أجب بالعربية وبشكل منظم.`;
-            
+            const prompt = `خبير أسنان: مريض يصف "${text}". قدّم 3 تشخيصات وسبب وتحذير بالعربية.`;
             try {
-                let endpoint, headers, body;
-                if (adminAIProvider === 'deepseek') {                    endpoint = "https://api.deepseek.com/chat/completions";
-                    headers = { 'Authorization': 'Bearer ' + apiKey, 'Content-Type': 'application/json' };
-                    body = { model: "deepseek-chat", messages: [{role:"user", content:prompt}], temperature:0.3, max_tokens:400 };
-                } else if (adminAIProvider === 'openrouter') {
-                    endpoint = "https://openrouter.ai/api/v1/chat/completions";
-                    headers = { 'Authorization': 'Bearer ' + apiKey, 'Content-Type': 'application/json' };
-                    body = { model: "meta-llama/llama-3.1-8b-instruct:free", messages: [{role:"user", content:prompt}], temperature:0.3, max_tokens:400 };
-                } else if (adminAIProvider === 'hf') {
-                    endpoint = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2";
-                    headers = { 'Authorization': 'Bearer ' + apiKey, 'Content-Type': 'application/json' };
-                    body = { inputs: "<s>[INST] " + prompt + " [/INST]", parameters: {max_new_tokens:350, temperature:0.3} };
-                } else {
-                    endpoint = "https://api.together.xyz/v1/chat/completions";
-                    headers = { 'Authorization': 'Bearer ' + apiKey, 'Content-Type': 'application/json' };
-                    body = { model: "meta-llama/Llama-3.3-70B-Instruct-Turbo", messages: [{role:"user", content:prompt}], temperature:0.3, max_tokens:400 };
-                }
+                let ep, h, b;
+                if (adminAIProvider === 'deepseek') { ep="https://api.deepseek.com/chat/completions"; h={'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'}; b={model:"deepseek-chat",messages:[{role:"user",content:prompt}],temperature:0.3,max_tokens:400}; }
+                else if (adminAIProvider === 'openrouter') { ep="https://openrouter.ai/api/v1/chat/completions"; h={'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'}; b={model:"meta-llama/llama-3.1-8b-instruct:free",messages:[{role:"user",content:prompt}],temperature:0.3,max_tokens:400}; }
+                else if (adminAIProvider === 'hf') { ep="https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2"; h={'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'}; b={inputs:"<s>[INST] "+prompt+" [/INST]",parameters:{max_new_tokens:350,temperature:0.3}}; }
+                else { ep="https://api.together.xyz/v1/chat/completions"; h={'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'}; b={model:"meta-llama/Llama-3.3-70B-Instruct-Turbo",messages:[{role:"user",content:prompt}],temperature:0.3,max_tokens:400}; }
                 
-                const res = await fetch(endpoint, { method:'POST', headers, body:JSON.stringify(body), signal:ctrl.signal });
-                clearTimeout(tid);
-                if (!res.ok) throw new Error(`خطأ ${res.status}`);
-                
+                const res = await fetch(ep, {method:'POST',headers:h,body:JSON.stringify(b),signal:ctrl.signal});                clearTimeout(tid); if(!res.ok) throw new Error(`خطأ ${res.status}`);
                 const data = await res.json();
-                let reply = adminAIProvider === 'hf' ? (Array.isArray(data) ? data[0]?.generated_text : data?.generated_text) : data.choices?.[0]?.message?.content;
-                
-                if (!reply) throw new Error('لم يتم استلام رد');
-                out.innerHTML = reply.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
-            } catch (e) {
-                clearTimeout(tid);
-                out.innerHTML = `<span style="color:var(--danger)">⚠️ ${e.message}</span>`;
-            }
+                let reply = adminAIProvider === 'hf' ? (Array.isArray(data)?data[0]?.generated_text:data?.generated_text) : data.choices?.[0]?.message?.content;
+                out.innerHTML = reply ? reply.replace(/\*\*(.*?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>') : 'لا رد';
+            } catch(e) { clearTimeout(tid); out.innerHTML = `<span style="color:var(--danger)">⚠️ ${e.message}</span>`; }
         }
 
-        // 🚀 التشغيل عند تحميل الصفحة
         window.onload = () => {
             const saved = localStorage.getItem('dental_session');
-            if (saved) {
-                currentUser = JSON.parse(saved);
-                enterApp();
-            }
+            if (saved) { currentUser = JSON.parse(saved); enterApp(); }
         };
     </script>
 </body>
