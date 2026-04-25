@@ -1,1 +1,634 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تشخيص أمراض الفم والأسنان</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: linear-gradient(135deg, #1e3a8a, #3b82f6); min-height: 100vh; display: flex; flex-direction: column; color: #0f172a; }
+        
+        .login-page { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .login-card { background: white; border-radius: 20px; padding: 30px; width: 100%; max-width: 350px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); text-align: center; }
+        .logo { font-size: 40px; margin-bottom: 15px; }
+        h1 { font-size: 22px; margin-bottom: 8px; color: #1e40af; }
+        .subtitle { font-size: 13px; color: #64748b; margin-bottom: 25px; }
+        
+        .input { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 15px; margin-bottom: 15px; text-align: center; background: #f8fafc; }
+        .input:focus { outline: none; border-color: #3b82f6; background: white; }
+        
+        .btn { width: 100%; padding: 15px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border: none; border-radius: 12px; color: white; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; }
+        .btn:active { transform: scale(0.98); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-secondary { background: #64748b; }
+        .btn-green { background: linear-gradient(135deg, #10b981, #059669); }
+        
+        .link { color: #3b82f6; font-size: 13px; cursor: pointer; display: block; margin-top: 12px; }
+        .hide { display: none !important; }
+        
+        header { background: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .logo-text { font-weight: 700; font-size: 16px; color: #1e40af; }
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .badge { background: #ef4444; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; }
+        .logout-btn { background: #fee2e2; color: #dc2626; border: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; }
+        
+        main { flex: 1; padding: 20px; max-width: 800px; margin: auto; width: 100%; }
+        .view { display: none; }
+        .view.active { display: block; }
+        
+        .card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .card h3 { font-size: 17px; margin-bottom: 15px; color: #1e40af; display: flex; align-items: center; gap: 8px; }
+        
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
+        .stat { background: #f1f5f9; padding: 12px; border-radius: 10px; text-align: center; }
+        .stat-num { font-size: 20px; font-weight: 800; color: #3b82f6; }
+        .stat-label { font-size: 11px; color: #64748b; }
+        
+        textarea { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; min-height: 100px; font-size: 14px; margin-bottom: 15px; background: #f8fafc; resize: vertical; }
+        textarea:focus { outline: none; border-color: #3b82f6; background: white; }
+        
+        .result { background: #f0fdf4; border: 2px solid #86efac; border-radius: 12px; padding: 16px; margin-top: 15px; }        .result h4 { color: #047857; margin-bottom: 10px; font-size: 16px; }
+        .diag-item { background: white; padding: 12px; border-radius: 8px; margin-bottom: 10px; border-right: 4px solid #3b82f6; }
+        .diag-item strong { color: #1e40af; display: block; margin-bottom: 6px; }
+        .diag-item p { font-size: 13px; color: #334155; line-height: 1.6; margin-bottom: 4px; }
+        .emergency { background: #fef2f2; border: 2px solid #fecaca; color: #b91c1c; padding: 8px; border-radius: 6px; margin-top: 8px; font-size: 12px; font-weight: 600; }
+        
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { background: #f8fafc; padding: 10px; text-align: right; color: #64748b; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 10px; border-bottom: 1px solid #e2e8f0; }
+        .status { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .status-active { background: #d1fae5; color: #065f46; }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-rejected { background: #fee2e2; color: #991b1b; }
+        .action-btn { padding: 4px 8px; border: none; border-radius: 6px; font-size: 11px; cursor: pointer; margin-left: 4px; }
+        .btn-approve { background: #10b981; color: white; }
+        .btn-reject { background: #ef4444; color: white; }
+        .btn-delete { background: #fee2e2; color: #ef4444; }
+        
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #0f172a; color: white; padding: 12px 20px; border-radius: 10px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; }
+        .toast.show { opacity: 1; }
+        .empty { text-align: center; color: #64748b; padding: 30px; font-size: 14px; }
+        
+        footer { background: rgba(0,0,0,0.1); padding: 15px; text-align: center; font-size: 12px; color: rgba(255,255,255,0.8); }
+        
+        @media (max-width: 480px) {
+            .stats { grid-template-columns: 1fr; }
+            .login-card { padding: 25px 20px; }
+            table { font-size: 12px; }
+            th, td { padding: 8px 5px; }
+        }
+        
+        .db-status { padding: 8px; border-radius: 8px; margin-bottom: 15px; font-size: 12px; text-align: center; }
+        .db-connected { background: #d1fae5; color: #065f46; border: 1px solid #86efac; }
+        .db-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    </style>
+</head>
+<body>
+    <!-- 🔐 صفحة الدخول -->
+    <div id="loginPage" class="login-page">
+        <div class="login-card">
+            <div class="logo">🦷</div>
+            <h1>تشخيص أمراض الفم والأسنان</h1>
+            <p class="subtitle">نظام إدارة العيادة السنية</p>
+            
+            <div id="dbStatus" class="db-status db-error">🔄 جاري الاتصال بقاعدة البيانات...</div>
+            
+            <input type="password" id="password" class="input" placeholder="كلمة المرور: zak959">
+            <button type="button" id="loginBtn" class="btn" onclick="doLogin()">دخول</button>
+            
+            <span class="link" onclick="showRegister()">📝 إنشاء حساب طبيب جديد</span>        </div>
+        
+        <div class="login-card hide" id="registerCard">
+            <div class="logo">📝</div>
+            <h1>طلب انضمام طبيب</h1>
+            <p class="subtitle">سيتم تفعيل حسابك من الإدارة</p>
+            
+            <input type="text" id="regName" class="input" placeholder="الاسم الكامل">
+            <input type="email" id="regEmail" class="input" placeholder="البريد الإلكتروني">
+            <input type="password" id="regPass" class="input" placeholder="كلمة المرور (6 أحرف+)">
+            <button type="button" id="regBtn" class="btn" onclick="doRegister()">📤 إرسال الطلب</button>
+            
+            <span class="link" onclick="showLogin()">← العودة للدخول</span>
+        </div>
+    </div>
 
+    <!-- 📋 التطبيق الرئيسي -->
+    <div id="app" class="hide">
+        <header>
+            <div class="logo-text">🦷 تشخيص أمراض الفم والأسنان</div>
+            <div class="user-info">
+                <span class="badge" id="badge" style="display:none">0</span>
+                <span id="userName">مستخدم</span>
+                <button type="button" class="logout-btn" onclick="doLogout()">خروج</button>
+            </div>
+        </header>
+
+        <main>
+            <!-- لوحة الإدارة -->
+            <div id="adminView" class="view active">
+                <div class="card">
+                    <h3>📊 الإحصائيات</h3>
+                    <div class="stats">
+                        <div class="stat"><div class="stat-num" id="countPending">0</div><div class="stat-label">معلق</div></div>
+                        <div class="stat"><div class="stat-num" id="countActive">0</div><div class="stat-label">نشط</div></div>
+                        <div class="stat"><div class="stat-num" id="countTotal">0</div><div class="stat-label">الكل</div></div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>📥 الطلبات الجديدة</h3>
+                    <div id="pendingList" class="empty">لا توجد طلبات</div>
+                </div>
+                
+                <div class="card">
+                    <h3>📋 سجل الأطباء</h3>
+                    <div style="overflow-x:auto">
+                        <table>
+                            <thead><tr><th>الاسم</th><th>البريد</th><th>الحالة</th><th>إجراء</th></tr></thead>
+                            <tbody id="usersTable"></tbody>                        </table>
+                    </div>
+                </div>
+                
+                <button type="button" class="btn btn-green" onclick="switchView('diagnosisView')">🔍 واجهة التشخيص</button>
+            </div>
+
+            <!-- واجهة التشخيص -->
+            <div id="diagnosisView" class="view">
+                <div class="card">
+                    <h3>📋 وصف الحالة</h3>
+                    <textarea id="symptoms" placeholder="اكتب الأعراض... مثال: ألم نابض في الضرس عند شرب الماء البارد"></textarea>
+                    <button type="button" class="btn" id="diagBtn" onclick="runDiagnosis()">🔍 تحليل التشخيص</button>
+                </div>
+                <div id="result"></div>
+                <button type="button" class="btn btn-secondary" onclick="switchView('adminView')">⚙️ العودة للإدارة</button>
+            </div>
+        </main>
+
+        <footer>© 2026 نظام تشخيص أمراض الفم والأسنان</footer>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <script>
+        // === إعدادات Firebase ===
+        const firebaseConfig = {
+            apiKey: "AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE",
+            authDomain: "diagnosis-6ea4b.firebaseapp.com",
+            databaseURL: "https://diagnosis-6ea4b-default-rtdb.firebaseio.com",
+            projectId: "diagnosis-6ea4b"
+        };
+        
+        // متغيرات عامة
+        let db = null;
+        let currentUser = null;
+        const ADMIN_PASS = "zak959";
+        let firebaseInitialized = false;
+        
+        // === تهيئة Firebase مع معالجة الأخطاء ===
+        function initFirebase() {
+            try {
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig);
+                }
+                db = firebase.database();                
+                // اختبار الاتصال
+                db.ref('.info/connected').on('value', (snap) => {
+                    const connected = snap.val() === true;
+                    firebaseInitialized = connected;
+                    
+                    const statusEl = document.getElementById('dbStatus');
+                    if (statusEl) {
+                        if (connected) {
+                            statusEl.textContent = '✅ متصل بقاعدة البيانات';
+                            statusEl.className = 'db-status db-connected';
+                        } else {
+                            statusEl.textContent = '❌ غير متصل - التحقق من قواعد Firebase';
+                            statusEl.className = 'db-status db-error';
+                        }
+                    }
+                    
+                    console.log('Firebase connection:', connected);
+                });
+                
+                console.log('✅ Firebase initialized successfully');
+            } catch (error) {
+                console.error('❌ Firebase init error:', error);
+                const statusEl = document.getElementById('dbStatus');
+                if (statusEl) {
+                    statusEl.textContent = '❌ خطأ في تهيئة Firebase: ' + error.message;
+                    statusEl.className = 'db-status db-error';
+                }
+            }
+        }
+        
+        // تهيئة Firebase عند تحميل الصفحة
+        initFirebase();
+        
+        // === دوال مساعدة ===
+        const $ = id => document.getElementById(id);
+        const showToast = msg => {
+            const t = $('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        };
+        
+        // === دوال الدخول والتسجيل ===
+        window.showRegister = function() {
+            $('loginPage').querySelector('.login-card').classList.add('hide');
+            $('registerCard').classList.remove('hide');
+        };
+        
+        window.showLogin = function() {            $('registerCard').classList.add('hide');
+            $('loginPage').querySelector('.login-card').classList.remove('hide');
+        };
+        
+        // تسجيل طبيب جديد - الطريقة الصحيحة
+        window.doRegister = async function() {
+            const name = $('regName').value.trim();
+            const email = $('regEmail').value.trim().toLowerCase();
+            const pass = $('regPass').value;
+            const btn = $('regBtn');
+            
+            // التحقق من الحقول
+            if (!name || !email || !pass) {
+                showToast('⚠️ أكمل جميع الحقول');
+                return;
+            }
+            if (pass.length < 6) {
+                showToast('⚠️ كلمة المرور قصيرة (6 أحرف+)');
+                return;
+            }
+            
+            // التحقق من Firebase
+            if (!db || !firebaseInitialized) {
+                showToast('⚠️ قاعدة البيانات غير متصلة');
+                console.error('Firebase not ready');
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.textContent = '⏳ جاري الإرسال...';
+            
+            try {
+                console.log('📤 Sending registration request...');
+                console.log('User data:', { name, email });
+                
+                // الطريقة المضمونة للإرسال
+                const newRef = db.ref('users').push();
+                await newRef.set({
+                    name: name,
+                    email: email,
+                    pass: pass,
+                    status: 'pending',
+                    date: Date.now(),
+                    registeredAt: new Date().toISOString()
+                });
+                
+                console.log('✅ Registration successful! ID:', newRef.key);
+                showToast('✅ تم إرسال الطلب بنجاح!');
+                
+                // تنظيف الحقول                $('regName').value = '';
+                $('regEmail').value = '';
+                $('regPass').value = '';
+                
+                // العودة لصفحة الدخول
+                setTimeout(() => {
+                    showLogin();
+                }, 1500);
+                
+            } catch (error) {
+                console.error('❌ Registration error:', error);
+                showToast('❌ فشل الإرسال: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '📤 إرسال الطلب';
+            }
+        };
+        
+        // دخول المستخدم
+        window.doLogin = async function() {
+            const pass = $('password').value.trim();
+            const btn = $('loginBtn');
+            
+            if (!pass) {
+                showToast('⚠️ أدخل كلمة المرور');
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.textContent = '⏳ جاري الدخول...';
+            
+            try {
+                // دخول المدير
+                if (pass === ADMIN_PASS) {
+                    currentUser = { name: 'المدير', role: 'admin' };
+                    saveSession();
+                    showApp();
+                    loadUsers();
+                    showToast('✅ تم الدخول كمدير');
+                } 
+                // دخول الطبيب من Firebase
+                else if (db && firebaseInitialized) {
+                    console.log('🔍 Searching for doctor with password...');
+                    
+                    const snapshot = await db.ref('users').orderByChild('pass').equalTo(pass).once('value');
+                    
+                    if (snapshot.exists()) {
+                        let foundUser = null;
+                        snapshot.forEach(child => {
+                            foundUser = { id: child.key, ...child.val() };                        });
+                        
+                        if (foundUser) {
+                            console.log('✅ Doctor found:', foundUser.name);
+                            
+                            if (foundUser.status === 'pending') {
+                                showToast('⏳ حسابك قيد المراجعة');
+                            } else if (foundUser.status === 'rejected') {
+                                showToast('❌ تم رفض الطلب');
+                            } else if (foundUser.status === 'disabled') {
+                                showToast('🚫 تم تعطيل الحساب');
+                            } else {
+                                currentUser = { ...foundUser, role: 'doctor' };
+                                saveSession();
+                                showApp();
+                                showToast('✅ تم الدخول');
+                            }
+                        } else {
+                            showToast('❌ كلمة المرور غير صحيحة');
+                        }
+                    } else {
+                        showToast('❌ كلمة المرور غير صحيحة');
+                    }
+                } else {
+                    showToast('❌ قاعدة البيانات غير متصلة');
+                }
+            } catch (error) {
+                console.error('❌ Login error:', error);
+                showToast('❌ خطأ في الدخول: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'دخول';
+            }
+        };
+        
+        window.doLogout = function() {
+            localStorage.removeItem('dental_session');
+            location.reload();
+        };
+        
+        // === حفظ/استعادة الجلسة ===
+        function saveSession() {
+            localStorage.setItem('dental_session', JSON.stringify(currentUser));
+        }
+        
+        function loadSession() {
+            const saved = localStorage.getItem('dental_session');
+            if (saved) {
+                try {
+                    currentUser = JSON.parse(saved);                    showApp();
+                    if (currentUser.role === 'admin') {
+                        loadUsers();
+                    }
+                    return true;
+                } catch(e) {
+                    localStorage.removeItem('dental_session');
+                }
+            }
+            return false;
+        }
+        
+        // === عرض/إخفاء الواجهات ===
+        function showApp() {
+            $('loginPage').classList.add('hide');
+            $('app').classList.remove('hide');
+            $('userName').textContent = currentUser.name;
+        }
+        
+        window.switchView = function(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            $(viewId).classList.add('active');
+            if (viewId === 'adminView' && currentUser.role === 'admin') {
+                loadUsers();
+            }
+        };
+        
+        // === إدارة المستخدمين (للمدير) ===
+        window.loadUsers = function() {
+            if (!db || !firebaseInitialized) {
+                console.warn('Firebase not ready for loading users');
+                return;
+            }
+            
+            console.log('🔄 Loading users from Firebase...');
+            
+            db.ref('users').on('value', (snap) => {
+                const users = [];
+                snap.forEach(child => {
+                    const val = child.val();
+                    if (val) {
+                        users.push({ id: child.key, ...val });
+                    }
+                });
+                
+                console.log(`✅ Loaded ${users.length} users from Firebase`);
+                
+                const pending = users.filter(u => u.status === 'pending');
+                const active = users.filter(u => u.status === 'active');
+                                $('countPending').textContent = pending.length;
+                $('countActive').textContent = active.length;
+                $('countTotal').textContent = users.length;
+                $('badge').textContent = pending.length;
+                $('badge').style.display = pending.length > 0 ? 'inline-block' : 'none';
+                
+                // قائمة الطلبات المعلقة
+                $('pendingList').innerHTML = pending.length ? 
+                    pending.map(u => `
+                        <div style="background:#fffbeb;border:1px solid #fcd34d;padding:12px;border-radius:8px;margin:8px 0;display:flex;justify-content:space-between;align-items:center">
+                            <div><strong>${u.name || 'غير معروف'}</strong><br><small style="color:#b45309">${u.email || '-'}</small></div>
+                            <div>
+                                <button type="button" class="action-btn btn-approve" onclick="updateStatus('${u.id}','active')">✅</button>
+                                <button type="button" class="action-btn btn-reject" onclick="updateStatus('${u.id}','rejected')">❌</button>
+                            </div>
+                        </div>
+                    `).join('') : '<div class="empty">✅ لا توجد طلبات جديدة</div>';
+                
+                // جدول جميع المستخدمين
+                $('usersTable').innerHTML = users.length ? 
+                    users.map(u => {
+                        let statusClass = u.status === 'active' ? 'status-active' : 
+                                         u.status === 'pending' ? 'status-pending' : 'status-rejected';
+                        let statusText = u.status === 'active' ? 'نشط' : 
+                                        u.status === 'pending' ? 'معلق' : 'مرفوض';
+                        let actions = '';
+                        
+                        if (u.status === 'active') {
+                            actions = `<button type="button" class="action-btn btn-reject" onclick="updateStatus('${u.id}','disabled')">🚫</button>`;
+                        } else if (u.status === 'disabled' || u.status === 'rejected') {
+                            actions = `<button type="button" class="action-btn btn-approve" onclick="updateStatus('${u.id}','active')">✅</button>`;
+                        } else if (u.status === 'pending') {
+                            actions = `<button type="button" class="action-btn btn-approve" onclick="updateStatus('${u.id}','active')">✅</button> 
+                                      <button type="button" class="action-btn btn-reject" onclick="updateStatus('${u.id}','rejected')">❌</button>`;
+                        }
+                        
+                        actions += ` <button type="button" class="action-btn btn-delete" onclick="deleteUser('${u.id}')">🗑️</button>`;
+                        
+                        return `<tr>
+                            <td>${u.name || '-'}</td>
+                            <td>${u.email || '-'}</td>
+                            <td><span class="status ${statusClass}">${statusText}</span></td>
+                            <td>${actions}</td>
+                        </tr>`;
+                    }).join('') : '<tr><td colspan="4" class="empty">لا يوجد أطباء مسجلين</td></tr>';
+                
+            }, (error) => {
+                console.error('❌ Error loading users:', error);
+                showToast('❌ خطأ في تحميل البيانات');
+            });        };
+        
+        window.updateStatus = function(id, status) {
+            if (!db || !firebaseInitialized) {
+                showToast('❌ قاعدة البيانات غير متصلة');
+                return;
+            }
+            
+            db.ref('users/' + id).update({ status: status })
+                .then(() => {
+                    showToast(status === 'active' ? '✅ تم التفعيل' : 'تم التحديث');
+                })
+                .catch((error) => {
+                    console.error('Error updating status:', error);
+                    showToast('❌ خطأ في التحديث');
+                });
+        };
+        
+        window.deleteUser = function(id) {
+            if (!db || !firebaseInitialized) {
+                showToast('❌ قاعدة البيانات غير متصلة');
+                return;
+            }
+            
+            if (confirm('هل أنت متأكد من الحذف النهائي؟')) {
+                db.ref('users/' + id).remove()
+                    .then(() => showToast('🗑️ تم الحذف'))
+                    .catch((error) => {
+                        console.error('Error deleting user:', error);
+                        showToast('❌ خطأ في الحذف');
+                    });
+            }
+        };
+        
+        // === محرك التشخيص المحلي ===
+        const DENTAL_DB = [
+            { k:["ألم","بارد","ساخن","حلو"], t:"<b>تسوس سني</b><br>• السبب: نخر في بنية السن<br>• العلاج: حشوة ترميمية", p:4 },
+            { k:["ألم","نابض","ليل","مضغ"], t:"<b>التهاب لبّي (عصب)</b><br>• السبب: التهاب العصب الداخلي<br>• العلاج: علاج جذر أو خلع", p:5 },
+            { k:["تورم","صديد","حمى"], t:"<b>🚨 خراج سني - طوارئ</b><br>• السبب: عدوى بكتيرية قيحية<br>• العلاج: تصريف فوري + مضاد حيوي", p:10, e:true },
+            { k:["نزيف","لثة","احمرار"], t:"<b>التهاب لثة</b><br>• السبب: تراكم البلاك والجير<br>• العلاج: تنظيف احترافي + تفريش", p:3 },
+            { k:["قرحة","أبيض","مؤلم"], t:"<b>آفة قلاعية</b><br>• السبب: رض أو نقص مناعي مؤقت<br>• العلاج: غسول مطهر + مراقبة", p:2 },
+            { k:["ضرس","عقل","خلفي","صعوبة"], t:"<b>التهاب حول التاجي</b><br>• السبب: ضرس عقل لم يبزغ كلياً<br>• العلاج: تنظيف أو خلع", p:4 },
+            { k:["حساسية","هواء","فرشاة"], t:"<b>حساسية عاجية</b><br>• السبب: انكشاف العاج<br>• العلاج: معجون حساسية + فلورايد", p:2 },
+            { k:["مفصل","فك","طقطقة","صداع"], t:"<b>اضطراب مفصل الفك</b><br>• السبب: إجهاد عضلي أو مفصلي<br>• العلاج: راحة + كمادات + واقي ليلي", p:3 }
+        ];
+        
+        function normalize(text) {
+            return text.normalize('NFKD').replace(/[\u064B-\u065F]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').toLowerCase().trim();
+        }
+                const SYNONYMS = {
+            'يوجع':'ألم','وجع':'ألم','موجع':'ألم','بيوجع':'ألم',
+            'ضرس':'سن','اضراس':'أسنان','سنان':'أسنان',
+            'لثه':'لثة','لثتي':'لثة',
+            'صديد':'قيح','خرّاج':'خراج',
+            'مايه':'ماء','مي':'ماء','هوا':'هواء',
+            'ليلي':'ليل','باليل':'ليل',
+            'ورم':'تورم','منتفخ':'تورم',
+            'دم':'نزيف','ينزف':'نزيف',
+            'حساس':'حساسية',
+            'كسر':'انكسار','شقق':'تشقق',
+            'اكل':'مضغ','أمضغ':'مضغ',
+            'عصب':'جذر',
+            'ريحة':'رائحة','بخر':'رائحة',
+            'جرح':'قرحة','تقرح':'قرحة'
+        };
+        
+        window.runDiagnosis = function() {
+            const text = $('symptoms').value.trim();
+            if (!text) return showToast('⚠️ اكتب الأعراض أولاً');
+            
+            const btn = $('diagBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ جاري التحليل...';
+            
+            setTimeout(() => {
+                const norm = normalize(text);
+                const words = norm.split(' ').filter(w => w.length > 2);
+                
+                let results = DENTAL_DB.map(d => {
+                    let score = 0;
+                    d.k.forEach(kw => {
+                        if (norm.includes(kw)) score += d.p * 2;
+                        if (words.some(w => SYNONYMS[w] === kw || SYNONYMS[kw] === w)) score += d.p;
+                    });
+                    return { ...d, score };
+                }).filter(r => r.score > 3).sort((a,b) => b.score - a.score).slice(0, 3);
+                
+                let html = '<div class="result"><h4>📚 النتائج</h4>';
+                
+                if (results.length === 0) {
+                    html += '<div class="empty">يرجى إضافة تفاصيل أكثر (نوع الألم، المدة، المحفزات)</div>';
+                } else {
+                    results.forEach((r, i) => {
+                        const conf = Math.min(95, Math.round(r.score * 3));
+                        html += `<div class="diag-item" style="${r.e ? 'border-right-color:#ef4444;background:#fef2f2' : ''}">
+                            <strong>#${i+1} ${r.name}</strong>
+                            <span style="font-size:11px;color:#64748b">نسبة التطابق: ${conf}%</span>
+                            <p style="margin-top:8px">${r.t}</p>
+                            ${r.e ? '<div class="emergency">⚠️ حالة طارئة! راجع الطبيب فوراً</div>' : ''}                        </div>`;
+                    });
+                }
+                
+                html += '<div style="background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;padding:10px;border-radius:6px;margin-top:12px;text-align:center;font-size:12px">⚠️ هذا التحليل تعليمي فقط. راجع الطبيب للفحص المباشر.</div></div>';
+                
+                $('result').innerHTML = html;
+                $('result').scrollIntoView({ behavior: 'smooth' });
+                
+                btn.disabled = false;
+                btn.textContent = '🔍 تحليل التشخيص';
+            }, 200);
+        };
+        
+        // === بدء التطبيق ===
+        window.onload = function() {
+            console.log('🚀 App starting...');
+            
+            // محاولة استعادة الجلسة
+            if (loadSession()) {
+                console.log('✅ Session restored');
+            }
+            
+            // التأكد أن صفحة الدخول ظاهرة إذا لم يكن هناك جلسة
+            if (!currentUser) {
+                $('loginPage').classList.remove('hide');
+                $('app').classList.add('hide');
+            }
+            
+            // ضمان عمل الأزرار على الهواتف
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.addEventListener('touchstart', function() { this.style.opacity = '0.8'; });
+                btn.addEventListener('touchend', function() { this.style.opacity = '1'; });
+            });
+            
+            console.log('✅ App initialized');
+        };
+        
+        // معالجة الأخطاء العامة
+        window.onerror = function(msg, url, line, col, error) {
+            console.error('💥 Global error:', msg, error);
+            return false;
+        };
+    </script>
+</body>
+</html>
