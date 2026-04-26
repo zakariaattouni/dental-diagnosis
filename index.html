@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>تشخيص شامل | الخبير العلمي المدقق</title>
+    <title>تشخيص شامل | الخبير السريري v10.0</title>
     <style>
-        :root { --bg: linear-gradient(135deg, #1e3a8a, #3b82f6); --card: #ffffff; --primary: #2563eb; --success: #10b981; --warn: #f59e0b; --danger: #ef4444; --text: #0f172a; --muted: #64748b; --border: #e2e8f0; }
+        :root { --bg: linear-gradient(135deg, #0f172a, #1e3a8a); --card: #ffffff; --primary: #2563eb; --success: #10b981; --warn: #f59e0b; --danger: #ef4444; --text: #0f172a; --muted: #64748b; --border: #e2e8f0; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
-        
         .auth-screen { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .auth-card { background: var(--card); border-radius: 16px; padding: 30px; width: 100%; max-width: 360px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; }
+        .auth-card { background: var(--card); border-radius: 16px; padding: 30px; width: 100%; max-width: 360px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center; }
         .logo { font-size: 40px; margin-bottom: 15px; }
         h1 { font-size: 22px; margin-bottom: 8px; color: #1e40af; }
         .sub { font-size: 13px; color: var(--muted); margin-bottom: 25px; }
-        
         .input { width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 12px; font-size: 15px; text-align: center; margin-bottom: 15px; background: #f8fafc; transition: 0.3s; }
         .input:focus { border-color: var(--primary); background: #fff; outline: none; }
         .btn { width: 100%; padding: 15px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border: none; border-radius: 12px; color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: transform 0.2s; }
@@ -24,44 +22,34 @@
         .btn-gray { background: #64748b; }
         .link { color: var(--primary); font-size: 13px; cursor: pointer; display: block; margin-top: 12px; text-decoration: none; }
         .hide { display: none !important; }
-        
         header { background: #fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
         .logo-text { font-weight: 700; font-size: 16px; color: #1e40af; display: flex; align-items: center; gap: 8px; }
         .nav { display: flex; align-items: center; gap: 10px; }
         .badge { background: var(--danger); color: #fff; padding: 3px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
         .logout-btn { background: #fee2e2; color: #dc2626; border: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; }
-        
         main { flex: 1; padding: 20px; max-width: 900px; margin: auto; width: 100%; }
         .view { display: none; animation: fade 0.3s ease; }
         .view.active { display: block; }
         @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        
         .card { background: var(--card); border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .card h3 { font-size: 18px; margin-bottom: 14px; color: #1e40af; display: flex; align-items: center; gap: 8px; }
-        
         .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
         .stat { background: #f8fafc; padding: 12px; border-radius: 10px; text-align: center; border: 1px solid var(--border); }
         .stat-num { font-size: 22px; font-weight: 800; color: var(--primary); }
         .stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
-        
         textarea { width: 100%; padding: 16px; border: 2px solid var(--border); border-radius: 12px; min-height: 120px; font-size: 14px; margin-bottom: 16px; background: #f8fafc; resize: vertical; line-height: 1.6; transition: 0.3s; }
         textarea:focus { border-color: var(--primary); background: #fff; outline: none; }
-        
-        .clinical-report { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 16px; margin-top: 16px; }        .report-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--primary); flex-wrap: wrap; gap: 8px; }
+        .clinical-report { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 16px; margin-top: 16px; }
+        .report-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--primary); flex-wrap: wrap; gap: 8px; }
         .report-title { font-size: 17px; font-weight: 700; color: #1e40af; display: flex; align-items: center; gap: 8px; }
         .conf-badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
         .conf-high { background: #d1fae5; color: #065f46; }
         .conf-mid { background: #fef3c7; color: #92400e; }
         .conf-low { background: #f1f5f9; color: #475569; }
-        
         .section { margin-bottom: 14px; }
-        .section h5 { font-size: 13px; color: var(--primary); margin-bottom: 6px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
-        .section p, .section li { font-size: 13px; color: #334155; line-height: 1.6; margin-bottom: 4px; }
-        .section ul { padding-right: 18px; margin: 0; }
-        
+        .section h5 { font-size: 13px; color: var(--primary); margin-bottom: 6px; font-weight: 700; display: flex; align-items: center; gap: 6px; }        .section p { font-size: 13px; color: #334155; line-height: 1.6; margin-bottom: 4px; }
         .emergency-box { background: linear-gradient(135deg, #fef2f2, #fee2e2); border: 2px solid #fecaca; color: #b91c1c; padding: 10px; border-radius: 8px; margin-top: 12px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
         .diff-note { background: #eff6ff; border-left: 3px solid var(--primary); padding: 10px; border-radius: 6px; margin-top: 12px; font-size: 12px; color: #1e40af; line-height: 1.6; }
-        
         .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); margin-top: 8px; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
         th { background: #f8fafc; padding: 12px; text-align: right; color: var(--muted); font-weight: 600; border-bottom: 2px solid var(--border); }
@@ -75,32 +63,24 @@
         .act-ok { background: var(--success); color: #fff; }
         .act-no { background: var(--danger); color: #fff; }
         .act-del { background: #fee2e2; color: var(--danger); }
-        
         footer { background: rgba(0,0,0,0.25); padding: 15px; text-align: center; color: rgba(255,255,255,0.9); margin-top: auto; }
         .wa-btn { display: inline-flex; align-items: center; gap: 6px; background: #25D366; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 13px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.2); margin-bottom: 8px; }
         .wa-btn:hover { background: #1ebc57; }
         .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #0f172a; color: #fff; padding: 10px 16px; border-radius: 8px; font-size: 13px; z-index: 999; opacity: 0; transition: 0.3s; pointer-events: none; }
         .toast.show { opacity: 1; }
         .empty { text-align: center; color: var(--muted); padding: 30px; font-size: 14px; background: #f8fafc; border-radius: 10px; border: 1px dashed var(--border); }
-        
         .cat-tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: #f1f5f9; color: #64748b; margin-right: 6px; border: 1px solid #e2e8f0; }
-        
-        @media (max-width: 480px) {
-            .stats { grid-template-columns: 1fr; }
-            .auth-card { padding: 24px 18px; }
-            table { font-size: 12px; }
-            th, td { padding: 8px 6px; }
-            .report-header { flex-direction: column; align-items: flex-start; }
-        }
+        @media (max-width: 480px) { .stats { grid-template-columns: 1fr; } .auth-card { padding: 24px 18px; } table { font-size: 12px; } th, td { padding: 8px 6px; } .report-header { flex-direction: column; align-items: flex-start; } }
     </style>
 </head>
 <body>
     <div id="auth" class="auth-screen">
-        <div class="auth-card" id="login-card">            <div class="logo">🦷</div>
+        <div class="auth-card" id="login-card">
+            <div class="logo">🦷</div>
             <h1>تشخيص شامل للفم والأسنان</h1>
             <p class="sub">نظام إدارة العيادة والخبير السريري المتعدد</p>
             <input type="password" id="pass" class="input" placeholder="كلمة المرور للدخول">
-            <button class="btn" onclick="doLogin()">دخول</button>
+            <button class="btn" onclick="doLoginComplex()">دخول</button>
             <span class="link" onclick="showReg()">📝 تسجيل طبيب جديد</span>
         </div>
         <div class="auth-card hide" id="reg-card">
@@ -116,8 +96,7 @@
     </div>
 
     <div id="app" class="hide">
-        <header>
-            <div class="logo-text">🦷 تشخيص شامل</div>
+        <header>            <div class="logo-text">🦷 تشخيص شامل</div>
             <div class="nav">
                 <span class="badge" id="badge" style="display:none">0</span>
                 <span style="font-size:13px;font-weight:600" id="uname">مستخدم</span>
@@ -145,7 +124,8 @@
                         <table>
                             <thead><tr><th>الاسم</th><th>البريد</th><th>الحالة</th><th>إجراء</th></tr></thead>
                             <tbody id="u-tbl"></tbody>
-                        </table>                    </div>
+                        </table>
+                    </div>
                 </div>
                 <button class="btn btn-green" onclick="goDiag()">🔍 واجهة التشخيص الشامل</button>
             </div>
@@ -155,9 +135,8 @@
                     <h3>📋 الوصف السريري للحالة</h3>
                     <p style="font-size:12px;color:#64748b;margin-bottom:10px;">💡 <b>موجه للطالب:</b> اكتب الأعراض بدقة. يشمل ذلك الأسنان، اللثة، التقويم، الزرعات، وحالات الأطفال.</p>
                     <textarea id="sym" placeholder="مثال: طفل عمره 3 سنوات يرضع بالليل وأسودت أسنانه... أو مريض عنده ألم حول زرعة... أو أسنان ملتوية..."></textarea>
-                    <button class="btn" onclick="runDiagnosis()">🔍 تحليل الخبير العلمي</button>
+                    <button class="btn" onclick="runDiagnosis()">🔍 تحليل الخبير السريري</button>
                 </div>
-                
                 <div id="res"></div>
                 <button class="btn btn-gray" onclick="goAdmin()">⚙️ العودة للإدارة</button>
             </div>
@@ -166,8 +145,7 @@
         <footer>
             <div>
                 <a href="https://wa.me/963939436998" target="_blank" class="wa-btn">📱 أرسل ملاحظاتك</a>
-            </div>
-            <div style="font-size:12px; opacity:0.85; margin-top:4px;">تصميم وتطوير الدكتور زكريا محمد عطوني - سوريا</div>
+            </div>            <div style="font-size:12px; opacity:0.85; margin-top:4px;">تصميم وتطوير الدكتور زكريا محمد عطوني - سوريا | الإصدار السريري المتقدم</div>
         </footer>
     </div>
     <div class="toast" id="toast"></div>
@@ -184,115 +162,53 @@
         const showReg=()=>{ $('login-card').classList.add('hide'); $('reg-card').classList.remove('hide'); };
         const showLogin=()=>{ $('reg-card').classList.add('hide'); $('login-card').classList.remove('hide'); };
         
-        // 🔐 التحقق الآمن: كلمة المرور مخزنة بشكل معكوس ومشفر بسيط
-        // الكلمة الصحيحة هي salem1959
-        const SECRET_KEY = "9591melas"; 
-
-        const doLogin = () => {
-            const p = $('pass').value.trim();
-            const btn = document.querySelector('#login-card .btn');
-            
-            if(!p) return toast('⚠️ أدخل كلمة المرور');
-            btn.disabled = true; btn.textContent = '⏳ جاري التحقق...';
-            // خدعة بسيطة للتحقق دون ظهور كلمة السر كنص واضح في الكود
-            // نقوم بعكس النص المدخل ومقارنته بالمفتاح المخزن
-            const reversedInput = p.split('').reverse().join('');
-
-            if (reversedInput === SECRET_KEY) {
-                // دخول المدير
-                user = { name: 'المدير', role: 'admin' };
-                saveSession();
-                enterApp();
-                $('admin').classList.add('active');
-                $('diag').classList.remove('active');
-                if(db) load();
-                toast('✅ تم الدخول كمدير');
-            } else {
-                // محاولة دخول طبيب
-                if(!db) {
-                    toast('❌ لا يوجد اتصال للتحقق من الأطباء');
-                    btn.disabled = false; btn.textContent = 'دخول';
-                    return;
-                }
-                // إذا لم يطابق المدير، نبحث في قاعدة البيانات (نفترض أن البريد هو كلمة السر للتبسيط أو نطلب بريد)
-                // هنا سنفترض أن المستخدم أدخل بريده في خانة كلمة السر أو نحتاج خانة بريد
-                // لتبسيط الأمور كما طلبت: الدخول بكلمة سر فقط.
-                // إذا لم تكن كلمة المدير، سنفشل الدخول للأمان ما لم نضف خانة بريد.
-                // لكن للتوافق مع طلبك "كلمة سر فقط"، سنكتفي بدخول المدير الآن.
-                toast('❌ كلمة المرور غير صحيحة');
-            }
-            
-            btn.disabled = false; btn.textContent = 'دخول';
-        };
-        
-        // دالة تسجيل طبيب جديد (تحتاج بريد وكلمة سر)
-        // سنضيف خانة بريد مخفية أو نستخدم الاسم كبريد مؤقت للتجربة إذا لزم، 
-        // لكن الأفضل ترك التسجيل كما كان يعمل سابقاً عبر قاعدة البيانات.
-        // بما أنك طلبت تبسيط الدخول، سأبقي التسجيل متاحاً لكن الدخول للأطباء يحتاج بريد.
-        // لتفادي التعقيد، سأجعل خانة "كلمة المرور" في صفحة الدخول تقبل البريد للأطباء أيضاً.
-        
+        const SECRET_KEY = "9591melas";
         const doLoginComplex = () => {
              const input = $('pass').value.trim();
              const btn = document.querySelector('#login-card .btn');
              if(!input) return toast('⚠️ أدخل كلمة المرور أو البريد');
              btn.disabled = true; btn.textContent = '⏳ جاري التحقق...';
 
-             // 1. فحص المدير
              if (input.split('').reverse().join('') === SECRET_KEY) {
                  user = { name: 'المدير', role: 'admin' };
                  saveSession();
                  enterApp();
                  $('admin').classList.add('active');
-                 $('diag').classList.remove('active');                 if(db) load();
+                 $('diag').classList.remove('active');
+                 if(db) load();
                  toast('✅ تم الدخول كمدير');
                  btn.disabled = false; btn.textContent = 'دخول';
                  return;
              }
 
-             // 2. فحص الأطباء (البحث عن البريد أو كلمة السر في قاعدة البيانات)
-             if(!db) {
-                 toast('❌ لا يوجد اتصال');
-                 btn.disabled = false; btn.textContent = 'دخول';
-                 return;
-             }
+             if(!db) { toast('❌ لا يوجد اتصال'); btn.disabled = false; btn.textContent = 'دخول'; return; }
 
              db.ref('users').once('value').then(snap => {
                  let found = null;
                  if(snap.exists()) {
                      snap.forEach(child => {
                          const u = child.val();
-                         // البحث بالبريد أو بكلمة المرور (للتسهيل)
-                         if(u.email === input || u.pass === input) {
-                             found = { id: child.key, ...u };
-                         }
+                         if(u.email === input || u.pass === input) found = { id: child.key, ...u };
                      });
                  }
-
                  if(!found) toast('❌ بيانات غير صحيحة');
                  else if(found.status === 'pending') toast('⏳ حسابك قيد المراجعة');
                  else if(found.status === 'active') {
-                     user = { ...found, role: 'doc' };
-                     saveSession();
+                     user = { ...found, role: 'doc' };                     saveSession();
                      enterApp();
                      $('admin').classList.remove('active');
                      $('diag').classList.add('active');
                      toast('✅ دخول الطبيب: ' + user.name);
-                 } else {
-                     toast('❌ الحساب غير مفعل');
-                 }
-             }).catch(() => toast('❌ خطأ في الاتصال'))
-             .finally(() => { btn.disabled = false; btn.textContent = 'دخول'; });
+                 } else toast('❌ الحساب غير مفعل');
+             }).catch(() => toast('❌ خطأ في الاتصال')).finally(() => { btn.disabled = false; btn.textContent = 'دخول'; });
         };
-
-        // تحديث زر الدخول ليعتمد الدالة الشاملة
-        $('pass').onkeypress = (e) => { if(e.key === 'Enter') doLoginComplex(); };
-        document.querySelector('#login-card .btn').onclick = doLoginComplex;
 
         const doRegister=()=>{
             const n=$('r-name').value.trim(), e=$('r-email').value.trim().toLowerCase(), p=$('r-pass').value;
             if(!n||!e||!p) return toast('أكمل الحقول');
             if(p.length<6) return toast('كلمة المرور قصيرة');
-            db.ref('users').push({name:n,email:e,pass:p,status:'pending',date:Date.now()})              .then(()=>{toast('✅ تم الإرسال');$('r-name').value='';$('r-email').value='';$('r-pass').value='';setTimeout(showLogin,1500);});
+            db.ref('users').push({name:n,email:e,pass:p,status:'pending',date:Date.now()})
+              .then(()=>{toast('✅ تم الإرسال');$('r-name').value='';$('r-email').value='';$('r-pass').value='';setTimeout(showLogin,1500);});
         };
         
         const saveSession=()=>localStorage.setItem('d_session',JSON.stringify(user));
@@ -326,36 +242,45 @@
         window.upd=(i,s)=>db&&db.ref('users/'+i).update({status:s}).then(load);
         window.del=(i)=>{if(confirm('حذف نهائي؟')&&db)db.ref('users/'+i).remove().then(load);};
 
-        // 🧠 قاعدة الأمراض - نسخة مدققة علمياً
-        const DB = [
-            {id:"ecc", name:"تسوس زجاجة الحليب (ECC)", cat:"أطفال", sev:"عالي", keywords:["أسنان سوداء","أسنان متآكلة","طفل","رضيع","رضاعة ليلية","زجاجة حليب","أمامية علوية","نخر واسع","تسوس عنقي","بكاء عند الأكل"], signs:"تسوس نخرى واسع في القواطع العلوية الأمامية، غالباً حول منطقة عنق السن", xray:"نخر واسع في التيجان قد يصل لللب", treat:"ترميم، لب أسنان لبنية (Pulpotomy)، معالجة لبية، أو خلع + حافظ مساحة", diff:"سن لبنية + عمر أقل من 6 سنوات + عادة رضاعة ليلية + أسنان أمامية علوية فقط"},
-            {id:"pulp_child", name:"التهاب لب سن لبني", cat:"أطفال", sev:"عالي", keywords:["ألم طفل","سن منخور","سن لبني","تورم لثة","خراج لثوي","ناسور","يبكي","يمتنع عن الأكل","انتفاخ خد"], signs:"خراج لثوي أو ناسور فوق السن اللبني، ألم شديد عند اللمس", xray:"ارتشاف عظمي حول جذور السن اللبني", treat:"بتر لب (Pulpotomy) أو خلع السن", diff:"سن لبنية + ناسور لثوي + ألم شديد + تاريخ تسوس عميق"},
-            {id:"fluorosis", name:"التسمم الفلوري (Fluorosis)", cat:"تصبغات", sev:"منخفض", keywords:["بقع بيضاء","بقع بنية","أسنان مبقعة","تصبغ متناظر","فلورايد","ماء آبار","أسنان دائمة","غير مؤلم"], signs:"بقع بيضاء طبشورية أو بنية متناظرة على الأسنان الدائمة، موزعة على عدة أسنان", xray:"طبيعي", treat:"تبييض، حشوات تجميلية، أو قشور خزفية للتحسين الجمالي", diff:"بقع متناظرة + تاريخ التعرض للفلورايد + أسنان دائمة + غير مؤلم + لا يمكن كشطها"},
-            {id:"tetracycline", name:"تصبغ التتراسيكلين", cat:"تصبغات", sev:"متوسط", keywords:["أسنان رمادية","أسنان بنية","تصبغ خطوط","تتراسيكلين","أم حامل","أدوية حمل","طفولة مبكرة","لون موحد"], signs:"تصبغ رمادي أو بني مائل للأصفر، قد يكون على شكل خطوط أفقية متوازية", xray:"طبيعي", treat:"تبييض داخلي، حشوات تجميلية، أو تيجان كاملة", diff:"لون رمادي/بني + تاريخ تناول التتراسيكلين أثناء الحمل أو الطفولة المبكرة"},
-            {id:"crowding", name:"تزاحم/تراكب الأسنان (Crowding)", cat:"تقويم", sev:"منخفض", keywords:["أسنان ملتوية","أسنان معوجة","تزاحم","تراكب","متزاحمة","متراكبة","صعبة التنظيف","متداخلة","شكل غير منتظم","جير متراكم","قلح متراكم"], signs:"تزاحم الأسنان، تراكب الأسنان، أسنان متزاحمة، أسنان متراكبة، صعوبة تنظيف الخيوط، تراكم جير، تراكم القلح، مظهر مزدحم", xray:"ازدحام الجذور في العظم، نقص مساحة", treat:"تقويم أسنان (Fixed Appliances) أو إزالة بعض الأسنان لخلق مساحة", diff:"شكل غير منتظم + صعوبة تنظيف + تراكم قلح + لا يوجد ألم حاد عادة"},
-            {id:"diastema", name:"فراغات بين الأسنان (Diastema)", cat:"تقويم", sev:"منخفض", keywords:["فراغ بين أسنان","مسافة","تباعد","فتحة أمامية","أسنان متباعدة","مظهر","أكل يعلق","انحشار بقايا طعام"], signs:"فراغات مرئية بين الأسنان، خاصة بين القواطع المركزية العلوية", xray:"عظم سليم ولكن مسافة زائدة بين الجذور", treat:"تقويم لإغلاق الفراغ أو قشور (Veneers) أو رابطة (Bonding)", diff:"مسافات واضحة بين الأسنان + مظهر جمالي + وظيفة مضغ طبيعية عادة"},
-            {id:"malocclusion", name:"سوء الإطباق (Malocclusion)", cat:"تقويم", sev:"متوسط", keywords:["فك بارز","ذقن صغيرة","عضة معكوسة","فك أمامي","عضة عميقة","عضة مفتوحة","مضغ صعب"], signs:"عدم تطابق الفكين، عضة متصالبة أو مفتوحة أو عميقة، مظهر جانبي غير طبيعي", xray:"علاقة عظمية غير طبيعية (Class II or III)", treat:"تقويم تفاعلي في فترة النمو أو جراحة تقويمية بعد البلوغ", diff:"مشكلة في إغلاق الفكين + علاقة غير طبيعية بين الفكين + قد يؤثر على المضغ"},
-            {id:"peri_implantitis", name:"التهاب حول الزرعة (Peri-implantitis)", cat:"زراعة", sev:"عالي", keywords:["زرعة ملتهبة","نزيف حول زرعة","صديد زرعة","قيح زرعة","حركة زرعة","ألم حول زرعة","انكشاف خيوط","رائحة معدنية","تورم لثة زرعة"], signs:"نزيف عند الجس حول الزرعة، صديد، حركة في الغطاء أو الزرعة، ارتشاف عظمي", xray:"ارتشاف عظمي واضح حول جسم الزرعة", treat:"تنظيف ميكانيكي + مضادات حيوية + جراحة ترميمية أو إزالة الزرعة في الحالات المتقدمة", diff:"وجود زرعة + نزيف/صديد حولها + ارتشاف عظمي شعاعياً + تاريخ زراعة"},
-            {id:"edentulism", name:"فقدان الأسنان (Edentulism)", cat:"تعويضات", sev:"متوسط", keywords:["سن مفقود","مكان فارغ","بدون سن","قلع حديث","فراغ في القوس","انزياح أسنان","بروز سن مقابل"], signs:"فراغ في القوس السنية، انزياح الأسنان المجاورة، بروز السن المقابل للفراغ", xray:"عظم سليم أو مرتشف في مكان السن المفقود", treat:"زراعة، جسر (Bridge)، أو جهاز متحرك حسب حالة المريض والعظم المتبقي", diff:"سن مفقود يحتاج تعويض + تغيرات في الأسنان المجاورة + وظيفة مضغ متأثرة"},
-            {id:"denture_issue", name:"مشاكل طقم الأسنان", cat:"تعويضات", sev:"متوسط", keywords:["طقم واسع","طقم ضاغط","بدلة واسعة","طقم غير ثابت","جرح لثة من طقم","صعوبة كلام طقم","ألم طقم","ارتخاء بدلة"], signs:"تقرحات ضغطية على اللثة، ارتخاء الطقم، صعوبة في الثبات أثناء الكلام أو الأكل", xray:"غير مطلوب عادة", treat:"إعادة تبطين (Reline)، تعديل الطقم، أو صنع طقم جديد", diff:"مريض يرتدي طقم + تقرحات ضغطية في مناطق الارتكاز + عدم ثبات الطقم"},
-            {id:"impacted", name:"سن منطمر (Impacted Tooth)", cat:"جراحة", sev:"متوسط", keywords:["ضرس عقل منطمر","سن منطمر","لم يبزغ","ألم خلفي","تورم خلفي","غطاء لثوي","صعوبة فتح","رائحة فم"], signs:"غطاء لثوي ملتهب فوق السن، ألم عند المضغ، صعوبة فتح الفم، تورم في المنطقة الخلفية", xray:"سن داخل العظم بزاوية مائلة أو أفقية", treat:"جراحة قلع السن المطمور أو بزوغ جراحي مع تقويم في حالات محددة", diff:"سن غير بازغ سريرياً + موجود شعاعياً داخل العظم + أعراض التهابية موضعية"},
-            {id:"cyst", name:"كيسة فكية (Jaw Cyst)", cat:"جراحة", sev:"عالي", keywords:["تورم فك","انتفاخ عظمي","كيس فكي","سائل في الفك","توسع عظم","خدر فك","إزاحة أسنان","غير مؤلم"], signs:"انتفاخ قاسي وغير مؤلم غالباً، قشر البيض عند الجس، إزاحة أسنان مجاورة", xray:"منطقة شفافية واضحة محددة الحواف مع حافة قشرية", treat:"استئصال جراحي (Enucleation) مع إرسال العينة للفحص النسيجي للتأكيد", diff:"توسع العظم + منطقة شفافة شعاعياً محددة الحواف + نمو بطيء غير مؤلم"},
-            {id:"gingivitis", name:"التهاب لثة (Gingivitis)", cat:"لثة", sev:"منخفض", keywords:["لثة نازفة","لثة حمراء","لثة متورمة","نزيف تفريش","قلح أسنان","رائحة فم","ألم خفيف لثة"], signs:"لثة حمراء، متورمة، نازفة عند الجس أو التفريش، فقدان النسيج البرتقالي", xray:"مستوى عظم طبيعي، لا يوجد فقدان عظمي", treat:"تنظيف احترافي (Scaling) + تعليمات نظافة فموية دقيقة + متابعة", diff:"قابل للشفاء بالكامل + لا يوجد فقدان عظمي شعاعياً + لا يوجد جيوب عميقة"},
-            {id:"perio", name:"التهاب دواعم سن (Periodontitis)", cat:"لثة/عظم", sev:"عالي", keywords:["حركة أسنان","جيوب لثوية","تراجع لثة","ارتشاف عظم","أسنان متطاولة","رخاوة أسنان","صديد لثة","قيح لثة","رائحة كريهة"], signs:"جيوب عميقة (>4mm)، حركة أسنان، تراجع لثة، نزيف، صديد، قيح، ارتشاف عظمي", xray:"ارتشاف عظمي أفقي أو عمودي واضح حول الجذور", treat:"كشط جذري (SRP) + صيانة دورية. جراحة لثوية أو مضادات حيوية في الحالات المتقدمة", diff:"غير قابل للشفاء التام (فقدان العظم دائم) + حركة أسنان + ارتشاف عظمي شعاعياً"},            {id:"recession", name:"تراجع لثة (Gingival Recession)", cat:"لثة", sev:"متوسط", keywords:["جذر مكشوف","لثة متراجعة","سن متطاول","حساسية جذر","انحسار لثة","فرشاة قاسية","تفريش خاطئ"], signs:"جذر مكشوف، أسنان تبدو أطول، حساسية للمؤثرات الباردة أو الحلوة", xray:"عظم سليم ولكن مستوى اللثة منخفض سريرياً", treat:"تعديل تقنية التفريش، معاجين حساسية، ترقيع لثوي (Graft) للحالات المتقدمة أو الجمالية", diff:"جذور مكشوفة + حساسية + مستوى لثة منخفض + غالباً تاريخ تفريش قوي"},
-            {id:"caries", name:"تسوس سني (Caries)", cat:"لب/أسنان", sev:"متوسط", keywords:["ألم بارد","ألم حلو","ألم ساخن","ثقب سن","حفرة سوداء","تسوس مرئي","حساسية عابرة","بقعة بنية"], signs:"تجويف نخري أو بقعة معتمة/بنية على السن. اختبار حيوية إيجابي (السن حي)، ألم عند اللمس، ألم عند العض، ألم عند الضغط", xray:"منطقة شفافة في المينا أو العاج", treat:"إزالة النخر + حشوة ترميمية. حماية لب وقائية إذا كان التسوس عميقاً وقريباً من العصب", diff:"الألم مؤقت ومثير فقط (يزول بزوال المثير) + السن حي + لا ألم ليلي ذاتي"},
-            {id:"pulpitis", name:"التهاب لبّي لا رجعي", cat:"لب/أسنان", sev:"عالي", keywords:["ألم نابض","ألم ليلي","ألم ذاتي","ألم لا ينام","ألم مستمر","طرق مؤلم","ألم يزداد","مسكنات لا تفيد"], signs:"استجابة مفرضة ومتأخرة الزوال للحرارة. السن حساس للطرق العمودي. قد لا يوجد تسوس ظاهر", xray:"غالباً طبيعي، أو اتساع بسيط بالرباط الذروي", treat:"علاج لبّي كامل (RCT) أو خلع السن. مسكنات قوية (NSAIDs) لتخفيف الألم مؤقتاً", diff:"الألم ذاتي (بدون مثير)، نابض، يستمر بعد زوال المثير، ويزداد ليلاً عند الاستلقاء"},
-            {id:"abscess", name:"خراج ذروي حاد", cat:"عدوى", sev:"طوارئ", keywords:["تورم وجه","صديد","قيح","حمى","ألم شديد نابض","فك منتفخ","بلع صعب","سن ميت","لا يستجيب للبرد"], signs:"تورم دهليزي/وجهي واضح. السن غير حي (نخر كامل، لا يستجيب لاختبار البرودة). عقدة ليمفاوية متضخمة", xray:"منطقة شفافية ذروية (Periapical Radiolucency)", treat:"تصريف طارئ للخراج + مضادات حيوية واسعة الطيف + مسكنات. علاج جذر أو قلع بعد زوال الالتهاب الحاد", diff:"سن غير حي + تورم/صديد + ألم نابض مستمر + قد يترافق مع أعراض عامة (حمى، تعب)"},
-            {id:"candida", name:"سلاق فموي (Oral Candidiasis)", cat:"فطريات", sev:"متوسط", keywords:["بقع بيضاء قابلة للمسح","بقع قابلة للكشط","يحترق فم","حس احتراق","جفاف فم","لسان أبيض","خد أبيض","مضاد حيوي","كورتيزون","طعم سيء"], signs:"بقع بيضاء كريمية قابلة للكشط وتترك سطحاً أحمر نازفاً. قد تكون مؤلمة أو محترقة", xray:"غير مطلوب", treat:"مضادات فطرية موضعية (Nystatin suspension) أو فموية (Fluconazole). علاج السبب (سكري، جفاف)", diff:"يتميز بكونه 'قابل للكشط' (Wipe-off). يختلف عن الطلاوة البيضاء التي لا تمسح"},
-            {id:"herpes", name:"الهربس البسيط (Herpes Simplex)", cat:"فيروسي", sev:"متوسط", keywords:["بثور فم","تقرحات شفتين","حمى فم","ألم حويصلات","فقاعات ماء","حكة قبل بثور","متجمعة","مؤلمة جداً"], signs:"تجمعات حويصلية صغيرة على قاعدة حمراء. على الشفة الخارجية أو الحنك الصلب/اللثة الملتصقة", xray:"غير مطلوب", treat:"علاج عرضي (مسكنات، غسول فم). مضادات فيروسات (Acyclovir) في الحالات الشديدة أو المبكرة", diff:"يتميز بـ: حويصلات سابقة للقرحة + تجمعات (Clusters). غالباً على الشفة أو الأنسجة الملتصقة"},
-            {id:"leukoplakia", name:"طلاوة بيضاء (Leukoplakia)", cat:"محتملة التسرطن", sev:"عالي", keywords:["بقعة بيضاء لا تمسح","لويحة بيضاء","تدخين","لثة بيضاء صلبة","لسان أبيض خشن","لا تختفي","أسبوعين"], signs:"بقعة بيضاء ملتصقة (Adherent) لا يمكن كشطها. قد تكون ملساء، متقرنة، أو متشققة", xray:"غير مطلوب (يحتاج خزعة Biopsy للتشخيص النهائي)", treat:"مراقبة دورية صارمة أو استئصال جراحي. الإقلاع عن التدخين إلزامي. خزعة لاستبعاد التحول السرطاني", diff:"يتميز بكونه 'غير قابل للكشط' (Non-wipe-off). يجب استبعاد السرطان دائماً بالخزعة"},
-            {id:"lichen", name:"الحزاز المسطح (Lichen Planus)", cat:"مناعي", sev:"متوسط", keywords:["خطوط بيضاء شبكة","دانتيل فم","خد أبيض خطوط","حكة لسان","ألم حار فم","ثنائي الجانب","مزمن"], signs:"خطوط بيضاء متشابكة (Wickham Striae) تشبه الدانتيل. غالباً ثنائي الجانب على الخدين داخلياً", xray:"غير مطلوب", treat:"كورتيزون موضعي (Gel) للأشكال المتآكلة المؤلمة. مراقبة دورية لاستبعاد التحول النادر", diff:"يتميز بـ: خطوط بيضاء متشابكة (Reticular) + ثنائية الجانب على الخدين + قد يكون مصحوباً بحكة"},
-            {id:"fibroma", name:"ورم ليفي رضّي (Traumatic Fibroma)", cat:"ورم حميد", sev:"منخفض", keywords:["كتلة خد ناعمة","بثرة لثة","عض خد متكرر","ورم مطاطي","غير مؤلم","نفس لون اللثة","بطيء النمو"], signs:"عقدة ملساء، لونها نفس لون الغشاء المخاطي المحيط. قوام مطاطي، غير مؤلم عند الجس", xray:"غير مطلوب", treat:"استئصال جراحي بسيط وإرسال العينة للفحص النسيجي للتأكيد على طبيعة الورم الحميدة", diff:"يتميز بكونه كتلة صلبة/مطاطية غير مؤلمة مرتبطة بصدمة ميكانيكية متكررة (عض الخد)"},
-            {id:"tmd", name:"اضطراب المفصل الفكي (TMD)", cat:"مفصل/عضلي", sev:"متوسط", keywords:["ألم مفصل الفك","طقطقة أذن","صعوبة فتح فم","ألم مضغ","صداع صباحي","تشنج عضلات","ضزز","صرير ليل","ألم أمام أذن"], signs:"ألم عند جس العضلات الماضغة أو المفصل، أصوات نقر/فرقعة عند الفتح، محدودية في مدى الفتح", xray:"غالباً طبيعي أو تغيرات تنكسية بسيطة في المفصل", treat:"راحة الفك (طعام طري)، كمادات دافئة، مسكنات، واقي ليلي لصرير الأسنان، علاج فيزيائي", diff:"يتميز بـ: ألم مفصلي/عضلي + أصوات مفصلية + صعوبة فتح + علاقة بالمضغ أو التوتر"},
-            {id:"malignancy", name:"ورم خبيث مشتبه (Squamous Cell Carcinoma)", cat:"سرطان/طوارئ", sev:"طوارئ", keywords:["قرحة لا تشفى 3 أسابيع","كتلة صلبة فم","نزيف فم غير مبرر","خدر شفة","تدخين كحول","ألم أذن","بلع صعب","وزن ناقص"], signs:"قرحة مقلوبة الحواف (Rolled borders)، قاعدة صلبة (Indurated)، نزيف سهل عند اللمس، نمو سريع", xray:"تآكل عظمي غير منتظم في المراحل المتقدمة", treat:"إحالة فورية لجراح فم وفكين أو أورام للفحص النسيجي (Biopsy). لا تأخير في الإحالة", diff:"⚠️ علامة الخطر: قرحة لا تشفى لأكثر من 3 أسابيع + صلابة في القاعدة + نزيف + عوامل خطر (تدخين)"}
+        // 🧠 بنك البيانات السريري الموسع والدقيق v10.0
+        const DB = [            {id:"ecc", name:"تسوس الطفولة المبكر (ECC)", cat:"أطفال", sev:"عالي", keywords:["أسنان سوداء","أسنان متآكلة","طفل","رضيع","رضاعة","زجاجة","أمامية","بكاء عند الأكل"], signs:"نخر واسع حول عنق القواطع العلوية، غالباً ثنائي الجانب", xray:"نخر يمتد لللب في مراحل متأخرة", treat:"ترميم زجاجي، لب لبنية، أو خلع + حافظ مساحة", diff:"سن لبنية + عمر <6 + رضاعة ليلية + توزيع مميز"},
+            {id:"pulp_child", name:"التهاب لب سن لبني", cat:"أطفال", sev:"عالي", keywords:["ألم طفل","سن لبني","تورم لثة","خراج","ناسور","يبكي","يمتنع"], signs:"ناسور لثوي فوق جذر سن لبني، حساسية شديدة للطرق", xray:"ارتشاف عظمي بين الجذور أو تحت التفرع", treat:"بتر لب (Pulpotomy) أو استئصال لب (Pulpectomy) أو خلع", diff:"سن لبني + ناسور + تاريخ تسوس عميق غير معالج"},
+            {id:"fluorosis", name:"التسمم الفلوري", cat:"تصبغات", sev:"منخفض", keywords:["بقع بيضاء","بقع بنية","مبقعة","فلورايد","ماء آبار","دائمة","غير مؤلم"], signs:"بقع طبشورية متناظرة على سطح الأسنان الدائمة", xray:"طبيعي", treat:"تبييض، راتنج، أو قشور حسب الشدة", diff:"توزيع متناظر + تاريخ تعرض للفلورايد + غير مؤلم"},
+            {id:"tetracycline", name:"تصبغ التتراسيكلين", cat:"تصبغات", sev:"متوسط", keywords:["رمادي","بني","خطوط","تتراسيكلين","حمل","أدوية","طفولة"], signs:"تصبغ منتشر رمادي/بني، قد يظهر كخطوط أفقية", xray:"طبيعي", treat:"تبييض داخلي، حشوات تجميلية، أو تيجان", diff:"لون موحد أو خطوط + تاريخ دوائي في مرحلة التكون"},
+            {id:"crowding", name:"تزاحم الأسنان", cat:"تقويم", sev:"منخفض", keywords:["ملتوية","معوجة","تزاحم","تراكب","صعبة التنظيف","جير"], signs:"تداخل التيجان، صعوبة استخدام الخيط، تراكم قلح", xray:"ازدحام جذري، نقص طول القوس", treat:"تقويم ثابت، قد يتطلب خلع أضراس أولية", diff:"مظهر مزدحم + صعوبة نظافة + غالباً بدون ألم حاد"},
+            {id:"diastema", name:"فراغات بين الأسنان", cat:"تقويم", sev:"منخفض", keywords:["فراغ","مسافة","تباعد","فتحة","متباعدة","أكل يعلق"], signs:"فراغات مرئية، خاصة بين القواطع المركزية", xray:"مسافة بين الجذور، عظم سليم", treat:"تقويم إغلاق، رابطة، أو قشور", diff:"مسافات واضحة + وظيفة مضغ سليمة عادة"},
+            {id:"malocclusion", name:"سوء الإطباق", cat:"تقويم", sev:"متوسط", keywords:["فك بارز","ذقن صغيرة","عضة معكوسة","عميقة","مفتوحة","مضغ صعب"], signs:"عدم تطابق الأسنان عند الإغلاق، مظهر جانبي غير متناسق", xray:"علاقة عظمية Class II أو III", treat:"تقويم تفاعلي أو جراحي بعد النمو", diff:"مشكلة إطباقية + قد تؤثر على المفصل أو النطق"},
+            {id:"peri_implantitis", name:"التهاب حول الزرعة", cat:"زراعة", sev:"عالي", keywords:["زرعة ملتهبة","نزيف زرعة","صديد","حركة","انكشاف","معدني"], signs:"نزيف/صديد عند الجس، حركة الغطاء أو الجسم، ارتشاف عظمي", xray:"فقدان عظمي حول الزرعة (>3mm)", treat:"تنظيف سطح، مضادات حيوية، جراحة ترميمية أو إزالة", diff:"وجود زرعة + التهاب نسيجي + فقدان عظمي شعاعياً"},
+            {id:"edentulism", name:"فقدان الأسنان", cat:"تعويضات", sev:"متوسط", keywords:["مفقود","فارغ","قلع","انزياح","بروز","مضغ صعب"], signs:"فراغ في القوس، ميلان أسنان مجاورة، بروز مضاد", xray:"عظم مرتشف أو سليم حسب مدة الفقد", treat:"زراعة، جسر، أو طقم متحرك", diff:"سن مفقود + تغيرات إطباقية ثانوية"},
+            {id:"denture_stomatitis", name:"التهاب تحت الطقم", cat:"تعويضات", sev:"منخفض", keywords:["طقم","احمرار حنك","حرق","فطريات","نوم بطقم"], signs:"احمرار منتشر تحت قاعدة الطقم العلوي، غالباً بدون ألم", xray:"غير مطلوب", treat:"تعقيم الطقم، عدم النوم به، مضاد فطري موضعي", diff:"مرتبط بارتداء الطقم ليلاً + سوء نظافة الطقم"},
+            {id:"impacted", name:"سن منطمر", cat:"جراحة", sev:"متوسط", keywords:["منطمر","مدفون","عقل","لم يطلع","ألم خلفي","غطاء"], signs:"غطاء لثوي ملتهب، ألم عند المضغ، رائحة", xray:"سن داخل العظم بزاوية أو أفقي", treat:"قلع جراحي أو بزوغ موجه", diff:"غير بازر سريرياً + موجود شعاعياً + أعراض التهابية"},
+            {id:"dry_socket", name:"جفاف السنخ", cat:"جراحة", sev:"متوسط", keywords:["ألم بعد خلع","رائحة كريهة","فراغ فارغ","يومين","ثلاثة"], signs:"سنخ عظمي مكشوف، رائحة نتنة، ألم شديد يشع للأذن", xray:"سنخ فارغ من الخثرة الدموية", treat:"تنظيف سنخ، وضع ضماد طبي، مسكنات", diff:"يبدأ بعد 48-72 ساعة من القلع + ألم شديد + رائحة"},
+            {id:"cyst", name:"كيسة فكية", cat:"جراحة", sev:"عالي", keywords:["تورم فك","انتفاخ","كيس","سائل","توسع","خدر","غير مؤلم"], signs:"انتفاخ قاسي، قشر البيض، إزاحة أسنان", xray:"شفافية محددة بحافة قشرية", treat:"استئصال جراحي + فحص نسيجي", diff:"توسع عظمي بطيء + شفافية شعاعية مميزة"},
+            {id:"gingivitis", name:"التهاب لثة", cat:"لثة", sev:"منخفض", keywords:["نازفة","حمراء","متورمة","تفريش","قلح","رائحة"], signs:"احمرار، تورم، نزيف عند الجس، فقدان التنقيط", xray:"مستوى عظم طبيعي", treat:"تنظيف احترافي + تعليمات نظافة", diff:"عكوس + لا فقدان عظمي + نزيف هو العرض الرئيسي"},
+            {id:"perio", name:"التهاب دواعم سن مزمن", cat:"لثة", sev:"عالي", keywords:["حركة","جيوب","تراجع","ارتشاف","متطاولة","رخوة","صديد"], signs:"جيوب >4mm، حركة، نزيف، صديد، ارتشاف عظمي", xray:"فقدان عظمي أفقي/عمودي", treat:"كشط جذري، جراحة لثوية، صيانة صارمة", diff:"غير عكوس + فقدان عظمي + حركة أسنان"},
+            {id:"nug", name:"التهاب لثة نخري حاد", cat:"لثة", sev:"عالي", keywords:["ألم شديد لثة","نزيف تلقائي","رائحة كريهة","حمى","تدخين","إجهاد"], signs:"حليمات بين السنية متقرحة ومغطاة بغشاء رمادي، نزيف سهل", xray:"غير محدد غالباً", treat:"تنظيف لطيف، ميترونيدازول، غسول كلورهيكسيدين", diff:"ألم شديد مفاجئ + تقرح حليمات + رائحة مميزة + عوامل خطر"},
+            {id:"caries", name:"تسوس سني", cat:"لب", sev:"متوسط", keywords:["بارد","حلو","ثقب","حفرة","حساسية عابرة","بقعة"], signs:"تجويف نخرى، اختبار حيوية طبيعي", xray:"شفافية في المينا/العاج", treat:"ترميم مباشر، حماية لب إذا عميق", diff:"ألم مثير فقط + يزول فوراً + سن حي"},
+            {id:"reversible_pulpitis", name:"التهاب لب رجعي", cat:"لب", sev:"منخفض", keywords:["ألم بارد","يزول سريعاً","حشو حديث","تسوس سطحي"], signs:"استجابة طبيعية أو مفرطة قليلاً للبرد، تزول فوراً", xray:"طبيعي أو تسوس قريب من اللب", treat:"إزالة المهيج، ترميم وقائي، مراقبة", diff:"ألم قصير <30 ثانية + لا ألم ليلي + سن حي"},
+            {id:"irreversible_pulpitis", name:"التهاب لب لا رجعي", cat:"لب", sev:"عالي", keywords:["نابض","ليلي","ذاتي","مستمر","لا ينام","مسكنات","يزيد"], signs:"استجابة مفرطة متأخرة الزوال، حساسية للحرارة", xray:"طبيعي أو اتساع رباط", treat:"علاج جذر أو قلع", diff:"ألم ذاتي + يستمر بعد المثير + يزداد ليلاً"},
+            {id:"pulp_necrosis", name:"نخر لب", cat:"لب", sev:"عالي", keywords:["سن ميت","لا يستجيب","تغير لون","غير مؤلم","كسر"], signs:"سن غير حي، قد يتغير لونه، لا يستجيب للبرودة", xray:"طبيعي أو بداية شفافية ذروية", treat:"علاج جذر أو قلع", diff:"عدم الاستجابة للفحوصات الحيوية + تاريخ رض أو تسوس عميق"},
+            {id:"cracked_tooth", name:"متلازمة السن المتشقق", cat:"لب/رضوض", sev:"عالي", keywords:["ألم عند المضغ","ألم عند الفك","حاد","مفاجئ","بارد"], signs:"ألم عند إطلاق العض، قد لا يظهر كسر واضح", xray:"غالباً طبيعي", treat:"تاج كامل، علاج جذر إذا وصل لللب", diff:"ألم حاد عند فك الأسنان بعد العض + صعوبة التحديد"},
+            {id:"abscess", name:"خراج ذروي حاد", cat:"عدوى", sev:"طوارئ", keywords:["تورم وجه","صديد","قيح","حمى","نابض","بلع","فك"], signs:"تورم متموج، سن غير حي، عقد لمفاوية", xray:"شفافية ذروية", treat:"تصريف، مضادات حيوية، علاج جذر لاحقاً", diff:"تورم + صديد + سن غير حي + أعراض جهازية"},
+            {id:"cellulitis", name:"التهاب نسيج خلوي فكي", cat:"عدوى", sev:"طوارئ", keywords:["تورم منتشر","صلب","حمى","صعوبة تنفس","بلع","انتشار"], signs:"تورم صلب منتشر، احمرار، حرارة، أعراض تسممية", xray:"غير محدد", treat:"مضادات حيوية وريدية، تصريف، مراقبة مجرى هواء", diff:"تورم صلب منتشر + أعراض جهازية + خطر انسداد هوائي"},
+            {id:"candida", name:"سلاق فموي", cat:"أنسجة", sev:"متوسط", keywords:["أبيض","يمسح","يحترق","جفاف","مضاد","كورتيزون"], signs:"بقع كريمية قابلة للكشط، سطح أحمر نازف", xray:"غير مطلوب", treat:"نيستاتين، فلوكنازول، معالجة السبب", diff:"قابل للكشط + حرق + عوامل مؤهبة (مناعة، أدوية)"},
+            {id:"herpes", name:"الهربس الفموي", cat:"فيروسي", sev:"متوسط", keywords:["بثور","فقاعات","شفتين","حمى","ألم","متجمعة"], signs:"حويصلات صغيرة متجمعة تنفجر لتقرحات", xray:"غير مطلوب", treat:"أسيكلوفير مبكر، مسكنات، سوائل", diff:"حويصلات سابقة + تجمعات + غالباً خارج الفم أو حنك صلب"},
+            {id:"aphthous", name:"قرحة قلاعية", cat:"أنسجة", sev:"منخفض", keywords:["قرحة بيضاء","أصفر","أحمر","مؤلمة","تعود","إجهاد"], signs:"قرحة بيضاء/صفراء محاطة بهالة حمراء، غير معدية", xray:"غير مطلوب", treat:"كورتيزون موضعي، غسول، تجنب المهيجات", diff:"ألم شديد + تعود متكرر + لا حويصلات سابقة"},
+            {id:"leukoplakia", name:"طلاوة بيضاء", cat:"أنسجة", sev:"عالي", keywords:["أبيض","لا تمسح","تدخين","صلبة","خشن"], signs:"لويحة بيضاء ملتصقة، لا تنكشط", xray:"غير مطلوب", treat:"مراقبة، استئصال، خزعة إلزامية", diff:"غير قابل للكشط + خطر تسرطن + ارتباط بالتدخين"},
+            {id:"lichen", name:"الحزاز المسطح", cat:"مناعي", sev:"متوسط", keywords:["شبكة","دانتيل","أبيض","ثنائي","حكة","مر"], signs:"خطوط بيضاء متشابكة، غالباً ثنائية على الخدين", xray:"غير مطلوب", treat:"كورتيزون موضعي للأشكال المتآكلة", diff:"نمط شبكي + ثنائي الجانب + قد يصاحب الجلد"},
+            {id:"fibroma", name:"ورم ليفي", cat:"أنسجة", sev:"منخفض", keywords:["كتلة","نفس اللون","مطاطي","عض","غير مؤلم"], signs:"عقدة ملساء بلون الغشاء، غير مؤلمة", xray:"غير مطلوب", treat:"استئصال بسيط + فحص نسيجي", diff:"قوام مطاطي + مرتبط بصدمة مزمنة + غير مؤلم"},
+            {id:"mucocele", name:"كيسة مخاطية", cat:"غدد", sev:"منخفض", keywords:["شفة","كيس","أزرق","شفاف","ينفجر","يعود"], signs:"تورم شفاف/أزرق على الشفة السفلية، يتغير حجمه", xray:"غير مطلوب", treat:"استئصال الغدة المصابة + الكيسة", diff:"موقع شائع (شفة سفلية) + شفاف + يعود بعد الانفجار"},
+            {id:"tmd_myofascial", name:"ألم عضلي مفصلي", cat:"مفصل", sev:"متوسط", keywords:["ألم عضلات","صداع","طحن","تشنج","أذن","فك"], signs:"ألم عند جس العضلات، محدودية فتح، أصوات", xray:"طبيعي", treat:"راحة، كمادات، واقي ليلي، علاج فيزيائي", diff:"ألم عضلي منتشر + علاقة بالتوتر أو الصرير"},
+            {id:"tmd_disc", name:"إزاحة قرص المفصل", cat:"مفصل", sev:"متوسط", keywords:["طقطقة","فرقعة","قفل","فتح صعب","انزياح"], signs:"صوت نقر عند الفتح/الإغلاق، قد يحدث قفل مؤقت", xray:"MRI أو CBCT للقرص", treat:"واقي، علاج تحفظي، جراحة نادرة", diff:"أصوات مفصلية مميزة + تاريخ قفل أو انزياح"},
+            {id:"fracture", name:"كسر فك", cat:"رضوض/طوارئ", sev:"طوارئ", keywords:["ضربة","سقوط","نزيف","سوء إطباق","تنميل","خطوة"], signs:"خطوة في العظم، سوء إطباق مفاجئ، خدر شفة", xray:"خط كسر في OPG أو CT", treat:"تثبيت فكي أو صفائح وجراحي", diff:"رضة حديثة + سوء إطباق مفاجئ + خدر أو خطوة عظمية"},
+            {id:"malignancy", name:"ورم فموي خبيث", cat:"أورام", sev:"طوارئ", keywords:["قرحة لا تشفى","صلبة","نزيف","خدر","وزن","تدخين"], signs:"قرحة مقلوبة الحواف، قاعدة صلبة، نزيف سهل", xray:"تآكل عظمي غير منتظم", treat:"إحالة فورية للخزعة والعلاج المتعدد", diff:">3 أسابيع + صلابة + نزيف + عوامل خطر عالية"}
         ];
 
         const SYNONYMS = {
-            'يوجعني':'ألم','وجع':'ألم','موجع':'ألم','بيوجع':'ألم','الم':'ألم','مؤلم':'ألم','إيلام':'ألم','يؤلم':'ألم','ألم نابض':'ألم نابض','نابض':'ألم نابض','خفقان':'ألم نابض','ألم ليلي':'ألم ليلي','ليل':'ألم ليلي','بالليل':'ألم ليلي','يسهر':'ألم ليلي','ضرس':'سن','اضراس':'أسنان','سنان':'أسنان','سني':'أسنان','سنا':'أسنان','ضروس':'أسنان','سن لبني':'سن لبني','لبنية':'سن لبني','حليب':'سن لبني','طفل':'سن لبني','أسنان دائمة':'أسنان دائمة','دائمة':'أسنان دائمة','سن منخور':'تسوس','منخور':'تسوس','لثتي':'لثة','لثه':'لثة','لثتها':'لثة','لثته':'لثة','نزيف لثة':'نزيف','ينزف':'نزيف','دم لثة':'نزيف','لثة حمراء':'احمرار','محمر':'احمرار','لثة متورمة':'تورم','منتفخة':'تورم','لثة متراجعة':'تراجع لثة','متراجعة':'تراجع لثة','صديد':'صديد','قيح':'صديد','خرّاج':'صديد','خراج':'صديد','دمل':'صديد','حمى':'حمى','حرارة':'حمى','ارتفاع حرارة':'حمى','تورم وجه':'تورم','وجه منتفخ':'تورم','فك منتفخ':'تورم','ثقب سن':'نخر','حفرة':'نخر','أسود سن':'نخر','بني سن':'نخر','حساس بارد':'حساسية','حساس حلو':'حساسية','ألم عابر':'حساسية','جير':'قلح','قلح':'قلح','ترسبات':'قلح','ألم مستمر':'ألم مستمر','لا يوقف':'ألم مستمر','دائم':'ألم مستمر','طرق مؤلم':'طرق مؤلم','نقر مؤلم':'طرق مؤلم','مسكنات لا تفيد':'مسكنات لا تفيد','مبقع':'تصبغ','بقع':'تصبغ','مبقعة':'تصبغ','منقطة':'تصبغ','بيضاء':'أبيض','بنية':'بني','رمادية':'رمادي','غامقة':'غامق','فلور':'فلورايد','آبار':'فلورايد','تتراسيكلين':'تتراسيكلين','مفصل الفك':'مفصل','ألم مفصل':'مفصل','طقطقة':'طقطقة','فرقعة':'طقطقة','صوت فتح':'طقطقة','صعوبة فتح':'صعوبة فتح','قفل فك':'صعوبة فتح','ضزز':'صرير','صرير':'صرير','سلاق':'قلاع','قلاع':'قلاع','منطمر':'مطمور','مطمور':'مطمور','لم يبزغ':'منطمر','الفك':'فك','صعوبة':'صعب','فتح':'مفتوح','تشنج':'تصلب','رضة':'ضربة','سقوط':'وقع','زرعة':'زراعة','زرع':'زراعة','طقم':'بدلة','بدلة':'طقم','متحرك':'بدلة','ملتوي':'تزاحم','معوج':'تزاحم','فراغ':'مسافة','أسنان متطاولة':'حركة أسنان','متطاولة':'حركة أسنان','رخاوة أسنان':'حركة أسنان','رخوة':'حركة أسنان','حس احتراق':'يحترق فم','قابلة للمسح':'قابلة للكشط','تراكب':'تزاحم','متزاحمة':'تزاحم','متراكبة':'تزاحم','الم عند اللمس':'ألم عند اللمس','الم عند العض':'ألم عند العض','الم عند الضغط':'ألم عند الضغط'
+            'يوجعني':'ألم','وجع':'ألم','موجع':'ألم','بيوجع':'ألم','الم':'ألم','مؤلم':'ألم','إيلام':'ألم','يؤلم':'ألم','ألم نابض':'ألم نابض','نابض':'ألم نابض','خفقان':'ألم نابض','ألم ليلي':'ألم ليلي','ليل':'ألم ليلي','بالليل':'ألم ليلي','يسهر':'ألم ليلي','ضرس':'سن','اضراس':'أسنان','سنان':'أسنان','سني':'أسنان','سنا':'أسنان','ضروس':'أسنان','سن لبني':'سن لبني','لبنية':'سن لبني','حليب':'سن لبني','طفل':'سن لبني','أسنان دائمة':'أسنان دائمة','دائمة':'أسنان دائمة','سن منخور':'تسوس','منخور':'تسوس','لثتي':'لثة','لثه':'لثة','لثتها':'لثة','لثته':'لثة','نزيف لثة':'نزيف','ينزف':'نزيف','دم لثة':'نزيف','لثة حمراء':'احمرار','محمر':'احمرار','لثة متورمة':'تورم','منتفخة':'تورم','لثة متراجعة':'تراجع لثة','متراجعة':'تراجع لثة','صديد':'صديد','قيح':'صديد','خرّاج':'صديد','خراج':'صديد','دمل':'صديد','حمى':'حمى','حرارة':'حمى','ارتفاع حرارة':'حمى','تورم وجه':'تورم','وجه منتفخ':'تورم','فك منتفخ':'تورم','ثقب سن':'نخر','حفرة':'نخر','أسود سن':'نخر','بني سن':'نخر','حساس بارد':'حساسية','حساس حلو':'حساسية','ألم عابر':'حساسية','جير':'قلح','قلح':'قلح','ترسبات':'قلح','ألم مستمر':'ألم مستمر','لا يوقف':'ألم مستمر','دائم':'ألم مستمر','طرق مؤلم':'طرق مؤلم','نقر مؤلم':'طرق مؤلم','مسكنات لا تفيد':'مسكنات لا تفيد','مبقع':'تصبغ','بقع':'تصبغ','مبقعة':'تصبغ','منقطة':'تصبغ','بيضاء':'أبيض','بنية':'بني','رمادية':'رمادي','غامقة':'غامق','فلور':'فلورايد','آبار':'فلورايد','تتراسيكلين':'تتراسيكلين','مفصل الفك':'مفصل','ألم مفصل':'مفصل','طقطقة':'طقطقة','فرقعة':'طقطقة','صوت فتح':'طقطقة','صعوبة فتح':'صعوبة فتح','قفل فك':'صعوبة فتح','ضزز':'صرير','صرير':'صرير','سلاق':'قلاع','قلاع':'قلاع','منطمر':'مطمور','مطمور':'مطمور','لم يبزغ':'منطمر','الفك':'فك','صعوبة':'صعب','فتح':'مفتوح','تشنج':'تصلب','رضة':'ضربة','سقوط':'وقع','زرعة':'زراعة','زرع':'زراعة','طقم':'بدلة','بدلة':'طقم','متحرك':'بدلة','ملتوي':'تزاحم','معوج':'تزاحم','فراغ':'مسافة','أسنان متطاولة':'حركة أسنان','متطاولة':'حركة أسنان','رخاوة أسنان':'حركة أسنان','رخوة':'حركة أسنان','حس احتراق':'يحترق فم','قابلة للمسح':'قابلة للكشط','تراكب':'تزاحم','متزاحمة':'تزاحم','متراكبة':'تزاحم','الم عند اللمس':'ألم عند اللمس','الم عند العض':'ألم عند العض','الم عند الضغط':'ألم عند الضغط','ألم بعد خلع':'جفاف السنخ','فراغ فارغ':'جفاف السنخ','رائحة كريهة':'جفاف السنخ','قرحة بيضاء':'قلاعية','أصفر':'قلاعية','تعود':'قلاعية','إجهاد':'قلاعية','شبكة':'حزاز','دانتيل':'حزاز','ثنائي':'حزاز','مر':'حزاز','كتلة':'ورم ليفي','نفس اللون':'ورم ليفي','مطاطي':'ورم ليفي','عض':'ورم ليفي','غير مؤلم':'ورم ليفي','شفة':'كيسة مخاطية','كيس':'كيسة مخاطية','أزرق':'كيسة مخاطية','شفاف':'كيسة مخاطية','ينفجر':'كيسة مخاطية','يعود':'كيسة مخاطية','ألم عضلات':'ألم عضلي مفصلي','صداع':'ألم عضلي مفصلي','طحن':'ألم عضلي مفصلي','تشنج':'ألم عضلي مفصلي','أذن':'ألم عضلي مفصلي','انزياح':'إزاحة قرص المفصل','خطوة':'كسر فك','تنميل':'كسر فك','سوء إطباق':'كسر فك','قرحة لا تشفى':'ورم فموي خبيث','صلبة':'ورم فموي خبيث','خدر':'ورم فموي خبيث','وزن':'ورم فموي خبيث'
         };
 
         function norm(t){ return t.normalize('NFKD').replace(/[\u064B-\u065F\u0670]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').toLowerCase().trim(); }
@@ -364,36 +289,38 @@
             const text = $('sym').value.trim();
             if(!text) return toast('اكتب الأعراض بدقة');
             const btn = document.querySelector('#diag .btn');
-            btn.disabled = true; btn.textContent = '⏳ جاري التحليل العلمي...';
+            btn.disabled = true; btn.textContent = '⏳ جاري التحليل السريري...';
             setTimeout(() => {
                 const n = norm(text);
-                const words = n.split(/\s+/).filter(w => w.length > 2);
-                let results = DB.map(disease => {
+                const words = n.split(/\s+/).filter(w => w.length > 2);                let results = DB.map(disease => {
                     let score = 0, matched = [];
                     disease.keywords.forEach(kw => {
                         const nk = norm(kw);
                         if(n.includes(nk)) { score += 15; matched.push(kw); }
                         else if(words.some(w => { const syn = SYNONYMS[w]; return syn && nk.includes(norm(syn)); })) { score += 10; matched.push(kw); }
                     });
-                    if(disease.id === 'pulpitis' && n.includes('ليل') && (n.includes('نابض') || n.includes('يزيد'))) score += 20;
+                    if(disease.id === 'irreversible_pulpitis' && n.includes('ليل') && (n.includes('نابض') || n.includes('يزيد'))) score += 20;
                     if(disease.id === 'abscess' && n.includes('تورم') && (n.includes('صديد') || n.includes('قيح'))) score += 25;
                     if(disease.id === 'caries' && (n.includes('بارد') || n.includes('ساخن')) && n.includes('حلو')) score += 15;
                     if(disease.id === 'ecc' && (n.includes('طفل') || n.includes('رضيع')) && (n.includes('أسود') || n.includes('متآكل'))) score += 20;
                     if(disease.id === 'fluorosis' && n.includes('بقع') && (n.includes('أبيض') || n.includes('بني'))) score += 15;
-                    if(disease.id === 'tmd' && n.includes('فك') && (n.includes('طقطقة') || n.includes('صعب') || n.includes('ضزز'))) score += 15;
+                    if(disease.id.includes('tmd') && n.includes('فك') && (n.includes('طقطقة') || n.includes('صعب') || n.includes('ضزز'))) score += 15;
                     if(disease.id === 'malignancy' && n.includes('قرحة') && n.includes('أسبوع')) score += 25;
                     if(disease.id === 'perio' && (n.includes('قلح') || n.includes('جير')) && n.includes('نزيف')) score += 15;
+                    if(disease.id === 'dry_socket' && n.includes('ألم') && n.includes('بعد') && n.includes('يوم')) score += 20;
+                    if(disease.id === 'nug' && n.includes('رائحة') && n.includes('نزيف') && n.includes('ألم')) score += 20;
                     return { ...disease, score, matched: [...new Set(matched)] };
                 });
                 let filtered = results.filter(r => r.score >= 15 && r.matched.length > 0).sort((a, b) => b.score - a.score).slice(0, 3);
                 filtered = filtered.map(r => {
-                    const confidence = Math.min(95, Math.round((r.score / 50) * 100));
+                    const confidence = Math.min(95, Math.round((r.score / 55) * 100));
                     const level = confidence > 75 ? 'عالية' : confidence > 45 ? 'متوسطة' : 'منخفضة';
                     const badgeClass = confidence > 75 ? 'conf-high' : confidence > 45 ? 'conf-mid' : 'conf-low';
-                    return { ...r, confidence, level, badgeClass };                });
-                let html = `<div class="clinical-report"><div class="report-header"><div class="report-title">📊 التقرير السريري التعليمي</div><span style="font-size:11px;color:#64748b">محرك الخبير العلمي v9.5 (كامل)</span></div>`;
+                    return { ...r, confidence, level, badgeClass };
+                });
+                let html = `<div class="clinical-report"><div class="report-header"><div class="report-title">📊 التقرير السريري التعليمي</div><span style="font-size:11px;color:#64748b">محرك الخبير v10.0 (شامل)</span></div>`;
                 if(filtered.length === 0) {
-                    html += `<div class="empty">⚠️ لم يتم العثور على تطابق طبي دقيق.<br><br>💡 نصائح لتحسين النتائج:<br>• اكتب الأعراض بشكل كامل<br>• حدد مكان الألم بدقة<br>• اذكر المحفزات (بارد، حلو، مضغ)</div>`;
+                    html += `<div class="empty">⚠️ لم يتم العثور على تطابق طبي دقيق.<br><br>💡 نصائح:<br>• اكتب الأعراض بشكل كامل ومفصل<br>• حدد الموقع بدقة (سن، لثة، خد، لسان)<br>• اذكر المحفزات (بارد، حلو، مضغ، تلقائي)<br>• اذكر المدة والعمر إن أمكن</div>`;
                 } else {
                     filtered.forEach((r, i) => {
                         const borderColor = r.sev === 'طوارئ' ? '#ef4444' : '#3b82f6';
@@ -414,11 +341,10 @@
                             ${r.sev === 'طوارئ' ? `<div class="emergency-box">🚨 تنبيه طوارئ: ${r.treat.split('.')[0]}. إحالة فورية مطلوبة!</div>` : ''}
                         </div>`;
                     });
-                }
-                html += `<div style="background:#fef2f2;border:2px solid #fecaca;color:#b91c1c;padding:10px;border-radius:8px;margin-top:12px;text-align:center;font-size:12px">⚠️ تنبيه أكاديمي: هذا التحليل تعليمي للمحاكاة فقط.</div></div>`;
+                }                html += `<div style="background:#fef2f2;border:2px solid #fecaca;color:#b91c1c;padding:10px;border-radius:8px;margin-top:12px;text-align:center;font-size:12px">⚠️ تنبيه أكاديمي: هذا التحليل تعليمي للمحاكاة ولا يغني عن الفحص السريري المباشر.</div></div>`;
                 $('res').innerHTML = html;
                 $('res').scrollIntoView({behavior:'smooth'});
-                btn.disabled = false; btn.textContent = '🔍 تحليل الخبير العلمي';
+                btn.disabled = false; btn.textContent = '🔍 تحليل الخبير السريري';
             }, 200);
         }
 
@@ -433,7 +359,7 @@
                 } catch(e) { localStorage.removeItem('d_session'); } 
             }
         };
-        window.showReg = showReg; window.showLogin = showLogin; window.doLogin = doLoginComplex; window.doRegister = doRegister;
+        window.showReg = showReg; window.showLogin = showLogin; window.doLoginComplex = doLoginComplex; window.doRegister = doRegister;
         window.doLogout = doLogout; window.goDiag = goDiag; window.goAdmin = goAdmin; window.upd = upd; window.del = del;
     </script>
 </body>
