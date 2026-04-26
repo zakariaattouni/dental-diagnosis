@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>تشخيص شامل | الخبير السريري v12.2</title>
+    <title>تشخيص شامل | الخبير السريري v13.0</title>
     <style>
         :root { --bg: linear-gradient(135deg, #0f172a, #1e3a8a); --card: #ffffff; --primary: #2563eb; --success: #10b981; --warn: #f59e0b; --danger: #ef4444; --text: #0f172a; --muted: #64748b; --border: #e2e8f0; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -96,8 +96,7 @@
             <div class="logo">🦷</div>
             <h1>تشخيص شامل للفم والأسنان</h1>
             <p class="sub">نظام إدارة العيادة والخبير السريري المتعدد</p>
-            <!-- ✅ تم تعديل حقل الإدخال ليكون مرناً -->            <input type="text" id="login-input" class="input" placeholder="البريد أو كلمة المرور أو الاسم">
-            <button class="btn" onclick="doLoginComplex()">دخول</button>
+            <input type="text" id="login-input" class="input" placeholder="البريد أو كلمة المرور أو الاسم">            <button class="btn" onclick="doLoginComplex()">دخول</button>
             <span class="link" onclick="showReg()">📝 تسجيل طبيب جديد</span>
         </div>
         <div class="auth-card hide" id="reg-card">
@@ -132,25 +131,21 @@
                         <div class="stat"><div class="stat-num" id="c-t">0</div><div class="stat-label">الكل</div></div>
                     </div>
                 </div>
-                
-                <!-- 🔔 تنبيهات طلبات التفعيل الدائم (للمدير فقط) -->
                 <div id="activation-requests"></div>
-                
                 <div class="card contributors-section">
                     <h3>🏆 المساهمون في تطوير القاعدة العلمية</h3>
                     <p style="font-size:12px; color:#666; margin-bottom:10px;">أفضل الطلاب الذين ساهموا بتصحيح الأخطاء التشخيصية:</p>
                     <div id="contributors-list"><div class="empty">جاري التحميل...</div></div>
                 </div>
-
                 <div class="card">
                     <h3>📥 طلبات التفعيل <button class="act-btn act-ok" onclick="load()" style="float:left;font-size:11px">🔄 تحديث</button></h3>
                     <div id="req-list" class="empty">لا توجد طلبات</div>
-                </div>                <div class="card">
+                </div>
+                <div class="card">
                     <h3>👥 سجل الأطباء</h3>
                     <div class="table-wrap">
                         <table>
-                            <thead><tr><th>الاسم</th><th>البريد</th><th>الحالة</th><th>المساهمات</th><th>إجراء</th></tr></thead>
-                            <tbody id="u-tbl"></tbody>
+                            <thead><tr><th>الاسم</th><th>البريد</th><th>الحالة</th><th>المساهمات</th><th>إجراء</th></tr></thead>                            <tbody id="u-tbl"></tbody>
                         </table>
                     </div>
                 </div>
@@ -161,7 +156,7 @@
                 <div class="card">
                     <h3>📋 الوصف السريري للحالة</h3>
                     <p style="font-size:12px;color:#64748b;margin-bottom:10px;">💡 <b>موجه للطالب:</b> اكتب الأعراض بدقة. ساهم في تحسين النظام بتقييم النتائج!</p>
-                    <textarea id="sym" placeholder="مثال: بقعة بيضاء على اللسان تقبل المسح..."></textarea>
+                    <textarea id="sym" placeholder="مثال: بقعة بيضاء على اللسان تقبل المسح... أو ألم خلف ضرس العقل..."></textarea>
                     <button class="btn" onclick="runDiagnosis()">🔍 تحليل الخبير السريري</button>
                 </div>
                 <div id="res"></div>
@@ -173,7 +168,7 @@
             <div>
                 <a href="https://wa.me/963939436998" target="_blank" class="wa-btn">📱 أرسل ملاحظاتك</a>
             </div>
-            <div style="font-size:12px; opacity:0.85; margin-top:4px;">تصميم وتطوير الدكتور زكريا محمد عطوني - سوريا | الإصدار المحمي تجارياً</div>
+            <div style="font-size:12px; opacity:0.85; margin-top:4px;">تصميم وتطوير الدكتور زكريا محمد عطوني - سوريا | الإصدار الموسع v13.0</div>
         </footer>
     </div>
     <div class="toast" id="toast"></div>
@@ -191,67 +186,25 @@
         const showLogin=()=>{ $('reg-card').classList.add('hide'); $('login-card').classList.remove('hide'); };
         
         const SECRET_KEY = "9591melas";
-        
-        // ✅ آلية دخول مرنة: تبحث بالاسم أو البريد أو كلمة المرور
         const doLoginComplex = () => {
-             const input = $('login-input').value.trim();             const btn = document.querySelector('#login-card .btn');
-             
+             const input = $('login-input').value.trim();
+             const btn = document.querySelector('#login-card .btn');
              if(!input) return toast('⚠️ أدخل بيانات الدخول');
              btn.disabled = true; btn.textContent = '⏳ جاري التحقق...';
-
-             // 1. فحص المدير أولاً
              if (input === SECRET_KEY || input.split('').reverse().join('') === SECRET_KEY) {
-                 user = { name: 'المدير', role: 'admin' };
-                 saveSession();
-                 enterApp();
-                 $('admin').classList.add('active');
-                 $('diag').classList.remove('active');
-                 loadActivationRequests();
-                 loadContributors(); 
-                 if(db) load();
-                 toast('✅ تم الدخول كمدير');
-                 btn.disabled = false; btn.textContent = 'دخول';
-                 return;
+                 user = { name: 'المدير', role: 'admin' }; saveSession(); enterApp();
+                 $('admin').classList.add('active'); $('diag').classList.remove('active');
+                 loadActivationRequests(); loadContributors(); if(db) load();                 toast('✅ تم الدخول كمدير'); btn.disabled = false; btn.textContent = 'دخول'; return;
              }
-
              if(!db) { toast('❌ لا يوجد اتصال'); btn.disabled = false; btn.textContent = 'دخول'; return; }
-
-             // 2. البحث عن المستخدم في قاعدة البيانات (بالاسم أو البريد أو كلمة المرور)
              db.ref('users').once('value').then(snap => {
                  let found = null;
-                 if(snap.exists()) {
-                     snap.forEach(child => {
-                         const u = child.val();
-                         // مطابقة مرنة: إذا تطابق الاسم أو البريد أو كلمة المرور
-                         if(u.name === input || u.email === input || u.pass === input) {
-                             found = { id: child.key, ...u };
-                         }
-                     });
-                 }
-
-                 if(!found) {
-                     toast('❌ بيانات غير صحيحة أو حساب غير موجود');
-                 } else if(found.status === 'pending') {
-                     // السماح للمعلق بالدخول للتشخيص فقط
-                     user = { ...found, role: 'doc' };
-                     saveSession();
-                     enterApp();
-                     $('admin').classList.remove('active');
-                     $('diag').classList.add('active');
-                     toast('⏳ حسابك قيد المراجعة، يمكنك استخدام أداة التشخيص!');
-                 }
-                 else if(['active', 'permanent', 'temp'].includes(found.status)) {
-                     // دخول كامل للمستخدمين المفعلين
-                     user = { ...found, role: 'doc' };
-                     saveSession();                     enterApp();
-                     $('admin').classList.remove('active');
-                     $('diag').classList.add('active');
-                     toast('✅ أهلاً بك يا د/ ' + user.name);
-                 } else {
-                     toast('❌ الحساب غير مفعل أو مرفوض');
-                 }
-             }).catch(() => toast('❌ خطأ في الاتصال'))
-             .finally(() => { btn.disabled = false; btn.textContent = 'دخول'; });
+                 if(snap.exists()) { snap.forEach(child => { const u = child.val(); if(u.name === input || u.email === input || u.pass === input) found = { id: child.key, ...u }; }); }
+                 if(!found) toast('❌ بيانات غير صحيحة');
+                 else if(found.status === 'pending') { user = { ...found, role: 'doc' }; saveSession(); enterApp(); $('admin').classList.remove('active'); $('diag').classList.add('active'); toast('⏳ حسابك قيد المراجعة، يمكنك استخدام أداة التشخيص!'); }
+                 else if(['active', 'permanent', 'temp'].includes(found.status)) { user = { ...found, role: 'doc' }; saveSession(); enterApp(); $('admin').classList.remove('active'); $('diag').classList.add('active'); toast('✅ أهلاً بك يا د/ ' + user.name); }
+                 else toast('❌ الحساب غير مفعل أو مرفوض');
+             }).catch(() => toast('❌ خطأ في الاتصال')).finally(() => { btn.disabled = false; btn.textContent = 'دخول'; });
         };
 
         const doRegister=()=>{
@@ -268,67 +221,29 @@
         const goAdmin=()=>{ $('diag').classList.remove('active'); $('admin').classList.add('active'); if(db) { load(); loadContributors(); loadActivationRequests(); } };
         const doLogout=()=>{ localStorage.removeItem('d_session'); location.reload(); };
 
-        // 🔔 تحميل طلبات التفعيل الدائم للمدير
         function loadActivationRequests() {
             if(!db || user.role !== 'admin') return;
             db.ref('activation_requests').once('value').then(snap => {
                 let html = '';
-                if(snap.exists()) {
-                    snap.forEach(child => {
-                        const req = child.val();
-                        html += `<div class="admin-alert">
-                            <div><b>🎓 ${req.userName}</b> يطلب التفعيل الدائم (${req.corrections} تصحيح)</div>
-                            <div>
-                                <button class="btn-approve" onclick="approveActivation('${child.key}', '${req.userId}')">✅ موافقة</button>
-                                <button class="btn-ignore" onclick="ignoreActivation('${child.key}')">❌ تجاهل</button>
-                            </div>
-                        </div>`;
-                    });
-                }
+                if(snap.exists()) { snap.forEach(child => { const req = child.val(); html += `<div class="admin-alert"><div><b>🎓 ${req.userName}</b> يطلب التفعيل الدائم (${req.corrections} تصحيح)</div><div><button class="btn-approve" onclick="approveActivation('${child.key}', '${req.userId}')">✅ موافقة</button><button class="btn-ignore" onclick="ignoreActivation('${child.key}')">❌ تجاهل</button></div></div>`; }); }
                 $('activation-requests').innerHTML = html || '';
             });
         }
-
-        window.approveActivation = (reqId, userId) => {
-            if(!confirm('هل توافق على منح التفعيل الدائم لهذا المستخدم؟')) return;
-            db.ref('users/' + userId).update({ status: 'permanent' });
-            db.ref('activation_requests/' + reqId).remove();            toast('✅ تم منح التفعيل الدائم');
-            loadActivationRequests();
-            load();
-        };
-
-        window.ignoreActivation = (reqId) => {
-            db.ref('activation_requests/' + reqId).remove();
-            toast('⚠️ تم تجاهل الطلب');
-            loadActivationRequests();
-        };
+        window.approveActivation = (reqId, userId) => { if(!confirm('هل توافق على منح التفعيل الدائم؟')) return; db.ref('users/' + userId).update({ status: 'permanent' }); db.ref('activation_requests/' + reqId).remove(); toast('✅ تم منح التفعيل الدائم'); loadActivationRequests(); load(); };
+        window.ignoreActivation = (reqId) => { db.ref('activation_requests/' + reqId).remove(); toast('⚠️ تم تجاهل الطلب'); loadActivationRequests(); };
 
         function loadContributors() {
             if(!db) return;
             db.ref('users').orderByChild('corrections').limitToLast(5).once('value').then(snap => {
-                let html = '';
-                let contributors = [];
-                if(snap.exists()) {
-                    snap.forEach(child => {
-                        const u = child.val();
-                        if(u.corrections && u.corrections > 0) contributors.push(u);
-                    });
-                    contributors.reverse().forEach(u => {
-                        let badge = u.corrections >= 30 ? '🌟' : (u.corrections >= 10 ? '🎓' : '');
-                        html += `<div class="contributor-item">
-                            <span>${u.name || 'مجهول'} ${badge}</span>
-                            <span style="color:var(--primary); font-weight:bold">${u.corrections} تصحيح</span>
-                        </div>`;
-                    });
-                }
+                let html = ''; let contributors = [];
+                if(snap.exists()) { snap.forEach(child => { const u = child.val(); if(u.corrections && u.corrections > 0) contributors.push(u); }); contributors.reverse().forEach(u => { let badge = u.corrections >= 30 ? '🌟' : (u.corrections >= 10 ? '🎓' : ''); html += `<div class="contributor-item"><span>${u.name || 'مجهول'} ${badge}</span><span style="color:var(--primary); font-weight:bold">${u.corrections} تصحيح</span></div>`; }); }
                 $('contributors-list').innerHTML = html || '<div class="empty" style="padding:10px">لا توجد مساهمات بعد.</div>';
             });
         }
 
         window.load = () => {
             if(!db || user.role !== 'admin') return;
-            db.ref('users').once('value').then(snap => {
-                const users = [];
+            db.ref('users').once('value').then(snap => {                const users = [];
                 if(snap.exists()) snap.forEach(child => { const v=child.val(); if(v) users.push({id:child.key,...v}); });
                 users.sort((a,b)=>(b.date||0)-(a.date||0));
                 const pending = users.filter(u=>u.status==='pending');
@@ -341,19 +256,20 @@
                     if(u.status==='active') { sc='st-act'; st='نشط'; }
                     if(u.status==='temp') { sc='st-temp'; st='🕐 مفعل مؤقت'; }
                     if(u.status==='permanent') { sc='st-perm'; st='🌟 مفعل دائم'; }
-                    let badgeIcon = (u.corrections && u.corrections >= 30) ? '🌟' : ((u.corrections && u.corrections >= 10) ? '🎓' : '-');                    let act=u.status==='active'?`<button class="act-btn act-no" onclick="upd('${u.id}','disabled')">🚫</button>`:u.status==='disabled'||u.status==='rejected'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button>`:u.status==='pending'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button> <button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button>`:'';
+                    let badgeIcon = (u.corrections && u.corrections >= 30) ? '🌟' : ((u.corrections && u.corrections >= 10) ? '🎓' : '-');
+                    let act=u.status==='active'?`<button class="act-btn act-no" onclick="upd('${u.id}','disabled')">🚫</button>`:u.status==='disabled'||u.status==='rejected'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button>`:u.status==='pending'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button> <button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button>`:'';
                     act+=` <button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button>`;
                     tblHTML+=`<tr><td>${u.name||'-'}</td><td>${u.email||'-'}</td><td><span class="status ${sc}">${st}</span></td><td style="text-align:center">${badgeIcon} <small>(${u.corrections||0})</small></td><td>${act}</td></tr>`;
                 });
                 $('u-tbl').innerHTML=tblHTML||'<tr><td colspan="5" class="empty">لا يوجد أطباء مسجلون</td></tr>';
             }).catch(err=>console.error('Load error:',err));
         };
-        
         window.upd=(i,s)=>db&&db.ref('users/'+i).update({status:s}).then(load);
         window.del=(i)=>{if(confirm('حذف نهائي؟')&&db)db.ref('users/'+i).remove().then(load);};
 
+        // 🧠 بنك البيانات الموسع v13.0
         const DB = [
-            {id:"ecc", name:"تسوس الطفولة المبكر (ECC)", cat:"أطفال", sev:"عالي", location:"أسنان", keywords:["أسنان سوداء","أسنان متآكلة","نخور منتشرة","طفل","رضيع","رضاعة","زجاجة","زجاجة الحليب","بببرونة","أمامية","بكاء عند الأكل"], signs:"نخر واسع حول عنق القواطع العلوية", xray:"نخر واسع", treat:"ترميم أو لب أو خلع", diff:"سن لبنية + رضاعة"},
+            {id:"ecc", name:"تسوس الطفولة المبكر (ECC)", cat:"أطفال", sev:"عالي", location:"أسنان", keywords:["أسنان سوداء","أسنان متآكلة","نخور منتشرة","طفل","رضيع","رضاعة","زجاجة","بببرونة","أمامية","بكاء عند الأكل"], signs:"نخر واسع حول عنق القواطع العلوية", xray:"نخر واسع", treat:"ترميم أو لب أو خلع", diff:"سن لبنية + رضاعة"},
             {id:"pulp_child", name:"التهاب لب سن لبني", cat:"أطفال", sev:"عالي", location:"أسنان", keywords:["ألم طفل","سن لبني","أسنان مؤقتة","سن حليب","تورم لثة","خراج","ناسور","يبكي"], signs:"ناسور لثوي فوق السن", xray:"ارتشاف عظمي", treat:"بتر لب أو خلع", diff:"سن لبنية + ناسور"},
             {id:"fluorosis", name:"التسمم الفلوري", cat:"تصبغات", sev:"منخفض", location:"أسنان", keywords:["بقع بيضاء على الأسنان","بقع طبشورية","بقع بنية","مبقعة","فلورايد","ماء آبار"], signs:"بقع متناظرة", xray:"طبيعي", treat:"تبييض أو قشور", diff:"توزيع متناظر + فلورايد"},
             {id:"tetracycline", name:"تصبغ التتراسيكلين", cat:"تصبغات", sev:"متوسط", location:"أسنان", keywords:["أسنان رمادية","أسنان بنية","تصبغ خطوط","تتراسيكلين","حمل","أدوية"], signs:"تصبغ منتشر", xray:"طبيعي", treat:"تبييض أو تيجان", diff:"تاريخ دوائي"},
@@ -376,8 +292,7 @@
             {id:"cracked_tooth", name:"السن المتشقق", cat:"لبية", sev:"عالي", location:"سن", keywords:["ألم عند المضغ","ألم عند الفك","حاد"], signs:"ألم عند الإطلاق", xray:"غالباً طبيعي", treat:"تاج", diff:"ألم عند الفك"},
             {id:"abscess", name:"خراج ذروي", cat:"عدوى", sev:"طوارئ", location:"سن", keywords:["تورم وجه","وزمة","صديد","قيح","حمى","نابض"], signs:"تورم متموج", xray:"شفافية ذروية", treat:"تصريف", diff:"تورم + صديد"},
             {id:"cellulitis", name:"التهاب خلوي", cat:"عدوى", sev:"طوارئ", location:"وجه", keywords:["تورم منتشر","صلب","حمى","صعوبة تنفس"], signs:"تورم صلب", xray:"غير محدد", treat:"مضادات وريدية", diff:"تورم صلب منتشر"},
-            {id:"candida", name:"سلاق فموي", cat:"أنسجة", sev:"متوسط", location:"لسان", keywords:["بقع بيضاء على اللسان","قابلة للكشط","يمسح","يحترق"], signs:"بقع كريمية", xray:"غير مطلوب", treat:"مضاد فطري", diff:"قابل للكشط"},
-            {id:"herpes", name:"الهربس", cat:"فيروسي", sev:"متوسط", location:"فم", keywords:["بثور","فقاعات","شفتين","عقبول","تعقيبة"], signs:"حويصلات متجمعة", xray:"غير مطلوب", treat:"أسيكلوفير", diff:"حويصلات سابقة"},
+            {id:"candida", name:"سلاق فموي", cat:"أنسجة", sev:"متوسط", location:"لسان", keywords:["بقع بيضاء على اللسان","قابلة للكشط","يمسح","يحترق"], signs:"بقع كريمية", xray:"غير مطلوب", treat:"مضاد فطري", diff:"قابل للكشط"},            {id:"herpes", name:"الهربس", cat:"فيروسي", sev:"متوسط", location:"فم", keywords:["بثور","فقاعات","شفتين","عقبول","تعقيبة"], signs:"حويصلات متجمعة", xray:"غير مطلوب", treat:"أسيكلوفير", diff:"حويصلات سابقة"},
             {id:"aphthous", name:"قرحة قلاعية", cat:"أنسجة", sev:"منخفض", location:"فم", keywords:["قرحة بيضاء","أفت","أصفر","مؤلمة"], signs:"قرحة بهالة حمراء", xray:"غير مطلوب", treat:"كورتيزون", diff:"تعود متكرر"},
             {id:"leukoplakia", name:"طلاوة بيضاء", cat:"أنسجة", sev:"عالي", location:"لسان", keywords:["بقعة بيضاء على اللسان","لا تمسح","تدخين","صلبة"], signs:"لويحة ملتصقة", xray:"غير مطلوب", treat:"استئصال وخزعة", diff:"غير قابل للكشط"},
             {id:"lichen", name:"الحزاز المسطح", cat:"مناعي", sev:"متوسط", location:"خد", keywords:["خطوط بيضاء","شبكة","دانتيل","ثنائي"], signs:"خطوط متشابكة", xray:"غير مطلوب", treat:"كورتيزون", diff:"نمط شبكي"},
@@ -386,36 +301,66 @@
             {id:"tmd_myofascial", name:"ألم عضلي مفصلي", cat:"مفصل", sev:"متوسط", location:"مفصل", keywords:["ألم عضلات","صداع","طحن","تشنج","ألم أذن"], signs:"ألم عند الجس", xray:"طبيعي", treat:"راحة وكمادات", diff:"ألم عضلي"},
             {id:"tmd_disc", name:"إزاحة القرص", cat:"مفصل", sev:"متوسط", location:"مفصل", keywords:["طقطقة في المفصل","فرقعة","قفل الفك"], signs:"صوت نقر", xray:"MRI", treat:"واقي", diff:"أصوات مفصلية"},
             {id:"fracture", name:"كسر فك", cat:"رضوض", sev:"طوارئ", location:"فك", keywords:["ضربة على الفك","وقعة","لكمة","سوء إطباق","تنميل"], signs:"خطوة عظمية", xray:"خط كسر", treat:"تثبيت", diff:"رضة حديثة"},
-            {id:"malignancy", name:"ورم خبيث", cat:"أورام", sev:"طوارئ", location:"فم", keywords:["قرحة لا تشفى","كتلة صلبة","نزيف","خدر شفة","تدخين"], signs:"قرحة مقلوبة", xray:"تآكل", treat:"إحالة", diff:">3 أسابيع"}
+            {id:"malignancy", name:"ورم خبيث", cat:"أورام", sev:"طوارئ", location:"فم", keywords:["قرحة لا تشفى","كتلة صلبة","نزيف","خدر شفة","تدخين"], signs:"قرحة مقلوبة", xray:"تآكل", treat:"إحالة", diff:">3 أسابيع"},
+            
+            // 🆕 إضافات من الكنز السريري (v13.0)
+            {id:"pericoronitis", name:"التهاب حول ضرس العقل", cat:"جراحة", sev:"عالي", location:"خلف", keywords:["ألم خلف آخر سن","صعوبة فتح الفم","رائحة فم","غطاء لثوي"], signs:"انتفاخ حول التاج، صعوبة فتح، رائحة", xray:"سن منطمر جزئياً", treat:"غسل، مضادات، قلع أو شق", diff:"موقع خلفي + غطاء لثوي ملتهب"},
+            {id:"secondary_caries", name:"نخر ثانوي تحت حشوة", cat:"لبية", sev:"متوسط", location:"سن", keywords:["رائحة حول الحشوة","تغير لون","انحشار طعام","ألم حول حشوة"], signs:"فجوة حول الحشوة، انحشار، رائحة", xray:"شفافية تحت الحشوة", treat:"استبدال الحشوة", diff:"مرتبط بحشوة قديمة + انحشار"},
+            {id:"chronic_apical", name:"التهاب حول الذروة المزمن", cat:"عدوى", sev:"متوسط", location:"سن", keywords:["ناسور لثوي","ثقل في السن","ألم خفيف"], signs:"ناسور يظهر ويختفي، إحساس ثقل", xray:"شفافية ذروية واضحة", treat:"علاج جذر أو قلع", diff:"ناسور متكرر + سن غير حي بدون ألم حاد"},
+            {id:"drug_gingival", name:"تضخم لثوي دوائي", cat:"لثة", sev:"متوسط", location:"لثة", keywords:["تضخم لثوي","أدوية","فينيتوين","أملوديبين","نزف بسيط"], signs:"تضخم غير مؤلم، صعوبة تنظيف", xray:"طبيعي", treat:"تغيير دواء، جراحة لثوية", diff:"تاريخ دوائي + تضخم ليفي"},
+            {id:"aggressive_perio", name:"التهاب نسج داعمة عدواني", cat:"لثة", sev:"عالي", location:"لثة", keywords:["فقد عظم شديد","تخلخل سريع","شباب","عائلي"], signs:"تخلخل سريع، جيوب عميقة، قلة ترسبات", xray:"فقد عظم سريع غير متناسب", treat:"مضادات، كشط، صيانة مكثفة", diff:"شباب + تدمر سريع رغم قلة البلاك"},
+            {id:"herpes_zoster", name:"القوباء المنطقية الفموية", cat:"فيروسي", sev:"عالي", location:"فم", keywords:["ألم عصبي حارق","حويصلات جانب واحد","طفح وجهي"], signs:"حويصلات على جانب واحد، ألم سابق", xray:"غير مطلوب", treat:"أسيكلوفير فوري، مسكنات عصبية", diff:"أحادي الجانب + ألم عصبي سابق"},
+            {id:"contact_stomatitis", name:"التهاب تماسي فموي", cat:"أنسجة", sev:"منخفض", location:"فم", keywords:["إحساس حارق","احمرار منتشر","معجون جديد","طقم"], signs:"احمرار، تقشر، تورم بعد مادة جديدة", xray:"غير مطلوب", treat:"إزالة المسبب، غسول ملطف", diff:"ارتباط زمني بمادة جديدة"},
+            {id:"pemphigus", name:"الفقاع الفموي", cat:"مناعي", sev:"عالي", location:"فم", keywords:["فقاعات رقيقة","تقرحات واسعة","ألم شديد","بلع صعب"], signs:"فقاعات تنفجر بسهولة، تقرحات واسعة", xray:"غير مطلوب", treat:"كورتيزون جهازي، إحالة فورية", diff:"فقاعات رقيقة + انتشار سريع"},
+            {id:"geographic_tongue", name:"اللسان الجغرافي", cat:"لسان", sev:"منخفض", location:"لسان", keywords:["بقع حمراء متغيرة","حواف بيضاء","لاذع"], signs:"بقع حمراء بحدود بيضاء، تتغير مكاناً", xray:"غير مطلوب", treat:"مراقبة، تجنب المهيجات", diff:"بقع متغيرة الشكل + غير مؤلمة"},
+            {id:"hairy_tongue", name:"اللسان المشعر", cat:"لسان", sev:"منخفض", location:"لسان", keywords:["شعرات سوداء","رائحة فم","مدخنين","مضادات"], signs:"حليمات متطالة سوداء/بنية", xray:"غير مطلوب", treat:"تنظيف لسان، إيقاف السبب", diff:"مظهر مشعر + رائحة + مدخنين"},
+            {id:"atrophic_glossitis", name:"التهاب اللسان الضموري", cat:"لسان", sev:"متوسط", location:"لسان", keywords:["احمرار شديد","سطح أملس","نقص B12","حارق"], signs:"لسان أحمر أملس بدون حليمات", xray:"غير مطلوب", treat:"مكملات B12/حديد، مراقبة", diff:"سطح أملس + نقص تغذوي"},
+            {id:"sialolithiasis", name:"انسداد قناة لعابية", cat:"غدد", sev:"متوسط", location:"فك", keywords:["ألم مع الأكل","انتفاخ تحت الفك","يشتد مع الوجبات"], signs:"تورم يزداد أثناء الأكل، جفاف", xray:"حجر لعابي (أشعة)", treat:"استخراج الحجر، تدليك، سوائل", diff:"ألم مرتبط بالوجبات + تورم متكرر"},
+            {id:"bacterial_parotitis", name:"التهاب الغدة النكفية الجرثومي", cat:"غدد", sev:"عالي", location:"وجه", keywords:["انتفاخ أمام الأذن","طعم قيحي","ألم مضغ"], signs:"تورم أمام الأذن، قيح من القناة", xray:"غير مطلوب غالباً", treat:"مضادات حيوية، ترطيب، تدليك", diff:"ألم أمام الأذن + إفراز قيحي"},
+            {id:"trigeminal_neuralgia", name:"ألم العصب ثلاثي التوائم", cat:"عصبي", sev:"عالي", location:"فك", keywords:["ألم كهربائي","نوبات قصيرة","محفزات بسيطة"], signs:"ألم صاعق قصير، يحفز باللمس", xray:"MRI لاستبعاد الضغط", treat:"كاربامازيبين، جراحة عصبية", diff:"ألم كهربائي لحظي + محفزات سطحية"},
+            {id:"bruxism", name:"صرير الأسنان", cat:"وظيفي", sev:"متوسط", location:"أسنان", keywords:["تآكل الأسنان","ألم صباحي","صداع","تشقق حشوات"], signs:"تآكل سطوح، ألم عضلي صباحي", xray:"طبيعي أو تآكل", treat:"واقي ليلي، علاج عضلي", diff:"تآكل متناسق + ألم صباحي"},
+            {id:"rampant_caries", name:"تسوس منتشر (نخر سريع)", cat:"أطفال", sev:"عالي", location:"أسنان", keywords:["تسوسات متعددة","كسور أمامية","ألم أكل"], signs:"تسوسات سريعة في أسنان متعددة", xray:"نخور متعددة", treat:"ترميم عاجل، فلورايد، تغذية", diff:"انتشار سريع + إهمال أو مرض جهازي"},
+            {id:"pregnancy_gingivitis", name:"التهاب لثوي حملي", cat:"لثة", sev:"منخفض", location:"لثة", keywords:["نزف لثوي","تضخم","حمل","ثلث ثاني"], signs:"نزف وتضخم لثوي خلال الحمل", xray:"طبيعي", treat:"تنظيف، نظافة دقيقة", diff:"مرتبط بفترة الحمل"},
+            {id:"pregnancy_tumor", name:"ورم لثوي حملي", cat:"لثة", sev:"متوسط", location:"لثة", keywords:["كتلة لثوية حمراء","نزف لمس","حمل","نمو سريع"], signs:"كتلة حمراء نازفة تنمو بسرعة", xray:"غير مطلوب", treat:"مراقبة أو استئصال بعد الحمل", diff:"كتلة وعائية + حمل + نمو سريع"},
+            {id:"pyogenic_granuloma", name:"الورم الحبيبي القيحي", cat:"أنسجة", sev:"منخفض", location:"لثة", keywords:["كتلة حمراء لامعة","نزف سهل","نمو سريع"], signs:"كتلة حمراء نازفة بسهولة", xray:"غير مطلوب", treat:"استئصال جراحي", diff:"كتلة وعائية حمراء + نزف فوري"},
+            {id:"fissured_tongue", name:"اللسان المتشقق", cat:"لسان", sev:"منخفض", location:"لسان", keywords:["شقوق عميقة","رائحة فم","تجمع بقايا"], signs:"شقوق في سطح اللسان، بقايا طعام", xray:"غير مطلوب", treat:"تنظيف الشقوق، فرشاة لسان", diff:"شقوق ثابتة + غير مؤلمة"},
+            {id:"dentigerous_cyst", name:"كيسة سنية (حول تاج)", cat:"جراحة", sev:"متوسط", location:"فك", keywords:["انتفاخ حول سن","منطمرة","بطيء"], signs:"انتفاخ عظمي حول تاج سن منطمر", xray:"شفافية حول التاج", treat:"استئصال + قلع السن", diff:"مرتبطة بتاج سن منطمر"},
+            {id:"hand_foot_mouth", name:"مرض اليد والقدم والفم", cat:"أطفال", sev:"متوسط", location:"فم", keywords:["تقرحات فموية","طفح يدين","حرارة"], signs:"تقرحات فم + طفح على اليدين/القدمين", xray:"غير مطلوب", treat:"مسكنات، سوائل، عزل", diff:"طفح جلدي مميز + حرارة"},
+            {id:"osf", name:"التليف تحت المخاطي", cat:"ما قبل سرطاني", sev:"عالي", location:"فم", keywords:["صعوبة فتح الفم","حرقان","فقدان مرونة","قات"], signs:"فقدان مرونة المخاطية، صعوبة فتح", xray:"غير محدد", treat:"إيقاف القات/التدخين، حقن كورتيزون", diff:"تليف + قات + فقدان مرونة"},
+            {id:"dental_erosion", name:"تآكل الأسنان الحمضي", cat:"أسنان", sev:"متوسط", location:"أسنان", keywords:["حساسية شديدة","سطح أملس","تآكل حواف"], signs:"تآكل ناعم، حساسية، حواف رقيقة", xray:"غير مطلوب", treat:"معجون حماية، تغيير عادات", diff:"تآكل كيميائي + أسطح ناعمة"},
+            {id:"gingival_abscess", name:"خراج لثوي", cat:"لثة", sev:"عالي", location:"لثة", keywords:["انتفاخ موضعي","ألم لمس","قيح لثة"], signs:"انتفاخ أحمر مؤلم على اللثة فقط", xray:"طبيعي غالباً", treat:"تصريف، تنظيف، مضادات", diff:"محدود باللثة + لا علاقة بالذروة"}
         ];
 
         const SYNONYMS = {
-            'يوجعني':'ألم','وجع':'ألم','موجع':'ألم','بيوجع':'ألم','الم':'ألم','مؤلم':'ألم','إيلام':'ألم','يؤلم':'ألم','ألم نابض':'ألم نابض','نابض':'ألم نابض','خفقان':'ألم نابض','ألم ليلي':'ألم ليلي','ليل':'ألم ليلي','بالليل':'ألم ليلي','يسهر':'ألم ليلي','ضرس':'سن','اضراس':'أسنان','سنان':'أسنان','سني':'أسنان','سنا':'أسنان','ضروس':'أسنان','سن لبني':'سن لبني','لبنية':'سن لبني','حليب':'سن لبني','طفل':'سن لبني','أسنان دائمة':'أسنان دائمة','دائمة':'أسنان دائمة','سن منخور':'تسوس','منخور':'تسوس','لثتي':'لثة','لثه':'لثة','لثتها':'لثة','لثته':'لثة','نزيف لثة':'نزيف','ينزف':'نزيف','دم لثة':'نزيف','لثة حمراء':'احمرار','محمر':'احمرار','لثة متورمة':'تورم','منتفخة':'تورم','لثة متراجعة':'تراجع لثة','متراجعة':'تراجع لثة','صديد':'صديد','قيح':'صديد','خرّاج':'صديد','خراج':'صديد','دمل':'صديد','حمى':'حمى','حرارة':'حمى','ارتفاع حرارة':'حمى','تورم وجه':'تورم','وجه منتفخ':'تورم','فك منتفخ':'تورم','وزمة':'تورم وجه','ثقب سن':'نخر','حفرة':'نخر','أسود سن':'نخر','بني سن':'نخر','حساس بارد':'حساسية','حساس حلو':'حساسية','ألم عابر':'حساسية','جير':'قلح','قلح':'قلح','ترسبات':'قلح','ألم مستمر':'ألم مستمر','لا يوقف':'ألم مستمر','دائم':'ألم مستمر','طرق مؤلم':'طرق مؤلم','نقر مؤلم':'طرق مؤلم','مسكنات لا تفيد':'مسكنات لا تفيد','مبقع':'تصبغ','بقع':'تصبغ','مبقعة':'تصبغ','منقطة':'تصبغ','بيضاء':'أبيض','بنية':'بني','رمادية':'رمادي','غامقة':'غامق','فلور':'فلورايد','آبار':'فلورايد','تتراسيكلين':'تتراسيكلين','مفصل الفك':'مفصل','ألم مفصل':'مفصل','طقطقة':'طقطقة','فرقعة':'طقطقة','صوت فتح':'طقطقة','صعوبة فتح':'صعوبة فتح','قفل فك':'صعوبة فتح','ضزز':'صرير','صرير':'صرير','سلاق':'قلاع','قلاع':'قلاع','منطمر':'مطمور','مطمور':'مطمور','لم يبزغ':'منطمر','الفك':'فك','صعوبة':'صعب','فتح':'مفتوح','تشنج':'تصلب','رضة':'ضربة','سقوط':'وقع','وقعة':'سقوط','لكمة':'ضربة','زرعة':'زراعة','زرع':'زراعة','طقم':'بدلة','بدلة':'طقم','متحرك':'بدلة','ملتوي':'تزاحم','معوج':'تزاحم','فراغ':'مسافة','أسنان متطاولة':'حركة أسنان','متطاولة':'حركة أسنان','رخاوة أسنان':'حركة أسنان','رخوة':'حركة أسنان','حس احتراق':'يحترق فم','قابلة للمسح':'قابلة للكشط','تراكب':'تزاحم','متزاحمة':'تزاحم','متراكبة':'تزاحم','الم عند اللمس':'ألم عند اللمس','الم عند العض':'ألم عند العض','الم عند الضغط':'ألم عند الضغط','ألم بعد خلع':'جفاف السنخ','فراغ فارغ':'جفاف السنخ','رائحة كريهة':'جفاف السنخ','قرحة بيضاء':'قلاعية','أصفر':'قلاعية','تعود':'قلاعية','إجهاد':'قلاعية','شبكة':'حزاز','دانتيل':'حزاز','ثنائي':'حزاز','مر':'حزاز','كتلة':'ورم ليفي','نفس اللون':'ورم ليفي','مطاطي':'ورم ليفي','عض':'ورم ليفي','غير مؤلم':'ورم ليفي','شفة':'كيسة مخاطية','كيس':'كيسة مخاطية','أزرق':'كيسة مخاطية','شفاف':'كيسة مخاطية','ينفجر':'كيسة مخاطية','يعود':'كيسة مخاطية','ألم عضلات':'ألم عضلي مفصلي','صداع':'ألم عضلي مفصلي','طحن':'ألم عضلي مفصلي','تشنج':'ألم عضلي مفصلي','أذن':'ألم عضلي مفصلي','انزياح':'إزاحة قرص المفصل','خطوة':'كسر فك','تنميل':'كسر فك','سوء إطباق':'كسر فك','قرحة لا تشفى':'ورم فموي خبيث','صلبة':'ورم فموي خبيث','خدر':'ورم فموي خبيث','وزن':'ورم فموي خبيث','بببرونة':'رضاعة','أسنان مؤقتة':'سن لبني','سن حليب':'سن لبني','مقلوع':'قلع','اركيلى':'تدخين','شيشة':'تدخين','عقبول':'هربس','تعقيبة':'هربس','أفت':'قلاعية','توتر عصبي اونفسي':'إجهاد','إمتحانات':'إجهاد','إنحشار طعام':'أكل يعلق','قروح او تقرح تحت الجهاز':'طقم','ضعف المضغ':'مضغ صعب','لسان':'لسان','سن':'سن','لثة':'لثة','خد':'خد','شفة':'شفة','حنك':'حنك','فك':'فك','وجه':'وجه'        };
+            'يوجعني':'ألم','وجع':'ألم','موجع':'ألم','بيوجع':'ألم','الم':'ألم','مؤلم':'ألم','إيلام':'ألم','يؤلم':'ألم','ألم نابض':'ألم نابض','نابض':'ألم نابض','خفقان':'ألم نابض','ألم ليلي':'ألم ليلي','ليل':'ألم ليلي','بالليل':'ألم ليلي','يسهر':'ألم ليلي','ضرس':'سن','اضراس':'أسنان','سنان':'أسنان','سني':'أسنان','سنا':'أسنان','ضروس':'أسنان','سن لبني':'سن لبني','لبنية':'سن لبني','حليب':'سن لبني','طفل':'سن لبني','أسنان دائمة':'أسنان دائمة','دائمة':'أسنان دائمة','سن منخور':'تسوس','منخور':'تسوس','لثتي':'لثة','لثه':'لثة','لثتها':'لثة','لثته':'لثة','نزيف لثة':'نزيف','ينزف':'نزيف','دم لثة':'نزيف','لثة حمراء':'احمرار','محمر':'احمرار','لثة متورمة':'تورم','منتفخة':'تورم','لثة متراجعة':'تراجع لثة','متراجعة':'تراجع لثة','صديد':'صديد','قيح':'صديد','خرّاج':'صديد','خراج':'صديد','دمل':'صديد','حمى':'حمى','حرارة':'حمى','ارتفاع حرارة':'حمى','تورم وجه':'تورم','وجه منتفخ':'تورم','فك منتفخ':'تورم','وزمة':'تورم وجه','ثقب سن':'نخر','حفرة':'نخر','أسود سن':'نخر','بني سن':'نخر','حساس بارد':'حساسية','حساس حلو':'حساسية','ألم عابر':'حساسية','جير':'قلح','قلح':'قلح','ترسبات':'قلح','ألم مستمر':'ألم مستمر','لا يوقف':'ألم مستمر','دائم':'ألم مستمر','طرق مؤلم':'طرق مؤلم','نقر مؤلم':'طرق مؤلم','مسكنات لا تفيد':'مسكنات لا تفيد','مبقع':'تصبغ','بقع':'تصبغ','مبقعة':'تصبغ','منقطة':'تصبغ','بيضاء':'أبيض','بنية':'بني','رمادية':'رمادي','غامقة':'غامق','فلور':'فلورايد','آبار':'فلورايد','تتراسيكلين':'تتراسيكلين','مفصل الفك':'مفصل','ألم مفصل':'مفصل','طقطقة':'طقطقة','فرقعة':'طقطقة','صوت فتح':'طقطقة','صعوبة فتح':'صعوبة فتح','قفل فك':'صعوبة فتح','ضزز':'صرير','صرير':'صرير','سلاق':'قلاع','قلاع':'قلاع','منطمر':'مطمور','مطمور':'مطمور','لم يبزغ':'منطمر','الفك':'فك','صعوبة':'صعب','فتح':'مفتوح','تشنج':'تصلب','رضة':'ضربة','سقوط':'وقع','وقعة':'سقوط','لكمة':'ضربة','زرعة':'زراعة','زرع':'زراعة','طقم':'بدلة','بدلة':'طقم','متحرك':'بدلة','ملتوي':'تزاحم','معوج':'تزاحم','فراغ':'مسافة','أسنان متطاولة':'حركة أسنان','متطاولة':'حركة أسنان','رخاوة أسنان':'حركة أسنان','رخوة':'حركة أسنان','حس احتراق':'يحترق فم','قابلة للمسح':'قابلة للكشط','تراكب':'تزاحم','متزاحمة':'تزاحم','متراكبة':'تزاحم','الم عند اللمس':'ألم عند اللمس','الم عند العض':'ألم عند العض','الم عند الضغط':'ألم عند الضغط','ألم بعد خلع':'جفاف السنخ','فراغ فارغ':'جفاف السنخ','رائحة كريهة':'جفاف السنخ','قرحة بيضاء':'قلاعية','أصفر':'قلاعية','تعود':'قلاعية','إجهاد':'قلاعية','شبكة':'حزاز','دانتيل':'حزاز','ثنائي':'حزاز','مر':'حزاز','كتلة':'ورم ليفي','نفس اللون':'ورم ليفي','مطاطي':'ورم ليفي','عض':'ورم ليفي','غير مؤلم':'ورم ليفي','شفة':'كيسة مخاطية','كيس':'كيسة مخاطية','أزرق':'كيسة مخاطية','شفاف':'كيسة مخاطية','ينفجر':'كيسة مخاطية','يعود':'كيسة مخاطية','ألم عضلات':'ألم عضلي مفصلي','صداع':'ألم عضلي مفصلي','طحن':'ألم عضلي مفصلي','تشنج':'ألم عضلي مفصلي','أذن':'ألم عضلي مفصلي','انزياح':'إزاحة قرص المفصل','خطوة':'كسر فك','تنميل':'كسر فك','سوء إطباق':'كسر فك','قرحة لا تشفى':'ورم فموي خبيث','صلبة':'ورم فموي خبيث','خدر':'ورم فموي خبيث','وزن':'ورم فموي خبيث','بببرونة':'رضاعة','أسنان مؤقتة':'سن لبني','سن حليب':'سن لبني','مقلوع':'قلع','اركيلى':'تدخين','شيشة':'تدخين','عقبول':'هربس','تعقيبة':'هربس','أفت':'قلاعية','توتر عصبي اونفسي':'إجهاد','إمتحانات':'إجهاد','إنحشار طعام':'أكل يعلق','قروح او تقرح تحت الجهاز':'طقم','ضعف المضغ':'مضغ صعب','لسان':'لسان','سن':'سن','لثة':'لثة','خد':'خد','شفة':'شفة','حنك':'حنك','فك':'فك','وجه':'وجه','خلف':'خلف','غدة':'غدد','عصب':'عصبي','كهربائي':'عصبي','حشوة':'نخر ثانوي','ناسور':'مزمن','تضخم':'دوائي','عدواني':'شباب','جانب واحد':'هربس نطاقي','حارق':'عصبي','فقاعات':'فقاع','جغرافي':'بقع حمراء','مشعر':'شعرات','ضموري':'أملس','لعاب':'انسداد','نكفي':'غدة','ثلاثي التوائم':'عصب','صرير':'بروكسزم','منتشر':'نخر سريع','حملي':'حمل','ورم':'كتلة','قيحي':'احمر','متشقق':'شقوق','سنية':'كيسة','يد وقدم':'فيروسي','تليف':'قات','تآكل':'حمضي','لثوي':'خراج موضعي'
+        };
 
         function norm(t){ return t.normalize('NFKD').replace(/[\u064B-\u065F\u0670]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').toLowerCase().trim(); }
 
         function detectLocations(text) {
-            const locations = { tongue: false, tooth: false, gum: false, cheek: false, lip: false, palate: false, jaw: false, face: false, implant: false, joint: false };
+            const locations = { tongue: false, tooth: false, gum: false, cheek: false, lip: false, palate: false, jaw: false, face: false, implant: false, joint: false, back: false, gland: false, nerve: false };
             const t = norm(text);
             if(t.includes('لسان')) locations.tongue = true;
-            if(t.includes('سن') || t.includes('ضرس') || t.includes('أسنان') || t.includes('ضروس')) locations.tooth = true;
-            if(t.includes('لثة')) locations.gum = true;
+            if(t.includes('سن') || t.includes('ضرس') || t.includes('أسنان') || t.includes('ضروس') || t.includes('حشوة')) locations.tooth = true;            if(t.includes('لثة')) locations.gum = true;
             if(t.includes('خد')) locations.cheek = true;
             if(t.includes('شفة') || t.includes('شفاه')) locations.lip = true;
             if(t.includes('حنك') || t.includes('سقف الفم')) locations.palate = true;
             if(t.includes('فك')) locations.jaw = true;
-            if(t.includes('وجه') || t.includes('خد')) locations.face = true;
+            if(t.includes('وجه') || t.includes('أذن') || t.includes('نكفي')) locations.face = true;
             if(t.includes('زرعة')) locations.implant = true;
             if(t.includes('مفصل')) locations.joint = true;
+            if(t.includes('خلف') || t.includes('عقل')) locations.back = true;
+            if(t.includes('غدة') || t.includes('لعاب') || t.includes('نكفي')) locations.gland = true;
+            if(t.includes('عصب') || t.includes('كهربائي') || t.includes('حارق')) locations.nerve = true;
             return locations;
         }
 
         function getLocationScore(diseaseLoc, detectedLocs) {
             if(!diseaseLoc) return 0;
-            const map = { 'لسان': 'tongue', 'سن': 'tooth', 'أسنان': 'tooth', 'لثة': 'gum', 'خد': 'cheek', 'شفة': 'lip', 'حنك': 'palate', 'فك': 'jaw', 'وجه': 'face', 'زراعة': 'implant', 'مفصل': 'joint' };
+            const map = { 'لسان': 'tongue', 'سن': 'tooth', 'أسنان': 'tooth', 'لثة': 'gum', 'خد': 'cheek', 'شفة': 'lip', 'حنك': 'palate', 'فك': 'jaw', 'وجه': 'face', 'زراعة': 'implant', 'مفصل': 'joint', 'خلف': 'back', 'غدد': 'gland', 'عصبي': 'nerve' };
             const target = map[diseaseLoc];
             if(target && detectedLocs[target]) return 25; 
-            if(target && Object.values(detectedLocs).some(v => v)) return -20; 
+            if(target && Object.values(detectedLocs).some(v => v) && !detectedLocs[target]) return -15; 
             return 0;
         }
 
@@ -423,58 +368,32 @@
             const card = document.getElementById(`card-${index}`);
             const likeBtn = document.getElementById(`like-${index}`);
             const dislikeBtn = document.getElementById(`dislike-${index}`);
-
             if(type === 'like') {
-                likeBtn.classList.add('liked');
-                dislikeBtn.classList.remove('disliked');
-                card.classList.remove('rejected');
+                likeBtn.classList.add('liked'); dislikeBtn.classList.remove('disliked'); card.classList.remove('rejected');
                 if(db) db.ref('feedback/' + diseaseId).push({ type: 'correct', user: user?.name || 'مجهول' });
                 toast('✅ شكراً لتأكيد الدقة');
             } else {
-                dislikeBtn.classList.add('disliked');
-                likeBtn.classList.remove('liked');
-                card.classList.add('rejected');
-                
+                dislikeBtn.classList.add('disliked'); likeBtn.classList.remove('liked'); card.classList.add('rejected');
                 const correctDiag = prompt("⚠️ تم تسجيل الملاحظة.\n\nما هو التشخيص الصحيح لهذه الحالة؟");
                 if(correctDiag && correctDiag.trim() !== "") {
-                    if(db) db.ref('corrections/' + diseaseId).push({ 
-                        correctDiagnosis: correctDiag, 
-                        user: user?.name || 'مجهول',                        userId: user?.id, 
-                        date: Date.now() 
-                    });
-                    
+                    if(db) db.ref('corrections/' + diseaseId).push({ correctDiagnosis: correctDiag, user: user?.name || 'مجهول', userId: user?.id, date: Date.now() });
                     if(user && user.id) {
                         db.ref('users/' + user.id + '/corrections').transaction(current => {
                             const newCount = (current || 0) + 1;
-                            
                             if(newCount === 10 && (user.status === 'pending' || user.status === 'active')) {
                                 const expiry = Date.now() + (30 * 24 * 60 * 60 * 1000);
                                 db.ref('users/' + user.id).update({ status: 'temp', tempExpiry: expiry });
-                                user.status = 'temp';
-                                saveSession();
+                                user.status = 'temp'; saveSession();
                                 setTimeout(() => toast('🎉 مبارك! حصلت على تفعيل مؤقت لمدة شهر!'), 1500);
                             }
-                            
                             if(newCount === 30 && user.status !== 'permanent') {
-                                db.ref('activation_requests').push({
-                                    userId: user.id,
-                                    userName: user.name,
-                                    corrections: newCount,
-                                    date: Date.now(),
-                                    status: 'pending'
-                                });
+                                db.ref('activation_requests').push({ userId: user.id, userName: user.name, corrections: newCount, date: Date.now(), status: 'pending' });
                                 setTimeout(() => toast('📝 وصلت لـ 30 تصحيح! تم إرسال طلب التفعيل الدائم للمدير.'), 2000);
                             }
-                            
-                            return newCount;
-                        });
+                            return newCount;                        });
                     }
                     toast('📝 شكراً لمساهمتك العلمية!');
-                } else {
-                    toast('⚠️ تم إلغاء التصحيح');
-                    dislikeBtn.classList.remove('disliked');
-                    card.classList.remove('rejected');
-                }
+                } else { toast('⚠️ تم إلغاء التصحيح'); dislikeBtn.classList.remove('disliked'); card.classList.remove('rejected'); }
             }
         };
 
@@ -487,25 +406,16 @@
                 const n = norm(text);
                 const words = n.split(/\s+/).filter(w => w.length > 2);
                 const locs = detectLocations(text);
-                
-                let results = DB.map(disease => {                    let score = 0, matched = [];
+                let results = DB.map(disease => {
+                    let score = 0, matched = [];
                     disease.keywords.forEach(kw => {
                         const nk = norm(kw);
                         if(n.includes(nk)) { score += 15; matched.push(kw); }
                         else if(words.some(w => { const syn = SYNONYMS[w]; return syn && nk.includes(norm(syn)); })) { score += 10; matched.push(kw); }
                     });
-                    
                     score += getLocationScore(disease.location, locs);
-
-                    if(n.includes('قابل للكشط') || n.includes('يمسح')) {
-                        if(disease.id === 'leukoplakia') score -= 40; 
-                        if(disease.id === 'candida') score += 25; 
-                    }
-                    if(n.includes('لا تمسح') || n.includes('ثابتة')) {
-                        if(disease.id === 'candida') score -= 40; 
-                        if(disease.id === 'leukoplakia') score += 25; 
-                    }
-
+                    if(n.includes('قابل للكشط') || n.includes('يمسح')) { if(disease.id === 'leukoplakia') score -= 40; if(disease.id === 'candida') score += 25; }
+                    if(n.includes('لا تمسح') || n.includes('ثابتة')) { if(disease.id === 'candida') score -= 40; if(disease.id === 'leukoplakia') score += 25; }
                     if(disease.id === 'irreversible_pulpitis' && n.includes('ليل') && (n.includes('نابض') || n.includes('يزيد'))) score += 20;
                     if(disease.id === 'abscess' && n.includes('تورم') && (n.includes('صديد') || n.includes('قيح'))) score += 25;
                     if(disease.id === 'caries' && (n.includes('بارد') || n.includes('ساخن')) && n.includes('حلو')) score += 15;
@@ -516,6 +426,9 @@
                     if(disease.id === 'perio' && (n.includes('قلح') || n.includes('جير')) && n.includes('نزيف')) score += 15;
                     if(disease.id === 'dry_socket' && n.includes('ألم') && n.includes('بعد') && n.includes('يوم')) score += 20;
                     if(disease.id === 'nug' && n.includes('رائحة') && n.includes('نزيف') && n.includes('ألم')) score += 20;
+                    if(disease.id === 'pericoronitis' && n.includes('خلف') && n.includes('عقل')) score += 20;
+                    if(disease.id === 'trigeminal_neuralgia' && (n.includes('كهربائي') || n.includes('صاعق'))) score += 25;
+                    if(disease.id === 'herpes_zoster' && n.includes('جانب') && n.includes('واحد')) score += 25;
                     return { ...disease, score, matched: [...new Set(matched)] };
                 });
                 let filtered = results.filter(r => r.score >= 15 && r.matched.length > 0).sort((a, b) => b.score - a.score).slice(0, 3);
@@ -525,9 +438,8 @@
                     const badgeClass = confidence > 75 ? 'conf-high' : confidence > 45 ? 'conf-mid' : 'conf-low';
                     return { ...r, confidence, level, badgeClass };
                 });
-                let html = `<div class="clinical-report"><div class="report-header"><div class="report-title">📊 التقرير السريري التعليمي</div><span style="font-size:11px;color:#64748b">محرك الخبير v12.2 (دخول مرن)</span></div>`;
-                if(filtered.length === 0) {
-                    html += `<div class="empty">⚠️ لم يتم العثور على تطابق طبي دقيق.<br><br>💡 نصائح:<br>• اكتب الأعراض بشكل كامل ومفصل<br>• حدد الموقع بدقة (سن، لثة، خد، لسان)<br>• اذكر المحفزات (بارد، حلو، مضغ، تلقائي)<br>• اذكر المدة والعمر إن أمكن</div>`;
+                let html = `<div class="clinical-report"><div class="report-header"><div class="report-title">📊 التقرير السريري التعليمي</div><span style="font-size:11px;color:#64748b">محرك الخبير v13.0 (موسع)</span></div>`;
+                if(filtered.length === 0) {                    html += `<div class="empty">⚠️ لم يتم العثور على تطابق طبي دقيق.<br><br>💡 نصائح:<br>• اكتب الأعراض بشكل كامل ومفصل<br>• حدد الموقع بدقة (سن، لثة، خد، لسان، خلف)<br>• اذكر المحفزات (بارد، حلو، مضغ، تلقائي)<br>• اذكر المدة والعمر إن أمكن</div>`;
                 } else {
                     filtered.forEach((r, i) => {
                         const borderColor = r.sev === 'طوارئ' ? '#ef4444' : '#3b82f6';
@@ -537,7 +449,8 @@
                                 <span style="font-size:15px;font-weight:700;color:#1e40af">#${i+1} ${r.name} <span class="cat-tag">${r.cat}</span></span>
                                 <div style="display:flex;gap:6px;align-items:center">
                                     <span class="conf-badge ${r.badgeClass}">${r.confidence}% (${r.level})</span>
-                                    <span style="font-size:11px;color:#64748b">الخطورة: <b style="color:${severityColor}">${r.sev}</b></span>                                </div>
+                                    <span style="font-size:11px;color:#64748b">الخطورة: <b style="color:${severityColor}">${r.sev}</b></span>
+                                </div>
                             </div>
                             <div class="section"><h5>🔍 الأعراض المترابطة</h5><p style="font-size:12px;color:#64748b">${r.matched.join(' • ') || 'غير محدد'}</p></div>
                             <div class="section"><h5>👁️ العلامات السريرية المتوقعة</h5><p>${r.signs}</p></div>
@@ -545,7 +458,6 @@
                             <div class="section"><h5>💊 التدبير العلاجي المقترح</h5><p>${r.treat}</p></div>
                             <div class="diff-note">💡 <b>ملاحظة تفريقية للطالب:</b> ${r.diff}</div>
                             ${r.sev === 'طوارئ' ? `<div class="emergency-box">🚨 تنبيه طوارئ: ${r.treat.split('.')[0]}. إحالة فورية مطلوبة!</div>` : ''}
-                            
                             <div class="feedback-actions">
                                 <button id="like-${i}" class="fb-btn" onclick="submitFeedback('${r.id}', 'like', ${i})">👍 دقيق</button>
                                 <button id="dislike-${i}" class="fb-btn" onclick="submitFeedback('${r.id}', 'dislike', ${i})">👎 غير دقيق</button>
@@ -566,15 +478,8 @@
                 try{ 
                     user = JSON.parse(s); 
                     enterApp(); 
-                    if(user.role === 'admin'){ 
-                        $('admin').classList.add('active'); 
-                        $('diag').classList.remove('active'); 
-                        if(db) { load(); loadContributors(); loadActivationRequests(); } 
-                    } 
-                    else { 
-                        $('admin').classList.remove('active'); 
-                        $('diag').classList.add('active'); 
-                    }
+                    if(user.role === 'admin'){ $('admin').classList.add('active'); $('diag').classList.remove('active'); if(db) { load(); loadContributors(); loadActivationRequests(); } } 
+                    else { $('admin').classList.remove('active'); $('diag').classList.add('active'); }
                 } catch(e) { localStorage.removeItem('d_session'); } 
             }
         };
