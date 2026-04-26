@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>تشخيص شامل | الخبير السريري v10.4</title>
+    <title>تشخيص شامل | الخبير السريري v11.1</title>
     <style>
         :root { --bg: linear-gradient(135deg, #0f172a, #1e3a8a); --card: #ffffff; --primary: #2563eb; --success: #10b981; --warn: #f59e0b; --danger: #ef4444; --text: #0f172a; --muted: #64748b; --border: #e2e8f0; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -25,6 +25,7 @@
         header { background: #fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
         .logo-text { font-weight: 700; font-size: 16px; color: #1e40af; display: flex; align-items: center; gap: 8px; }
         .nav { display: flex; align-items: center; gap: 10px; }
+        .badge-icon { font-size: 14px; margin-right: 5px; }
         .badge { background: var(--danger); color: #fff; padding: 3px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
         .logout-btn { background: #fee2e2; color: #dc2626; border: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; }
         main { flex: 1; padding: 20px; max-width: 900px; margin: auto; width: 100%; }
@@ -46,8 +47,8 @@
         .conf-high { background: #d1fae5; color: #065f46; }
         .conf-mid { background: #fef3c7; color: #92400e; }
         .conf-low { background: #f1f5f9; color: #475569; }
-        .section { margin-bottom: 14px; }
-        .section h5 { font-size: 13px; color: var(--primary); margin-bottom: 6px; font-weight: 700; display: flex; align-items: center; gap: 6px; }        .section p { font-size: 13px; color: #334155; line-height: 1.6; margin-bottom: 4px; }
+        .section { margin-bottom: 14px; }        .section h5 { font-size: 13px; color: var(--primary); margin-bottom: 6px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+        .section p { font-size: 13px; color: #334155; line-height: 1.6; margin-bottom: 4px; }
         .emergency-box { background: linear-gradient(135deg, #fef2f2, #fee2e2); border: 2px solid #fecaca; color: #b91c1c; padding: 10px; border-radius: 8px; margin-top: 12px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
         .diff-note { background: #eff6ff; border-left: 3px solid var(--primary); padding: 10px; border-radius: 6px; margin-top: 12px; font-size: 12px; color: #1e40af; line-height: 1.6; }
         .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); margin-top: 8px; }
@@ -80,6 +81,11 @@
         .diagnosis-card { transition: opacity 0.3s; }
         .diagnosis-card.rejected { opacity: 0.6; filter: grayscale(0.5); border: 1px solid #ef4444; }
 
+        /* قسم المساهمين (مخفي بشكل أنيق) */
+        .contributors-section { margin-top: 20px; padding-top: 20px; border-top: 2px solid var(--border); }
+        .contributor-item { display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #f8fafc; border-radius: 6px; margin-bottom: 5px; font-size: 13px; }
+        .contributor-badge { font-size: 16px; margin-left: 5px; }
+
         @media (max-width: 480px) { .stats { grid-template-columns: 1fr; } .auth-card { padding: 24px 18px; } table { font-size: 12px; } th, td { padding: 8px 6px; } .report-header { flex-direction: column; align-items: flex-start; } }
     </style>
 </head>
@@ -90,13 +96,13 @@
             <h1>تشخيص شامل للفم والأسنان</h1>
             <p class="sub">نظام إدارة العيادة والخبير السريري المتعدد</p>
             <input type="password" id="pass" class="input" placeholder="كلمة المرور للدخول">
-            <button class="btn" onclick="doLoginComplex()">دخول</button>
-            <span class="link" onclick="showReg()">📝 تسجيل طبيب جديد</span>
+            <button class="btn" onclick="doLoginComplex()">دخول</button>            <span class="link" onclick="showReg()">📝 تسجيل طبيب جديد</span>
         </div>
         <div class="auth-card hide" id="reg-card">
             <div class="logo">📝</div>
             <h1>طلب انضمام</h1>
-            <p class="sub">يتم التفعيل يدوياً من الإدارة</p>            <input type="text" id="r-name" class="input" placeholder="الاسم الكامل">
+            <p class="sub">يتم التفعيل يدوياً من الإدارة</p>
+            <input type="text" id="r-name" class="input" placeholder="الاسم الكامل">
             <input type="email" id="r-email" class="input" placeholder="البريد الإلكتروني">
             <input type="password" id="r-pass" class="input" placeholder="كلمة المرور (6 أحرف+)">
             <button class="btn" onclick="doRegister()">📤 إرسال الطلب</button>
@@ -124,15 +130,24 @@
                         <div class="stat"><div class="stat-num" id="c-t">0</div><div class="stat-label">الكل</div></div>
                     </div>
                 </div>
+                
+                <!-- قسم المساهمين العلميين (يظهر للمدير فقط) -->
+                <div class="card contributors-section">
+                    <h3>🏆 المساهمون في تطوير القاعدة العلمية</h3>
+                    <p style="font-size:12px; color:#666; margin-bottom:10px;">أفضل الطلاب الذين ساهموا بتصحيح الأخطاء التشخيصية:</p>
+                    <div id="contributors-list">
+                        <div class="empty">جاري تحميل المساهمين...</div>
+                    </div>
+                </div>
+
                 <div class="card">
                     <h3>📥 طلبات التفعيل <button class="act-btn act-ok" onclick="load()" style="float:left;font-size:11px">🔄 تحديث</button></h3>
                     <div id="req-list" class="empty">لا توجد طلبات</div>
                 </div>
                 <div class="card">
-                    <h3>👥 سجل الأطباء</h3>
-                    <div class="table-wrap">
+                    <h3>👥 سجل الأطباء</h3>                    <div class="table-wrap">
                         <table>
-                            <thead><tr><th>الاسم</th><th>البريد</th><th>الحالة</th><th>إجراء</th></tr></thead>
+                            <thead><tr><th>الاسم</th><th>البريد</th><th>الحالة</th><th>المساهمات</th><th>إجراء</th></tr></thead>
                             <tbody id="u-tbl"></tbody>
                         </table>
                     </div>
@@ -143,9 +158,10 @@
             <div id="diag" class="view">
                 <div class="card">
                     <h3>📋 الوصف السريري للحالة</h3>
-                    <p style="font-size:12px;color:#64748b;margin-bottom:10px;">💡 <b>موجه للطالب:</b> اكتب الأعراض بدقة. يشمل ذلك الأسنان، اللثة، التقويم، الزرعات، وحالات الأطفال.</p>
-                    <textarea id="sym" placeholder="مثال: بقعة بيضاء على اللسان تقبل المسح... أو ألم نابض في الضرس..."></textarea>
-                    <button class="btn" onclick="runDiagnosis()">🔍 تحليل الخبير السريري</button>                </div>
+                    <p style="font-size:12px;color:#64748b;margin-bottom:10px;">💡 <b>موجه للطالب:</b> اكتب الأعراض بدقة. ساهم في تحسين النظام بتقييم النتائج!</p>
+                    <textarea id="sym" placeholder="مثال: بقعة بيضاء على اللسان تقبل المسح..."></textarea>
+                    <button class="btn" onclick="runDiagnosis()">🔍 تحليل الخبير السريري</button>
+                </div>
                 <div id="res"></div>
                 <button class="btn btn-gray" onclick="goAdmin()">⚙️ العودة للإدارة</button>
             </div>
@@ -155,7 +171,7 @@
             <div>
                 <a href="https://wa.me/963939436998" target="_blank" class="wa-btn">📱 أرسل ملاحظاتك</a>
             </div>
-            <div style="font-size:12px; opacity:0.85; margin-top:4px;">تصميم وتطوير الدكتور زكريا محمد عطوني - سوريا | الإصدار السريري المتقدم</div>
+            <div style="font-size:12px; opacity:0.85; margin-top:4px;">تصميم وتطوير الدكتور زكريا محمد عطوني - سوريا | الإصدار التعليمي التفاعلي</div>
         </footer>
     </div>
     <div class="toast" id="toast"></div>
@@ -178,13 +194,13 @@
              const btn = document.querySelector('#login-card .btn');
              if(!input) return toast('⚠️ أدخل كلمة المرور أو البريد');
              btn.disabled = true; btn.textContent = '⏳ جاري التحقق...';
-
              if (input.split('').reverse().join('') === SECRET_KEY) {
                  user = { name: 'المدير', role: 'admin' };
                  saveSession();
                  enterApp();
                  $('admin').classList.add('active');
                  $('diag').classList.remove('active');
+                 loadContributors(); // تحميل المساهمين للمدير
                  if(db) load();
                  toast('✅ تم الدخول كمدير');
                  btn.disabled = false; btn.textContent = 'دخول';
@@ -194,7 +210,8 @@
              if(!db) { toast('❌ لا يوجد اتصال'); btn.disabled = false; btn.textContent = 'دخول'; return; }
 
              db.ref('users').once('value').then(snap => {
-                 let found = null;                 if(snap.exists()) {
+                 let found = null;
+                 if(snap.exists()) {
                      snap.forEach(child => {
                          const u = child.val();
                          if(u.email === input || u.pass === input) found = { id: child.key, ...u };
@@ -217,15 +234,38 @@
             const n=$('r-name').value.trim(), e=$('r-email').value.trim().toLowerCase(), p=$('r-pass').value;
             if(!n||!e||!p) return toast('أكمل الحقول');
             if(p.length<6) return toast('كلمة المرور قصيرة');
-            db.ref('users').push({name:n,email:e,pass:p,status:'pending',date:Date.now()})
+            db.ref('users').push({name:n,email:e,pass:p,status:'pending',date:Date.now(), corrections: 0})
               .then(()=>{toast('✅ تم الإرسال');$('r-name').value='';$('r-email').value='';$('r-pass').value='';setTimeout(showLogin,1500);});
         };
         
         const saveSession=()=>localStorage.setItem('d_session',JSON.stringify(user));
         const enterApp=()=>{ $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; };
         const goDiag=()=>{ $('admin').classList.remove('active'); $('diag').classList.add('active'); };
-        const goAdmin=()=>{ $('diag').classList.remove('active'); $('admin').classList.add('active'); if(db) load(); };
+        const goAdmin=()=>{ $('diag').classList.remove('active'); $('admin').classList.add('active'); if(db) { load(); loadContributors(); } };
         const doLogout=()=>{ localStorage.removeItem('d_session'); location.reload(); };
+        // تحميل قائمة المساهمين (أفضل الطلاب)
+        function loadContributors() {
+            if(!db) return;
+            db.ref('users').orderByChild('corrections').limitToLast(5).once('value').then(snap => {
+                let html = '';
+                let contributors = [];
+                if(snap.exists()) {
+                    snap.forEach(child => {
+                        const u = child.val();
+                        if(u.corrections && u.corrections > 0) contributors.push(u);
+                    });
+                    // عكس الترتيب ليظهر الأعلى أولاً
+                    contributors.reverse().forEach(u => {
+                        let badge = u.corrections >= 20 ? '🌟' : (u.corrections >= 5 ? '🎓' : '');
+                        html += `<div class="contributor-item">
+                            <span>${u.name || 'مجهول'} ${badge}</span>
+                            <span style="color:var(--primary); font-weight:bold">${u.corrections} تصحيح</span>
+                        </div>`;
+                    });
+                }
+                $('contributors-list').innerHTML = html || '<div class="empty" style="padding:10px">لا توجد مساهمات بعد. كن أول من يصحح!</div>';
+            });
+        }
 
         window.load = () => {
             if(!db || user.role !== 'admin') return;
@@ -241,20 +281,21 @@
                 users.forEach(u=>{
                     let sc=u.status==='active'?'st-act':u.status==='pending'?'st-pend':'st-rej';
                     let st=u.status==='active'?'نشط':u.status==='pending'?'معلق':'مرفوض/معطل';
+                    let badgeIcon = (u.corrections && u.corrections >= 20) ? '🌟' : ((u.corrections && u.corrections >= 5) ? '🎓' : '-');
                     let act=u.status==='active'?`<button class="act-btn act-no" onclick="upd('${u.id}','disabled')">🚫</button>`:u.status==='disabled'||u.status==='rejected'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button>`:u.status==='pending'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button> <button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button>`:'';
                     act+=` <button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button>`;
-                    tblHTML+=`<tr><td>${u.name||'-'}</td><td>${u.email||'-'}</td><td><span class="status ${sc}">${st}</span></td><td>${act}</td></tr>`;                });
-                $('u-tbl').innerHTML=tblHTML||'<tr><td colspan="4" class="empty">لا يوجد أطباء مسجلون</td></tr>';
+                    tblHTML+=`<tr><td>${u.name||'-'}</td><td>${u.email||'-'}</td><td><span class="status ${sc}">${st}</span></td><td style="text-align:center">${badgeIcon} <small>(${u.corrections||0})</small></td><td>${act}</td></tr>`;
+                });
+                $('u-tbl').innerHTML=tblHTML||'<tr><td colspan="5" class="empty">لا يوجد أطباء مسجلون</td></tr>';
             }).catch(err=>console.error('Load error:',err));
         };
         
         window.upd=(i,s)=>db&&db.ref('users/'+i).update({status:s}).then(load);
         window.del=(i)=>{if(confirm('حذف نهائي؟')&&db)db.ref('users/'+i).remove().then(load);};
-
-        // 🧠 بنك البيانات
+        // 🧠 بنك البيانات (مختصر للعرض)
         const DB = [
             {id:"ecc", name:"تسوس الطفولة المبكر (ECC)", cat:"أطفال", sev:"عالي", location:"أسنان", keywords:["أسنان سوداء","أسنان متآكلة","نخور منتشرة","طفل","رضيع","رضاعة","زجاجة","زجاجة الحليب","بببرونة","أمامية","بكاء عند الأكل"], signs:"نخر واسع حول عنق القواطع العلوية", xray:"نخر واسع", treat:"ترميم أو لب أو خلع", diff:"سن لبنية + رضاعة"},
-            {id:"pulp_child", name:"التهاب لب سن لبني", cat:"أطفال", sev:"عالي", location:"أسنان", keywords:["ألم طفل","سن لبني","أسنان مؤقتة","سن حليب","تورم لثة","خراج","ناسور","يبكي"], signs:"ناسور لثوي فوق السن", xray:"ارتشاف عظمي", treat:"بتر لب أو خلع", diff:"سن لبني + ناسور"},
+            {id:"pulp_child", name:"التهاب لب سن لبني", cat:"أطفال", sev:"عالي", location:"أسنان", keywords:["ألم طفل","سن لبني","أسنان مؤقتة","سن حليب","تورم لثة","خراج","ناسور","يبكي"], signs:"ناسور لثوي فوق السن", xray:"ارتشاف عظمي", treat:"بتر لب أو خلع", diff:"سن لبنية + ناسور"},
             {id:"fluorosis", name:"التسمم الفلوري", cat:"تصبغات", sev:"منخفض", location:"أسنان", keywords:["بقع بيضاء على الأسنان","بقع طبشورية","بقع بنية","مبقعة","فلورايد","ماء آبار"], signs:"بقع متناظرة", xray:"طبيعي", treat:"تبييض أو قشور", diff:"توزيع متناظر + فلورايد"},
             {id:"tetracycline", name:"تصبغ التتراسيكلين", cat:"تصبغات", sev:"متوسط", location:"أسنان", keywords:["أسنان رمادية","أسنان بنية","تصبغ خطوط","تتراسيكلين","حمل","أدوية"], signs:"تصبغ منتشر", xray:"طبيعي", treat:"تبييض أو تيجان", diff:"تاريخ دوائي"},
             {id:"crowding", name:"تزاحم الأسنان", cat:"تقويم", sev:"منخفض", location:"أسنان", keywords:["أسنان ملتوية","متراكبة","معوجة","تزاحم","صعبة التنظيف"], signs:"تداخل التيجان", xray:"ازدحام جذري", treat:"تقويم", diff:"مظهر مزدحم"},
@@ -292,6 +333,7 @@
         const SYNONYMS = {
             'يوجعني':'ألم','وجع':'ألم','موجع':'ألم','بيوجع':'ألم','الم':'ألم','مؤلم':'ألم','إيلام':'ألم','يؤلم':'ألم','ألم نابض':'ألم نابض','نابض':'ألم نابض','خفقان':'ألم نابض','ألم ليلي':'ألم ليلي','ليل':'ألم ليلي','بالليل':'ألم ليلي','يسهر':'ألم ليلي','ضرس':'سن','اضراس':'أسنان','سنان':'أسنان','سني':'أسنان','سنا':'أسنان','ضروس':'أسنان','سن لبني':'سن لبني','لبنية':'سن لبني','حليب':'سن لبني','طفل':'سن لبني','أسنان دائمة':'أسنان دائمة','دائمة':'أسنان دائمة','سن منخور':'تسوس','منخور':'تسوس','لثتي':'لثة','لثه':'لثة','لثتها':'لثة','لثته':'لثة','نزيف لثة':'نزيف','ينزف':'نزيف','دم لثة':'نزيف','لثة حمراء':'احمرار','محمر':'احمرار','لثة متورمة':'تورم','منتفخة':'تورم','لثة متراجعة':'تراجع لثة','متراجعة':'تراجع لثة','صديد':'صديد','قيح':'صديد','خرّاج':'صديد','خراج':'صديد','دمل':'صديد','حمى':'حمى','حرارة':'حمى','ارتفاع حرارة':'حمى','تورم وجه':'تورم','وجه منتفخ':'تورم','فك منتفخ':'تورم','وزمة':'تورم وجه','ثقب سن':'نخر','حفرة':'نخر','أسود سن':'نخر','بني سن':'نخر','حساس بارد':'حساسية','حساس حلو':'حساسية','ألم عابر':'حساسية','جير':'قلح','قلح':'قلح','ترسبات':'قلح','ألم مستمر':'ألم مستمر','لا يوقف':'ألم مستمر','دائم':'ألم مستمر','طرق مؤلم':'طرق مؤلم','نقر مؤلم':'طرق مؤلم','مسكنات لا تفيد':'مسكنات لا تفيد','مبقع':'تصبغ','بقع':'تصبغ','مبقعة':'تصبغ','منقطة':'تصبغ','بيضاء':'أبيض','بنية':'بني','رمادية':'رمادي','غامقة':'غامق','فلور':'فلورايد','آبار':'فلورايد','تتراسيكلين':'تتراسيكلين','مفصل الفك':'مفصل','ألم مفصل':'مفصل','طقطقة':'طقطقة','فرقعة':'طقطقة','صوت فتح':'طقطقة','صعوبة فتح':'صعوبة فتح','قفل فك':'صعوبة فتح','ضزز':'صرير','صرير':'صرير','سلاق':'قلاع','قلاع':'قلاع','منطمر':'مطمور','مطمور':'مطمور','لم يبزغ':'منطمر','الفك':'فك','صعوبة':'صعب','فتح':'مفتوح','تشنج':'تصلب','رضة':'ضربة','سقوط':'وقع','وقعة':'سقوط','لكمة':'ضربة','زرعة':'زراعة','زرع':'زراعة','طقم':'بدلة','بدلة':'طقم','متحرك':'بدلة','ملتوي':'تزاحم','معوج':'تزاحم','فراغ':'مسافة','أسنان متطاولة':'حركة أسنان','متطاولة':'حركة أسنان','رخاوة أسنان':'حركة أسنان','رخوة':'حركة أسنان','حس احتراق':'يحترق فم','قابلة للمسح':'قابلة للكشط','تراكب':'تزاحم','متزاحمة':'تزاحم','متراكبة':'تزاحم','الم عند اللمس':'ألم عند اللمس','الم عند العض':'ألم عند العض','الم عند الضغط':'ألم عند الضغط','ألم بعد خلع':'جفاف السنخ','فراغ فارغ':'جفاف السنخ','رائحة كريهة':'جفاف السنخ','قرحة بيضاء':'قلاعية','أصفر':'قلاعية','تعود':'قلاعية','إجهاد':'قلاعية','شبكة':'حزاز','دانتيل':'حزاز','ثنائي':'حزاز','مر':'حزاز','كتلة':'ورم ليفي','نفس اللون':'ورم ليفي','مطاطي':'ورم ليفي','عض':'ورم ليفي','غير مؤلم':'ورم ليفي','شفة':'كيسة مخاطية','كيس':'كيسة مخاطية','أزرق':'كيسة مخاطية','شفاف':'كيسة مخاطية','ينفجر':'كيسة مخاطية','يعود':'كيسة مخاطية','ألم عضلات':'ألم عضلي مفصلي','صداع':'ألم عضلي مفصلي','طحن':'ألم عضلي مفصلي','تشنج':'ألم عضلي مفصلي','أذن':'ألم عضلي مفصلي','انزياح':'إزاحة قرص المفصل','خطوة':'كسر فك','تنميل':'كسر فك','سوء إطباق':'كسر فك','قرحة لا تشفى':'ورم فموي خبيث','صلبة':'ورم فموي خبيث','خدر':'ورم فموي خبيث','وزن':'ورم فموي خبيث','بببرونة':'رضاعة','أسنان مؤقتة':'سن لبني','سن حليب':'سن لبني','مقلوع':'قلع','اركيلى':'تدخين','شيشة':'تدخين','عقبول':'هربس','تعقيبة':'هربس','أفت':'قلاعية','توتر عصبي اونفسي':'إجهاد','إمتحانات':'إجهاد','إنحشار طعام':'أكل يعلق','قروح او تقرح تحت الجهاز':'طقم','ضعف المضغ':'مضغ صعب','لسان':'لسان','سن':'سن','لثة':'لثة','خد':'خد','شفة':'شفة','حنك':'حنك','فك':'فك','وجه':'وجه'
         };
+
         function norm(t){ return t.normalize('NFKD').replace(/[\u064B-\u065F\u0670]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').toLowerCase().trim(); }
 
         function detectLocations(text) {
@@ -299,8 +341,7 @@
             const t = norm(text);
             if(t.includes('لسان')) locations.tongue = true;
             if(t.includes('سن') || t.includes('ضرس') || t.includes('أسنان') || t.includes('ضروس')) locations.tooth = true;
-            if(t.includes('لثة')) locations.gum = true;
-            if(t.includes('خد')) locations.cheek = true;
+            if(t.includes('لثة')) locations.gum = true;            if(t.includes('خد')) locations.cheek = true;
             if(t.includes('شفة') || t.includes('شفاه')) locations.lip = true;
             if(t.includes('حنك') || t.includes('سقف الفم')) locations.palate = true;
             if(t.includes('فك')) locations.jaw = true;
@@ -319,7 +360,7 @@
             return 0;
         }
 
-        // دالة التقييم التفاعلي
+        // دالة التقييم التفاعلي مع نظام المكافآت
         window.submitFeedback = (diseaseId, type, index) => {
             const card = document.getElementById(`card-${index}`);
             const likeBtn = document.getElementById(`like-${index}`);
@@ -338,12 +379,26 @@
                 
                 // هنا الجزء العقابي والتعليمي: نسأل الدكتور عن الصحيح
                 const correctDiag = prompt("⚠️ تم تسجيل الملاحظة.\n\nما هو التشخيص الصحيح لهذه الحالة؟");
-                if(correctDiag) {
+                if(correctDiag && correctDiag.trim() !== "") {
+                    // حفظ التصحيح
                     if(db) db.ref('corrections/' + diseaseId).push({ 
                         correctDiagnosis: correctDiag, 
-                        user: user?.name || 'مجهول',                        date: Date.now() 
+                        user: user?.name || 'مجهول',
+                        userId: user?.id, // لمعرفة من صاحب التصحيح لمنحه النقاط
+                        date: Date.now() 
                     });
-                    toast('📝 تم حفظ التصحيح لتدريب النظام');
+                    
+                    // زيادة رصيد المساهمات للمستخدم إذا كان مسجلاً
+                    if(user && user.id && user.role === 'doc') {
+                        db.ref('users/' + user.id + '/corrections').transaction(current => {                            return (current || 0) + 1;
+                        });
+                    }
+                    
+                    toast('📝 شكراً لمساهمتك العلمية! تم حفظ التصحيح.');
+                } else {
+                    toast('⚠️ تم إلغاء التصحيح');
+                    dislikeBtn.classList.remove('disliked');
+                    card.classList.remove('rejected');
                 }
             }
         };
@@ -384,19 +439,19 @@
                     if(disease.id === 'ecc' && (n.includes('طفل') || n.includes('رضيع')) && (n.includes('أسود') || n.includes('متآكل'))) score += 20;
                     if(disease.id === 'fluorosis' && n.includes('بقع') && (n.includes('أبيض') || n.includes('بني'))) score += 15;
                     if(disease.id.includes('tmd') && n.includes('فك') && (n.includes('طقطقة') || n.includes('صعب') || n.includes('ضزز'))) score += 15;
-                    if(disease.id === 'malignancy' && n.includes('قرحة') && n.includes('أسبوع')) score += 25;
-                    if(disease.id === 'perio' && (n.includes('قلح') || n.includes('جير')) && n.includes('نزيف')) score += 15;
+                    if(disease.id === 'malignancy' && n.includes('قرحة') && n.includes('أسبوع')) score += 25;                    if(disease.id === 'perio' && (n.includes('قلح') || n.includes('جير')) && n.includes('نزيف')) score += 15;
                     if(disease.id === 'dry_socket' && n.includes('ألم') && n.includes('بعد') && n.includes('يوم')) score += 20;
                     if(disease.id === 'nug' && n.includes('رائحة') && n.includes('نزيف') && n.includes('ألم')) score += 20;
                     return { ...disease, score, matched: [...new Set(matched)] };
                 });
-                let filtered = results.filter(r => r.score >= 15 && r.matched.length > 0).sort((a, b) => b.score - a.score).slice(0, 3);                filtered = filtered.map(r => {
+                let filtered = results.filter(r => r.score >= 15 && r.matched.length > 0).sort((a, b) => b.score - a.score).slice(0, 3);
+                filtered = filtered.map(r => {
                     const confidence = Math.min(95, Math.round((r.score / 60) * 100));
                     const level = confidence > 75 ? 'عالية' : confidence > 45 ? 'متوسطة' : 'منخفضة';
                     const badgeClass = confidence > 75 ? 'conf-high' : confidence > 45 ? 'conf-mid' : 'conf-low';
                     return { ...r, confidence, level, badgeClass };
                 });
-                let html = `<div class="clinical-report"><div class="report-header"><div class="report-title">📊 التقرير السريري التعليمي</div><span style="font-size:11px;color:#64748b">محرك الخبير v10.4 (تفاعلي)</span></div>`;
+                let html = `<div class="clinical-report"><div class="report-header"><div class="report-title">📊 التقرير السريري التعليمي</div><span style="font-size:11px;color:#64748b">محرك الخبير v11.1 (تفاعلي)</span></div>`;
                 if(filtered.length === 0) {
                     html += `<div class="empty">⚠️ لم يتم العثور على تطابق طبي دقيق.<br><br>💡 نصائح:<br>• اكتب الأعراض بشكل كامل ومفصل<br>• حدد الموقع بدقة (سن، لثة، خد، لسان)<br>• اذكر المحفزات (بارد، حلو، مضغ، تلقائي)<br>• اذكر المدة والعمر إن أمكن</div>`;
                 } else {
@@ -433,13 +488,20 @@
         }
 
         window.onload = () => {
-            const s = localStorage.getItem('d_session');
-            if(s){ 
+            const s = localStorage.getItem('d_session');            if(s){ 
                 try{ 
                     user = JSON.parse(s); 
                     enterApp(); 
-                    if(user.role === 'admin'){ $('admin').classList.add('active'); $('diag').classList.remove('active'); if(db) load(); } 
-                    else { $('admin').classList.remove('active'); $('diag').classList.add('active'); }                } catch(e) { localStorage.removeItem('d_session'); } 
+                    if(user.role === 'admin'){ 
+                        $('admin').classList.add('active'); 
+                        $('diag').classList.remove('active'); 
+                        if(db) { load(); loadContributors(); } 
+                    } 
+                    else { 
+                        $('admin').classList.remove('active'); 
+                        $('diag').classList.add('active'); 
+                    }
+                } catch(e) { localStorage.removeItem('d_session'); } 
             }
         };
         window.showReg = showReg; window.showLogin = showLogin; window.doLoginComplex = doLoginComplex; window.doRegister = doRegister;
