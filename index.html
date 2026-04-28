@@ -226,7 +226,7 @@
                 <div class="card">
                     <h3>📋 الوصف السريري للحالة</h3>
                     <p style="font-size:12px;color:#64748b;margin-bottom:10px;">💡 <b>موجه للطبيب:</b> اكتب الأعراض بدقة. ساهم في تحسين النظام بتقييم النتائج!</p>
-                    <textarea id="sym" placeholder="مثال: التهاب لثة حول ضرس العقل..."></textarea>
+                    <textarea id="sym" placeholder="مثال: ألم خلف الضرس الأخير مع صعوبة فتح الفم ورائحة كريهة..."></textarea>
                     <button class="btn" onclick="runDiagnosis()">🔍 تحليل الخبير السريري</button>
                 </div>
                 <div id="res"></div>
@@ -398,7 +398,6 @@
         const SECRET_KEY = "9591melas";
         let user = null;
 
-        // ✅ آلية دخول بسيطة ومضمونة
         const doLoginComplex = async () => {
              const input = $('login-input').value.trim();
              const btn = document.querySelector('#login-card .btn');
@@ -406,7 +405,6 @@
              
              btn.disabled = true; btn.textContent = '⏳ جاري التحقق...';
 
-             // 1. دخول المدير الفوري
              if (input === SECRET_KEY || input.split('').reverse().join('') === SECRET_KEY) {
                  user = { name: 'المدير', role: 'admin' };
                  saveSession(); 
@@ -421,7 +419,6 @@
                  return;
              }
 
-             // 2. دخول الأطباء عبر فايربيس
              if (!db) { toast('❌ لا يوجد اتصال بالخادم'); btn.disabled = false; btn.textContent = 'دخول'; return; }
              
              try {
@@ -528,7 +525,7 @@
                     act+=` <button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button>`;
                     tblHTML+=`<tr><td>${u.name||'-'}</td><td>${u.email||'-'}</td><td><span class="status ${sc}">${st}</span></td><td style="text-align:center">${badgeIcon} <small>(${u.corrections||0})</small></td><td>${act}</td></tr>`;
                 });
-                $('u-tbl').innerHTML=tblHTML||'<tr><td colspan="5" class="empty">لا يوجد أطباء مسجلون</td></tr>';
+                $('u-tbl').innerHTML=tblHTML||'<tr><td colspan="5" class="empty">لا يوجد أطباء مسجلين</td></tr>';
             }).catch(err=>console.error('Load error:',err));
         };
         window.upd=(i,s)=>db&&db.ref('users/'+i).update({status:s}).then(load);
@@ -569,7 +566,7 @@
             {id:"tmd_disc", name:"إزاحة القرص", cat:"مفصل", sev:"متوسط", location:"مفصل", keywords:["طقطقة في المفصل","فرقعة","قفل الفك"], signs:"صوت نقر", xray:"MRI", treat:"واقي", diff:"أصوات مفصلية"},
             {id:"fracture", name:"كسر فك", cat:"رضوض", sev:"طوارئ", location:"فك", keywords:["ضربة على الفك","وقعة","لكمة","سوء إطباق","تنميل"], signs:"خطوة عظمية", xray:"خط كسر", treat:"تثبيت", diff:"رضة حديثة"},
             {id:"malignancy", name:"ورم خبيث", cat:"أورام", sev:"طوارئ", location:"فم", keywords:["قرحة لا تشفى","كتلة صلبة","نزيف","خدر شفة","تدخين"], signs:"قرحة مقلوبة", xray:"تآكل", treat:"إحالة", diff:">3 أسابيع"},
-            {id:"pericoronitis", name:"التهاب حول ضرس العقل، تواج", cat:"جراحة", sev:"عالي", location:"خلف", keywords:["ألم خلف آخر سن","تواج","صعوبة فتح الفم","رائحة فم","غطاء لثوي"], signs:"انتفاخ حول التاج، صعوبة فتح، رائحة", xray:"سن منطمر جزئياً", treat:"غسل، مضادات، قلع أو شق", diff:"موقع خلفي + غطاء لثوي ملتهب"},
+            {id:"pericoronitis", name:"التهاب حول ضرس العقل", cat:"جراحة", sev:"عالي", location:"خلف", keywords:["ألم خلف آخر سن","تواج","صعوبة فتح الفم","رائحة فم","غطاء لثوي","ضرس عقل","عقل"], signs:"انتفاخ حول التاج، صعوبة فتح، رائحة", xray:"سن منطمر جزئياً", treat:"غسل، مضادات، قلع أو شق", diff:"موقع خلفي + غطاء لثوي ملتهب"},
             {id:"secondary_caries", name:"نخر ثانوي تحت حشوة", cat:"لبية", sev:"متوسط", location:"سن", keywords:["رائحة حول الحشوة","تغير لون","انحشار طعام","ألم حول حشوة","نخر ناكس"], signs:"فجوة حول الحشوة، انحشار، رائحة", xray:"شفافية تحت الحشوة", treat:"استبدال الحشوة", diff:"مرتبط بحشوة قديمة + انحشار"},
             {id:"chronic_apical", name:"التهاب حول الذروة المزمن", cat:"عدوى", sev:"متوسط", location:"سن", keywords:["ناسور لثوي","ثقل في السن","ألم خفيف","الم عند الطرق"], signs:"ناسور يظهر ويختفي، إحساس ثقل", xray:"شفافية ذروية واضحة", treat:"علاج جذر أو قلع", diff:"ناسور متكرر + سن غير حي بدون ألم حاد"},
             {id:"drug_gingival", name:"تضخم لثوي دوائي", cat:"لثة", sev:"متوسط", location:"لثة", keywords:["تضخم لثوي","أدوية","فينيتوين","أملوديبين","نزف بسيط"], signs:"تضخم غير مؤلم، صعوبة تنظيف", xray:"طبيعي", treat:"تغيير دواء، جراحة لثوية", diff:"تاريخ دوائي + تضخم ليفي"},
@@ -586,7 +583,7 @@
             {id:"bruxism", name:"صرير الأسنان", cat:"وظيفي", sev:"متوسط", location:"أسنان", keywords:["تآكل الأسنان","ألم صباحي","صداع","تشقق حشوات","كز"], signs:"تآكل سطوح، ألم عضلي صباحي", xray:"طبيعي أو تآكل", treat:"واقي ليلي، علاج عضلي", diff:"تآكل متناسق + ألم صباحي"},
             {id:"rampant_caries", name:"تسوس منتشر (نخر سريع)", cat:"أطفال", sev:"عالي", location:"أسنان", keywords:["تسوسات متعددة","كسور أمامية","ألم أكل"], signs:"تسوسات سريعة في أسنان متعددة", xray:"نخور متعددة", treat:"ترميم عاجل، فلورايد، تغذية", diff:"انتشار سريع + إهمال أو مرض جهازي"},
             {id:"pregnancy_gingivitis", name:"التهاب لثوي حملي", cat:"لثة", sev:"منخفض", location:"لثة", keywords:["نزف لثوي","تضخم","حمل","ثلث ثاني"], signs:"نزف وتضخم لثوي خلال الحمل", xray:"طبيعي", treat:"تنظيف، نظافة دقيقة", diff:"مرتبط بفترة الحمل"},
-            {id:"pregnancy_tumor", name:"ورم لثوي حملي", cat:"لثة", sev:"متوسط", location:"لثة", keywords:["كتلة لثوية حمراء","نزف لمس","حمل","نمو سريع"], signs:"كتلة حمراء نازفة تنمو بسرعة", xray:"غير مطلوب", treat:"مراقبة أو استئصال بعد الحمل", diff:"كتلة وعائية + حمل + نمو سريع"},            {id:"pyogenic_granuloma", name:"الورم الحبيبي القيحي", cat:"أنسجة", sev:"منخفض", location:"لثة", keywords:["كتلة حمراء لامعة","نزف سهل","نمو سريع"], signs:"كتلة حمراء نازفة بسهولة", xray:"غير مطلوب", treat:"استئصال جراحي", diff:"كتلة وعائية حمراء + نزف فوري"},
+            {id:"pregnancy_tumor", name:"ورم لثوي حملي", cat:"لثة", sev:"متوسط", location:"لثة", keywords:["كتلة لثوية حمراء","نزف لمس","حمل","نمو سريع","ورم حمل","ورم الحمل","حامل"], signs:"كتلة حمراء نازفة تنمو بسرعة", xray:"غير مطلوب", treat:"مراقبة أو استئصال بعد الحمل", diff:"كتلة وعائية + حمل + نمو سريع"},            {id:"pyogenic_granuloma", name:"الورم الحبيبي القيحي", cat:"أنسجة", sev:"منخفض", location:"لثة", keywords:["كتلة حمراء لامعة","نزف سهل","نمو سريع"], signs:"كتلة حمراء نازفة بسهولة", xray:"غير مطلوب", treat:"استئصال جراحي", diff:"كتلة وعائية حمراء + نزف فوري"},
             {id:"fissured_tongue", name:"اللسان المتشقق", cat:"لسان", sev:"منخفض", location:"لسان", keywords:["شقوق عميقة","رائحة فم","تجمع بقايا"], signs:"شقوق في سطح اللسان، بقايا طعام", xray:"غير مطلوب", treat:"تنظيف الشقوق، فرشاة لسان", diff:"شقوق ثابتة + غير مؤلمة"},
             {id:"dentigerous_cyst", name:"كيسة سنية (حول تاج)", cat:"جراحة", sev:"متوسط", location:"فك", keywords:["انتفاخ حول سن","منطمرة","بطيء"], signs:"انتفاخ عظمي حول تاج سن منطمر", xray:"شفافية حول التاج", treat:"استئصال + قلع السن", diff:"مرتبطة بتاج سن منطمر"},
             {id:"hand_foot_mouth", name:"مرض اليد والقدم والفم", cat:"أطفال", sev:"متوسط", location:"فم", keywords:["تقرحات فموية","طفح يدين","حرارة"], signs:"تقرحات فم + طفح على اليدين/القدمين", xray:"غير مطلوب", treat:"مسكنات، سوائل، عزل", diff:"طفح جلدي مميز + حرارة"},
@@ -805,83 +802,102 @@
             });
         }
 
+        // **********************************************
+        // الدالة المعدلة runDiagnosis - الحل النهائي
+        // **********************************************
         function runDiagnosis() {
             const text = $('sym').value.trim();
             if(!text) return toast('اكتب الأعراض بدقة');
             const btn = document.querySelector('#diag .btn');
             btn.disabled = true; btn.textContent = '⏳ جاري التحليل السريري...';
             
-            // التأكد من أن البنك محدث قبل البحث
-            if(FULL_DB.length === STATIC_DB.length) {
-                loadDynamicDiagnoses(); // محاولة تحميل إذا لم تكن محملة
-            }
+            if (FULL_DB.length === STATIC_DB.length) loadDynamicDiagnoses();
 
             setTimeout(() => {
-                const n = norm(text);
-                const words = n.split(/\s+/).filter(w => w.length > 2);
-                const locs = detectLocations(text);
+                const normalizedInput = norm(text);
+                const inputWords = normalizedInput.split(/\s+/).filter(w => w.length > 2);
+                const detectedLocs = detectLocations(text);
                 
-                // استخدام FULL_DB بدلاً من STATIC_DB
+                // تعريف الكلمات السلبية لمنع التشخيصات الخاطئة (خاصة أمراض الأطفال)
+                const negativeMapping = {
+                    'ecc': ['عقل', 'بالغ', 'دائم', 'ضرس عقل', 'رحى', 'سن دائم', 'ضرس العقل'],
+                    'pulp_child': ['عقل', 'بالغ', 'دائم', 'ضرس عقل', 'رحى', 'ضرس العقل'],
+                    'viral_infant_stomatitis': ['بالغ', 'ضرس عقل'],
+                    'bacterial_child_stomatitis': ['بالغ', 'ضرس عقل'],
+                    'primary_herpes_stomatitis': ['بالغ'],
+                    'teething_gingivitis': ['بالغ', 'دائم'],
+                    'rampant_caries': ['ضرس عقل', 'بالغ', 'ضرس العقل']
+                };
+                
                 let results = FULL_DB.map(disease => {
-                    let score = 0, matched = [];
-                    disease.keywords.forEach(kw => {
-                        const nk = norm(kw);
-                        if(n.includes(nk)) { score += 15; matched.push(kw); }
-                        else if(words.some(w => { const syn = SYNONYMS[w]; return syn && nk.includes(norm(syn)); })) { score += 10; matched.push(kw); }
-                    });
+                    // 1. فحص الكلمات السلبية
+                    let negList = negativeMapping[disease.id] || [];
+                    for (let neg of negList) {
+                        if (normalizedInput.includes(norm(neg))) {
+                            return { ...disease, score: 0, matched: [] };
+                        }
+                    }
                     
-                    // فحص الأعراض إذا وجدت
-                    if(disease.symptoms) {                        disease.symptoms.forEach(sym => {
-                            const ns = norm(sym);
-                            if(n.includes(ns) || ns.split(' ').every(word => n.includes(word))) {
-                                score += 20;
-                                if(!matched.includes(sym)) matched.push(sym);
+                    // 2. المطابقة الإيجابية (يجب وجود كلمة مفتاحية حقيقية)
+                    let matchedKeywords = [];
+                    for (let kw of disease.keywords) {
+                        const nkw = norm(kw);
+                        if (normalizedInput.includes(nkw)) {
+                            matchedKeywords.push(kw);
+                            continue;
+                        }
+                        // المرادفات (دقيقة)
+                        let synMatched = false;
+                        for (let w of inputWords) {
+                            const syn = SYNONYMS[w];
+                            if (syn && nkw.includes(norm(syn))) {
+                                matchedKeywords.push(kw);
+                                synMatched = true;
+                                break;
                             }
-                        });
+                        }
+                        if (synMatched) continue;
                     }
-
-                    score += getLocationScore(disease.location, locs);
                     
-                    // تعزيزات منطقية
-                    if(n.includes('قابل للكشط') || n.includes('يمسح')) { if(disease.id === 'leukoplakia') score -= 100; if(disease.id === 'candida') score += 30; }
-                    if(n.includes('لا تمسح') || n.includes('ثابتة')) { if(disease.id === 'candida') score -= 100; if(disease.id === 'leukoplakia') score += 30; }
-                    if(disease.id === 'irreversible_pulpitis' && n.includes('ليل') && (n.includes('نابض') || n.includes('يزيد'))) score += 25;
-                    if(disease.id === 'abscess' && n.includes('تورم') && (n.includes('صديد') || n.includes('قيح'))) score += 30;
-                    if(disease.id === 'caries' && (n.includes('بارد') || n.includes('ساخن')) && n.includes('حلو')) score += 20;
-                    if(disease.id === 'ecc' && (n.includes('طفل') || n.includes('رضيع')) && (n.includes('أسود') || n.includes('متآكل'))) score += 25;
-                    if(disease.id === 'fluorosis' && n.includes('بقع') && (n.includes('أبيض') || n.includes('بني'))) score += 20;
-                    if(disease.id.includes('tmd') && n.includes('فك') && (n.includes('طقطقة') || n.includes('صعب') || n.includes('ضزز'))) score += 20;
-                    if(disease.id === 'malignancy' && n.includes('قرحة') && n.includes('أسبوع')) score += 30;
-                    if(disease.id === 'perio' && (n.includes('قلح') || n.includes('جير')) && n.includes('نزيف')) score += 20;
-                    if(disease.id === 'dry_socket' && n.includes('ألم') && n.includes('بعد') && n.includes('يوم')) score += 25;
-                    if(disease.id === 'nug' && n.includes('رائحة') && n.includes('نزيف') && n.includes('ألم')) score += 25;
-                    if(disease.id === 'pericoronitis' && n.includes('خلف') && n.includes('عقل')) score += 25;
-                    if(disease.id === 'trigeminal_neuralgia' && (n.includes('كهربائي') || n.includes('صاعق'))) score += 30;
-                    if(disease.id === 'herpes_zoster' && n.includes('جانب') && n.includes('واحد')) score += 30;
-                    if((disease.id === 'food_allergy' || disease.id === 'allergic_glossitis') && (n.includes('طعام') || n.includes('أكل'))) score += 20;
-                    if((disease.id === 'anemic_glossitis' || disease.id === 'iron_deficiency_gingivitis') && (n.includes('فقر دم') || n.includes('أنيميا') || n.includes('تعب'))) score += 20;
-                    if(disease.id === 'denture_fungal_gingivitis' && n.includes('طقم')) score += 25;
-                    
-                    // ✅ تعزيز خاص لحالة الحمل
-                    if(disease.id === 'pregnancy_tumor' && (n.includes('حامل') || n.includes('حمل'))) {
-                        score += 50; // أولوية قصوى
+                    if (matchedKeywords.length === 0) {
+                        return { ...disease, score: 0, matched: [] };
                     }
-
-                    return { ...disease, score, matched: [...new Set(matched)] };
+                    
+                    // 3. حساب الدرجة
+                    let score = matchedKeywords.length * 20;
+                    score += getLocationScore(disease.location, detectedLocs);
+                    
+                    // تعزيزات خاصة
+                    if (disease.id === 'pericoronitis' && (normalizedInput.includes('عقل') || normalizedInput.includes('ضرس عقل'))) {
+                        score += 50;
+                    }
+                    if (disease.id === 'impacted' && normalizedInput.includes('منطمر')) score += 30;
+                    if (disease.id === 'caries' && (normalizedInput.includes('تسوس') || normalizedInput.includes('نخر'))) score += 20;
+                    
+                    // منع نهائي لأمراض الأسنان اللبنية عند وجود "عقل"
+                    if ((disease.id === 'ecc' || disease.id === 'pulp_child') && normalizedInput.includes('عقل')) {
+                        score = 0;
+                    }
+                    
+                    return { ...disease, score, matched: matchedKeywords };
                 });
-
-                let filtered = results.filter(r => r.score >= 20 && r.matched.length > 0).sort((a, b) => b.score - a.score).slice(0, 3);
+                
+                let filtered = results.filter(r => r.score >= 30 && r.matched.length > 0)
+                                      .sort((a,b) => b.score - a.score)
+                                      .slice(0, 3);
                 
                 filtered = filtered.map(r => {
-                    const confidence = Math.min(98, Math.round((r.score / 80) * 100));
+                    let confidence = Math.min(95, Math.round((r.score / 100) * 100));
+                    if (confidence < 30) confidence = 30;
                     const level = confidence > 75 ? 'عالية' : confidence > 45 ? 'متوسطة' : 'منخفضة';
                     const badgeClass = confidence > 75 ? 'conf-high' : confidence > 45 ? 'conf-mid' : 'conf-low';
                     return { ...r, confidence, level, badgeClass };
                 });
-
-                let html = `<div class="clinical-report"><div class="report-header"><div class="report-title">📊 التقرير السريري التعليمي</div><span style="font-size:11px;color:#64748b">محرك الخبير v38.0</span></div>`;
-                                if(filtered.length === 0) {
-                    html += `<div class="no-result-guide"><div class="guide-title">🤔 لم نجد تطابقاً دقيقاً</div><p class="guide-text">قد يكون الوصف عاماً جداً أو يستخدم مصطلحات غير طبية.<br>حاول إضافة تفاصيل مثل: <b>(الموقع، نوع الألم، المحفزات، المدة)</b>.</p><div style="font-size:12px; color:#64748b; margin-bottom:8px;">جرب الضغط على أحد الأمثلة:</div><div class="example-chips"><span class="chip" onclick="$('sym').value='ألم نابض يوقظني من النوم'; runDiagnosis()">😣 ألم نابض ليلي</span><span class="chip" onclick="$('sym').value='بقع بيضاء على اللسان تقبل المسح'; runDiagnosis()">👅 بقع بيضاء على اللسان</span><span class="chip" onclick="$('sym').value='تورم وجهي مع حرارة وصعوبة فتح الفم'; runDiagnosis()">🤒 تورم وجهي وحرارة</span><span class="chip" onclick="$('sym').value='ألم شديد خلف الضرس الأخير مع رائحة'; runDiagnosis()">🦷 ألم خلف الضرس</span></div></div>`;
+                
+                // بناء واجهة النتائج
+                let html = `<div class="clinical-report"><div class="report-header"><div class="report-title">📊 التقرير السريري التعليمي</div><span style="font-size:11px;color:#64748b">محرك الخبير v39.0 (معدل)</span></div>`;
+                if (filtered.length === 0) {
+                    html += `<div class="no-result-guide"><div class="guide-title">🤔 لم نجد تطابقاً دقيقاً</div><p class="guide-text">تأكد من كتابة الأعراض بدقة: الموقع، نوع الألم، المحفزات، المدة.<br>مثال: <b>ألم خلف الضرس الأخير مع صعوبة فتح الفم ورائحة كريهة</b></p><div class="example-chips"><span class="chip" onclick="$('sym').value='ألم نابض يوقظني من النوم'; runDiagnosis()">😣 ألم نابض ليلي</span><span class="chip" onclick="$('sym').value='بقع بيضاء على اللسان تقبل المسح'; runDiagnosis()">👅 بقع بيضاء على اللسان</span><span class="chip" onclick="$('sym').value='تورم وجهي مع حرارة وصعوبة فتح الفم'; runDiagnosis()">🤒 تورم وجهي وحرارة</span><span class="chip" onclick="$('sym').value='ألم شديد خلف الضرس الأخير مع رائحة'; runDiagnosis()">🦷 ألم خلف الضرس</span></div></div>`;
                 } else {
                     filtered.forEach((r, i) => {
                         const borderColor = r.sev === 'طوارئ' ? '#ef4444' : '#3b82f6';
@@ -915,9 +931,7 @@
         }
 
         window.onload = () => {
-            // تحميل البنك الديناميكي عند البدء
             loadDynamicDiagnoses();
-            
             const s = localStorage.getItem('d_session');
             if(s){ 
                 try{ 
@@ -929,6 +943,7 @@
             }
         };
         window.showReg = showReg; window.showLogin = showLogin; window.doLoginComplex = doLoginComplex; window.doRegister = doRegister;
-        window.doLogout = doLogout; window.goDiag = goDiag; window.goAdmin = goAdmin; window.upd = upd; window.del = del;    </script>
+        window.doLogout = doLogout; window.goDiag = goDiag; window.goAdmin = goAdmin; window.upd = upd; window.del = del;
+    </script>
 </body>
 </html>
