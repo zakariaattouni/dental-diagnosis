@@ -226,7 +226,7 @@
                 <div class="card">
                     <h3>📋 الوصف السريري للحالة</h3>
                     <p style="font-size:12px;color:#64748b;margin-bottom:10px;">💡 <b>موجه للطبيب:</b> اكتب الأعراض بدقة. ساهم في تحسين النظام بتقييم النتائج!</p>
-                    <textarea id="sym" placeholder="مثال: سن مكسور بعد سقوط... أو كتلة في الفك تتوسع ببطء..."></textarea>
+                    <textarea id="sym" placeholder="مثال: سيدة حامل لديها كتلة على اللثة..."></textarea>
                     <button class="btn" onclick="runDiagnosis()">🔍 تحليل الخبير السريري</button>
                 </div>
                 <div id="res"></div>
@@ -238,7 +238,7 @@
             <div>
                 <a href="https://wa.me/963939436998" target="_blank" class="wa-btn">📱 أرسل ملاحظاتك</a>
             </div>
-            <div style="font-size:12px; opacity:0.85; margin-top:4px;">تصميم وتطوير الدكتور زكريا محمد عطوني - سوريا | الإصدار v34.0</div>
+            <div style="font-size:12px; opacity:0.85; margin-top:4px;">تصميم وتطوير الدكتور زكريا محمد عطوني - سوريا | الإصدار v35.0</div>
         </footer>
     </div>
 
@@ -691,7 +691,9 @@
             'سوء تغذية':'malnutrition','نقص مناعة':'ضعف مناعة','نقص حديد':'فقر دم','شحوب لثة':'أنيميا','نقص B12':'فيتامين B12','فوليك أسيد':'فولات','حمض الفوليك':'فولات','فطريات مزمنة':'سلاق فموي','حويصلات لثة':'هربس','فطري حاد':'سلاق','جرثومي مزمن':'جير','طقم فطري':'التهاب تحت الطقم',
             'ما عم يسكر':'خلع الفك','فكي مال':'كسر الفك','ما عم يوقف':'نزف مستمر','لساني مورّم':'تورم لسان','العين مسكّرة':'تورم عين','اللغة عم تذوب':'التهاب لثة نخري','تحت لساني مورّم':'تورم تحت اللسان','الغدة مورّمة':'انتفاخ غدة','شي سخن':'حرارة عالية',
             // مرادفات الحالات الجديدة
-            'كسر سن':'كسر تاج السن','سقط سن':'خلع السن الكامل','سن مخلوع':'خلع السن الكامل','توسع فك':'الورم الميلومي','ورم فك':'الورم الميلومي','تشوه فك':'خلل التنسج الليفي','أرضية زجاجية':'خلل التنسج الليفي','حفر مينا':'نقص تنسج المينا','عيوب تكوين':'نقص تنسج المينا','أسنان زرقاء':'تكون العاج الناقص','أسنان كهرمانية':'تكون العاج الناقص','جذور قصيرة':'تكون العاج الناقص','سن زائد':'السن الزائد','سن إضافي':'السن الزائد','جفاف فم':'متلازمة شوغرن','جفاف عينين':'متلازمة شوغرن','كتلة أمام الأذن':'ورم الغدة النكفية الحميد'
+            'كسر سن':'كسر تاج السن','سقط سن':'خلع السن الكامل','سن مخلوع':'خلع السن الكامل','توسع فك':'الورم الميلومي','ورم فك':'الورم الميلومي','تشوه فك':'خلل التنسج الليفي','أرضية زجاجية':'خلل التنسج الليفي','حفر مينا':'نقص تنسج المينا','عيوب تكوين':'نقص تنسج المينا','أسنان زرقاء':'تكون العاج الناقص','أسنان كهرمانية':'تكون العاج الناقص','جذور قصيرة':'تكون العاج الناقص','سن زائد':'السن الزائد','سن إضافي':'السن الزائد','جفاف فم':'متلازمة شوغرن','جفاف عينين':'متلازمة شوغرن','كتلة أمام الأذن':'ورم الغدة النكفية الحميد',
+            // مرادفات حالة الحمل
+            'حامل':'pregnancy_tumor','ورم حمل':'pregnancy_tumor','ورم الحمل':'pregnancy_tumor','كتلة لثوية':'pregnancy_tumor'
         };
 
         function norm(t){ return t.normalize('NFKD').replace(/[\u064B-\u065F\u0670]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').toLowerCase().trim(); }
@@ -731,9 +733,9 @@
             const dislikeBtn = document.getElementById(`dislike-${index}`);
             
             if(type === 'like') {
-                likeBtn.classList.add('liked'); 
-                dislikeBtn.classList.remove('disliked'); 
-                card.classList.remove('rejected');                if(db) db.ref('feedback/' + diseaseId).push({ type: 'correct', user: user?.name || 'مجهول' });
+                likeBtn.classList.add('liked');                 dislikeBtn.classList.remove('disliked'); 
+                card.classList.remove('rejected');
+                if(db) db.ref('feedback/' + diseaseId).push({ type: 'correct', user: user?.name || 'مجهول' });
                 toast('✅ شكراً لتأكيد الدقة');
             } else {
                 // عند الضغط على "غير دقيق"
@@ -780,9 +782,9 @@
                         user.corrections = (user.corrections || 0) + 1;
                         $('user-corrections').textContent = user.corrections;
                     }
-                } else { 
-                    toast('⚠️ تم إلغاء الإضافة'); 
-                    dislikeBtn.classList.remove('disliked');                     card.classList.remove('rejected'); 
+                } else {                     toast('⚠️ تم إلغاء الإضافة'); 
+                    dislikeBtn.classList.remove('disliked'); 
+                    card.classList.remove('rejected'); 
                 }
             }
         };
@@ -829,9 +831,9 @@
                     });
                     
                     // فحص الأعراض إذا وجدت
-                    if(disease.symptoms) {
-                        disease.symptoms.forEach(sym => {
-                            const ns = norm(sym);                            if(n.includes(ns) || ns.split(' ').every(word => n.includes(word))) {
+                    if(disease.symptoms) {                        disease.symptoms.forEach(sym => {
+                            const ns = norm(sym);
+                            if(n.includes(ns) || ns.split(' ').every(word => n.includes(word))) {
                                 score += 20;
                                 if(!matched.includes(sym)) matched.push(sym);
                             }
@@ -860,6 +862,11 @@
                     if((disease.id === 'anemic_glossitis' || disease.id === 'iron_deficiency_gingivitis') && (n.includes('فقر دم') || n.includes('أنيميا') || n.includes('تعب'))) score += 20;
                     if(disease.id === 'denture_fungal_gingivitis' && n.includes('طقم')) score += 25;
                     
+                    // ✅ تعزيز خاص لحالة الحمل
+                    if(disease.id === 'pregnancy_tumor' && (n.includes('حامل') || n.includes('حمل'))) {
+                        score += 50; // أولوية قصوى
+                    }
+
                     return { ...disease, score, matched: [...new Set(matched)] };
                 });
 
@@ -872,15 +879,15 @@
                     return { ...r, confidence, level, badgeClass };
                 });
 
-                let html = `<div class="clinical-report"><div class="report-header"><div class="report-title">📊 التقرير السريري التعليمي</div><span style="font-size:11px;color:#64748b">محرك الخبير v34.0</span></div>`;
-                
-                if(filtered.length === 0) {
+                let html = `<div class="clinical-report"><div class="report-header"><div class="report-title">📊 التقرير السريري التعليمي</div><span style="font-size:11px;color:#64748b">محرك الخبير v35.0</span></div>`;
+                                if(filtered.length === 0) {
                     html += `<div class="no-result-guide"><div class="guide-title">🤔 لم نجد تطابقاً دقيقاً</div><p class="guide-text">قد يكون الوصف عاماً جداً أو يستخدم مصطلحات غير طبية.<br>حاول إضافة تفاصيل مثل: <b>(الموقع، نوع الألم، المحفزات، المدة)</b>.</p><div style="font-size:12px; color:#64748b; margin-bottom:8px;">جرب الضغط على أحد الأمثلة:</div><div class="example-chips"><span class="chip" onclick="$('sym').value='ألم نابض يوقظني من النوم'; runDiagnosis()">😣 ألم نابض ليلي</span><span class="chip" onclick="$('sym').value='بقع بيضاء على اللسان تقبل المسح'; runDiagnosis()">👅 بقع بيضاء على اللسان</span><span class="chip" onclick="$('sym').value='تورم وجهي مع حرارة وصعوبة فتح الفم'; runDiagnosis()">🤒 تورم وجهي وحرارة</span><span class="chip" onclick="$('sym').value='ألم شديد خلف الضرس الأخير مع رائحة'; runDiagnosis()">🦷 ألم خلف الضرس</span></div></div>`;
                 } else {
                     filtered.forEach((r, i) => {
                         const borderColor = r.sev === 'طوارئ' ? '#ef4444' : '#3b82f6';
                         const severityColor = r.sev === 'طوارئ' ? '#ef4444' : '#f59e0b';
-                        html += `<div id="card-${i}" class="diagnosis-card" style="background:#fff;border-radius:10px;padding:14px;margin-bottom:12px;border-right:5px solid ${borderColor};box-shadow:0 2px 6px rgba(0,0,0,0.04)">                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px">
+                        html += `<div id="card-${i}" class="diagnosis-card" style="background:#fff;border-radius:10px;padding:14px;margin-bottom:12px;border-right:5px solid ${borderColor};box-shadow:0 2px 6px rgba(0,0,0,0.04)">
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px">
                                 <span style="font-size:15px;font-weight:700;color:#1e40af">#${i+1} ${r.name} <span class="cat-tag">${r.cat}</span></span>
                                 <div style="display:flex;gap:6px;align-items:center">
                                     <span class="conf-badge ${r.badgeClass}">${r.confidence}% (${r.level})</span>
@@ -922,7 +929,6 @@
             }
         };
         window.showReg = showReg; window.showLogin = showLogin; window.doLoginComplex = doLoginComplex; window.doRegister = doRegister;
-        window.doLogout = doLogout; window.goDiag = goDiag; window.goAdmin = goAdmin; window.upd = upd; window.del = del;
-    </script>
+        window.doLogout = doLogout; window.goDiag = goDiag; window.goAdmin = goAdmin; window.upd = upd; window.del = del;    </script>
 </body>
 </html>
