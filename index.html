@@ -238,7 +238,7 @@
             <div>
                 <a href="https://wa.me/963939436998" target="_blank" class="wa-btn">📱 أرسل ملاحظاتك</a>
             </div>
-            <div style="font-size:12px; opacity:0.85; margin-top:4px;">تصميم وتطوير الدكتور زكريا محمد عطوني - سوريا | الإصدار v32.0</div>
+            <div style="font-size:12px; opacity:0.85; margin-top:4px;">تصميم وتطوير الدكتور زكريا محمد عطوني - سوريا | الإصدار v34.0</div>
         </footer>
     </div>
 
@@ -872,7 +872,7 @@
                     return { ...r, confidence, level, badgeClass };
                 });
 
-                let html = `<div class="clinical-report"><div class="report-header"><div class="report-title">📊 التقرير السريري التعليمي</div><span style="font-size:11px;color:#64748b">محرك الخبير v32.0</span></div>`;
+                let html = `<div class="clinical-report"><div class="report-header"><div class="report-title">📊 التقرير السريري التعليمي</div><span style="font-size:11px;color:#64748b">محرك الخبير v34.0</span></div>`;
                 
                 if(filtered.length === 0) {
                     html += `<div class="no-result-guide"><div class="guide-title">🤔 لم نجد تطابقاً دقيقاً</div><p class="guide-text">قد يكون الوصف عاماً جداً أو يستخدم مصطلحات غير طبية.<br>حاول إضافة تفاصيل مثل: <b>(الموقع، نوع الألم، المحفزات، المدة)</b>.</p><div style="font-size:12px; color:#64748b; margin-bottom:8px;">جرب الضغط على أحد الأمثلة:</div><div class="example-chips"><span class="chip" onclick="$('sym').value='ألم نابض يوقظني من النوم'; runDiagnosis()">😣 ألم نابض ليلي</span><span class="chip" onclick="$('sym').value='بقع بيضاء على اللسان تقبل المسح'; runDiagnosis()">👅 بقع بيضاء على اللسان</span><span class="chip" onclick="$('sym').value='تورم وجهي مع حرارة وصعوبة فتح الفم'; runDiagnosis()">🤒 تورم وجهي وحرارة</span><span class="chip" onclick="$('sym').value='ألم شديد خلف الضرس الأخير مع رائحة'; runDiagnosis()">🦷 ألم خلف الضرس</span></div></div>`;
