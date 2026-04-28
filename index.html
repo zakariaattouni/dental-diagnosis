@@ -45,9 +45,9 @@
         .stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
         textarea { width: 100%; padding: 16px; border: 2px solid var(--border); border-radius: 12px; min-height: 120px; font-size: 14px; margin-bottom: 16px; background: #f8fafc; resize: vertical; line-height: 1.6; transition: 0.3s; }
         textarea:focus { border-color: var(--primary); background: #fff; outline: none; }
-        .clinical-report { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 16px; margin-top: 16px; }        .report-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--primary); flex-wrap: wrap; gap: 8px; }
-        .report-title { font-size: 17px; font-weight: 700; color: #1e40af; display: flex; align-items: center; gap: 8px; }
-        .conf-badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+        .clinical-report { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 16px; margin-top: 16px; }
+        .report-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--primary); flex-wrap: wrap; gap: 8px; }
+        .report-title { font-size: 17px; font-weight: 700; color: #1e40af; display: flex; align-items: center; gap: 8px; }        .conf-badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
         .conf-high { background: #d1fae5; color: #065f46; }
         .conf-mid { background: #fef3c7; color: #92400e; }
         .conf-low { background: #f1f5f9; color: #475569; }
@@ -91,12 +91,12 @@
         .fb-btn.disliked { background: #fee2e2; border-color: #ef4444; color: #991b1b; }
         .diagnosis-card { transition: opacity 0.3s; }
         .diagnosis-card.rejected { opacity: 0.6; filter: grayscale(0.5); border: 1px solid #ef4444; }
-        .chat-fab { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4); cursor: pointer; z-index: 900; transition: transform 0.2s; }        .chat-fab:hover { transform: scale(1.1); }
+        .chat-fab { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4); cursor: pointer; z-index: 900; transition: transform 0.2s; }
+        .chat-fab:hover { transform: scale(1.1); }
         .chat-modal { position: fixed; bottom: 80px; right: 20px; width: 340px; max-width: 90vw; height: 450px; background: white; border-radius: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); z-index: 901; display: none; flex-direction: column; overflow: hidden; border: 1px solid var(--border); }
         .chat-modal.active { display: flex; }
         .chat-header { background: var(--primary); color: white; padding: 12px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
-        .chat-body { flex: 1; overflow-y: auto; padding: 10px; background: #f8fafc; display: flex; flex-direction: column; gap: 8px; }
-        .chat-msg { background: white; padding: 8px 12px; border-radius: 12px; border-bottom-right-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); font-size: 13px; position: relative; word-break: break-word; }
+        .chat-body { flex: 1; overflow-y: auto; padding: 10px; background: #f8fafc; display: flex; flex-direction: column; gap: 8px; }        .chat-msg { background: white; padding: 8px 12px; border-radius: 12px; border-bottom-right-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); font-size: 13px; position: relative; word-break: break-word; }
         .chat-msg.admin { background: #eff6ff; border: 1px solid #bfdbfe; }
         .chat-meta { font-size: 10px; color: var(--muted); margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
         .chat-img { max-width: 100%; border-radius: 8px; margin-top: 5px; cursor: pointer; border: 1px solid var(--border); display: block; }
@@ -140,12 +140,12 @@
     <div id="auth" class="auth-screen">
         <div class="auth-card" id="login-card">
             <div class="logo">🦷</div>
-            <h1>تشخيص أمراض الفم والأسنان</h1>            <p class="sub">نظام تشخيصي تفاعلي متقدم - تغذية راجعة فورية</p>
+            <h1>تشخيص أمراض الفم والأسنان</h1>
+            <p class="sub">نظام تشخيصي تفاعلي متقدم - تغذية راجعة فورية</p>
             <input type="text" id="login-input" class="input" placeholder="البريد أو كلمة المرور أو الاسم">
             <button class="btn" onclick="doLoginComplex()">دخول</button>
             <span class="link" onclick="showReg()">📝 تسجيل طبيب جديد</span>
-        </div>
-        <div class="auth-card hide" id="reg-card">
+        </div>        <div class="auth-card hide" id="reg-card">
             <div class="logo">📝</div>
             <h1>طلب انضمام</h1>
             <p class="sub">ساهم في تطوير النظام للحصول على مزايا حصرية</p>
@@ -194,8 +194,7 @@
                     <div class="collapsible-header" onclick="toggleCollapse('req-list-container', 'req-icon')">
                         <h3>📥 طلبات التفعيل <button class="act-btn act-ok" onclick="load()" style="float:left;font-size:11px">🔄 تحديث</button></h3>
                         <span id="req-icon" class="toggle-icon">▼</span>
-                    </div>
-                    <div id="req-list-container" class="collapsible-content">
+                    </div>                    <div id="req-list-container" class="collapsible-content">
                         <div id="req-list" style="padding-top:10px;" class="empty">لا توجد طلبات</div>
                     </div>
                 </div>
@@ -244,8 +243,7 @@
             <span style="cursor:pointer" onclick="toggleChat()">✕</span>
         </div>
         <div id="chat-body" class="chat-body">
-            <div class="empty" style="padding:20px">جاري تحميل الرسائل...</div>
-        </div>
+            <div class="empty" style="padding:20px">جاري تحميل الرسائل...</div>        </div>
         <div id="emoji-picker-input" class="emoji-picker-input"></div>
         <div class="chat-input-area">
             <input type="file" id="chat-img-input" accept="image/*" style="display:none" onchange="handleImageUpload(this)">
@@ -294,15 +292,14 @@
             const icon = $(iconId);
             if(content.classList.contains('collapsed')) {
                 content.classList.remove('collapsed');
-                icon.style.transform = 'rotate(0deg)';
-            } else {
+                icon.style.transform = 'rotate(0deg)';            } else {
                 content.classList.add('collapsed');
                 icon.style.transform = 'rotate(-90deg)';
             }
         };
 
         // -------------------- نموذج التغذية الراجعة --------------------
-        let currentFeedbackIndex = null; // لتخزين رقم البطاقة التي تم الضغط عليها
+        let currentFeedbackIndex = null;
         window.openFeedbackModal = (index) => {
             currentFeedbackIndex = index;
             $('feedback-modal').classList.add('active');
@@ -310,14 +307,12 @@
         window.closeFeedbackModal = () => {
             $('feedback-modal').classList.remove('active');
             currentFeedbackIndex = null;
-            // مسح الحقول
             $('#fb-correct-name').value = '';
             $('#fb-keywords').value = '';
             $('#fb-signs').value = '';
             $('#fb-treat').value = '';
         };
         
-        // دالة حفظ التشخيص الجديد وإضافته للبنك وتحديث الواجهة
         window.submitNewDiagnosis = async () => {
             const correctName = $('#fb-correct-name').value.trim();
             const keywordsRaw = $('#fb-keywords').value.trim();
@@ -333,7 +328,6 @@
             const signs = $('#fb-signs').value.trim() || "تمت إضافته بواسطة المستخدم";
             const treat = $('#fb-treat').value.trim() || "يرجى استشارة الطبيب";
             
-            // إنشاء كائن التشخيص الجديد
             const newDiagnosis = {
                 id: "custom_" + Date.now(),
                 name: correctName,
@@ -347,9 +341,7 @@
                 diff: "أضيف بواسطة: " + (user?.name || "طبيب")
             };
             
-            // 1. حفظ في Firebase
-            if(db) {
-                try {
+            if(db) {                try {
                     await db.ref('custom_diagnoses').push(newDiagnosis);
                     toast('✅ تم حفظ التشخيص الجديد في قاعدة البيانات');
                 } catch(e) {
@@ -358,40 +350,47 @@
                 }
             }
             
-            // 2. إضافة إلى FULL_DB محلياً فوراً (بدون انتظار إعادة تحميل)
             FULL_DB.push(newDiagnosis);
             
-            // 3. زيادة رصيد المساهمات للطبيب
             if(user && user.id && db) {
                 db.ref('users/' + user.id + '/corrections').transaction(current => (current || 0) + 1);
                 user.corrections = (user.corrections || 0) + 1;
                 $('#user-corrections').textContent = user.corrections;
             }
             
-            // 4. إعادة تشغيل التشخيص على النص الحالي لتحديث النتائج فوراً
             const currentText = $('#sym').value.trim();
             if(currentText) {
-                // إعادة التحليل باستخدام FULL_DB المحدث
                 runDiagnosisWithCustomDB(currentText);
             }
             
             closeFeedbackModal();
             toast(`🎉 تمت إضافة "${correctName}" إلى بنك المعلومات وسيُستخدم فوراً`);
         };
-        
+
         // -------------------- الدوال الأساسية والخوارزمية --------------------
-        const SYNONYMS = { /* نفس المرادفات السابقة - اختصاراً للمساحة أضعها لكنها موجودة */ };
-        // للاختصار سأضع مرادفات أساسية، لكن يمكن إضافة الباقي لاحقاً
+        const SYNONYMS = {
+            'يوجعني':'ألم','وجع':'ألم','موجع':'ألم','بيوجع':'ألم','الم':'ألم','مؤلم':'ألم','إيلام':'ألم','يؤلم':'ألم','ألم نابض':'ألم نابض','نابض':'ألم نابض','خفقان':'ألم نابض','ألم ليلي':'ألم ليلي','ليل':'ألم ليلي','بالليل':'ألم ليلي','يسهر':'ألم ليلي','ضرس':'سن','اضراس':'أسنان','سنان':'أسنان','سني':'أسنان','سنا':'أسنان','ضروس':'أسنان','سن لبني':'سن لبني','لبنية':'سن لبني','حليب':'سن لبني','طفل':'سن لبني','أسنان دائمة':'أسنان دائمة','دائمة':'أسنان دائمة','سن منخور':'تسوس','منخور':'تسوس','لثتي':'لثة','لثه':'لثة','لثتها':'لثة','لثته':'لثة','نزيف لثة':'نزيف','ينزف':'نزيف','دم لثة':'نزيف','لثة حمراء':'احمرار','محمر':'احمرار','لثة متورمة':'تورم','منتفخة':'تورم','لثة متراجعة':'تراجع لثة','متراجعة':'تراجع لثة','صديد':'صديد','قيح':'صديد','خرّاج':'صديد','خراج':'صديد','دمل':'صديد','حمى':'حمى','حرارة':'حمى','ارتفاع حرارة':'حمى','تورم وجه':'تورم','وجه منتفخ':'تورم','فك منتفخ':'تورم','وزمة':'تورم وجه','ثقب سن':'نخر','حفرة':'نخر','أسود سن':'نخر','بني سن':'نخر','حساس بارد':'حساسية','حساس حلو':'حساسية','ألم عابر':'حساسية','جير':'قلح','قلح':'قلح','ترسبات':'قلح','ألم مستمر':'ألم مستمر','لا يوقف':'ألم مستمر','دائم':'ألم مستمر','طرق مؤلم':'طرق مؤلم','نقر مؤلم':'طرق مؤلم','مسكنات لا تفيد':'مسكنات لا تفيد','مبقع':'تصبغ','بقع':'تصبغ','مبقعة':'تصبغ','منقطة':'تصبغ','بيضاء':'أبيض','بنية':'بني','رمادية':'رمادي','غامقة':'غامق','فلور':'فلورايد','آبار':'فلورايد','تتراسيكلين':'تتراسيكلين','مفصل الفك':'مفصل','ألم مفصل':'مفصل','طقطقة':'طقطقة','فرقعة':'طقطقة','صوت فتح':'طقطقة','صعوبة فتح':'صعوبة فتح','قفل فك':'صعوبة فتح','ضزز':'صرير','صرير':'صرير','سلاق':'قلاع','قلاع':'قلاع','منطمر':'مطمور','مطمور':'مطمور','لم يبزغ':'منطمر','الفك':'فك','صعوبة':'صعب','فتح':'مفتوح','تشنج':'تصلب','رضة':'ضربة','سقوط':'وقع','وقعة':'سقوط','لكمة':'ضربة','زرعة':'زراعة','زرع':'زراعة','طقم':'بدلة','بدلة':'طقم','متحرك':'بدلة','ملتوي':'تزاحم','معوج':'تزاحم','فراغ':'مسافة','أسنان متطاولة':'حركة أسنان','متطاولة':'حركة أسنان','رخاوة أسنان':'حركة أسنان','رخوة':'حركة أسنان','حس احتراق':'يحترق فم','قابلة للمسح':'قابلة للكشط','تراكب':'تزاحم','متزاحمة':'تزاحم','متراكبة':'تزاحم','الم عند اللمس':'ألم عند اللمس','الم عند العض':'ألم عند العض','الم عند الضغط':'ألم عند الضغط','ألم بعد خلع':'جفاف السنخ','فراغ فارغ':'جفاف السنخ','رائحة كريهة':'جفاف السنخ','قرحة بيضاء':'قلاعية','أصفر':'قلاعية','تعود':'قلاعية','إجهاد':'قلاعية','شبكة':'حزاز','دانتيل':'حزاز','ثنائي':'حزاز','مر':'حزاز','كتلة':'ورم ليفي','نفس اللون':'ورم ليفي','مطاطي':'ورم ليفي','عض':'ورم ليفي','غير مؤلم':'ورم ليفي','شفة':'كيسة مخاطية','كيس':'كيسة مخاطية','أزرق':'كيسة مخاطية','شفاف':'كيسة مخاطية','ينفجر':'كيسة مخاطية','يعود':'كيسة مخاطية','ألم عضلات':'ألم عضلي مفصلي','صداع':'ألم عضلي مفصلي','طحن':'ألم عضلي مفصلي','تشنج':'ألم عضلي مفصلي','أذن':'ألم عضلي مفصلي','انزياح':'إزاحة قرص المفصل','خطوة':'كسر فك','تنميل':'كسر فك','سوء إطباق':'كسر فك','قرحة لا تشفى':'ورم فموي خبيث','صلبة':'ورم فموي خبيث','خدر':'ورم فموي خبيث','وزن':'ورم فموي خبيث','بببرونة':'رضاعة','أسنان مؤقتة':'سن لبني','سن حليب':'سن لبني','مقلوع':'قلع','اركيلى':'تدخين','شيشة':'تدخين','عقبول':'هربس','تعقيبة':'هربس','أفت':'قلاعية','توتر عصبي اونفسي':'إجهاد','إمتحانات':'إجهاد','إنحشار طعام':'أكل يعلق','قروح او تقرح تحت الجهاز':'طقم','ضعف المضغ':'مضغ صعب','لسان':'لسان','سن':'سن','لثة':'لثة','خد':'خد','شفة':'شفة','حنك':'حنك','فك':'فك','وجه':'وجه','خلف':'خلف','غدة':'غدد','عصب':'عصبي','كهربائي':'عصبي','حشوة':'نخر ثانوي','ناسور':'مزمن','تضخم':'دوائي','عدواني':'شباب','جانب واحد':'هربس نطاقي','حارق':'عصبي','فقاعات':'فقاع','جغرافي':'بقع حمراء','مشعر':'شعرات','ضموري':'أملس','لعاب':'انسداد','نكفي':'غدة','ثلاثي التوائم':'عصب','صرير':'بروكسزم','منتشر':'نخر سريع','حملي':'حمل','ورم':'كتلة','قيحي':'احمر','متشقق':'شقوق','سنية':'كيسة','يد وقدم':'فيروسي','تليف':'قات','تآكل':'حمضي','لثوي':'خراج موضعي',
+            'الولد مابنام':'ألم ليلي','فلج':'فراغ بين الأسنان','افلج':'فراغ بين الأسنان','متزاحمة':'تزاحم','مسوس':'تسوس','الم مثار':'ألم ذاتي','تواج':'التهاب حول ضرس العقل','نخر ناكس':'نخر ثانوي تحت حشوة','الم عند الطرق':'طرق مؤلم','كز':'صرير الأسنان','التهاب اللسان الهاجر':'اللسان الجغرافي','النكاف':'التهاب الغدة النكفية الجرثومي','مساحات بيضاء على اللسان':'بقع بيضاء','شعاعيا حواف منتظمة':'توسع عظمي',
+            'سوء تغذية':'malnutrition','نقص مناعة':'ضعف مناعة','نقص حديد':'فقر دم','شحوب لثة':'أنيميا','نقص B12':'فيتامين B12','فوليك أسيد':'فولات','حمض الفوليك':'فولات','فطريات مزمنة':'سلاق فموي','حويصلات لثة':'هربس','فطري حاد':'سلاق','جرثومي مزمن':'جير','طقم فطري':'التهاب تحت الطقم',
+            'ما عم يسكر':'خلع الفك','فكي مال':'كسر الفك','ما عم يوقف':'نزف مستمر','لساني مورّم':'تورم لسان','العين مسكّرة':'تورم عين','اللغة عم تذوب':'التهاب لثة نخري','تحت لساني مورّم':'تورم تحت اللسان','الغدة مورّمة':'انتفاخ غدة','شي سخن':'حرارة عالية',
+            'كسر سن':'كسر تاج السن','سقط سن':'خلع السن الكامل','سن مخلوع':'خلع السن الكامل','توسع فك':'الورم الميلومي','ورم فك':'الورم الميلومي','تشوه فك':'خلل التنسج الليفي','أرضية زجاجية':'خلل التنسج الليفي','حفر مينا':'نقص تنسج المينا','عيوب تكوين':'نقص تنسج المينا','أسنان زرقاء':'تكون العاج الناقص','أسنان كهرمانية':'تكون العاج الناقص','جذور قصيرة':'تكون العاج الناقص','سن زائد':'السن الزائد','سن إضافي':'السن الزائد','جفاف فم':'متلازمة شوغرن','جفاف عينين':'متلازمة شوغرن','كتلة أمام الأذن':'ورم الغدة النكفية الحميد',
+            'حامل':'pregnancy_tumor','ورم حمل':'pregnancy_tumor','ورم الحمل':'pregnancy_tumor','كتلة لثوية':'pregnancy_tumor'
+        };
+        
         const norm = t => t.normalize('NFKD').replace(/[\u064B-\u065F\u0670]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').toLowerCase().trim();
         
-        // STATIC_DB (جزء صغير منه للتوضيح، وباقي الأمراض موجودة في النسخة الكاملة لكن هنا سأضع العدد الكافي)
         const STATIC_DB = [
             {id:"pericoronitis", name:"التهاب حول ضرس العقل", cat:"جراحة", sev:"عالي", location:"خلف", keywords:["التهاب حول ضرس العقل","حول ضرس العقل","تاج ضرس العقل","ضرس العقل ملتهب","ألم خلف الضرس الأخير","تواج","صعوبة فتح الفم","رائحة فم","غطاء لثوي"], signs:"انتفاخ حول التاج، صعوبة فتح الفم، رائحة", xray:"سن منطمر", treat:"غسل، مضادات، قلع", diff:"مرتبط بضرس العقل"},
             {id:"ecc", name:"تسوس الطفولة المبكر", cat:"أطفال", sev:"عالي", location:"أسنان", keywords:["أسنان سوداء","طفل","رضيع","زجاجة","بببرونة","أمامية"], signs:"نخر واسع", xray:"نخر واسع", treat:"ترميم", diff:"أطفال+رضاعة"},
             {id:"caries", name:"تسوس سني", cat:"لبية", sev:"متوسط", location:"سن", keywords:["ألم بارد","ألم حلو","ثقب","حفرة","مسوس"], signs:"تجويف نخرى", xray:"شفافية", treat:"حشوة", diff:"ألم مثير"},
-            // المزيد من الأمراض يمكن إضافتها من الكود السابق
-        ];
-        
+            {id:"fluorosis", name:"التسمم الفلوري", cat:"تصبغات", sev:"منخفض", location:"أسنان", keywords:["بقع بيضاء","فلورايد","ماء آبار"], signs:"بقع متناظرة", xray:"طبيعي", treat:"تبييض", diff:"توزيع متناظر"},
+            {id:"gingivitis", name:"التهاب لثة", cat:"لثة", sev:"منخفض", location:"لثة", keywords:["لثة نازفة","لثة حمراء","نزيف تفريش"], signs:"احمرار ونزيف", xray:"طبيعي", treat:"تنظيف", diff:"عكوس"},
+            {id:"perio", name:"التهاب دواعم سن", cat:"لثة", sev:"عالي", location:"لثة", keywords:["حركة أسنان","جيوب لثوية","تراجع لثة"], signs:"جيوب وحركة", xray:"فقدان عظمي", treat:"كشط وجراحة", diff:"غير عكوس"},
+            {id:"abscess", name:"خراج ذروي", cat:"عدوى", sev:"طوارئ", location:"سن", keywords:["تورم وجه","صديد","قيح","حمى"], signs:"تورم متموج", xray:"شفافية ذروية", treat:"تصريف", diff:"تورم + صديد"},
+            {id:"candida", name:"سلاق فموي", cat:"أنسجة", sev:"متوسط", location:"لسان", keywords:["بقع بيضاء على اللسان","قابلة للكشط","يمسح"], signs:"بقع كريمية", xray:"غير مطلوب", treat:"مضاد فطري", diff:"قابل للكشط"},
+            {id:"aphthous", name:"قرحة قلاعية", cat:"أنسجة", sev:"منخفض", location:"فم", keywords:["قرحة بيضاء","أفت","مؤلمة"], signs:"قرحة بهالة حمراء", xray:"غير مطلوب", treat:"كورتيزون", diff:"تعود متكرر"},
+            {id:"leukoplakia", name:"طلاوة بيضاء", cat:"أنسجة", sev:"عالي", location:"لسان", keywords:["بقعة بيضاء","لا تمسح","تدخين"], signs:"لويحة ملتصقة", xray:"غير مطلوب", treat:"استئصال", diff:"غير قابل للكشط"}
+        ];        
         let DYNAMIC_DB = [];
         let FULL_DB = [...STATIC_DB];
         
@@ -406,16 +405,12 @@
             console.log("FULL_DB updated, size:", FULL_DB.length);
         };
         
-        // دالة التشخيص الرئيسية (تستقبل النص وتستخدم FULL_DB الحالي)
         const runDiagnosisWithCustomDB = (text) => {
             if(!text) return;
             const normalizedInput = norm(text);
             const inputWords = normalizedInput.split(/\s+/).filter(w => w.length > 2);
             
-            const negativeKeywords = {
-                'ecc': ['عقل', 'بالغ', 'دائم', 'ضرس عقل', 'رحى'],
-                'pulp_child': ['عقل', 'بالغ', 'دائم']
-            };
+            const negativeKeywords = { 'ecc': ['عقل', 'بالغ', 'دائم', 'ضرس عقل', 'رحى'], 'caries': [], 'pericoronitis': [] };
             
             let results = [];
             for(let disease of FULL_DB) {
@@ -433,7 +428,6 @@
                         matchedKeywords.push(kw);
                         continue;
                     }
-                    // مرادفات بسيطة
                     let synMatch = false;
                     for(let w of inputWords) {
                         if(SYNONYMS[w] && nkw.includes(norm(SYNONYMS[w]))) {
@@ -445,8 +439,7 @@
                     if(synMatch) continue;
                 }
                 if(matchedKeywords.length === 0) continue;
-                
-                let score = matchedKeywords.length * 20;
+                                let score = matchedKeywords.length * 20;
                 results.push({ ...disease, score, matched: matchedKeywords });
             }
             
@@ -495,8 +488,7 @@
             if(db) db.ref('feedback/' + diseaseId).push({ type: 'correct', user: user?.name || 'مجهول' });
         };
         
-        window.runDiagnosis = () => {
-            const text = $('#sym').value.trim();
+        window.runDiagnosis = () => {            const text = $('#sym').value.trim();
             if(!text) return toast('اكتب الأعراض أولاً');
             runDiagnosisWithCustomDB(text);
         };
@@ -545,8 +537,7 @@
         window.deleteChatMsg = (key) => { if(confirm('حذف؟')) db.ref('public_chat/'+key).remove(); };
         
         // -------------------- المصادقة وإدارة المستخدمين --------------------
-        const SECRET_KEY = "9591melas";
-        let user = null;
+        const SECRET_KEY = "9591melas";        let user = null;
         const doLoginComplex = async () => {
             const input = $('login-input').value.trim();
             const btn = document.querySelector('#login-card .btn');
@@ -582,7 +573,7 @@
         window.approveActivation = (reqId, userId) => { if(confirm('موافقة؟')){ db.ref('users/'+userId).update({status:'permanent'}); db.ref('activation_requests/'+reqId).remove(); toast('تم التفعيل الدائم'); loadActivationRequests(); load(); } };
         window.ignoreActivation = (reqId) => { db.ref('activation_requests/'+reqId).remove(); toast('تم تجاهل الطلب'); loadActivationRequests(); };
         function loadContributors() { if(!db) return; db.ref('users').orderByChild('corrections').limitToLast(5).once('value').then(snap=>{ let html=''; let conts=[]; snap.forEach(c=>{ const u=c.val(); if(u.corrections>0) conts.push(u); }); conts.reverse().forEach(u=>{ html+=`<div class="contributor-item"><span>${u.name||'مجهول'} ${u.corrections>=30?'🌟':(u.corrections>=10?'🎓':'')}</span><span>${u.corrections} تصحيح</span></div>`; }); $('#contributors-list-content').innerHTML=html||'<div class="empty">لا مساهمات بعد</div>'; }); }
-        window.load = () => { if(!db || user.role!=='admin') return; db.ref('users').once('value').then(snap=>{ let users=[]; snap.forEach(c=>{ const v=c.val(); if(v) users.push({id:c.key,...v}); }); users.sort((a,b)=>(b.date||0)-(a.date||0)); const pending=users.filter(u=>u.status==='pending'); $('#c-p').textContent=pending.length; $('#c-a').textContent=users.filter(u=>u.status==='active').length; $('#c-t').textContent=users.length; $('#badge').textContent=pending.length; $('#badge').style.display=pending.length?'inline':'none'; $('#req-list').innerHTML=pending.length?pending.map(u=>`<div style="background:#fffbeb;border:1px solid #fcd34d;padding:10px;margin:6px 0;display:flex;justify-content:space-between"><div><b>${u.name||'-'}</b><br><small>${u.email||'-'}</small></div><div><button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button><button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button></div></div>`).join(''):'<div class="empty">✅ لا توجد طلبات</div>'; let tbl=''; users.forEach(u=>{ let st='معلق', sc='st-pend'; if(u.status==='active'){st='نشط'; sc='st-act';} if(u.status==='temp'){st='🕐 مؤقت'; sc='st-temp';} if(u.status==='permanent'){st='🌟 دائم'; sc='st-perm';} let badgeIcon = (u.corrections>=30)?'🌟':((u.corrections>=10)?'🎓':'-'); let act = (u.status==='active')?`<button class="act-btn act-no" onclick="upd('${u.id}','disabled')">🚫</button>`:(u.status==='disabled'||u.status==='rejected')?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button>`:(u.status==='pending')?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button> <button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button>`:''; act+=` <button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button>`; tbl+=`<tr><td>${u.name||'-'}</td><td>${u.email||'-'}</td><td><span class="status ${sc}">${st}</span></td><td style="text-align:center">${badgeIcon} (${u.corrections||0})</td><td>${act}</td></tr>`; }); $('#u-tbl').innerHTML=tbl||'<tr><td colspan="5" class="empty">لا يوجد أطباء</td></tr>'; }); };
+        window.load = () => { if(!db || user.role!=='admin') return; db.ref('users').once('value').then(snap=>{ let users=[]; snap.forEach(c=>{ const v=c.val(); if(v) users.push({id:c.key,...v}); }); users.sort((a,b)=>(b.date||0)-(a.date||0)); const pending=users.filter(u=>u.status==='pending'); $('#c-p').textContent=pending.length; $('#c-a').textContent=users.filter(u=>u.status==='active').length; $('#c-t').textContent=users.length; $('#badge').textContent=pending.length; $('#badge').style.display=pending.length?'inline':'none'; $('#req-list').innerHTML=pending.length?pending.map(u=>`<div style="background:#fffbeb;border:1px solid #fcd34d;padding:10px;margin:6px 0;display:flex;justify-content:space-between"><div><b>${u.name||'-'}</b><br><small>${u.email||'-'}</small></div><div><button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button><button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button></div></div>`).join(''):'<div class="empty">✅ لا توجد طلبات</div>'; let tbl=''; users.forEach(u=>{ let st='معلق', sc='st-pend'; if(u.status==='active'){st='نشط'; sc='st-act';} if(u.status==='temp'){st='🕐 مؤقت'; sc='st-temp';} if(u.status==='permanent'){st='🌟 دائم'; sc='st-perm';} let badgeIcon = (u.corrections>=30)?'🌟':((u.corrections>=10)?'🎓':'-'); let act = (u.status==='active')?`<button class="act-btn act-no" onclick="upd('${u.id}','disabled')">🚫</button>`:(u.status==='disabled'||u.status==='rejected')?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button>`:(u.status==='pending')?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button> <button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button>`:''; act+=` <button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button>`; tbl+=`<tr><td>${u.name||'-'}</td><td>${u.email||'-'}</td><td><span class="status ${sc}">${st}</span></td><td style="text-align:center">${badgeIcon} (${u.corrections||0})</td><td>${act}</td>`; }); $('#u-tbl').innerHTML=tbl||'<tr><td colspan="5" class="empty">لا يوجد أطباء</td></tr>'; }); };
         window.upd = (i,s) => { if(db) db.ref('users/'+i).update({status:s}).then(load); };
         window.del = (i) => { if(confirm('حذف نهائي؟') && db) db.ref('users/'+i).remove().then(load); };
         
@@ -595,6 +586,5 @@
         };
         window.showReg = showReg; window.showLogin = showLogin; window.doLoginComplex = doLoginComplex; window.doRegister = doRegister;
         window.doLogout = doLogout; window.goDiag = goDiag; window.goAdmin = goAdmin; window.upd = upd; window.del = del;
-    </script>
-</body>
+    </script></body>
 </html>
