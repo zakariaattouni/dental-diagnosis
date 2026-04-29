@@ -139,8 +139,6 @@
         .form-row label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 5px; color: #0f172a; }
         .form-row input, .form-row select, .form-row textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; background: #fff; }
         .form-row textarea { min-height: 80px; resize: vertical; }
-        .add-dx-btn { background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 8px 16px; border-radius: 28px; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 10px; }
-        .add-dx-btn:hover { opacity: 0.9; }
         @media (max-width: 480px) { .stats { grid-template-columns: 1fr; } .auth-card { padding: 24px 18px; } table { font-size: 12px; } th, td { padding: 8px 6px; } .report-header { flex-direction: column; align-items: flex-start; } .chat-modal { width: 95vw; right: 2.5vw; bottom: 70px; } }
     </style>
 </head>
@@ -229,15 +227,17 @@
                         <form id="new-dx-form" onsubmit="event.preventDefault(); saveNewDiagnosis();">
                             <div class="form-row"><label>اسم التشخيص *</label><input type="text" id="dx-name" required placeholder="مثال: التهاب دواعم السن الحاد"></div>
                             <div class="form-row"><label>التصنيف (cat)</label><input type="text" id="dx-cat" placeholder="جراحة / لثة / أطفال ..." value="عام"></div>
-                            <div class="form-row"><label>الخطورة (sev)</label><select id="dx-sev"><option value="منخفض">منخفض</option><option value="متوسط" selected>متوسط</option><option value="عالي">عالي</option><option value="طوارئ">طوارئ</option></select></div>
+                            <div class="form-row"><label>الخطورة (severity)</label><select id="dx-sev"><option value="منخفض">منخفض</option><option value="متوسط" selected>متوسط</option><option value="عالي">عالي</option><option value="طوارئ">طوارئ</option></select></div>
                             <div class="form-row"><label>الموقع (location)</label><input type="text" id="dx-loc" placeholder="سن / لثة / فك / لسان ..."></div>
                             <div class="form-row"><label>الكلمات المفتاحية * (مفصولة بفواصل أو أسطر)</label><textarea id="dx-keywords" required placeholder="ألم حاد، تورم لثة، نزيف، رائحة كريهة"></textarea><small>سيتم تحويلها إلى قائمة.</small></div>
                             <div class="form-row"><label>العلامات السريرية المتوقعة</label><textarea id="dx-signs" placeholder="احمرار، نزيف عند الجس، جيوب لثوية"></textarea></div>
                             <div class="form-row"><label>الصورة الشعاعية / الفحص</label><textarea id="dx-xray" placeholder="فقدان عظمي أفقي، ظلال حجرية"></textarea></div>
                             <div class="form-row"><label>التدبير العلاجي المقترح</label><textarea id="dx-treat" placeholder="كشط وتنعيم الجذر، مضادات حيوية"></textarea></div>
                             <div class="form-row"><label>ملاحظة تفريقية (Diff)</label><textarea id="dx-diff" placeholder="يجب تمييزه عن التهاب اللثة العادي"></textarea></div>
-                            <button type="submit" class="btn btn-green" style="margin-top:8px;">💾 حفظ التشخيص إلى البنك</button>
-                            <button type="button" class="btn btn-gray" onclick="document.getElementById('new-dx-form').reset();">🗑️ إعادة تعيين</button>
+                            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                <button type="submit" class="btn" style="background: linear-gradient(135deg, #10b981, #059669); flex:2;">📤 إرسال وإضافة التشخيص</button>
+                                <button type="button" class="btn btn-gray" onclick="document.getElementById('new-dx-form').reset();" style="flex:1;">🗑️ إعادة تعيين</button>
+                            </div>
                         </form>
                         <p style="font-size:11px; color:#64748b; margin-top:8px;">🔹 سيتم إضافة التشخيص إلى قاعدة البيانات المخصصة وسيتعامل معه المحرك فوراً.</p>
                     </div>
@@ -307,298 +307,42 @@
             }
         };
         
-        // -------------------- Chat Functions (كاملة) --------------------
-        let pendingImage = null;
-        let currentReplyTo = null;
-        
-        function cancelImage() {
-            pendingImage = null;
-            $('image-preview-area').style.display = 'none';
-            $('preview-img').src = '';
-            document.getElementById('chat-img-input').value = '';
-        }
-        
-        function handleImageSelect(input) {
-            if(input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    pendingImage = e.target.result;
-                    $('preview-img').src = pendingImage;
-                    $('image-preview-area').style.display = 'flex';
-                    toast('✅ صورة جاهزة للإرسال. يمكنك إضافة نص.');
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-        
-        function cancelReply() {
-            currentReplyTo = null;
-            $('reply-indicator').style.display = 'none';
-            $('reply-text').innerText = '';
-        }
-        
-        function setReplyTo(msgId, userName, msgText) {
-            currentReplyTo = { msgId, userName, text: msgText };
-            $('reply-text').innerHTML = `الرد على <b>${userName}</b>: "${msgText.substring(0, 50)}${msgText.length>50?'...':''}"`;
-            $('reply-indicator').style.display = 'flex';
-            $('chat-input').focus();
-        }
-        
-        function convertLinksToHTML(text) {
-            const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/gi;
-            return text.replace(urlRegex, function(url) {
-                let fullUrl = url.startsWith('http') ? url : 'http://' + url;
-                return `<a href="${fullUrl}" target="_blank" rel="noopener noreferrer" style="color:#2563eb; text-decoration:underline">${url}</a>`;
-            });
-        }
-        
-        function loadChatMessages() {
-            if(!db) return;
-            db.ref('public_chat').limitToLast(50).on('value', snap => {
-                let html = '';
-                if(snap.exists()) {
-                    snap.forEach(child => {
-                        const msg = child.val();
-                        const key = child.key;
-                        const isAdmin = user && user.role === 'admin';
-                        const deleteBtn = isAdmin ? `<span class="delete-msg" onclick="deleteChatMsg('${key}')">🗑️</span>` : '';
-                        let replyHtml = '';
-                        if(msg.replyTo) {
-                            replyHtml = `<div class="reply-quote">↩️ رد على <b>${msg.replyToUserName || 'مستخدم'}</b>: "${(msg.replyToText || '').substring(0, 60)}"</div>`;
-                        }
-                        let contentHtml = '';
-                        if(msg.text) {
-                            contentHtml += `<div>${convertLinksToHTML(msg.text)}</div>`;
-                        }
-                        if(msg.image) {
-                            contentHtml += `<img src="${msg.image}" class="chat-img" onclick="window.open(this.src)">`;
-                        }
-                        let reactionsHtml = '';
-                        if(msg.reactions) {
-                            Object.entries(msg.reactions).forEach(([emoji, users]) => {
-                                reactionsHtml += `<span class="reaction-tag">${emoji} ${users.length}</span>`;
-                            });
-                        }
-                        html += `<div class="chat-msg ${msg.user === 'المدير' ? 'admin' : ''}" id="msg-${key}">
-                            <div class="chat-meta"><b>${msg.user}</b><span>${new Date(msg.date).toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'})}</span></div>
-                            ${replyHtml}
-                            ${contentHtml}
-                            <div class="msg-actions">
-                                <div class="reactions-display">${reactionsHtml}</div>
-                                <div style="display:flex; gap:5px; align-items:center;">
-                                    <button class="reply-btn" onclick="setReplyTo('${key}', '${msg.user.replace(/'/g, "\\'")}', '${(msg.text || '').replace(/'/g, "\\'").substring(0, 100)}')">↩️ رد</button>
-                                    <button class="reaction-btn" onclick="toggleReactionPicker('${key}')">😊</button>
-                                    ${deleteBtn}
-                                </div>
-                            </div>
-                            <div id="react-picker-${key}" class="emoji-picker-msg">
-                                ${['👍','❤️','😂','😮','😢','🦷'].map(e => `<span class="emoji-item" onclick="addReaction('${key}', '${e}')">${e}</span>`).join('')}
-                            </div>
-                        </div>`;
-                    });
-                } else { html = '<div class="empty">لا توجد رسائل. ابدأ النقاش!</div>'; }
-                const body = $('chat-body');
-                body.innerHTML = html;
-                body.scrollTop = body.scrollHeight;
-            });
-        }
-        
-        window.toggleReactionPicker = (key) => {
-            document.querySelectorAll('.emoji-picker-msg').forEach(el => el.classList.remove('active'));
-            const picker = $(`react-picker-${key}`);
-            if(picker) picker.classList.toggle('active');
-        };
-        
-        window.addReaction = (key, emoji) => {
-            if(!user) return toast('يجب تسجيل الدخول أولاً');
-            const ref = db.ref(`public_chat/${key}/reactions/${emoji}`);
-            ref.transaction(current => {
-                if (!current) return [user.name];
-                if (current.includes(user.name)) return current.filter(u => u !== user.name);
-                return [...current, user.name];
-            });
-            $(`react-picker-${key}`).classList.remove('active');
-        };
-        
-        function sendChatMessage() {
-            const input = $('chat-input');
-            const text = input.value.trim();
-            if(!text && !pendingImage) {
-                toast('⚠️ اكتب نصاً أو اختر صورة');
-                return;
-            }
-            if(!user) return toast('يجب تسجيل الدخول أولاً');
-            const badWords = ['سب', 'شتم', 'غبي'];
-            if(badWords.some(w => text.includes(w))) return toast('⚠️ يرجى الالتزام بالأدب');
-            
-            let msgObj = {
-                user: user.name,
-                date: Date.now(),
-                text: text || '',
-            };
-            if(pendingImage) {
-                msgObj.image = pendingImage;
-            }
-            if(currentReplyTo) {
-                msgObj.replyTo = currentReplyTo.msgId;
-                msgObj.replyToUserName = currentReplyTo.userName;
-                msgObj.replyToText = currentReplyTo.text;
-            }
-            
-            const sendBtn = document.querySelector('.chat-send');
-            if(sendBtn) sendBtn.disabled = true;
-            db.ref('public_chat').push(msgObj).then(() => {
-                input.value = '';
-                cancelImage();
-                cancelReply();
-                inputPicker.classList.remove('active');
-                if(sendBtn) sendBtn.disabled = false;
-                toast('✅ تم الإرسال');
-            }).catch(e => { toast('❌ فشل: '+e.message); if(sendBtn) sendBtn.disabled = false; });
-        }
-        
-        window.deleteChatMsg = (key) => { if(confirm('حذف هذه الرسالة؟')) { db.ref('public_chat/' + key).remove(); } };
-        
-        const inputEmojis = ['🦷','🦴','👅','👄','😷','🤒','🤕','💊','💉','🩺','✅','❌','⚠️','👍','👎','😂','😢','😡','🤔','👋'];
-        const inputPicker = $('emoji-picker-input');        
-        inputEmojis.forEach(emoji => {
-            const span = document.createElement('span');
-            span.className = 'emoji-item';
-            span.textContent = emoji;
-            span.onclick = () => {
-                $('chat-input').value += emoji;
-                $('chat-input').focus();
-            };
-            inputPicker.appendChild(span);
-        });
-        window.toggleInputEmoji = () => { inputPicker.classList.toggle('active'); };
-        window.toggleChat = () => {
-            const modal = $('chat-modal');
-            modal.classList.toggle('active');
-            if(modal.classList.contains('active')) { loadChatMessages(); cancelReply(); cancelImage(); } 
-            else { inputPicker.classList.remove('active'); }
-        };
+        // -------------------- Chat Functions --------------------
+        let pendingImage = null, currentReplyTo = null;
+        function cancelImage() { pendingImage = null; $('image-preview-area').style.display = 'none'; $('preview-img').src = ''; document.getElementById('chat-img-input').value = ''; }
+        function handleImageSelect(input) { if(input.files && input.files[0]) { const reader = new FileReader(); reader.onload = function(e) { pendingImage = e.target.result; $('preview-img').src = pendingImage; $('image-preview-area').style.display = 'flex'; toast('✅ صورة جاهزة'); }; reader.readAsDataURL(input.files[0]); } }
+        function cancelReply() { currentReplyTo = null; $('reply-indicator').style.display = 'none'; $('reply-text').innerText = ''; }
+        function setReplyTo(msgId, userName, msgText) { currentReplyTo = { msgId, userName, text: msgText }; $('reply-text').innerHTML = `الرد على <b>${userName}</b>: "${msgText.substring(0, 50)}${msgText.length>50?'...':''}"`; $('reply-indicator').style.display = 'flex'; $('chat-input').focus(); }
+        function convertLinksToHTML(text) { const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/gi; return text.replace(urlRegex, url => `<a href="${url.startsWith('http')?url:'http://'+url}" target="_blank" style="color:#2563eb">${url}</a>`); }
+        function loadChatMessages() { if(!db) return; db.ref('public_chat').limitToLast(50).on('value', snap => { let html = ''; if(snap.exists()) snap.forEach(child => { const msg=child.val(), key=child.key; const isAdmin=user?.role==='admin'; const deleteBtn=isAdmin?`<span class="delete-msg" onclick="deleteChatMsg('${key}')">🗑️</span>`:''; let replyHtml=''; if(msg.replyTo) replyHtml=`<div class="reply-quote">↩️ رد على <b>${msg.replyToUserName||'مستخدم'}</b>: "${(msg.replyToText||'').substring(0,60)}"</div>`; let contentHtml=''; if(msg.text) contentHtml+=`<div>${convertLinksToHTML(msg.text)}</div>`; if(msg.image) contentHtml+=`<img src="${msg.image}" class="chat-img" onclick="window.open(this.src)">`; let reactionsHtml=''; if(msg.reactions) Object.entries(msg.reactions).forEach(([e,u])=>{ reactionsHtml+=`<span class="reaction-tag">${e} ${u.length}</span>`; }); html+=`<div class="chat-msg ${msg.user==='المدير'?'admin':''}" id="msg-${key}"><div class="chat-meta"><b>${msg.user}</b><span>${new Date(msg.date).toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})}</span></div>${replyHtml}${contentHtml}<div class="msg-actions"><div class="reactions-display">${reactionsHtml}</div><div><button class="reply-btn" onclick="setReplyTo('${key}','${msg.user.replace(/'/g,"\\'")}','${(msg.text||'').replace(/'/g,"\\'").substring(0,100)}')">↩️ رد</button><button class="reaction-btn" onclick="toggleReactionPicker('${key}')">😊</button>${deleteBtn}</div></div><div id="react-picker-${key}" class="emoji-picker-msg">${['👍','❤️','😂','😮','😢','🦷'].map(e=>`<span class="emoji-item" onclick="addReaction('${key}','${e}')">${e}</span>`).join('')}</div></div>`; }); else html='<div class="empty">لا توجد رسائل</div>'; $('chat-body').innerHTML=html; $('chat-body').scrollTop=$('chat-body').scrollHeight; }); }
+        window.toggleReactionPicker=(key)=>{ document.querySelectorAll('.emoji-picker-msg').forEach(el=>el.classList.remove('active')); const p=$(`react-picker-${key}`); if(p) p.classList.toggle('active'); };
+        window.addReaction=(key,emoji)=>{ if(!user) return; const ref=db.ref(`public_chat/${key}/reactions/${emoji}`); ref.transaction(cur=>{ if(!cur) return [user.name]; if(cur.includes(user.name)) return cur.filter(u=>u!==user.name); return [...cur,user.name]; }); $(`react-picker-${key}`).classList.remove('active'); };
+        function sendChatMessage(){ const input=$('chat-input'); const text=input.value.trim(); if(!text&&!pendingImage) return toast('اكتب نصاً أو اختر صورة'); if(!user) return; const badWords=['سب','شتم','غبي']; if(badWords.some(w=>text.includes(w))) return toast('⚠️ الأدب'); let msgObj={user:user.name,date:Date.now(),text:text||''}; if(pendingImage) msgObj.image=pendingImage; if(currentReplyTo){ msgObj.replyTo=currentReplyTo.msgId; msgObj.replyToUserName=currentReplyTo.userName; msgObj.replyToText=currentReplyTo.text; } const sendBtn=document.querySelector('.chat-send'); if(sendBtn) sendBtn.disabled=true; db.ref('public_chat').push(msgObj).then(()=>{ input.value=''; cancelImage(); cancelReply(); inputPicker.classList.remove('active'); if(sendBtn) sendBtn.disabled=false; toast('✅ تم الإرسال'); }).catch(e=>{ toast('❌ فشل'); if(sendBtn) sendBtn.disabled=false; }); }
+        window.deleteChatMsg=(key)=>{ if(confirm('حذف؟')) db.ref('public_chat/'+key).remove(); };
+        const inputEmojis=['🦷','🦴','👅','👄','😷','🤒','🤕','💊','💉','🩺','✅','❌','⚠️','👍','👎','😂','😢','😡','🤔','👋']; const inputPicker=$('emoji-picker-input'); inputEmojis.forEach(emoji=>{ const span=document.createElement('span'); span.className='emoji-item'; span.textContent=emoji; span.onclick=()=>{ $('chat-input').value+=emoji; $('chat-input').focus(); }; inputPicker.appendChild(span); });
+        window.toggleInputEmoji=()=>{ inputPicker.classList.toggle('active'); };
+        window.toggleChat=()=>{ const modal=$('chat-modal'); modal.classList.toggle('active'); if(modal.classList.contains('active')){ loadChatMessages(); cancelReply(); cancelImage(); } else inputPicker.classList.remove('active'); };
         
         // -------------------- Authentication & Admin --------------------
-        const SECRET_KEY = "9591melas";
-        let user = null;
-        const doLoginComplex = async () => {
-             const input = $('login-input').value.trim();
-             const btn = document.querySelector('#login-card .btn');
-             if(!input) return toast('⚠️ أدخل بيانات الدخول');             
-             btn.disabled = true; btn.textContent = '⏳ جاري التحقق...';
-             if (input === SECRET_KEY || input.split('').reverse().join('') === SECRET_KEY) {
-                 user = { name: 'المدير', role: 'admin' };
-                 saveSession(); 
-                 enterApp();
-                 $('admin').classList.add('active'); 
-                 $('diag').classList.remove('active');
-                 // إظهار بطاقة الإضافة للمدير
-                 if($('admin-add-card')) $('admin-add-card').style.display = 'block';
-                 if(db) { try { load(); loadContributors(); loadActivationRequests(); } catch(e){ console.warn(e); } }
-                 toast('✅ تم الدخول كمدير'); 
-                 btn.disabled = false; btn.textContent = 'دخول'; 
-                 return;
-             }
-             if (!db) { toast('❌ لا يوجد اتصال بالخادم'); btn.disabled = false; btn.textContent = 'دخول'; return; }
-             try {
-                 const snap = await db.ref('users').once('value');
-                 let found = null;                 
-                 if(snap.exists()) {
-                     snap.forEach(child => {
-                         const u = child.val();
-                         if(u.name === input || u.email === input || u.pass === input) {
-                             found = { id: child.key, ...u };
-                         }
-                     });
-                 }
-                 if(!found) { toast('❌ بيانات غير صحيحة أو غير مسجل'); }
-                 else if(found.status === 'pending') { toast('⏳ حسابك قيد المراجعة'); }
-                 else if(found.status === 'rejected' || found.status === 'disabled') { toast('❌ الحساب مرفوض أو معطل'); }                 else {                     user = { ...found, role: 'doc' };
-                     saveSession(); 
-                     enterApp();
-                     $('admin').classList.remove('active'); 
-                     $('diag').classList.add('active');
-                     updateUserStats();
-                     toast('✅ أهلاً بك يا د/ ' + user.name);
-                 }             } catch(err) { console.error("Login DB Error:", err); toast('❌ خطأ في الاتصال'); }
-             finally { btn.disabled = false; btn.textContent = 'دخول'; }
-        };
-        const doRegister=()=>{
-            const n=$('r-name').value.trim(), e=$('r-email').value.trim().toLowerCase(), p=$('r-pass').value;
-            if(!n||!e||!p) return toast('أكمل الحقول');
-            if(p.length<6) return toast('كلمة المرور قصيرة');
-            if(!db) return toast('❌ لا يوجد اتصال بالخادم لتسجيل الحساب');
-            db.ref('users').push({name:n,email:e,pass:p,status:'pending',date:Date.now(), corrections:0})
-              .then(()=>{ toast('✅ تم إرسال طلب الانضمام بنجاح! سجل دخولك للانتظار.'); $('r-name').value=''; $('r-email').value=''; $('r-pass').value=''; setTimeout(showLogin, 2000); })
-              .catch(e => toast('❌ فشل التسجيل: ' + e.message));
-        };
-        
+        const SECRET_KEY="9591melas";
+        let user=null;
+        const doLoginComplex=async ()=>{ const input=$('login-input').value.trim(); const btn=document.querySelector('#login-card .btn'); if(!input) return toast('⚠️ أدخل البيانات'); btn.disabled=true; btn.textContent='⏳ جاري...'; if(input===SECRET_KEY||input.split('').reverse().join('')===SECRET_KEY){ user={name:'المدير',role:'admin'}; saveSession(); enterApp(); $('admin').classList.add('active'); $('diag').classList.remove('active'); if($('admin-add-card')) $('admin-add-card').style.display='block'; if(db){ try{ load(); loadContributors(); loadActivationRequests(); }catch(e){} } toast('✅ تم الدخول كمدير'); btn.disabled=false; btn.textContent='دخول'; return; } if(!db){ toast('❌ لا خادم'); btn.disabled=false; btn.textContent='دخول'; return; } try{ const snap=await db.ref('users').once('value'); let found=null; if(snap.exists()) snap.forEach(child=>{ const u=child.val(); if(u.name===input||u.email===input||u.pass===input) found={id:child.key,...u}; }); if(!found) toast('❌ غير صحيح'); else if(found.status==='pending') toast('⏳ قيد المراجعة'); else if(found.status==='rejected'||found.status==='disabled') toast('❌ مرفوض'); else{ user={...found,role:'doc'}; saveSession(); enterApp(); $('admin').classList.remove('active'); $('diag').classList.add('active'); updateUserStats(); toast('✅ أهلاً د/'+user.name); } }catch(err){ toast('❌ خطأ'); }finally{ btn.disabled=false; btn.textContent='دخول'; } };
+        const doRegister=()=>{ const n=$('r-name').value.trim(), e=$('r-email').value.trim().toLowerCase(), p=$('r-pass').value; if(!n||!e||!p) return toast('أكمل الحقول'); if(p.length<6) return toast('كلمة مرور قصيرة'); if(!db) return toast('❌ لا اتصال'); db.ref('users').push({name:n,email:e,pass:p,status:'pending',date:Date.now(),corrections:0}).then(()=>{ toast('✅ تم إرسال الطلب'); $('r-name').value=''; $('r-email').value=''; $('r-pass').value=''; setTimeout(showLogin,2000); }).catch(e=>toast('❌ فشل التسجيل')); };
         const saveSession=()=>localStorage.setItem('d_session',JSON.stringify(user));
         const enterApp=()=>{ $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; };
-        
-        const updateUserStats = () => {
-            if(user && user.id && user.role === 'doc' && db) {
-                db.ref('users/' + user.id).once('value').then(snap => {
-                    const data = snap.val();
-                    if(data && data.corrections !== undefined) {
-                        user.corrections = data.corrections;
-                        $('user-corrections').textContent = data.corrections;
-                        $('user-stats').style.display = 'inline';
-                    }
-                }).catch(()=>{});
-            } else if(user && user.corrections !== undefined) {
-                $('user-corrections').textContent = user.corrections;
-                $('user-stats').style.display = 'inline';
-            }
-        };
-        const goDiag=()=>{ $('admin').classList.remove('active'); $('diag').classList.add('active'); if(user && user.role === 'doc') { updateUserStats(); } };
-        const goAdmin=()=>{ $('diag').classList.remove('active'); $('admin').classList.add('active'); if(db) { load(); loadContributors(); loadActivationRequests(); } };
+        const updateUserStats=()=>{ if(user?.id&&user.role==='doc'&&db) db.ref('users/'+user.id).once('value').then(snap=>{ const data=snap.val(); if(data?.corrections!==undefined){ user.corrections=data.corrections; $('user-corrections').textContent=data.corrections; $('user-stats').style.display='inline'; } }).catch(()=>{}); else if(user?.corrections!==undefined){ $('user-corrections').textContent=user.corrections; $('user-stats').style.display='inline'; } };
+        const goDiag=()=>{ $('admin').classList.remove('active'); $('diag').classList.add('active'); if(user?.role==='doc') updateUserStats(); };
+        const goAdmin=()=>{ $('diag').classList.remove('active'); $('admin').classList.add('active'); if(db){ load(); loadContributors(); loadActivationRequests(); } };
         const doLogout=()=>{ localStorage.removeItem('d_session'); location.reload(); };
-        function loadActivationRequests() {            
-            if(!db || user.role !== 'admin') return;
-            db.ref('activation_requests').once('value').then(snap => {
-                let html = '';
-                if(snap.exists()) { snap.forEach(child => { const req = child.val(); html += `<div class="admin-alert"><div><b>🎓 ${req.userName}</b> يطلب التفعيل الدائم (${req.corrections} تصحيح)</div><div><button class="btn-approve" onclick="approveActivation('${child.key}', '${req.userId}')">✅ موافقة</button><button class="btn-ignore" onclick="ignoreActivation('${child.key}')">❌ تجاهل</button></div></div>`; }); }
-                $('activation-requests').innerHTML = html || '';
-            }).catch(()=>{});
-        }        window.approveActivation = (reqId, userId) => { if(!confirm('هل توافق على منح التفعيل الدائم؟')) return; db.ref('users/' + userId).update({ status: 'permanent' }); db.ref('activation_requests/' + reqId).remove(); toast('✅ تم منح التفعيل الدائم'); loadActivationRequests(); load(); };
-        window.ignoreActivation = (reqId) => { db.ref('activation_requests/' + reqId).remove(); toast('⚠️ تم تجاهل الطلب'); loadActivationRequests(); };
-        function loadContributors() {
-            if(!db) return;
-            db.ref('users').orderByChild('corrections').limitToLast(5).once('value').then(snap => {
-                let html = ''; let contributors = [];
-                if(snap.exists()) { snap.forEach(child => { const u = child.val(); if(u.corrections && u.corrections > 0) contributors.push(u); }); contributors.reverse().forEach(u => { let badge = u.corrections >= 30 ? '🌟' : (u.corrections >= 10 ? '🎓' : ''); html += `<div class="contributor-item"><span>${u.name || 'مجهول'} ${badge}</span><span style="color:var(--primary); font-weight:bold">${u.corrections} تصحيح</span></div>`; }); }
-                $('contributors-list-content').innerHTML = html || '<div class="empty" style="padding:10px">لا توجد مساهمات بعد.</div>';
-            }).catch(()=>{});        }
-        window.load = () => {
-            if(!db || user.role !== 'admin') return;
-            db.ref('users').once('value').then(snap => {
-                const users = [];
-                if(snap.exists()) snap.forEach(child => { const v=child.val(); if(v) users.push({id:child.key,...v}); });
-                users.sort((a,b)=>(b.date||0)-(a.date||0));
-                const pending = users.filter(u=>u.status==='pending');
-                $('c-p').textContent=pending.length; $('c-a').textContent=users.filter(u=>u.status==='active').length; $('c-t').textContent=users.length;
-                $('badge').textContent=pending.length; $('badge').style.display=pending.length?'inline':'none';
-                $('req-list').innerHTML=pending.length?pending.map(u=>`<div style="background:#fffbeb;border:1px solid #fcd34d;padding:10px;border-radius:8px;margin:6px 0;display:flex;justify-content:space-between;align-items:center"><div><b>${u.name||'-'}</b><br><small style="color:#b45309">${u.email||'-'}</small></div><div><button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button><button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button></div></div>`).join(''):'<div class="empty">✅ لا توجد طلبات معلقة</div>';
-                let tblHTML='';
-                users.forEach(u=>{
-                    let sc='st-pend', st='معلق';
-                    if(u.status==='active') { sc='st-act'; st='نشط'; }
-                    if(u.status==='temp') { sc='st-temp'; st='🕐 مفعل مؤقت'; }
-                    if(u.status==='permanent') { sc='st-perm'; st='🌟 مفعل دائم'; }
-                    let badgeIcon = (u.corrections && u.corrections >= 30) ? '🌟' : ((u.corrections && u.corrections >= 10) ? '🎓' : '-');
-                    let act=u.status==='active'?`<button class="act-btn act-no" onclick="upd('${u.id}','disabled')">🚫</button>`:u.status==='disabled'||u.status==='rejected'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button>`:u.status==='pending'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button> <button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button>`:'';
-                    act+=` <button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button>`;
-                    tblHTML+=`<tr><td>${u.name||'-'}</td><td>${u.email||'-'}</td><td><span class="status ${sc}">${st}</span></td><td style="text-align:center">${badgeIcon} <small>(${u.corrections||0})</small></td><td>${act}</td></tr>`;
-                });
-                $('u-tbl').innerHTML=tblHTML||'<tr><td colspan="5" class="empty">لا يوجد أطباء مسجلين<br>/th>';
-            }).catch(err=>console.error('Load error:',err));
-        };
+        function loadActivationRequests(){ if(!db||user?.role!=='admin') return; db.ref('activation_requests').once('value').then(snap=>{ let html=''; if(snap.exists()) snap.forEach(child=>{ const req=child.val(); html+=`<div class="admin-alert"><div><b>🎓 ${req.userName}</b> يطلب التفعيل الدائم (${req.corrections} تصحيح)</div><div><button class="btn-approve" onclick="approveActivation('${child.key}','${req.userId}')">✅ موافقة</button><button class="btn-ignore" onclick="ignoreActivation('${child.key}')">❌ تجاهل</button></div></div>`; }); $('activation-requests').innerHTML=html||''; }).catch(()=>{}); }
+        window.approveActivation=(reqId,userId)=>{ if(confirm('منح التفعيل الدائم؟')){ db.ref('users/'+userId).update({status:'permanent'}); db.ref('activation_requests/'+reqId).remove(); toast('✅ تم منح التفعيل'); loadActivationRequests(); load(); } };
+        window.ignoreActivation=(reqId)=>{ db.ref('activation_requests/'+reqId).remove(); toast('⚠️ تم تجاهل الطلب'); loadActivationRequests(); };
+        function loadContributors(){ if(!db) return; db.ref('users').orderByChild('corrections').limitToLast(5).once('value').then(snap=>{ let html='', contributors=[]; if(snap.exists()) snap.forEach(child=>{ const u=child.val(); if(u.corrections>0) contributors.push(u); }); contributors.reverse().forEach(u=>{ let badge=u.corrections>=30?'🌟':(u.corrections>=10?'🎓':''); html+=`<div class="contributor-item"><span>${u.name||'مجهول'} ${badge}</span><span style="color:var(--primary)">${u.corrections} تصحيح</span></div>`; }); $('contributors-list-content').innerHTML=html||'<div class="empty">لا توجد مساهمات بعد</div>'; }).catch(()=>{}); }
+        window.load=()=>{ if(!db||user?.role!=='admin') return; db.ref('users').once('value').then(snap=>{ const users=[]; if(snap.exists()) snap.forEach(child=>{ const v=child.val(); if(v) users.push({id:child.key,...v}); }); users.sort((a,b)=>(b.date||0)-(a.date||0)); const pending=users.filter(u=>u.status==='pending'); $('c-p').textContent=pending.length; $('c-a').textContent=users.filter(u=>u.status==='active').length; $('c-t').textContent=users.length; $('badge').textContent=pending.length; $('badge').style.display=pending.length?'inline':'none'; $('req-list').innerHTML=pending.length?pending.map(u=>`<div style="background:#fffbeb;border:1px solid #fcd34d;padding:10px;border-radius:8px;margin:6px 0;display:flex;justify-content:space-between"><div><b>${u.name||'-'}</b><br><small>${u.email||'-'}</small></div><div><button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button><button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button></div></div>`).join(''):'<div class="empty">✅ لا توجد طلبات معلقة</div>'; let tblHTML=''; users.forEach(u=>{ let sc='st-pend', st='معلق'; if(u.status==='active'){ sc='st-act'; st='نشط'; } if(u.status==='temp'){ sc='st-temp'; st='🕐 مؤقت'; } if(u.status==='permanent'){ sc='st-perm'; st='🌟 دائم'; } let badgeIcon=(u.corrections>=30)?'🌟':((u.corrections>=10)?'🎓':'-'); let act=u.status==='active'?`<button class="act-btn act-no" onclick="upd('${u.id}','disabled')">🚫</button>`:u.status==='disabled'||u.status==='rejected'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button>`:u.status==='pending'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button> <button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button>`:''; act+=` <button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button>`; tblHTML+=`<tr><td>${u.name||'-'}</td><td>${u.email||'-'}</td><td><span class="status ${sc}">${st}</span></td><td style="text-align:center">${badgeIcon} (${u.corrections||0})</td><td>${act}</td>`; }); $('u-tbl').innerHTML=tblHTML||'<tr><td colspan="5" class="empty">لا يوجد أطباء</td>'; }).catch(err=>console.error(err)); };
         window.upd=(i,s)=>db&&db.ref('users/'+i).update({status:s}).then(load);
-        window.del=(i)=>{if(confirm('حذف نهائي؟')&&db)db.ref('users/'+i).remove().then(load);};
+        window.del=(i)=>{ if(confirm('حذف نهائي؟')&&db) db.ref('users/'+i).remove().then(load); };
         
-        // -------------------- قاعدة البيانات الثابتة (STATIC_DB) --------------------
+        // -------------------- قاعدة البيانات الثابتة (101 حالة كاملة) --------------------
         const STATIC_DB = [
             {id:"pericoronitis", name:"التهاب حول ضرس العقل (Pericoronitis)", cat:"جراحة", sev:"عالي", location:"خلف", keywords:["التهاب حول ضرس العقل","حول ضرس العقل","تاج ضرس العقل","ضرس العقل ملتهب","التهاب حول التاج","غطاء لثوي","صعوبة فتح الفم","رائحة فم","ألم خلف الضرس الأخير","تواج","الضرس الخلفي عم يعورني","مش قادر أكل"], signs:"انتفاخ حول التاج، صعوبة فتح الفم، رائحة كريهة.", xray:"سن منطمر جزئياً.", treat:"غسل تحت التخدير، مضادات حيوية، قلع الضرس.", diff:"موقع خلفي + غطاء لثوي ملتهب + رائحة."},
             {id:"ecc", name:"تسوس الطفولة المبكر (ECC)", cat:"أطفال", sev:"عالي", location:"أسنان", keywords:["أسنان سوداء","أسنان متآكلة","نخور منتشرة","طفل","رضيع","رضاعة","زجاجة","بببرونة","أمامية","بكاء عند الأكل","سن اللبنية مسوسة كلها"], signs:"نخر واسع حول عنق القواطع العلوية", xray:"نخر واسع", treat:"ترميم أو لب أو خلع", diff:"سن لبنية + رضاعة"},
@@ -729,7 +473,7 @@
         
         // دالة حفظ تشخيص جديد من المدير
         window.saveNewDiagnosis = function() {
-            if(!user || user.role !== 'admin') { toast('غير مصرح به'); return; }
+            if(!user || user.role !== 'admin') { toast('غير مصرح'); return; }
             const name = $('#dx-name').value.trim();
             const cat = $('#dx-cat').value.trim() || 'عام';
             const sev = $('#dx-sev').value;
@@ -743,30 +487,17 @@
             const treat = $('#dx-treat').value.trim() || "غير محدد";
             const diff = $('#dx-diff').value.trim() || "أضيفت بواسطة المدير";
             const newId = "custom_" + Date.now();
-            const newDiagnosis = {
-                id: newId,
-                name: name,
-                cat: cat,
-                sev: sev,
-                location: location,
-                keywords: keywords,
-                signs: signs,
-                xray: xray,
-                treat: treat,
-                diff: diff
-            };
-            // حفظ في Firebase إذا متاح
+            const newDiagnosis = { id: newId, name, cat, sev, location, keywords, signs, xray, treat, diff };
             if(db) {
                 db.ref('custom_diagnoses').push(newDiagnosis).then(() => {
-                    toast('✅ تم حفظ التشخيص بنجاح وتحديث البنك');
-                    loadDynamicDiagnoses();  // إعادة تحميل القاعدة
+                    toast('✅ تم حفظ التشخيص وتحديث البنك');
+                    loadDynamicDiagnoses();
                     $('#new-dx-form').reset();
                 }).catch(e => toast('❌ فشل الحفظ: ' + e.message));
             } else {
-                // حفظ محلي مؤقت
                 DYNAMIC_DB.push(newDiagnosis);
                 FULL_DB = [...STATIC_DB, ...DYNAMIC_DB];
-                toast('✅ تمت الإضافة محلياً (بدون اتصال)');
+                toast('✅ تمت الإضافة محلياً');
                 $('#new-dx-form').reset();
             }
         };
@@ -904,9 +635,9 @@
             const likeBtn = document.getElementById(`like-${index}`);
             const dislikeBtn = document.getElementById(`dislike-${index}`);
             if(type === 'like') { likeBtn.classList.add('liked'); dislikeBtn.classList.remove('disliked'); card.classList.remove('rejected'); if(db) db.ref('feedback/' + diseaseId).push({ type: 'correct', user: user?.name || 'مجهول' }); toast('✅ شكراً لتأكيد الدقة'); }
-            else { dislikeBtn.classList.add('disliked'); likeBtn.classList.remove('liked'); card.classList.add('rejected'); const correctDiagName = prompt("⚠️ ما هو اسم التشخيص الصحيح؟"); if(correctDiagName && correctDiagName.trim() !== "") { const correctSigns = prompt("أذكر العلامات السريرية الرئيسية:") || "غير محدد"; const correctTreat = prompt("أذكر العلاج المقترح:") || "غير محدد"; const newDiagnosis = { id: "custom_" + Date.now(), name: correctDiagName, cat: "مساهمات الأطباء", sev: "متوسط", location: "عام", keywords: [correctDiagName], signs: correctSigns, xray: "غير محدد", treat: correctTreat, diff: "أضيفت بواسطة: " + (user?.name || "طبيب") }; DYNAMIC_DB.push(newDiagnosis); FULL_DB = [...STATIC_DB, ...DYNAMIC_DB]; if(db) { db.ref('custom_diagnoses').push(newDiagnosis).then(() => { toast('✅ تم حفظ التشخيص في البنك بنجاح!'); loadDynamicDiagnoses(); }).catch(e => toast('❌ فشل الحفظ: ' + e.message)); } else { toast('✅ تمت الإضافة محلياً (سيتم المزامنة عند الاتصال)'); } if(user && user.id && db) { db.ref('users/' + user.id + '/corrections').transaction(current => (current || 0) + 1); user.corrections = (user.corrections || 0) + 1; $('user-corrections').textContent = user.corrections; } } else { toast('⚠️ تم إلغاء الإضافة'); dislikeBtn.classList.remove('disliked'); card.classList.remove('rejected'); } }
+            else { dislikeBtn.classList.add('disliked'); likeBtn.classList.remove('liked'); card.classList.add('rejected'); const correctDiagName = prompt("⚠️ ما هو اسم التشخيص الصحيح؟"); if(correctDiagName && correctDiagName.trim() !== "") { const correctSigns = prompt("أذكر العلامات السريرية الرئيسية:") || "غير محدد"; const correctTreat = prompt("أذكر العلاج المقترح:") || "غير محدد"; const newDiagnosis = { id: "custom_" + Date.now(), name: correctDiagName, cat: "مساهمات الأطباء", sev: "متوسط", location: "عام", keywords: [correctDiagName], signs: correctSigns, xray: "غير محدد", treat: correctTreat, diff: "أضيفت بواسطة: " + (user?.name || "طبيب") }; DYNAMIC_DB.push(newDiagnosis); FULL_DB = [...STATIC_DB, ...DYNAMIC_DB]; if(db) { db.ref('custom_diagnoses').push(newDiagnosis).then(() => { toast('✅ تم حفظ التشخيص في البنك بنجاح!'); loadDynamicDiagnoses(); }).catch(e => toast('❌ فشل الحفظ: ' + e.message)); } else { toast('✅ تمت الإضافة محلياً'); } if(user && user.id && db) { db.ref('users/' + user.id + '/corrections').transaction(current => (current || 0) + 1); user.corrections = (user.corrections || 0) + 1; $('user-corrections').textContent = user.corrections; } } else { toast('⚠️ تم إلغاء الإضافة'); dislikeBtn.classList.remove('disliked'); card.classList.remove('rejected'); } }
         };
-        window.onload = () => { loadDynamicDiagnoses(); const s = localStorage.getItem('d_session'); if(s){ try{ user = JSON.parse(s); enterApp(); if(user.role === 'admin'){ $('admin').classList.add('active'); $('diag').classList.remove('active'); if($('admin-add-card')) $('admin-add-card').style.display = 'block'; if(db) { load(); loadContributors(); loadActivationRequests(); } } else { $('admin').classList.remove('active'); $('diag').classList.add('active'); updateUserStats(); } } catch(e) { localStorage.removeItem('d_session'); } } };
+        window.onload = () => { loadDynamicDiagnoses(); const s = localStorage.getItem('d_session'); if(s){ try{ user = JSON.parse(s); enterApp(); if(user.role === 'admin'){ $('admin').classList.add('active'); $('diag').classList.remove('active'); if($('admin-add-card')) $('admin-add-card').style.display = 'block'; if(db){ load(); loadContributors(); loadActivationRequests(); } } else { $('admin').classList.remove('active'); $('diag').classList.add('active'); updateUserStats(); } } catch(e) { localStorage.removeItem('d_session'); } } };
         window.showReg = showReg; window.showLogin = showLogin; window.doLoginComplex = doLoginComplex; window.doRegister = doRegister;
         window.doLogout = doLogout; window.goDiag = goDiag; window.goAdmin = goAdmin; window.upd = upd; window.del = del;
     </script>
