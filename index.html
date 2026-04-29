@@ -566,7 +566,7 @@
         window.upd=(i,s)=>db&&db.ref('users/'+i).update({status:s}).then(load);
         window.del=(i)=>{if(confirm('حذف نهائي؟')&&db)db.ref('users/'+i).remove().then(load);};
         
-        // -------------------- قاعدة البيانات الثابتة (STATIC_DB) كاملة 117 حالة --------------------
+        // -------------------- قاعدة البيانات الثابتة (STATIC_DB) كاملة 101 حالة --------------------
         const STATIC_DB = [
             {id:"pericoronitis", name:"التهاب حول ضرس العقل (Pericoronitis)", cat:"جراحة", sev:"عالي", location:"خلف", keywords:["التهاب حول ضرس العقل","حول ضرس العقل","تاج ضرس العقل","ضرس العقل ملتهب","التهاب حول التاج","غطاء لثوي","صعوبة فتح الفم","رائحة فم","ألم خلف الضرس الأخير","تواج","الضرس الخلفي عم يعورني","مش قادر أكل"], signs:"انتفاخ حول التاج، صعوبة فتح الفم، رائحة كريهة.", xray:"سن منطمر جزئياً.", treat:"غسل تحت التخدير، مضادات حيوية، قلع الضرس.", diff:"موقع خلفي + غطاء لثوي ملتهب + رائحة."},
             {id:"ecc", name:"تسوس الطفولة المبكر (ECC)", cat:"أطفال", sev:"عالي", location:"أسنان", keywords:["أسنان سوداء","أسنان متآكلة","نخور منتشرة","طفل","رضيع","رضاعة","زجاجة","بببرونة","أمامية","بكاء عند الأكل","سن اللبنية مسوسة كلها"], signs:"نخر واسع حول عنق القواطع العلوية", xray:"نخر واسع", treat:"ترميم أو لب أو خلع", diff:"سن لبنية + رضاعة"},
@@ -678,45 +678,142 @@
         };
         function norm(t){ return t.normalize('NFKD').replace(/[\u064B-\u065F\u0670]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').toLowerCase().trim(); }
         function loadDynamicDiagnoses() { if(!db) return; db.ref('custom_diagnoses').once('value').then(snap => { DYNAMIC_DB = []; if(snap.exists()) snap.forEach(child => { DYNAMIC_DB.push(child.val()); }); FULL_DB = [...STATIC_DB, ...DYNAMIC_DB]; console.log("Bank Updated: " + FULL_DB.length + " cases."); }); }
+        
+        // ======================= محرك تشخيص محسن =========================
+        // دالة حساب درجة التشابه بين النص المدخل وقائمة الكلمات المفتاحية للمرض
+        function computeMatchScore(disease, normalizedInput, inputWords) {
+            let matchedCount = 0;
+            const totalKeywords = disease.keywords.length;
+            if (totalKeywords === 0) return 0;
+            
+            // نسخة مطبعة من الكلمات المفتاحية للمرض
+            const diseaseKeywordsNorm = disease.keywords.map(kw => norm(kw));
+            
+            for (let kwNorm of diseaseKeywordsNorm) {
+                // تجاهل الكلمات القصيرة جدا (اقل من 3 حروف بعد التطبيع) لتجنب التطابقات الخاطئة
+                if (kwNorm.length < 3) continue;
+                
+                let found = false;
+                // 1- البحث المباشر في النص الكامل
+                if (normalizedInput.includes(kwNorm)) {
+                    found = true;
+                }
+                // 2- البحث من خلال المرادفات: إذا كانت أي كلمة من كلمات الإدخال مرادفاً لهذه الكلمة المفتاحية
+                if (!found) {
+                    for (let w of inputWords) {
+                        const syn = SYNONYMS[w];
+                        if (syn && norm(syn) === kwNorm) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                // 3- البحث العكسي: إذا كانت الكلمة المفتاحية نفسها مرادفة لكلمة في النص (مثل: ألم -> وجع)
+                if (!found) {
+                    for (let w of inputWords) {
+                        const synOfKw = SYNONYMS[kwNorm];
+                        if (synOfKw && norm(synOfKw) === w) {
+                            found = true;
+                            break;
+                        }
+                        // أيضًا نتحقق مما إذا كانت كلمة الإدخال موجودة ضمن مفاتيح المرادفات وقيمتها تساوي kwNorm
+                        for (let [key, val] of Object.entries(SYNONYMS)) {
+                            if (norm(key) === w && norm(val) === kwNorm) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (found) break;
+                    }
+                }
+                if (found) matchedCount++;
+            }
+            
+            // حساب النسبة المئوية للتطابق
+            let rawScore = (matchedCount / totalKeywords) * 100;
+            // منح زيادة بسيطة إذا كان هناك أكثر من تطابق (لتفضيل الأمراض ذات التطابقات المتعددة)
+            rawScore = rawScore + (matchedCount * 2);
+            // الحد الأقصى 100
+            return Math.min(100, rawScore);
+        }
+        
         function runDiagnosis() {
             const text = $('sym').value.trim(); if(!text) return toast('اكتب الأعراض بدقة');
             const btn = document.querySelector('#diag .btn');
-            btn.disabled = true; btn.textContent = '⏳ جاري التحليل ...';
+            btn.disabled = true; btn.textContent = '⏳ جاري التحليل الذكي ...';
             if (FULL_DB.length === STATIC_DB.length) loadDynamicDiagnoses();
+            
             setTimeout(() => {
                 const normalizedInput = norm(text);
                 const inputWords = normalizedInput.split(/\s+/).filter(w => w.length > 2);
+                // قائمة سوداء استبعادية (negative keywords) تبقى كما هي
                 const negativeKeywords = { 'ecc': ['عقل', 'بالغ', 'دائم', 'ضرس عقل', 'رحى', 'سن دائم', 'ضرس العقل', 'رجل', 'امرأة'], 'pulp_child': ['عقل', 'بالغ', 'دائم', 'ضرس عقل', 'رحى', 'ضرس العقل', 'كبير'], 'viral_infant_stomatitis': ['بالغ', 'ضرس عقل'], 'bacterial_child_stomatitis': ['بالغ', 'ضرس عقل'], 'primary_herpes_stomatitis': ['بالغ'], 'teething_gingivitis': ['بالغ', 'دائم'] };
+                
                 let results = [];
                 for (let disease of FULL_DB) {
+                    // استبعاد السلبي
                     let negList = negativeKeywords[disease.id] || [];
                     let skip = false;
                     for (let neg of negList) if (normalizedInput.includes(norm(neg))) { skip = true; break; }
                     if (skip) continue;
+                    
+                    // حساب درجة التشابه الجديدة
+                    let score = computeMatchScore(disease, normalizedInput, inputWords);
+                    if (score < 10) continue;  // تجاهل الأمراض ذات التشابه الضعيف جداً (<10%)
+                    
+                    // جمع الكلمات المفتاحية التي تطابقت فعلاً (للعرض)
                     let matchedKeywords = [];
-                    for (let kw of disease.keywords) {
-                        const nkw = norm(kw);
-                        if (normalizedInput.includes(nkw)) { matchedKeywords.push(kw); continue; }
-                        let synMatched = false;
-                        for (let w of inputWords) { const syn = SYNONYMS[w]; if (syn && nkw.includes(norm(syn))) { matchedKeywords.push(kw); synMatched = true; break; } }
-                        if (synMatched) continue;
+                    const diseaseKeywordsNorm = disease.keywords.map(kw => norm(kw));
+                    for (let i=0; i<disease.keywords.length; i++) {
+                        let kwNorm = diseaseKeywordsNorm[i];
+                        if (kwNorm.length < 3) continue;
+                        if (normalizedInput.includes(kwNorm)) {
+                            matchedKeywords.push(disease.keywords[i]);
+                            continue;
+                        }
+                        for (let w of inputWords) {
+                            const syn = SYNONYMS[w];
+                            if (syn && norm(syn) === kwNorm) {
+                                matchedKeywords.push(disease.keywords[i]);
+                                break;
+                            }
+                        }
                     }
-                    if (matchedKeywords.length === 0) continue;
-                    let score = matchedKeywords.length * 20;
-                    results.push({ ...disease, score, matched: matchedKeywords });
+                    results.push({ ...disease, score: Math.round(score), matched: matchedKeywords });
                 }
+                // ترتيب تنازلي حسب الدرجة
                 results.sort((a,b) => b.score - a.score);
                 let filtered = results.slice(0, 3);
-                filtered = filtered.map(r => { let confidence = Math.min(95, Math.round((r.score / 100) * 100)); if (confidence < 30) confidence = 30; const level = confidence > 75 ? 'عالية' : confidence > 45 ? 'متوسطة' : 'منخفضة'; const badgeClass = confidence > 75 ? 'conf-high' : confidence > 45 ? 'conf-mid' : 'conf-low'; return { ...r, confidence, level, badgeClass }; });
+                // إذا لم يجد أي نتيجة بدرجة 10% على الأقل، يعرض رسالة "لم نجد تطابقاً"
+                if (filtered.length === 0) {
+                    filtered = [];
+                }
+                filtered = filtered.map(r => { 
+                    let confidence = Math.min(95, r.score); 
+                    if (confidence < 30) confidence = 30; 
+                    const level = confidence > 75 ? 'عالية' : confidence > 45 ? 'متوسطة' : 'منخفضة'; 
+                    const badgeClass = confidence > 75 ? 'conf-high' : confidence > 45 ? 'conf-mid' : 'conf-low'; 
+                    return { ...r, confidence, level, badgeClass }; 
+                });
                 let html = `<div class="clinical-report"><div class="report-header"><div class="report-title">📊 التقرير السريري التعليمي</div><span style="font-size:11px;color:#64748b">محرك دقيق v42.1</span></div>`;
-                if (filtered.length === 0) { html += `<div class="no-result-guide"><div class="guide-title">🤔 لم نجد تطابقاً دقيقاً</div><p class="guide-text">تأكد من كتابة الأعراض بدقة: الموقع، نوع الألم، المحفزات، المدة.<br>مثال: <b>ألم خلف الضرس الأخير مع صعوبة فتح الفم ورائحة كريهة</b></p><div class="example-chips"><span class="chip" onclick="$('sym').value='ألم نابض يوقظني من النوم'; runDiagnosis()">😣 ألم نابض ليلي</span><span class="chip" onclick="$('sym').value='بقع بيضاء على اللسان تقبل المسح'; runDiagnosis()">👅 بقع بيضاء على اللسان</span><span class="chip" onclick="$('sym').value='تورم وجهي مع حرارة وصعوبة فتح الفم'; runDiagnosis()">🤒 تورم وجهي وحرارة</span><span class="chip" onclick="$('sym').value='ألم شديد خلف الضرس الأخير مع رائحة'; runDiagnosis()">🦷 ألم خلف الضرس</span></div></div>`; }
-                else { filtered.forEach((r, i) => { const borderColor = r.sev === 'طوارئ' ? '#ef4444' : '#3b82f6'; const severityColor = r.sev === 'طوارئ' ? '#ef4444' : '#f59e0b'; html += `<div id="card-${i}" class="diagnosis-card" style="background:#fff;border-radius:10px;padding:14px;margin-bottom:12px;border-right:5px solid ${borderColor};box-shadow:0 2px 6px rgba(0,0,0,0.04)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px"><span style="font-size:15px;font-weight:700;color:#1e40af">#${i+1} ${r.name} <span class="cat-tag">${r.cat}</span></span><div style="display:flex;gap:6px;align-items:center"><span class="conf-badge ${r.badgeClass}">${r.confidence}% (${r.level})</span><span style="font-size:11px;color:#64748b">الخطورة: <b style="color:${severityColor}">${r.sev}</b></span></div></div><div class="section"><h5>🔍 الأعراض المترابطة</h5><p style="font-size:12px;color:#64748b">${r.matched.join(' • ') || 'غير محدد'}</p></div><div class="section"><h5>👁️ العلامات السريرية المتوقعة</h5><p>${r.signs}</p></div><div class="section"><h5>🩻 الصورة الشعاعية / الفحص</h5><p>${r.xray}</p></div><div class="section"><h5>💊 التدبير العلاجي المقترح</h5><p>${r.treat}</p></div><div class="diff-note">💡 <b>ملاحظة تفريقية للطالب:</b> ${r.diff}</div>${r.sev === 'طوارئ' ? `<div class="emergency-box">🚨 تنبيه طوارئ: ${r.treat.split('.')[0]}. إحالة فورية مطلوبة!</div>` : ''}<div class="feedback-actions"><button id="like-${i}" class="fb-btn" onclick="submitFeedback('${r.id}', 'like', ${i})">👍 دقيق</button><button id="dislike-${i}" class="fb-btn" onclick="submitFeedback('${r.id}', 'dislike', ${i})">👎 غير دقيق</button></div></div>`; }); }
+                if (filtered.length === 0) { 
+                    html += `<div class="no-result-guide"><div class="guide-title">🤔 لم نجد تطابقاً دقيقاً</div><p class="guide-text">تأكد من كتابة الأعراض بدقة: الموقع، نوع الألم، المحفزات، المدة.<br>مثال: <b>ألم خلف الضرس الأخير مع صعوبة فتح الفم ورائحة كريهة</b></p><div class="example-chips"><span class="chip" onclick="$('sym').value='ألم نابض يوقظني من النوم'; runDiagnosis()">😣 ألم نابض ليلي</span><span class="chip" onclick="$('sym').value='بقع بيضاء على اللسان تقبل المسح'; runDiagnosis()">👅 بقع بيضاء على اللسان</span><span class="chip" onclick="$('sym').value='تورم وجهي مع حرارة وصعوبة فتح الفم'; runDiagnosis()">🤒 تورم وجهي وحرارة</span><span class="chip" onclick="$('sym').value='ألم شديد خلف الضرس الأخير مع رائحة'; runDiagnosis()">🦷 ألم خلف الضرس</span></div></div>`; 
+                }
+                else { 
+                    filtered.forEach((r, i) => { 
+                        const borderColor = r.sev === 'طوارئ' ? '#ef4444' : '#3b82f6'; 
+                        const severityColor = r.sev === 'طوارئ' ? '#ef4444' : '#f59e0b'; 
+                        html += `<div id="card-${i}" class="diagnosis-card" style="background:#fff;border-radius:10px;padding:14px;margin-bottom:12px;border-right:5px solid ${borderColor};box-shadow:0 2px 6px rgba(0,0,0,0.04)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px"><span style="font-size:15px;font-weight:700;color:#1e40af">#${i+1} ${r.name} <span class="cat-tag">${r.cat}</span></span><div style="display:flex;gap:6px;align-items:center"><span class="conf-badge ${r.badgeClass}">${r.confidence}% (${r.level})</span><span style="font-size:11px;color:#64748b">الخطورة: <b style="color:${severityColor}">${r.sev}</b></span></div></div><div class="section"><h5>🔍 الأعراض المترابطة</h5><p style="font-size:12px;color:#64748b">${r.matched.join(' • ') || 'غير محدد'}</p></div><div class="section"><h5>👁️ العلامات السريرية المتوقعة</h5><p>${r.signs}</p></div><div class="section"><h5>🩻 الصورة الشعاعية / الفحص</h5><p>${r.xray}</p></div><div class="section"><h5>💊 التدبير العلاجي المقترح</h5><p>${r.treat}</p></div><div class="diff-note">💡 <b>ملاحظة تفريقية للطالب:</b> ${r.diff}</div>${r.sev === 'طوارئ' ? `<div class="emergency-box">🚨 تنبيه طوارئ: ${r.treat.split('.')[0]}. إحالة فورية مطلوبة!</div>` : ''}<div class="feedback-actions"><button id="like-${i}" class="fb-btn" onclick="submitFeedback('${r.id}', 'like', ${i})">👍 دقيق</button><button id="dislike-${i}" class="fb-btn" onclick="submitFeedback('${r.id}', 'dislike', ${i})">👎 غير دقيق</button></div></div>`; 
+                    }); 
+                }
                 html += `<div style="background:#fef2f2;border:2px solid #fecaca;color:#b91c1c;padding:10px;border-radius:8px;margin-top:12px;text-align:center;font-size:12px">⚠️ تنبيه أكاديمي: هذا التحليل تعليمي للمحاكاة ولا يغني عن الفحص السريري المباشر.</div></div>`;
                 $('res').innerHTML = html;
                 $('res').scrollIntoView({behavior:'smooth'});
                 btn.disabled = false; btn.textContent = '🔍 تحليل الخبير السريري';
             }, 200);
         }
+        // ======================= نهاية المحرك المحسن =========================
+        
         window.submitFeedback = (diseaseId, type, index) => {
             const card = document.getElementById(`card-${index}`);
             const likeBtn = document.getElementById(`like-${index}`);
