@@ -679,62 +679,84 @@
         function norm(t){ return t.normalize('NFKD').replace(/[\u064B-\u065F\u0670]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').toLowerCase().trim(); }
         function loadDynamicDiagnoses() { if(!db) return; db.ref('custom_diagnoses').once('value').then(snap => { DYNAMIC_DB = []; if(snap.exists()) snap.forEach(child => { DYNAMIC_DB.push(child.val()); }); FULL_DB = [...STATIC_DB, ...DYNAMIC_DB]; console.log("Bank Updated: " + FULL_DB.length + " cases."); }); }
         
-        // ======================= محرك تشخيص محسن =========================
-        // دالة حساب درجة التشابه بين النص المدخل وقائمة الكلمات المفتاحية للمرض
-        function computeMatchScore(disease, normalizedInput, inputWords) {
-            let matchedCount = 0;
-            const totalKeywords = disease.keywords.length;
-            if (totalKeywords === 0) return 0;
+        // -------------------------------------------------------------------
+        // محرك تشخيص محسن بالكامل - مطابقة دقيقة للجمل والكلمات المفتاحية
+        // -------------------------------------------------------------------
+        function tokenizeAndExpand(textNorm) {
+            // تقسيم النص إلى كلمات مفردة (أطول من حرفين بعد التطبيع)
+            let words = textNorm.split(/\s+/).filter(w => w.length > 2);
+            let expanded = new Set();
+            // إضافة الكلمات الأصلية
+            words.forEach(w => expanded.add(w));
+            // إضافة المرادفات (من SYNONYMS) لكل كلمة
+            words.forEach(w => {
+                if (SYNONYMS[w]) expanded.add(norm(SYNONYMS[w]));
+                // أيضًا البحث العكسي: إذا كانت هناك كلمة مفتاحية مرادفة لهذه الكلمة
+                for (let [key, val] of Object.entries(SYNONYMS)) {
+                    if (norm(val) === w) expanded.add(norm(key));
+                }
+            });
+            return { words: Array.from(expanded), originalWords: words };
+        }
+        
+        function computeMatchScore(disease, normalizedInput, inputTokens) {
+            const kwList = disease.keywords;
+            if (kwList.length === 0) return 0;
+            let totalWeight = 0;
+            let matchedWeight = 0;
             
-            // نسخة مطبعة من الكلمات المفتاحية للمرض
-            const diseaseKeywordsNorm = disease.keywords.map(kw => norm(kw));
-            
-            for (let kwNorm of diseaseKeywordsNorm) {
-                // تجاهل الكلمات القصيرة جدا (اقل من 3 حروف بعد التطبيع) لتجنب التطابقات الخاطئة
+            for (let kw of kwList) {
+                let kwNorm = norm(kw);
+                // تجاهل الكلمات القصيرة جدًا (أقل من 3 أحرف) لتجنب الضوضاء
                 if (kwNorm.length < 3) continue;
+                let weight = 1 + (kwNorm.length / 10); // وزن أكبر للكلمات الأطول
+                totalWeight += weight;
                 
                 let found = false;
-                // 1- البحث المباشر في النص الكامل
+                // 1- البحث المباشر بالكلمة المفتاحية كاملة في النص (بدون كسرها)
                 if (normalizedInput.includes(kwNorm)) {
                     found = true;
                 }
-                // 2- البحث من خلال المرادفات: إذا كانت أي كلمة من كلمات الإدخال مرادفاً لهذه الكلمة المفتاحية
+                // 2- إذا كانت الكلمة المفتاحية عبارة عن جملة (تحوي مسافات) نقوم بتقسيمها والبحث عن أجزائها
+                else if (kwNorm.includes(' ')) {
+                    let parts = kwNorm.split(/\s+/).filter(p => p.length > 2);
+                    let partsMatched = 0;
+                    for (let part of parts) {
+                        if (normalizedInput.includes(part)) partsMatched++;
+                        else if (inputTokens.words.some(tok => tok === part)) partsMatched++;
+                    }
+                    if (parts.length > 0 && (partsMatched / parts.length) >= 0.6) found = true;
+                }
+                // 3- البحث عبر مجموعة الكلمات الموسعة (بما فيها المرادفات)
                 if (!found) {
-                    for (let w of inputWords) {
-                        const syn = SYNONYMS[w];
-                        if (syn && norm(syn) === kwNorm) {
-                            found = true;
-                            break;
+                    for (let tok of inputTokens.words) {
+                        if (tok === kwNorm) { found = true; break; }
+                        // أيضاً التأكد من أن الكلمة المفتاحية تحتوي على هذه الكلمة أو العكس في حالة الكلمات المركبة
+                        if (kwNorm.length > 5 && tok.length > 3 && (kwNorm.includes(tok) || tok.includes(kwNorm))) {
+                            found = true; break;
                         }
                     }
                 }
-                // 3- البحث العكسي: إذا كانت الكلمة المفتاحية نفسها مرادفة لكلمة في النص (مثل: ألم -> وجع)
-                if (!found) {
-                    for (let w of inputWords) {
-                        const synOfKw = SYNONYMS[kwNorm];
-                        if (synOfKw && norm(synOfKw) === w) {
-                            found = true;
-                            break;
-                        }
-                        // أيضًا نتحقق مما إذا كانت كلمة الإدخال موجودة ضمن مفاتيح المرادفات وقيمتها تساوي kwNorm
-                        for (let [key, val] of Object.entries(SYNONYMS)) {
-                            if (norm(key) === w && norm(val) === kwNorm) {
-                                found = true;
-                                break;
+                // 4- البحث عن جذور مشتركة: إذا كانت الكلمة المفتاحية والكلمة المدخلة تشتركان في 3 أحرف متتالية على الأقل (لتغطية الاشتقاقات مثل التهاب/ملتهب)
+                if (!found && kwNorm.length > 3) {
+                    for (let tok of inputTokens.originalWords) {
+                        if (tok.length > 3) {
+                            for (let i = 0; i <= kwNorm.length - 3; i++) {
+                                let sub = kwNorm.substr(i, 3);
+                                if (tok.includes(sub)) { found = true; break; }
                             }
+                            if (found) break;
                         }
-                        if (found) break;
                     }
                 }
-                if (found) matchedCount++;
+                
+                if (found) matchedWeight += weight;
             }
-            
-            // حساب النسبة المئوية للتطابق
-            let rawScore = (matchedCount / totalKeywords) * 100;
-            // منح زيادة بسيطة إذا كان هناك أكثر من تطابق (لتفضيل الأمراض ذات التطابقات المتعددة)
-            rawScore = rawScore + (matchedCount * 2);
-            // الحد الأقصى 100
-            return Math.min(100, rawScore);
+            if (totalWeight === 0) return 0;
+            let raw = (matchedWeight / totalWeight) * 100;
+            // منح مكافأة إذا كانت درجة المطابقة عالية (لتشجيع الأمراض المتعددة الأعراض)
+            if (matchedWeight > 2) raw = Math.min(100, raw + 10);
+            return Math.round(raw);
         }
         
         function runDiagnosis() {
@@ -745,8 +767,7 @@
             
             setTimeout(() => {
                 const normalizedInput = norm(text);
-                const inputWords = normalizedInput.split(/\s+/).filter(w => w.length > 2);
-                // قائمة سوداء استبعادية (negative keywords) تبقى كما هي
+                const inputTokens = tokenizeAndExpand(normalizedInput);
                 const negativeKeywords = { 'ecc': ['عقل', 'بالغ', 'دائم', 'ضرس عقل', 'رحى', 'سن دائم', 'ضرس العقل', 'رجل', 'امرأة'], 'pulp_child': ['عقل', 'بالغ', 'دائم', 'ضرس عقل', 'رحى', 'ضرس العقل', 'كبير'], 'viral_infant_stomatitis': ['بالغ', 'ضرس عقل'], 'bacterial_child_stomatitis': ['بالغ', 'ضرس عقل'], 'primary_herpes_stomatitis': ['بالغ'], 'teething_gingivitis': ['بالغ', 'دائم'] };
                 
                 let results = [];
@@ -757,37 +778,31 @@
                     for (let neg of negList) if (normalizedInput.includes(norm(neg))) { skip = true; break; }
                     if (skip) continue;
                     
-                    // حساب درجة التشابه الجديدة
-                    let score = computeMatchScore(disease, normalizedInput, inputWords);
-                    if (score < 10) continue;  // تجاهل الأمراض ذات التشابه الضعيف جداً (<10%)
+                    let score = computeMatchScore(disease, normalizedInput, inputTokens);
+                    if (score < 20) continue; // عتبة دنيا أعلى قليلاً لتجنب التشخيصات الضعيفة
                     
                     // جمع الكلمات المفتاحية التي تطابقت فعلاً (للعرض)
                     let matchedKeywords = [];
-                    const diseaseKeywordsNorm = disease.keywords.map(kw => norm(kw));
-                    for (let i=0; i<disease.keywords.length; i++) {
-                        let kwNorm = diseaseKeywordsNorm[i];
+                    for (let kw of disease.keywords) {
+                        let kwNorm = norm(kw);
                         if (kwNorm.length < 3) continue;
-                        if (normalizedInput.includes(kwNorm)) {
-                            matchedKeywords.push(disease.keywords[i]);
-                            continue;
+                        if (normalizedInput.includes(kwNorm)) { matchedKeywords.push(kw); continue; }
+                        if (kwNorm.includes(' ')) {
+                            let parts = kwNorm.split(/\s+/);
+                            let anyPart = parts.some(p => normalizedInput.includes(p));
+                            if (anyPart) { matchedKeywords.push(kw); continue; }
                         }
-                        for (let w of inputWords) {
-                            const syn = SYNONYMS[w];
-                            if (syn && norm(syn) === kwNorm) {
-                                matchedKeywords.push(disease.keywords[i]);
-                                break;
+                        for (let tok of inputTokens.words) {
+                            if (tok === kwNorm || (kwNorm.length>4 && tok.length>3 && (kwNorm.includes(tok) || tok.includes(kwNorm)))) {
+                                matchedKeywords.push(kw); break;
                             }
                         }
                     }
-                    results.push({ ...disease, score: Math.round(score), matched: matchedKeywords });
+                    results.push({ ...disease, score, matched: matchedKeywords });
                 }
-                // ترتيب تنازلي حسب الدرجة
                 results.sort((a,b) => b.score - a.score);
                 let filtered = results.slice(0, 3);
-                // إذا لم يجد أي نتيجة بدرجة 10% على الأقل، يعرض رسالة "لم نجد تطابقاً"
-                if (filtered.length === 0) {
-                    filtered = [];
-                }
+                if (filtered.length === 0) filtered = [];
                 filtered = filtered.map(r => { 
                     let confidence = Math.min(95, r.score); 
                     if (confidence < 30) confidence = 30; 
@@ -812,7 +827,7 @@
                 btn.disabled = false; btn.textContent = '🔍 تحليل الخبير السريري';
             }, 200);
         }
-        // ======================= نهاية المحرك المحسن =========================
+        // -------------------------------------------------------------------
         
         window.submitFeedback = (diseaseId, type, index) => {
             const card = document.getElementById(`card-${index}`);
