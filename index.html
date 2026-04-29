@@ -134,6 +134,13 @@
         .cancel-reply { background: none; border: none; color: var(--danger); font-size: 11px; cursor: pointer; margin-right: 5px; }
         .image-preview { display: flex; align-items: center; gap: 8px; margin: 5px 0; padding: 5px; background: #f1f5f9; border-radius: 8px; }
         .image-preview img { width: 40px; height: 40px; object-fit: cover; border-radius: 6px; }
+        /* استايلات خاصة بنموذج الإضافة */
+        .form-row { margin-bottom: 12px; }
+        .form-row label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 5px; color: #0f172a; }
+        .form-row input, .form-row select, .form-row textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; background: #fff; }
+        .form-row textarea { min-height: 80px; resize: vertical; }
+        .add-dx-btn { background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 8px 16px; border-radius: 28px; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 10px; }
+        .add-dx-btn:hover { opacity: 0.9; }
         @media (max-width: 480px) { .stats { grid-template-columns: 1fr; } .auth-card { padding: 24px 18px; } table { font-size: 12px; } th, td { padding: 8px 6px; } .report-header { flex-direction: column; align-items: flex-start; } .chat-modal { width: 95vw; right: 2.5vw; bottom: 70px; } }
     </style>
 </head>
@@ -210,6 +217,29 @@
                                 <tbody id="u-tbl"></tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+                <!-- بطاقة إضافة تشخيص جديد للمدير فقط -->
+                <div class="card" id="admin-add-card" style="display:none;">
+                    <div class="collapsible-header" onclick="toggleCollapse('add-dx-container', 'add-dx-icon')">
+                        <h3>➕ إضافة تشخيص جديد (للمدير)</h3>
+                        <span id="add-dx-icon" class="toggle-icon">▼</span>
+                    </div>
+                    <div id="add-dx-container" class="collapsible-content">
+                        <form id="new-dx-form" onsubmit="event.preventDefault(); saveNewDiagnosis();">
+                            <div class="form-row"><label>اسم التشخيص *</label><input type="text" id="dx-name" required placeholder="مثال: التهاب دواعم السن الحاد"></div>
+                            <div class="form-row"><label>التصنيف (cat)</label><input type="text" id="dx-cat" placeholder="جراحة / لثة / أطفال ..." value="عام"></div>
+                            <div class="form-row"><label>الخطورة (sev)</label><select id="dx-sev"><option value="منخفض">منخفض</option><option value="متوسط" selected>متوسط</option><option value="عالي">عالي</option><option value="طوارئ">طوارئ</option></select></div>
+                            <div class="form-row"><label>الموقع (location)</label><input type="text" id="dx-loc" placeholder="سن / لثة / فك / لسان ..."></div>
+                            <div class="form-row"><label>الكلمات المفتاحية * (مفصولة بفواصل أو أسطر)</label><textarea id="dx-keywords" required placeholder="ألم حاد، تورم لثة، نزيف، رائحة كريهة"></textarea><small>سيتم تحويلها إلى قائمة.</small></div>
+                            <div class="form-row"><label>العلامات السريرية المتوقعة</label><textarea id="dx-signs" placeholder="احمرار، نزيف عند الجس، جيوب لثوية"></textarea></div>
+                            <div class="form-row"><label>الصورة الشعاعية / الفحص</label><textarea id="dx-xray" placeholder="فقدان عظمي أفقي، ظلال حجرية"></textarea></div>
+                            <div class="form-row"><label>التدبير العلاجي المقترح</label><textarea id="dx-treat" placeholder="كشط وتنعيم الجذر، مضادات حيوية"></textarea></div>
+                            <div class="form-row"><label>ملاحظة تفريقية (Diff)</label><textarea id="dx-diff" placeholder="يجب تمييزه عن التهاب اللثة العادي"></textarea></div>
+                            <button type="submit" class="btn btn-green" style="margin-top:8px;">💾 حفظ التشخيص إلى البنك</button>
+                            <button type="button" class="btn btn-gray" onclick="document.getElementById('new-dx-form').reset();">🗑️ إعادة تعيين</button>
+                        </form>
+                        <p style="font-size:11px; color:#64748b; margin-top:8px;">🔹 سيتم إضافة التشخيص إلى قاعدة البيانات المخصصة وسيتعامل معه المحرك فوراً.</p>
                     </div>
                 </div>
                 <button class="btn btn-green" onclick="goDiag()">🔍 واجهة التشخيص الشامل</button>
@@ -463,6 +493,8 @@
                  enterApp();
                  $('admin').classList.add('active'); 
                  $('diag').classList.remove('active');
+                 // إظهار بطاقة الإضافة للمدير
+                 if($('admin-add-card')) $('admin-add-card').style.display = 'block';
                  if(db) { try { load(); loadContributors(); loadActivationRequests(); } catch(e){ console.warn(e); } }
                  toast('✅ تم الدخول كمدير'); 
                  btn.disabled = false; btn.textContent = 'دخول'; 
@@ -560,7 +592,7 @@
                     act+=` <button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button>`;
                     tblHTML+=`<tr><td>${u.name||'-'}</td><td>${u.email||'-'}</td><td><span class="status ${sc}">${st}</span></td><td style="text-align:center">${badgeIcon} <small>(${u.corrections||0})</small></td><td>${act}</td></tr>`;
                 });
-                $('u-tbl').innerHTML=tblHTML||'<tr><td colspan="5" class="empty">لا يوجد أطباء مسجلين</td></tr>';
+                $('u-tbl').innerHTML=tblHTML||'<tr><td colspan="5" class="empty">لا يوجد أطباء مسجلين<br>/th>';
             }).catch(err=>console.error('Load error:',err));
         };
         window.upd=(i,s)=>db&&db.ref('users/'+i).update({status:s}).then(load);
@@ -682,16 +714,66 @@
         function norm(t){ 
             return t.normalize('NFKD').replace(/[\u064B-\u065F\u0670]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').toLowerCase().trim(); 
         }
-        function loadDynamicDiagnoses() { if(!db) return; db.ref('custom_diagnoses').once('value').then(snap => { DYNAMIC_DB = []; if(snap.exists()) snap.forEach(child => { DYNAMIC_DB.push(child.val()); }); FULL_DB = [...STATIC_DB, ...DYNAMIC_DB]; console.log("Bank Updated: " + FULL_DB.length + " cases."); }); }
         
-        // ======================== المحرك الذكي الجديد ========================
-        function extractConcepts(textNorm) {
-            let concepts = {
-                symptoms: new Set(),   // أعراض مثل ألم، تورم، احمرار
-                locations: new Set(),  // مواقع مثل سن، لثة، لسان، تحت لسان
-                modifiers: new Set(),  // واصفات مثل نابض، شديد، مستمر
-                negatives: new Set()   // نفي مثل بدون، لا يوجد
+        function loadDynamicDiagnoses() { 
+            if(!db) return; 
+            db.ref('custom_diagnoses').once('value').then(snap => { 
+                DYNAMIC_DB = []; 
+                if(snap.exists()) snap.forEach(child => { 
+                    DYNAMIC_DB.push(child.val()); 
+                }); 
+                FULL_DB = [...STATIC_DB, ...DYNAMIC_DB]; 
+                console.log("Bank Updated: " + FULL_DB.length + " cases."); 
+            }); 
+        }
+        
+        // دالة حفظ تشخيص جديد من المدير
+        window.saveNewDiagnosis = function() {
+            if(!user || user.role !== 'admin') { toast('غير مصرح به'); return; }
+            const name = $('#dx-name').value.trim();
+            const cat = $('#dx-cat').value.trim() || 'عام';
+            const sev = $('#dx-sev').value;
+            const location = $('#dx-loc').value.trim() || 'عام';
+            let keywordsRaw = $('#dx-keywords').value.trim();
+            if(!name || !keywordsRaw) { toast('اسم التشخيص والكلمات المفتاحية إلزامية'); return; }
+            let keywords = keywordsRaw.split(/[,\n،]+/).map(k => k.trim()).filter(k => k.length > 0);
+            if(keywords.length === 0) { toast('يجب إدخال كلمة مفتاحية واحدة على الأقل'); return; }
+            const signs = $('#dx-signs').value.trim() || "غير محدد";
+            const xray = $('#dx-xray').value.trim() || "غير محدد";
+            const treat = $('#dx-treat').value.trim() || "غير محدد";
+            const diff = $('#dx-diff').value.trim() || "أضيفت بواسطة المدير";
+            const newId = "custom_" + Date.now();
+            const newDiagnosis = {
+                id: newId,
+                name: name,
+                cat: cat,
+                sev: sev,
+                location: location,
+                keywords: keywords,
+                signs: signs,
+                xray: xray,
+                treat: treat,
+                diff: diff
             };
+            // حفظ في Firebase إذا متاح
+            if(db) {
+                db.ref('custom_diagnoses').push(newDiagnosis).then(() => {
+                    toast('✅ تم حفظ التشخيص بنجاح وتحديث البنك');
+                    loadDynamicDiagnoses();  // إعادة تحميل القاعدة
+                    $('#new-dx-form').reset();
+                }).catch(e => toast('❌ فشل الحفظ: ' + e.message));
+            } else {
+                // حفظ محلي مؤقت
+                DYNAMIC_DB.push(newDiagnosis);
+                FULL_DB = [...STATIC_DB, ...DYNAMIC_DB];
+                toast('✅ تمت الإضافة محلياً (بدون اتصال)');
+                $('#new-dx-form').reset();
+            }
+        };
+        
+        // ------------------- المحرك الذكي -------------------
+        function extractConcepts(textNorm) {
+            let concepts = { symptoms: new Set(), locations: new Set(), modifiers: new Set(), negatives: new Set() };
             let words = textNorm.split(/\s+/);
             for (let w of words) {
                 if (w.startsWith('لا') || w.startsWith('بدون') || w === 'غير' || w === 'مافي') concepts.negatives.add(w);
@@ -712,32 +794,26 @@
         }
         
         function smartMatch(disease, normalizedInput, concepts) {
-            let totalWeight = 0;
-            let matchedWeight = 0;
-            // إعطاء أوزان حسب أهمية المعلومة
+            let totalWeight = 0, matchedWeight = 0;
             for (let kw of disease.keywords) {
                 let kwNorm = norm(kw);
                 if (kwNorm.length < 3) continue;
-                let weight = 1 + (kwNorm.length / 6); // طول الكلمة = أهمية أكبر
+                let weight = 1 + (kwNorm.length / 6);
                 totalWeight += weight;
                 let found = false;
-                // 1- مطابقة تامة
-                if (normalizedInput.includes(kwNorm)) { found = true; }
-                // 2- مطابقة جزئية إذا كانت الكلمة المفتاحية جملة
+                if (normalizedInput.includes(kwNorm)) found = true;
                 else if (kwNorm.includes(' ')) {
                     let parts = kwNorm.split(/\s+/);
                     let partMatchCount = 0;
                     for (let p of parts) if (p.length > 2 && normalizedInput.includes(p)) partMatchCount++;
                     if (parts.length > 0 && (partMatchCount / parts.length) >= 0.4) found = true;
                 }
-                // 3- مطابقة عبر المفاهيم المستخرجة
                 if (!found) {
                     for (let sym of concepts.symptoms) if (kwNorm.includes(sym) || sym.includes(kwNorm)) { found = true; break; }
                     if (!found) for (let loc of concepts.locations) if (kwNorm.includes(loc) || loc.includes(kwNorm)) { found = true; break; }
                 }
                 if (found) matchedWeight += weight;
             }
-            // إضافة مكافأة إذا تطابقت معظم المفاهيم مع المرض
             let locationBonus = 0;
             if (concepts.locations.size > 0) {
                 for (let loc of concepts.locations) {
@@ -750,20 +826,12 @@
             return Math.min(100, Math.round(totalScore));
         }
         
-        function generateExplanation(disease, matchedKeywords) {
+        function generateExplanation(disease) {
             let desc = "";
-            if (disease.signs && disease.signs.trim() !== "") {
-                desc += disease.signs.substring(0, 120) + " ";
-            }
-            if (disease.diff && disease.diff.trim() !== "") {
-                desc += "يتميز بـ: " + disease.diff.substring(0, 100) + ". ";
-            }
-            if (disease.treat && disease.treat.trim() !== "") {
-                desc += "الإجراء الأول: " + disease.treat.split('.')[0] + ".";
-            }
-            if (desc.length < 50) {
-                desc = "حالة تستدعي الفحص السريري والمتابعة.";
-            }
+            if (disease.signs && disease.signs.trim() !== "") desc += disease.signs.substring(0, 120) + " ";
+            if (disease.diff && disease.diff.trim() !== "") desc += "يتميز بـ: " + disease.diff.substring(0, 100) + ". ";
+            if (disease.treat && disease.treat.trim() !== "") desc += "الإجراء الأول: " + disease.treat.split('.')[0] + ".";
+            if (desc.length < 50) desc = "حالة تستدعي الفحص السريري والمتابعة.";
             return desc;
         }
         
@@ -775,7 +843,6 @@
             setTimeout(() => {
                 const normalizedInput = norm(text);
                 const concepts = extractConcepts(normalizedInput);
-                // قائمة سوداء (تستبعد أمراض الأطفال إذا ذكر بالغ أو العكس)
                 const negativeKeywords = { 'ecc': ['عقل', 'بالغ', 'دائم', 'ضرس عقل', 'رحى', 'سن دائم', 'ضرس العقل', 'رجل', 'امرأة'], 'pulp_child': ['عقل', 'بالغ', 'دائم', 'ضرس عقل', 'رحى', 'ضرس العقل', 'كبير'], 'viral_infant_stomatitis': ['بالغ', 'ضرس عقل'], 'bacterial_child_stomatitis': ['بالغ', 'ضرس عقل'], 'primary_herpes_stomatitis': ['بالغ'], 'teething_gingivitis': ['بالغ', 'دائم'] };
                 let results = [];
                 for (let disease of FULL_DB) {
@@ -785,7 +852,6 @@
                     if (skip) continue;
                     let score = smartMatch(disease, normalizedInput, concepts);
                     if (score < 20) continue;
-                    // جمع الكلمات المفتاحية المتطابقة (للعرض)
                     let matchedKeywords = [];
                     for (let kw of disease.keywords) {
                         let kwNorm = norm(kw);
@@ -807,7 +873,7 @@
                     if (confidence < 30) confidence = 30;
                     const level = confidence > 75 ? 'عالية' : confidence > 45 ? 'متوسطة' : 'منخفضة';
                     const badgeClass = confidence > 75 ? 'conf-high' : confidence > 45 ? 'conf-mid' : 'conf-low';
-                    const explanation = generateExplanation(r, r.matched);
+                    const explanation = generateExplanation(r);
                     return { ...r, confidence, level, badgeClass, explanation };
                 });
                 let html = `<div class="clinical-report"><div class="report-header"><div class="report-title">📊 التقرير السريري التعليمي</div><span style="font-size:11px;color:#64748b">محرك دقيق v42.1</span></div>`;
@@ -832,7 +898,6 @@
                 btn.disabled = false; btn.textContent = '🔍 تحليل الخبير السريري';
             }, 200);
         }
-        // ======================== نهاية المحرك ========================
         
         window.submitFeedback = (diseaseId, type, index) => {
             const card = document.getElementById(`card-${index}`);
@@ -841,7 +906,7 @@
             if(type === 'like') { likeBtn.classList.add('liked'); dislikeBtn.classList.remove('disliked'); card.classList.remove('rejected'); if(db) db.ref('feedback/' + diseaseId).push({ type: 'correct', user: user?.name || 'مجهول' }); toast('✅ شكراً لتأكيد الدقة'); }
             else { dislikeBtn.classList.add('disliked'); likeBtn.classList.remove('liked'); card.classList.add('rejected'); const correctDiagName = prompt("⚠️ ما هو اسم التشخيص الصحيح؟"); if(correctDiagName && correctDiagName.trim() !== "") { const correctSigns = prompt("أذكر العلامات السريرية الرئيسية:") || "غير محدد"; const correctTreat = prompt("أذكر العلاج المقترح:") || "غير محدد"; const newDiagnosis = { id: "custom_" + Date.now(), name: correctDiagName, cat: "مساهمات الأطباء", sev: "متوسط", location: "عام", keywords: [correctDiagName], signs: correctSigns, xray: "غير محدد", treat: correctTreat, diff: "أضيفت بواسطة: " + (user?.name || "طبيب") }; DYNAMIC_DB.push(newDiagnosis); FULL_DB = [...STATIC_DB, ...DYNAMIC_DB]; if(db) { db.ref('custom_diagnoses').push(newDiagnosis).then(() => { toast('✅ تم حفظ التشخيص في البنك بنجاح!'); loadDynamicDiagnoses(); }).catch(e => toast('❌ فشل الحفظ: ' + e.message)); } else { toast('✅ تمت الإضافة محلياً (سيتم المزامنة عند الاتصال)'); } if(user && user.id && db) { db.ref('users/' + user.id + '/corrections').transaction(current => (current || 0) + 1); user.corrections = (user.corrections || 0) + 1; $('user-corrections').textContent = user.corrections; } } else { toast('⚠️ تم إلغاء الإضافة'); dislikeBtn.classList.remove('disliked'); card.classList.remove('rejected'); } }
         };
-        window.onload = () => { loadDynamicDiagnoses(); const s = localStorage.getItem('d_session'); if(s){ try{ user = JSON.parse(s); enterApp(); if(user.role === 'admin'){ $('admin').classList.add('active'); $('diag').classList.remove('active'); if(db) { load(); loadContributors(); loadActivationRequests(); } } else { $('admin').classList.remove('active'); $('diag').classList.add('active'); updateUserStats(); } } catch(e) { localStorage.removeItem('d_session'); } } };
+        window.onload = () => { loadDynamicDiagnoses(); const s = localStorage.getItem('d_session'); if(s){ try{ user = JSON.parse(s); enterApp(); if(user.role === 'admin'){ $('admin').classList.add('active'); $('diag').classList.remove('active'); if($('admin-add-card')) $('admin-add-card').style.display = 'block'; if(db) { load(); loadContributors(); loadActivationRequests(); } } else { $('admin').classList.remove('active'); $('diag').classList.add('active'); updateUserStats(); } } catch(e) { localStorage.removeItem('d_session'); } } };
         window.showReg = showReg; window.showLogin = showLogin; window.doLoginComplex = doLoginComplex; window.doRegister = doRegister;
         window.doLogout = doLogout; window.goDiag = goDiag; window.goAdmin = goAdmin; window.upd = upd; window.del = del;
     </script>
