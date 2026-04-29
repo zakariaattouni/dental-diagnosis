@@ -47,8 +47,7 @@
         textarea:focus { border-color: var(--primary); background: #fff; outline: none; }
         .clinical-report { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 16px; margin-top: 16px; }
         .report-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--primary); flex-wrap: wrap; gap: 8px; }
-        .report-title { font-size: 17px; font-weight: 700; color: #1e40af; display: flex; align-items: center; gap: 8px; }
-        .conf-badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+        .report-title { font-size: 17px; font-weight: 700; color: #1e40af; display: flex; align-items: center; gap: 8px; }        .conf-badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
         .conf-high { background: #d1fae5; color: #065f46; }
         .conf-mid { background: #fef3c7; color: #92400e; }
         .conf-low { background: #f1f5f9; color: #475569; }
@@ -97,8 +96,7 @@
         .chat-modal { position: fixed; bottom: 80px; right: 20px; width: 360px; max-width: 90vw; height: 500px; background: white; border-radius: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); z-index: 901; display: none; flex-direction: column; overflow: hidden; border: 1px solid var(--border); }
         .chat-modal.active { display: flex; }
         .chat-header { background: var(--primary); color: white; padding: 12px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
-        .chat-body { flex: 1; overflow-y: auto; padding: 10px; background: #f8fafc; display: flex; flex-direction: column; gap: 8px; }
-        .chat-msg { background: white; padding: 8px 12px; border-radius: 12px; border-bottom-right-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); font-size: 13px; position: relative; word-break: break-word; }
+        .chat-body { flex: 1; overflow-y: auto; padding: 10px; background: #f8fafc; display: flex; flex-direction: column; gap: 8px; }        .chat-msg { background: white; padding: 8px 12px; border-radius: 12px; border-bottom-right-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); font-size: 13px; position: relative; word-break: break-word; }
         .chat-msg.admin { background: #eff6ff; border: 1px solid #bfdbfe; }
         .chat-meta { font-size: 10px; color: var(--muted); margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
         .chat-img { max-width: 100%; border-radius: 8px; margin-top: 5px; cursor: pointer; border: 1px solid var(--border); display: block; }
@@ -147,8 +145,7 @@
             <button class="btn" onclick="doLoginComplex()">دخول</button>
             <span class="link" onclick="showReg()">📝 تسجيل طبيب جديد</span>
         </div>
-        <div class="auth-card hide" id="reg-card">
-            <div class="logo">📝</div>
+        <div class="auth-card hide" id="reg-card">            <div class="logo">📝</div>
             <h1>طلب انضمام</h1>
             <p class="sub">ساهم في تطوير النظام للحصول على مزايا حصرية</p>
             <input type="text" id="r-name" class="input" placeholder="الاسم الكامل">
@@ -197,8 +194,7 @@
                     <div id="req-list-container" class="collapsible-content">
                         <div id="req-list" style="padding-top:10px;" class="empty">لا توجد طلبات</div>
                     </div>
-                </div>
-                <div class="card">
+                </div>                <div class="card">
                     <div class="collapsible-header" onclick="toggleCollapse('doc-list-container', 'doc-icon')">
                         <h3>👥 سجل الأطباء</h3>
                         <span id="doc-icon" class="toggle-icon">▼</span>
@@ -222,7 +218,6 @@
                     <button class="btn" onclick="runDiagnosis()">🔍 تحليل الخبير السريري</button>
                 </div>
                 <div id="res"></div>
-                <!-- زر العودة للإدارة: يظهر فقط للمدير عبر JavaScript -->
                 <button class="btn btn-gray" id="backToAdminBtn" onclick="goAdmin()" style="display:none;">⚙️ العودة للإدارة</button>
             </div>
         </main>
@@ -230,7 +225,7 @@
             <div>
                 <a href="https://wa.me/963939436998" target="_blank" class="wa-btn">📱 أرسل ملاحظاتك</a>
             </div>
-            <div style="font-size:12px; opacity:0.85; margin-top:4px;">تصميم وتطوير الدكتور زكريا محمد عطوني - سوريا | الإصدار v42.1</div>
+            <div style="font-size:12px; opacity:0.85; margin-top:4px;">تصميم وتطوير الدكتور زكريا محمد عطوني - سوريا | الإصدار v42.2 SuperAI</div>
         </footer>
     </div>
     <div class="chat-fab" onclick="toggleChat()">💬</div>
@@ -248,8 +243,7 @@
                 </div>
                 <input type="text" id="chat-input" class="chat-input" placeholder="اكتب رسالتك هنا...">
                 <button class="chat-send" onclick="sendChatMessage()">➤</button>
-            </div>
-        </div>
+            </div>        </div>
         <input type="file" id="chat-img-input" accept="image/*" style="display:none" onchange="handleImageSelect(this)">
     </div>
     <div class="toast" id="toast"></div>
@@ -278,7 +272,7 @@
             }
         };
         
-        // -------------------- Chat Functions (مختصرة للطول ولكنها كاملة الوظائف) --------------------
+        // -------------------- Chat Functions --------------------
         let pendingImage = null, currentReplyTo = null;
         function cancelImage() { pendingImage = null; $('image-preview-area').style.display = 'none'; $('preview-img').src = ''; document.getElementById('chat-img-input').value = ''; }
         function handleImageSelect(input) { if(input.files && input.files[0]) { const reader = new FileReader(); reader.onload = function(e) { pendingImage = e.target.result; $('preview-img').src = pendingImage; $('image-preview-area').style.display = 'flex'; toast('✅ صورة جاهزة'); }; reader.readAsDataURL(input.files[0]); } }
@@ -298,8 +292,7 @@
         const SECRET_KEY="9591melas";
         let user=null;
         const doLoginComplex=async ()=>{ const input=$('login-input').value.trim(); const btn=document.querySelector('#login-card .btn'); if(!input) return toast('⚠️ أدخل البيانات'); btn.disabled=true; btn.textContent='⏳ جاري...'; if(input===SECRET_KEY||input.split('').reverse().join('')===SECRET_KEY){ user={name:'المدير',role:'admin'}; saveSession(); enterApp(); $('admin').classList.add('active'); $('diag').classList.remove('active'); if(db){ try{ load(); loadContributors(); loadActivationRequests(); }catch(e){} } toast('✅ تم الدخول كمدير'); btn.disabled=false; btn.textContent='دخول'; return; } if(!db){ toast('❌ لا خادم'); btn.disabled=false; btn.textContent='دخول'; return; } try{ const snap=await db.ref('users').once('value'); let found=null; if(snap.exists()) snap.forEach(child=>{ const u=child.val(); if(u.name===input||u.email===input||u.pass===input) found={id:child.key,...u}; }); if(!found) toast('❌ غير صحيح'); else if(found.status==='pending') toast('⏳ قيد المراجعة'); else if(found.status==='rejected'||found.status==='disabled') toast('❌ مرفوض'); else{ user={...found,role:'doc'}; saveSession(); enterApp(); $('admin').classList.remove('active'); $('diag').classList.add('active'); updateUserStats(); toast('✅ أهلاً د/'+user.name); } }catch(err){ toast('❌ خطأ'); }finally{ btn.disabled=false; btn.textContent='دخول'; } };
-        const doRegister=()=>{ const n=$('r-name').value.trim(), e=$('r-email').value.trim().toLowerCase(), p=$('r-pass').value; if(!n||!e||!p) return toast('أكمل الحقول'); if(p.length<6) return toast('كلمة مرور قصيرة'); if(!db) return toast('❌ لا اتصال'); db.ref('users').push({name:n,email:e,pass:p,status:'pending',date:Date.now(),corrections:0}).then(()=>{ toast('✅ تم إرسال الطلب'); $('r-name').value=''; $('r-email').value=''; $('r-pass').value=''; setTimeout(showLogin,2000); }).catch(e=>toast('❌ فشل التسجيل')); };
-        const saveSession=()=>localStorage.setItem('d_session',JSON.stringify(user));
+        const doRegister=()=>{ const n=$('r-name').value.trim(), e=$('r-email').value.trim().toLowerCase(), p=$('r-pass').value; if(!n||!e||!p) return toast('أكمل الحقول'); if(p.length<6) return toast('كلمة مرور قصيرة'); if(!db) return toast('❌ لا اتصال'); db.ref('users').push({name:n,email:e,pass:p,status:'pending',date:Date.now(),corrections:0}).then(()=>{ toast('✅ تم إرسال الطلب'); $('r-name').value=''; $('r-email').value=''; $('r-pass').value=''; setTimeout(showLogin,2000); }).catch(e=>toast('❌ فشل التسجيل')); };        const saveSession=()=>localStorage.setItem('d_session',JSON.stringify(user));
         const enterApp=()=>{ $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; if(user.role==='admin') { const btn=$('backToAdminBtn'); if(btn) btn.style.display='block'; } };
         const updateUserStats=()=>{ if(user?.id&&user.role==='doc'&&db) db.ref('users/'+user.id).once('value').then(snap=>{ const data=snap.val(); if(data?.corrections!==undefined){ user.corrections=data.corrections; $('user-corrections').textContent=data.corrections; $('user-stats').style.display='inline'; } }).catch(()=>{}); else if(user?.corrections!==undefined){ $('user-corrections').textContent=user.corrections; $('user-stats').style.display='inline'; } };
         const goDiag=()=>{ $('admin').classList.remove('active'); $('diag').classList.add('active'); if(user?.role==='doc') updateUserStats(); };
@@ -309,7 +302,7 @@
         window.approveActivation=(reqId,userId)=>{ if(confirm('منح التفعيل الدائم؟')){ db.ref('users/'+userId).update({status:'permanent'}); db.ref('activation_requests/'+reqId).remove(); toast('✅ تم منح التفعيل'); loadActivationRequests(); load(); } };
         window.ignoreActivation=(reqId)=>{ db.ref('activation_requests/'+reqId).remove(); toast('⚠️ تم تجاهل الطلب'); loadActivationRequests(); };
         function loadContributors(){ if(!db) return; db.ref('users').orderByChild('corrections').limitToLast(5).once('value').then(snap=>{ let html='', contributors=[]; if(snap.exists()) snap.forEach(child=>{ const u=child.val(); if(u.corrections>0) contributors.push(u); }); contributors.reverse().forEach(u=>{ let badge=u.corrections>=30?'🌟':(u.corrections>=10?'🎓':''); html+=`<div class="contributor-item"><span>${u.name||'مجهول'} ${badge}</span><span style="color:var(--primary)">${u.corrections} تصحيح</span></div>`; }); $('contributors-list-content').innerHTML=html||'<div class="empty">لا توجد مساهمات بعد</div>'; }).catch(()=>{}); }
-        window.load=()=>{ if(!db||user?.role!=='admin') return; db.ref('users').once('value').then(snap=>{ const users=[]; if(snap.exists()) snap.forEach(child=>{ const v=child.val(); if(v) users.push({id:child.key,...v}); }); users.sort((a,b)=>(b.date||0)-(a.date||0)); const pending=users.filter(u=>u.status==='pending'); $('c-p').textContent=pending.length; $('c-a').textContent=users.filter(u=>u.status==='active').length; $('c-t').textContent=users.length; $('badge').textContent=pending.length; $('badge').style.display=pending.length?'inline':'none'; $('req-list').innerHTML=pending.length?pending.map(u=>`<div style="background:#fffbeb;border:1px solid #fcd34d;padding:10px;border-radius:8px;margin:6px 0;display:flex;justify-content:space-between"><div><b>${u.name||'-'}</b><br><small>${u.email||'-'}</small></div><div><button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button><button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button></div></div>`).join(''):'<div class="empty">✅ لا توجد طلبات معلقة</div>'; let tblHTML=''; users.forEach(u=>{ let sc='st-pend', st='معلق'; if(u.status==='active'){ sc='st-act'; st='نشط'; } if(u.status==='temp'){ sc='st-temp'; st='🕐 مؤقت'; } if(u.status==='permanent'){ sc='st-perm'; st='🌟 دائم'; } let badgeIcon=(u.corrections>=30)?'🌟':((u.corrections>=10)?'🎓':'-'); let act=u.status==='active'?`<button class="act-btn act-no" onclick="upd('${u.id}','disabled')">🚫</button>`:u.status==='disabled'||u.status==='rejected'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button>`:u.status==='pending'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button> <button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button>`:''; act+=` <button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button>`; tblHTML+=`<tr><td>${u.name||'-'}</td><td>${u.email||'-'}</td><td><span class="status ${sc}">${st}</span></td><td style="text-align:center">${badgeIcon} (${u.corrections||0})</td></table><button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button>`; }); $('u-tbl').innerHTML=tblHTML||'</table><td colspan="5" class="empty">لا يوجد أطباء</td></tr>'; }).catch(err=>console.error(err)); };
+        window.load=()=>{ if(!db||user?.role!=='admin') return; db.ref('users').once('value').then(snap=>{ const users=[]; if(snap.exists()) snap.forEach(child=>{ const v=child.val(); if(v) users.push({id:child.key,...v}); }); users.sort((a,b)=>(b.date||0)-(a.date||0)); const pending=users.filter(u=>u.status==='pending'); $('c-p').textContent=pending.length; $('c-a').textContent=users.filter(u=>u.status==='active').length; $('c-t').textContent=users.length; $('badge').textContent=pending.length; $('badge').style.display=pending.length?'inline':'none'; $('req-list').innerHTML=pending.length?pending.map(u=>`<div style="background:#fffbeb;border:1px solid #fcd34d;padding:10px;border-radius:8px;margin:6px 0;display:flex;justify-content:space-between"><div><b>${u.name||'-'}</b><br><small>${u.email||'-'}</small></div><div><button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button><button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button></div></div>`).join(''):'<div class="empty">✅ لا توجد طلبات معلقة</div>'; let tblHTML=''; users.forEach(u=>{ let sc='st-pend', st='معلق'; if(u.status==='active'){ sc='st-act'; st='نشط'; } if(u.status==='temp'){ sc='st-temp'; st='🕐 مؤقت'; } if(u.status==='permanent'){ sc='st-perm'; st='🌟 دائم'; } let badgeIcon=(u.corrections>=30)?'🌟':((u.corrections>=10)?'🎓':'-'); let act=u.status==='active'?`<button class="act-btn act-no" onclick="upd('${u.id}','disabled')">🚫</button>`:u.status==='disabled'||u.status==='rejected'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button>`:u.status==='pending'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button> <button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button>`:''; act+=` <button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button>`; tblHTML+=`<tr><td>${u.name||'-'}</td><td>${u.email||'-'}</td><td><span class="status ${sc}">${st}</span></td><td style="text-align:center">${badgeIcon} (${u.corrections||0})</td><td>${act}</td></tr>`; }); $('u-tbl').innerHTML=tblHTML||'<tr><td colspan="5" class="empty">لا يوجد أطباء</td></tr>'; }).catch(err=>console.error(err)); };
         window.upd=(i,s)=>db&&db.ref('users/'+i).update({status:s}).then(load);
         window.del=(i)=>{ if(confirm('حذف نهائي؟')&&db) db.ref('users/'+i).remove().then(load); };
         
@@ -348,8 +341,7 @@
             {id:"mucocele", name:"كيسة مخاطية", cat:"غدد", sev:"منخفض", location:"شفة", keywords:["كيسة على الشفة","شفة","كيس","أزرق","شفاف","طلعلي حبة مي على شفاي"], signs:"تورم شفاف", xray:"غير مطلوب", treat:"استئصال", diff:"موقع شائع"},
             {id:"tmd_myofascial", name:"ألم عضلي مفصلي", cat:"مفصل", sev:"متوسط", location:"مفصل", keywords:["ألم عضلات","صداع","طحن","تشنج","ألم أذن","وجع بالفك وعضلات الوجه"], signs:"ألم عند الجس", xray:"طبيعي", treat:"راحة وكمادات", diff:"ألم عضلي"},
             {id:"tmd_disc", name:"إزاحة القرص", cat:"مفصل", sev:"متوسط", location:"مفصل", keywords:["طقطقة في المفصل","فرقعة","قفل الفك","فكي يطلع صوت طق طق"], signs:"صوت نقر", xray:"MRI", treat:"واقي", diff:"أصوات مفصلية"},
-            {id:"fracture", name:"كسر فك", cat:"رضوض", sev:"طوارئ", location:"فك", keywords:["ضربة على الفك","وقعة","لكمة","سوء إطباق","تنميل","وقع عذقني واتكسر فكي"], signs:"خطوة عظمية", xray:"خط كسر", treat:"تثبيت", diff:"رضة حديثة"},
-            {id:"malignancy", name:"ورم خبيث", cat:"أورام", sev:"طوارئ", location:"فم", keywords:["قرحة لا تشفى","كتلة صلبة","نزيف","خدر شفة","تدخين","قرحة من زمان ما التحمت"], signs:"قرحة مقلوبة", xray:"تآكل", treat:"إحالة", diff:">3 أسابيع"},
+            {id:"fracture", name:"كسر فك", cat:"رضوض", sev:"طوارئ", location:"فك", keywords:["ضربة على الفك","وقعة","لكمة","سوء إطباق","تنميل","وقع عذقني واتكسر فكي"], signs:"خطوة عظمية", xray:"خط كسر", treat:"تثبيت", diff:"رضة حديثة"},            {id:"malignancy", name:"ورم خبيث", cat:"أورام", sev:"طوارئ", location:"فم", keywords:["قرحة لا تشفى","كتلة صلبة","نزيف","خدر شفة","تدخين","قرحة من زمان ما التحمت"], signs:"قرحة مقلوبة", xray:"تآكل", treat:"إحالة", diff:">3 أسابيع"},
             {id:"viral_infant_stomatitis", name:"التهاب الفم الفيروسي عند الرضع", cat:"أطفال", sev:"عالي", location:"فم", keywords:["حرارة","تقرحات","بكاء","فم ملتهب","رفض رضاعة","بيبي عم يرفض الحليب وفمه ملتهب"], signs:"حرارة، تقرحات فموية، بكاء مستمر", xray:"غير مطلوب", treat:"مسكنات، سوائل، مراقبة", diff:"رضيع + حرارة + تقرحات"},
             {id:"bacterial_child_stomatitis", name:"التهاب الفم البكتيري عند الأطفال", cat:"أطفال", sev:"متوسط", location:"فم", keywords:["قيح","ألم","رائحة","خراج صغير","تقرحات صفراء","جوا فم ولدي ريحة"], signs:"تقرحات صفراء، ألم، حرارة، رائحة فم", xray:"غير مطلوب", treat:"مضادات حيوية، غسول مطهر", diff:"تقرحات صفراء + قيح"},
             {id:"primary_herpes_stomatitis", name:"التهاب الفم الفيروسي بالهربس الأولي", cat:"أطفال", sev:"عالي", location:"فم", keywords:["حويصلات","حرارة","ألم","تقرحات كثيرة","نزف لثوي","كل فمو قرحات"], signs:"حويصلات كثيرة، حرارة عالية، نزف لثوي", xray:"غير مطلوب", treat:"أسيكلوفير، مسكنات، سوائل", diff:"هبس أولي + حرارة عالية + نزف"},
@@ -398,8 +390,7 @@
             {id:"acute_necrotizing_gingivitis", name:"التهاب لثة نخرِي حاد", cat:"طوارئ", sev:"عالي", location:"لثة", keywords:["رائحة قوية","ألم","اللغة عم تذوب","نزف","لثتي عم تتآكل ورايجتها كريهة"], signs:"نزف، ألم", xray:"غير مطلوب", treat:"تنظيف لطيف، مضادات", diff:"تقرح حليمات + رائحة نتنة"},
             {id:"sublingual_abscess", name:"خراج تحت اللسان", cat:"طوارئ", sev:"طوارئ", location:"لسان", keywords:["تورم","ألم","تحت لساني مورّم","تورم تحت اللسان","تحت اللساني متورم وبيوجع"], signs:"تورم تحت اللسان", xray:"غير مطلوب", treat:"تصريف عاجل", diff:"تورم أرضية الفم"},
             {id:"submandibular_abscess", name:"خراج تحت الفك", cat:"طوارئ", sev:"طوارئ", location:"فك", keywords:["انتفاخ","ألم","حرارة","انتفاخ تحت الفك","تحت دقني في ورم"], signs:"انتفاخ تحت الفك", xray:"غير مطلوب", treat:"تصريف، مضادات", diff:"انتفاخ تحت الفك + حرارة"},
-            {id:"acute_parotitis", name:"التهاب غدة نكفية حاد", cat:"طوارئ", sev:"عالي", location:"وجه", keywords:["انتفاخ","ألم","الغدة مورّمة","انتفاخ أمام الأذن","ورا اذني في ورم كبير"], signs:"انتفاخ أمام الأذن", xray:"غير مطلوب", treat:"مضادات، ترطيب", diff:"انتفاخ أمام الأذن + ألم"},
-            {id:"submandibular_gland_inflammation", name:"التهاب غدة تحت الفك", cat:"طوارئ", sev:"عالي", location:"فك", keywords:["كتلة","ألم","ورم تحت الفك","كتلة مؤلمة","تحت دقني كتلة بتوجع"], signs:"كتلة مؤلمة", xray:"غير مطلوب", treat:"مضادات، تدليك", diff:"كتلة تحت الفك"},
+            {id:"acute_parotitis", name:"التهاب غدة نكفية حاد", cat:"طوارئ", sev:"عالي", location:"وجه", keywords:["انتفاخ","ألم","الغدة مورّمة","انتفاخ أمام الأذن","ورا اذني في ورم كبير"], signs:"انتفاخ أمام الأذن", xray:"غير مطلوب", treat:"مضادات، ترطيب", diff:"انتفاخ أمام الأذن + ألم"},            {id:"submandibular_gland_inflammation", name:"التهاب غدة تحت الفك", cat:"طوارئ", sev:"عالي", location:"فك", keywords:["كتلة","ألم","ورم تحت الفك","كتلة مؤلمة","تحت دقني كتلة بتوجع"], signs:"كتلة مؤلمة", xray:"غير مطلوب", treat:"مضادات، تدليك", diff:"كتلة تحت الفك"},
             {id:"caustic_stomatitis", name:"التهاب فم بسبب مادة كاوية", cat:"طوارئ", sev:"طوارئ", location:"فم", keywords:["حرق","ألم","بلع مادة","حروق مخاطية","بلعت كلور وفمي احترق"], signs:"حروق مخاطية", xray:"غير مطلوب", treat:"غسل، طوارئ", diff:"تاريخ بلع مادة كاوية"},
             {id:"thermal_burn_stomatitis", name:"التهاب فم بسبب حرارة عالية", cat:"طوارئ", sev:"متوسط", location:"فم", keywords:["حرق","ألم","شرب شي سخن","تقرحات","شربت قهوة سخنة وعملت تقرحات"], signs:"تقرحات", xray:"غير مطلوب", treat:"مسكنات، غذاء بارد", diff:"حرق حراري"},
             {id:"chemical_stomatitis", name:"التهاب فم بسبب مواد تنظيف", cat:"طوارئ", sev:"طوارئ", location:"فم", keywords:["حرق","ألم","مواد كيميائية","حروق","دخل فمي كلور"], signs:"حروق", xray:"غير مطلوب", treat:"غسل، طوارئ", diff:"تعرض لمواد كيميائية"},
@@ -425,90 +416,119 @@
             'متورم':'تورم','منتفخ':'تورم','وارم':'تورم','بيوجع':'ألم','يوجع':'ألم','موجع':'ألم','عم يوجع':'ألم','عم يعور':'ألم','تحت اللساني':'تحت لسان','تحت اللسان':'تحت لسان','بيوجع كتير':'ألم شديد','مش قادر أكل':'صعوبة فتح الفم','فمي ما بيستوعب':'صعوبة فتح الفم'
         };
         
+        // تطبيع النص المتقدم
         function norm(t){ 
-            return t.normalize('NFKD').replace(/[\u064B-\u065F\u0670]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').toLowerCase().trim(); 
+            if(!t) return '';
+            return t.normalize('NFKD')
+                .replace(/[\u064B-\u065F\u0670]/g,'')
+                .replace(/[أإآ]/g,'ا')
+                .replace(/ة/g,'ه')
+                .replace(/ى/g,'ي')
+                .replace(/گ/g,'ك')
+                .replace(/پ/g,'ب')
+                .replace(/ڤ/g,'ف')
+                .replace(/\s+/g,' ')
+                .toLowerCase()
+                .trim(); 
         }
         
-        function loadDynamicDiagnoses() { 
-            if(!db) return; 
-            db.ref('custom_diagnoses').once('value').then(snap => { 
-                DYNAMIC_DB = []; 
-                if(snap.exists()) snap.forEach(child => { 
-                    DYNAMIC_DB.push(child.val()); 
-                }); 
-                FULL_DB = [...STATIC_DB, ...DYNAMIC_DB]; 
-                console.log("Bank Updated: " + FULL_DB.length + " cases."); 
-            }); 
-        }
-        
-        // ------------------- المحرك الذكي -------------------
+        // استخراج المفاهيم السريرية المتقدم
         function extractConcepts(textNorm) {
-            let concepts = { symptoms: new Set(), locations: new Set(), modifiers: new Set(), negatives: new Set() };
+            let concepts = { 
+                symptoms: new Set(), 
+                locations: new Set(), 
+                modifiers: new Set(), 
+                negatives: new Set(),
+                temporal: new Set(),                severity: new Set(),
+                triggers: new Set()
+            };
             let words = textNorm.split(/\s+/);
-            for (let w of words) {
-                if (w.startsWith('لا') || w.startsWith('بدون') || w === 'غير' || w === 'مافي') concepts.negatives.add(w);
-                else if (w.includes('ورم') || w.includes('تورم') || w.includes('احمر') || w.includes('نزيف') || w.includes('صديد')) concepts.symptoms.add('تورم');
-                else if (w.includes('وجع') || w.includes('الم') || w.includes('ألم') || w.includes('يوجع')) concepts.symptoms.add('ألم');
-                else if (w.includes('ضرس') || w.includes('سن')) concepts.locations.add('سن');
-                else if (w.includes('لثة')) concepts.locations.add('لثة');
-                else if (w.includes('لسان') || w.includes('تحت لسان')) concepts.locations.add('لسان');
-                else if (w.includes('خد')) concepts.locations.add('خد');
-                else if (w.includes('شفة') || w.includes('شفاه')) concepts.locations.add('شفة');
-                else if (w.includes('فك')) concepts.locations.add('فك');
-                else if (w.includes('نابض')) concepts.modifiers.add('نابض');
-                else if (w.includes('ليل') || w.includes('بالليل')) concepts.modifiers.add('ليلي');
-                else if (w.includes('مستمر')) concepts.modifiers.add('مستمر');
-                else if (w.includes('عند المضغ')) concepts.modifiers.add('مضغ');
+            for (let i = 0; i < words.length; i++) {
+                let w = words[i];
+                let next = words[i+1] || '';
+                if (['لا','بدون','غير','مافي','ما','مش','ليس'].some(n=>w.startsWith(n) || w===n)) {
+                    concepts.negatives.add(w); continue;
+                }
+                if (/(ورم|تورم|انتفاخ|احمر|احمرار|نزيف|دم|صديد|قيح|خرّاج|دمل|ألم|وجع|يوجع|يعور|حرق|حكة|تنميل|خدر|تيبس|تصلب|صلابة|رخاوة|حركة|تراجع|تآكل|تقرح|قرحة|بقع|تصبغ|لون|تغير|رائحة|طعم|جفاف|رطوبة|لعاب|صعوبة|عسر|مشكلة|خلل|اضطراب)/.test(w)) concepts.symptoms.add(w);
+                if (/(ضرس|سن|أسنان|لثة|لسان|تحت.لسان|أرضية.الفم|خد|شفة|شفاه|حنك|سقف|فك|سفلي|علوي|وجه|غدة|نكفي|تحت.فك|مفصل|فك.سفلي|خلف|أخير|عقل|رحى|أمامي|خلفي|جانبي|وسط|وسطي)/.test(w)) concepts.locations.add(w);
+                if (/(نابض|خافق|مستمر|دائم|متقطع|عابر|سريع|بطيء|حاد|مفاجئ|مزمن|طويل|قصير|ليلي|نهاري|صباحي|مسائي)/.test(w)) concepts.modifiers.add(w);
+                if (/(اليوم|أمس|ساعة|ساعات|يوم|أيام|أسبوع|أسابيع|شهر|شهور|سنة|سنين|فترة|زمان|قريب|بعيد|حديث|قديم)/.test(w)) concepts.temporal.add(w);
+                if (/(شديد|قوي|كثير|كتير|عالي|مفرط|خفيف|بسيط|قليل|شوي|يسير|متوسط|معتدل|لا.يطاق|مؤلّم)/.test(w)) concepts.severity.add(w);
+                if (/(عند|لما|بعد|مع|أكل|شرب|بارد|حار|ساخن|حلو|مر|حامض|مضغ|عض|ضغط|طرق|لمس|تنفس|هواء|تحدث|ضحك)/.test(w)) concepts.triggers.add(w);
             }
             return concepts;
         }
         
+        // مطابقة ذكية متعددة الطبقات
         function smartMatch(disease, normalizedInput, concepts) {
-            let totalWeight = 0, matchedWeight = 0;
+            let totalWeight = 0, matchedWeight = 0, matchedKeywords = [];
             for (let kw of disease.keywords) {
                 let kwNorm = norm(kw);
-                if (kwNorm.length < 3) continue;
-                let weight = 1 + (kwNorm.length / 6);
-                totalWeight += weight;
+                if (kwNorm.length < 2) continue;
+                let baseWeight = 1 + (kwNorm.length / 5);
+                if (disease.sev === 'طوارئ' && /(طوارئ|عاجل|فوري|خطر)/.test(kwNorm)) baseWeight *= 1.5;
+                if (/(ألم|تورم|نزيف|صديد|حمى)/.test(kwNorm)) baseWeight *= 1.2;
+                totalWeight += baseWeight;
                 let found = false;
-                if (normalizedInput.includes(kwNorm)) found = true;
+                if (normalizedInput.includes(kwNorm)) { found = true; matchedKeywords.push(kw); }
                 else if (kwNorm.includes(' ')) {
-                    let parts = kwNorm.split(/\s+/);
-                    let partMatchCount = 0;
-                    for (let p of parts) if (p.length > 2 && normalizedInput.includes(p)) partMatchCount++;
-                    if (parts.length > 0 && (partMatchCount / parts.length) >= 0.4) found = true;
+                    let parts = kwNorm.split(/\s+/).filter(p => p.length > 2);
+                    if (parts.length > 0) {
+                        let matchRatio = parts.filter(p => normalizedInput.includes(p)).length / parts.length;
+                        if (matchRatio >= 0.5) { found = true; matchedKeywords.push(kw); matchedWeight += baseWeight * matchRatio * 0.7; }
+                    }
                 }
                 if (!found) {
-                    for (let sym of concepts.symptoms) if (kwNorm.includes(sym) || sym.includes(kwNorm)) { found = true; break; }
-                    if (!found) for (let loc of concepts.locations) if (kwNorm.includes(loc) || loc.includes(kwNorm)) { found = true; break; }
+                    for (let sym of concepts.symptoms) if (kwNorm.includes(sym) || sym.includes(kwNorm)) { found = true; if(!matchedKeywords.includes(kw)) matchedKeywords.push(kw); break; }
+                    if (!found) for (let loc of concepts.locations) if (kwNorm.includes(loc) || loc.includes(kwNorm)) { found = true; if(!matchedKeywords.includes(kw)) matchedKeywords.push(kw); break; }
                 }
-                if (found) matchedWeight += weight;
+                if (found) matchedWeight += baseWeight;
             }
             let locationBonus = 0;
             if (concepts.locations.size > 0) {
                 for (let loc of concepts.locations) {
                     let locNorm = norm(loc);
-                    if (disease.location && norm(disease.location).includes(locNorm)) locationBonus += 15;
-                    else if (disease.keywords.some(k => norm(k).includes(locNorm))) locationBonus += 10;
+                    if (disease.location && norm(disease.location).includes(locNorm)) locationBonus += 15;                    else if (disease.keywords.some(k => norm(k).includes(locNorm))) locationBonus += 10;
                 }
             }
-            let totalScore = (totalWeight > 0 ? (matchedWeight / totalWeight) * 100 : 0) + locationBonus;
-            return Math.min(100, Math.round(totalScore));
+            let clusterBonus = 0;
+            for (let cluster of Object.values(SYMPTOM_CLUSTERS)) {
+                if (cluster.diseases.includes(disease.id)) {
+                    let matchCount = 0;
+                    for (let sym of cluster.symptoms) {
+                        if (normalizedInput.includes(norm(sym))) matchCount++;
+                        for (let cSym of concepts.symptoms) if (norm(cSym).includes(sym) || sym.includes(norm(cSym))) { matchCount++; break; }
+                    }
+                    if (matchCount >= Math.ceil(cluster.symptoms.length * 0.4)) clusterBonus += cluster.boost;
+                }
+            }
+            let modifierBonus = 0;
+            for (let pattern of Object.values(CLINICAL_PATTERNS)) {
+                for (let kw of pattern.keywords) {
+                    if (normalizedInput.includes(norm(kw))) { modifierBonus += 5 * (pattern.weight - 1); break; }
+                }
+            }
+            let totalScore = (totalWeight > 0 ? (matchedWeight / totalWeight) * 100 : 0) + locationBonus + clusterBonus + modifierBonus;
+            return { score: Math.min(100, Math.round(totalScore)), matched: matchedKeywords };
         }
         
-        function generateExplanation(disease) {
+        // توليد شرح سريري ذكي
+        function generateExplanation(disease, concepts) {
             let desc = "";
             if (disease.signs && disease.signs.trim() !== "") desc += disease.signs.substring(0, 120) + " ";
             if (disease.diff && disease.diff.trim() !== "") desc += "يتميز بـ: " + disease.diff.substring(0, 100) + ". ";
             if (disease.treat && disease.treat.trim() !== "") desc += "الإجراء الأول: " + disease.treat.split('.')[0] + ".";
-            if (desc.length < 50) desc = "حالة تستدعي الفحص السريري والمتابعة.";
+            if (concepts.severity.has('شديد') || concepts.severity.has('كثير')) desc += " ⚠️ الشدة الموصوفة تستدعي انتباهاً فورياً.";
+            if (concepts.temporal.has('ليل') || concepts.modifiers.has('ليلي')) desc += " 🌙 الأعراض الليلية تشير غالباً لالتهاب لبّي.";
+            if (desc.length < 50) desc = "حالة تستدعي الفحص السريري والمتابعة الدقيقة.";
             return desc;
         }
         
+        // دالة التشخيص الرئيسية - المحرك الفائق
         function runDiagnosis() {
             const text = $('sym').value.trim(); if(!text) return toast('اكتب الأعراض بدقة');
             const btn = document.querySelector('#diag .btn');
-            btn.disabled = true; btn.textContent = '⏳ جاري التحليل الذكي ...';
+            btn.disabled = true; btn.textContent = '🔬 جاري التحليل الفائق ...';
             if (FULL_DB.length === STATIC_DB.length) loadDynamicDiagnoses();
             setTimeout(() => {
                 const normalizedInput = norm(text);
@@ -517,24 +537,11 @@
                 let results = [];
                 for (let disease of FULL_DB) {
                     let negList = negativeKeywords[disease.id] || [];
-                    let skip = false;
-                    for (let neg of negList) if (normalizedInput.includes(norm(neg))) { skip = true; break; }
+                    let skip = false;                    for (let neg of negList) if (normalizedInput.includes(norm(neg))) { skip = true; break; }
                     if (skip) continue;
-                    let score = smartMatch(disease, normalizedInput, concepts);
+                    let { score, matched } = smartMatch(disease, normalizedInput, concepts);
                     if (score < 20) continue;
-                    let matchedKeywords = [];
-                    for (let kw of disease.keywords) {
-                        let kwNorm = norm(kw);
-                        if (kwNorm.length < 3) continue;
-                        if (normalizedInput.includes(kwNorm)) { matchedKeywords.push(kw); continue; }
-                        if (kwNorm.includes(' ')) {
-                            let parts = kwNorm.split(/\s+/);
-                            let anyPart = parts.some(p => normalizedInput.includes(p));
-                            if (anyPart) { matchedKeywords.push(kw); continue; }
-                        }
-                        for (let sym of concepts.symptoms) if (kwNorm.includes(sym)) { matchedKeywords.push(kw); break; }
-                    }
-                    results.push({ ...disease, score, matched: matchedKeywords });
+                    results.push({ ...disease, score, matched });
                 }
                 results.sort((a,b) => b.score - a.score);
                 let filtered = results.slice(0, 4);
@@ -543,10 +550,10 @@
                     if (confidence < 30) confidence = 30;
                     const level = confidence > 75 ? 'عالية' : confidence > 45 ? 'متوسطة' : 'منخفضة';
                     const badgeClass = confidence > 75 ? 'conf-high' : confidence > 45 ? 'conf-mid' : 'conf-low';
-                    const explanation = generateExplanation(r);
+                    const explanation = generateExplanation(r, concepts);
                     return { ...r, confidence, level, badgeClass, explanation };
                 });
-                let html = `<div class="clinical-report"><div class="report-header"><div class="report-title">📊 التقرير السريري التعليمي</div><span style="font-size:11px;color:#64748b">محرك دقيق v42.1</span></div>`;
+                let html = `<div class="clinical-report"><div class="report-header"><div class="report-title">📊 التقرير السريري التعليمي - التحليل الفائق 🔬</div><span style="font-size:11px;color:#64748b">محرك SuperAI v42.2</span></div>`;
                 if (filtered.length === 0) {
                     html += `<div class="no-result-guide"><div class="guide-title">🤔 لم نجد تطابقاً دقيقاً</div><p class="guide-text">تأكد من كتابة الأعراض بدقة: الموقع، نوع الألم، المحفزات، المدة.<br>مثال: <b>ألم خلف الضرس الأخير مع صعوبة فتح الفم ورائحة كريهة</b></p><div class="example-chips"><span class="chip" onclick="$('sym').value='ألم نابض يوقظني من النوم'; runDiagnosis()">😣 ألم نابض ليلي</span><span class="chip" onclick="$('sym').value='بقع بيضاء على اللسان تقبل المسح'; runDiagnosis()">👅 بقع بيضاء على اللسان</span><span class="chip" onclick="$('sym').value='تورم وجهي مع حرارة وصعوبة فتح الفم'; runDiagnosis()">🤒 تورم وجهي وحرارة</span><span class="chip" onclick="$('sym').value='ألم شديد خلف الضرس الأخير مع رائحة'; runDiagnosis()">🦷 ألم خلف الضرس</span></div></div>`;
                 } else {
@@ -576,6 +583,18 @@
             if(type === 'like') { likeBtn.classList.add('liked'); dislikeBtn.classList.remove('disliked'); card.classList.remove('rejected'); if(db) db.ref('feedback/' + diseaseId).push({ type: 'correct', user: user?.name || 'مجهول' }); toast('✅ شكراً لتأكيد الدقة'); }
             else { dislikeBtn.classList.add('disliked'); likeBtn.classList.remove('liked'); card.classList.add('rejected'); const correctDiagName = prompt("⚠️ ما هو اسم التشخيص الصحيح؟"); if(correctDiagName && correctDiagName.trim() !== "") { const correctSigns = prompt("أذكر العلامات السريرية الرئيسية:") || "غير محدد"; const correctTreat = prompt("أذكر العلاج المقترح:") || "غير محدد"; const newDiagnosis = { id: "custom_" + Date.now(), name: correctDiagName, cat: "مساهمات الأطباء", sev: "متوسط", location: "عام", keywords: [correctDiagName], signs: correctSigns, xray: "غير محدد", treat: correctTreat, diff: "أضيفت بواسطة: " + (user?.name || "طبيب") }; DYNAMIC_DB.push(newDiagnosis); FULL_DB = [...STATIC_DB, ...DYNAMIC_DB]; if(db) { db.ref('custom_diagnoses').push(newDiagnosis).then(() => { toast('✅ تم حفظ التشخيص في البنك بنجاح!'); loadDynamicDiagnoses(); }).catch(e => toast('❌ فشل الحفظ: ' + e.message)); } else { toast('✅ تمت الإضافة محلياً'); } if(user && user.id && db) { db.ref('users/' + user.id + '/corrections').transaction(current => (current || 0) + 1); user.corrections = (user.corrections || 0) + 1; $('user-corrections').textContent = user.corrections; } } else { toast('⚠️ تم إلغاء الإضافة'); dislikeBtn.classList.remove('disliked'); card.classList.remove('rejected'); } }
         };
+        
+        function loadDynamicDiagnoses() { 
+            if(!db) return; 
+            db.ref('custom_diagnoses').once('value').then(snap => {                 DYNAMIC_DB = []; 
+                if(snap.exists()) snap.forEach(child => { 
+                    DYNAMIC_DB.push(child.val()); 
+                }); 
+                FULL_DB = [...STATIC_DB, ...DYNAMIC_DB]; 
+                console.log("Bank Updated: " + FULL_DB.length + " cases."); 
+            }); 
+        }
+        
         window.onload = () => { loadDynamicDiagnoses(); const s = localStorage.getItem('d_session'); if(s){ try{ user = JSON.parse(s); enterApp(); if(user.role === 'admin'){ $('admin').classList.add('active'); $('diag').classList.remove('active'); if(db){ load(); loadContributors(); loadActivationRequests(); } } else { $('admin').classList.remove('active'); $('diag').classList.add('active'); updateUserStats(); } } catch(e) { localStorage.removeItem('d_session'); } } };
         window.showReg = showReg; window.showLogin = showLogin; window.doLoginComplex = doLoginComplex; window.doRegister = doRegister;
         window.doLogout = doLogout; window.goDiag = goDiag; window.goAdmin = goAdmin; window.upd = upd; window.del = del;
