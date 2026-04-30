@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>تشخيص أمراض الفم والأسنان - SuperAI v47.1</title>
+    <title>تشخيص أمراض الفم والأسنان - SuperAI v47.3 Differential</title>
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2964/2964514.png">
     <style>
         :root { --bg: linear-gradient(135deg, #0f172a, #1e3a8a); --card: #ffffff; --primary: #2563eb; --success: #10b981; --warn: #f59e0b; --danger: #ef4444; --text: #0f172a; --muted: #64748b; --border: #e2e8f0; }
@@ -253,7 +253,7 @@
             <div>
                 <a href="https://wa.me/963939436998" target="_blank" class="wa-btn">📱 أرسل ملاحظاتك</a>
             </div>
-            <div style="font-size:12px; opacity:0.85; margin-top:4px;">تصميم وتطوير النظام - سوريا | الإصدار v47.1 Ultimate</div>
+            <div style="font-size:12px; opacity:0.85; margin-top:4px;">تصميم وتطوير النظام - سوريا | الإصدار v47.3 Ultimate</div>
         </footer>
     </div>
     <div class="chat-fab" onclick="toggleChat()">💬</div>
@@ -338,7 +338,7 @@
             {id:"cyst", name:"كيسة فكية", cat:"جراحة", sev:"عالي", location:"فك", keywords:["تورم فك","انتفاخ","كيس","سائل","توسع","شعاعيا حواف منتظمة","فكي منتفخ بلا سبب"], signs:"انتفاخ قاسي", xray:"شفافية محددة، حواف واضحة", treat:"استئصال", diff:"توسع عظمي"},
             {id:"gingivitis", name:"التهاب لثة", cat:"لثة", sev:"منخفض", location:"لثة", keywords:["لثة نازفة","لثة حمراء","لثة متورمة","نزيف تفريش","لثتي بتنزف لما بسك"], signs:"احمرار ونزيف", xray:"طبيعي", treat:"تنظيف", diff:"عكوس"},
             {id:"perio", name:"التهاب دواعم سن", cat:"لثة", sev:"عالي", location:"لثة", keywords:["حركة أسنان","جيوب لثوية","تراجع لثة","ارتشاف","اللثة متراجعة والسنان عم تتخلخل"], signs:"جيوب وحركة", xray:"فقدان عظمي", treat:"كشط وجراحة", diff:"غير عكوس"},
-            {id:"nug", name:"التهاب لثة نخري", cat:"لثة", sev:"عالي", location:"لثة", keywords:["ألم شديد لثة","نزيف تلقائي","رائحة كريهة","حمى","اللثة عم تتاكل"], signs:"تقرح الحليمات", xray:"غير محدد", treat:"مضادات وتنظيف", diff:"ألم مفاجئ + تقرح"},
+            {id:"nug", name:"التهاب لثة نخري", cat:"لثة", sev:"عالي", location:"لثة", keywords:["ألم شديد لثة","نزيف تلقائي","رائحة كريهة","حمى","اللغة عم تتاكل"], signs:"تقرح الحليمات", xray:"غير محدد", treat:"مضادات وتنظيف", diff:"ألم مفاجئ + تقرح"},
             {id:"caries", name:"تسوس سني", cat:"لبية", sev:"متوسط", location:"سن", keywords:["ألم بارد","ألم حلو","ثقب","حفرة","مسوس","حساسية عابرة","بيوجعني لما آكل شوكولاتة"], signs:"تجويف نخرى", xray:"شفافية", treat:"حشوة", diff:"ألم مثير"},
             {id:"reversible_pulpitis", name:"التهاب لب رجعي", cat:"لبية", sev:"منخفض", location:"سن", keywords:["ألم بارد","يزول سريعاً","حشو حديث","بوجعني شوي وبروح"], signs:"استجابة سريعة للبرد", xray:"طبيعي", treat:"مراقبة، حشوة محافظة", diff:"ألم قصير"},
             {id:"irreversible_pulpitis", name:"التهاب لب لا رجعي", cat:"لبية", sev:"عالي", location:"سن", keywords:["ألم نابض","ألم ليلي","ألم ذاتي","مستمر","لا ينام","الم مثار","الوجع بسهرني بالليل"], signs:"ألم مستمر", xray:"طبيعي", treat:"علاج جذر", diff:"ألم ليلي ذاتي"},            {id:"pulp_necrosis", name:"تنخر لب", cat:"لبية", sev:"عالي", location:"سن", keywords:["سن ميت","لا يستجيب","تغير لون","السن مات وما عم يحس"], signs:"سن غير حي", xray:"شفافية ذروية", treat:"علاج جذر", diff:"لا يستجيب للبرودة"},
@@ -586,7 +586,7 @@
         };
         function updateDbStats() { const total = FULL_DB.length; const dynamic = DYNAMIC_DB.length; const staticCount = STATIC_DB.length; $('db-stats').textContent = `الإجمالي: ${total} (ثابت: ${staticCount} + مضاف: ${dynamic})`; }
         function loadDynamicDiagnoses() { if(!db) { updateDbStats(); return; } db.ref('custom_diagnoses').once('value').then(snap => { DYNAMIC_DB = []; if(snap.exists()) snap.forEach(child => { DYNAMIC_DB.push(child.val()); }); FULL_DB = [...STATIC_DB, ...DYNAMIC_DB]; updateDbStats(); }); }
-        // -------------------- محرك الذكاء الجديد (v47.1 - مُصلح ومرن) --------------------
+        // -------------------- محرك الذكاء الجديد (v47.3 Differential Probabilities) --------------------
         function runDiagnosis() {
             const text = $('sym').value.trim(); if(!text) return toast('اكتب الأعراض بدقة');
             const btn = document.querySelector('#diag .btn');
@@ -621,25 +621,51 @@
                 }
                 results.sort((a,b) => b.score - a.score);
                 let filtered = results.slice(0, 3);
-                let html = `<div class="clinical-report"><div class="report-header"><div class="report-title">📊 التقرير السريري التعليمي - التحليل الفائق 🔬</div><span style="font-size:11px;color:#64748b">محرك SuperAI v47.1 Fixed</span></div>`;
+                
+                // بناء الواجهة الجديدة (احتمالات استرشادية)
+                let html = `<div class="clinical-report">
+                  <div class="report-header">
+                    <div class="report-title">🔍 الاحتمالات التشخيصية الاسترشادية</div>
+                    <span style="font-size:11px;color:#64748b">محرك Differential AI v47.3</span>
+                  </div>
+                  <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:10px;margin-bottom:15px;font-size:12px;color:#92400e">
+                    ⚠️ تنبيه سريري: هذه احتمالات مبنية على الكلمات المفتاحية المدخلة فقط. التشخيص النهائي يتطلب فحصًا سريريًا، أشعة، واختبارات مكملة.
+                  </div>`;
                 if (filtered.length === 0) {
-                    html += `<div class="no-result-guide"><div class="guide-title">🤔 لم نجد تطابقاً دقيقاً</div><p class="guide-text">تأكد من كتابة الأعراض بدقة: الموقع، نوع الألم، المحفزات، المدة.<br>مثال: <b>ألم خلف الضرس الأخير مع صعوبة فتح الفم ورائحة كريهة</b></p><div class="example-chips"><span class="chip" onclick="$('sym').value='ألم نابض يوقظني من النوم'; runDiagnosis()">😣 ألم نابض ليلي</span><span class="chip" onclick="$('sym').value='بقع بيضاء على اللسان تقبل المسح'; runDiagnosis()">👅 بقع بيضاء على اللسان</span><span class="chip" onclick="$('sym').value='تورم وجهي مع حرارة وصعوبة فتح الفم'; runDiagnosis()">🤒 تورم وجهي وحرارة</span><span class="chip" onclick="$('sym').value='ألم شديد خلف الضرس الأخير مع رائحة'; runDiagnosis()">🦷 ألم خلف الضرس</span></div></div>`;
+                    html += `<div class="no-result-guide"><div class="guide-title">🤔 لا توجد احتمالات مطابقة</div><p class="guide-text">حاول وصف الأعراض بمزيد من التفاصيل: الموقع، نوع الألم، المحفزات، المدة.<br>مثال: <b>ألم خلف الضرس الأخير مع صعوبة فتح الفم ورائحة كريهة</b></p></div>`;
                 } else {
+                    html += `<div style="margin-bottom:15px;padding-bottom:10px;border-bottom:1px dashed var(--border)">
+                        <h4 style="color:#1e40af;margin:0;font-size:15px">📋 الأرجح سريريًا بناءً على الوصف:</h4>                    </div>`;
                     filtered.forEach((r, i) => {
                         const borderColor = r.sev === 'طوارئ' ? '#ef4444' : '#3b82f6';
                         const severityColor = r.sev === 'طوارئ' ? '#ef4444' : '#f59e0b';
-                        let explanation = r.signs ? r.signs.substring(0, 100) : '';
-                        if (r.diff) explanation += " | يتميز بـ: " + r.diff.substring(0, 80);
                         const badgeClass = r.score > 75 ? 'conf-high' : r.score > 50 ? 'conf-mid' : 'conf-low';
-                        const level = r.score > 75 ? 'عالية' : r.score > 50 ? 'متوسطة' : 'منخفضة';
-                        html += `<div id="card-${i}" class="diagnosis-card" style="background:#fff;border-radius:10px;padding:14px;margin-bottom:12px;border-right:5px solid ${borderColor};box-shadow:0 2px 6px rgba(0,0,0,0.04)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px"><span style="font-size:15px;font-weight:700;color:#1e40af">#${i+1} ${r.name} <span class="cat-tag">${r.cat}</span></span><div style="display:flex;gap:6px;align-items:center"><span class="conf-badge ${badgeClass}">${r.score}% (${level})</span><span style="font-size:11px;color:#64748b">الخطورة: <b style="color:${severityColor}">${r.sev}</b></span></div></div>
-                        <div class="section"><h5>📋 الشرح السريري</h5><p style="font-size:13px; line-height:1.6">${explanation || 'حالة تستدعي الفحص المباشر.'}</p></div>
-                        <div class="section"><h5>🔍 المؤشرات المتطابقة</h5><p style="font-size:12px;color:#64748b">${r.matched.join(' • ') || 'تم الاستدلال من السياق'}</p></div>
-                        <div class="section"><h5>💊 التدبير المقترح</h5><p>${r.treat}</p></div>                        <div class="diff-note">💡 <b>ملاحظة تفريقية:</b> ${r.diff || 'يحتاج فحص سريري لتأكيد التشخيص.'}</div>${r.sev === 'طوارئ' ? `<div class="emergency-box">🚨 تنبيه طوارئ: ${r.treat.split('.')[0]}. إحالة فورية!</div>` : ''}<div class="feedback-actions"><button id="like-${i}" class="fb-btn" onclick="submitFeedback('${r.id}', 'like', ${i})">👍 دقيق</button><button id="dislike-${i}" class="fb-btn" onclick="submitFeedback('${r.id}', 'dislike', ${i})">👎 غير دقيق</button></div></div>`;
+                        const level = r.score > 75 ? 'مرتفع' : r.score > 50 ? 'متوسط' : 'منخفض';
+                        
+                        html += `<div class="diagnosis-card" style="background:#fff;border-radius:10px;padding:14px;margin-bottom:12px;border-right:4px solid ${borderColor};box-shadow:0 2px 6px rgba(0,0,0,0.04)">
+                          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px">
+                            <span style="font-weight:700;color:#1e40af">الاحتمال #${i+1}: ${r.name} <span class="cat-tag">${r.cat}</span></span>
+                            <div style="display:flex;gap:6px;align-items:center">
+                              <span class="conf-badge ${badgeClass}">نسبة التوافق: ${r.score}% (${level})</span>
+                              <span style="font-size:11px;color:#64748b">الأولوية: <b style="color:${severityColor}">${r.sev}</b></span>
+                            </div>
+                          </div>
+                          <div class="section"><h5>🔍 العلامات الداعمة لهذا الاحتمال</h5><p style="font-size:13px">${r.signs || 'غير محدد'}</p></div>
+                          <div class="section"><h5>💡 نقاط التفريق المطلوبة للتأكيد</h5><p style="font-size:13px;color:#475569">${r.diff || 'يحتاج فحصًا مباشرًا وأشعة لتأكيد أو نفي هذا الاحتمال.'}</p></div>
+                          <div class="section"><h5>📖 التدبير الاسترشادي المقترح</h5><p style="font-size:13px">${r.treat || 'مراجعة الاختصاص للفحص السريري'}</p></div>
+                          <div class="feedback-actions">
+                            <button class="fb-btn" onclick="submitFeedback('${r.id}', 'like', ${i})">✅ يتوافق مع سريري</button>
+                            <button class="fb-btn" onclick="submitFeedback('${r.id}', 'dislike', ${i})">❌ يحتاج استبعاد</button>
+                          </div>
+                        </div>`;
                     });
                 }
-                html += `<div style="background:#fef2f2;border:2px solid #fecaca;color:#b91c1c;padding:10px;border-radius:8px;margin-top:12px;text-align:center;font-size:12px">⚠️ تنبيه أكاديمي: هذا التحليل تعليمي للمحاكاة ولا يغني عن الفحص السريري المباشر.</div></div>`;
-                $('res').innerHTML = html; $('res').scrollIntoView({behavior:'smooth'});
+                html += `<div style="background:#f8fafc;border:1px dashed #cbd5e1;border-radius:8px;padding:10px;margin-top:12px;text-align:center;font-size:11px;color:#64748b">
+                  📚 هذا التقرير أداة تعليمية لاستعراض الاحتمالات التفريقية. لا يعتبر تشخيصًا نهائيًا أو بديلًا عن الحكم السريري.
+                </div></div>`;
+                
+                $('res').innerHTML = html;
+                $('res').scrollIntoView({behavior:'smooth'});
                 btn.disabled = false; btn.textContent = '🔍 تحليل الخبير السريري';
             }, 150);
         }
