@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>تشخيص - د. عطوني</title>
+    <title>تشخيص أمراض الفم والأسنان - SuperAI v48.7 Stable</title>
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2964/2964514.png">
     <style>
         :root { --bg: #020617; --card: #ffffff; --primary: #3b82f6; --success: #10b981; --warn: #f59e0b; --danger: #ef4444; --text: #f8fafc; --muted: #94a3b8; --border: #1e293b; }
@@ -288,7 +288,7 @@
         
         <footer>
             <div><a href="https://wa.me/963939436998" target="_blank" class="wa-btn">📱 أرسل ملاحظاتك</a></div>
-            <div style="font-size:11px; opacity:0.85; margin-top:4px;">تطبيقات الدكتور عطوني | الإصدار v48.6 Ultimate</div>
+            <div style="font-size:11px; opacity:0.85; margin-top:4px;">تطبيقات الدكتور عطوني | الإصدار v48.7 Ultimate</div>
         </footer>
     </div>
 
@@ -716,15 +716,133 @@
         function lev(a,b){ const m=a.length,n=b.length;if(m===0)return n;if(n===0)return m;const d=Array.from({length:m+1},()=>Array(n+1).fill(0));for(let i=0;i<=m;i++)d[i][0]=i;for(let j=0;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[m][n] }
         function calcScore(dis,input,neg){ let total=0,matched=[],maxW=0;const words=input.split(/\s+/);for(let kw of dis.keywords){let kwN=norm(kw);if(kwN.length<2)continue;let w=1+(kwN.split(' ').length*.6)+(kwN.length/8);maxW+=w;let found=false,q=0;if(input.includes(kwN)){found=true;q=1}else{let parts=kwN.split(/\s+/).filter(p=>p.length>2),cnt=0;for(let pw of parts){let best=Infinity;for(let iw of words){let d=lev(pw,iw);if(d<best)best=d}if(best<=1)cnt++}if(cnt>0){found=true;q=cnt/parts.length}}if(!found)for(let[syn,tar]of Object.entries(SYNONYMS)){if(norm(tar)===kwN&&input.includes(norm(syn))){found=true;q=.9;break}}if(found){let main=kwN.split(/\s+/)[0];if(neg.has(main)||neg.has(kwN))total-=w*2.5;else{total+=w*q;matched.push(kw)}}if(kwN.includes(' ')){let parts=kwN.split(/\s+/);let i1=words.indexOf(parts[0]),i2=words.indexOf(parts[1]);if(i1!==-1&&i2!==-1&&Math.abs(i1-i2)<=3)total+=w*.35}}let locB=0;const locM={ضرس:'سن',سن:'سن',لثة:'لثة',فك:'فك',لسان:'لسان',خد:'خد',شفة:'شفة',حنك:'حنك',وجه:'وجه',غدة:'غدد',مفصل:'مفصل',أذن:'أذن',عين:'عين'};for(let[w,c]of Object.entries(locM))if(input.includes(w)&&dis.cat&&dis.cat.includes(c))locB+=8;let emergB=dis.sev==='طوارئ'&&/(طوارئ|مستشفى|اختناق|نزف شديد|تورم سريع|حرارة عالية|صعوبة تنفس)/.test(input)?15:0;let raw=maxW>0?(total/maxW)*100:0;return{score:Math.round(Math.max(0,Math.min(100,raw+locB+emergB))),matched}}
         
-        function runDiagnosis() { const text=$('sym').value.trim(); if(!text)return toast('اكتب الأعراض'); const btn=document.querySelector('#diag .btn'); btn.disabled=true; btn.textContent='🔬 جاري...'; setTimeout(()=>{ const nText=norm(text), neg=extractNegations(nText), results=[]; for(let d of FULL_DB){ let r=calcScore(d,nText,neg); if(r.score>=25)results.push({...d,...r}) } results.sort((a,b)=>b.score-a.score); const filtered=results.slice(0,3); let html=`<div class="clinical-report"><div class="report-header"><div class="report-title">🔍 الاحتمالات التشخيصية</div><span style="font-size:10px;color:#94a3b8">v48.6 أوفلاين</span></div><div style="background:#172554;border:1px solid #1e40af;border-radius:6px;padding:8px;margin-bottom:12px;font-size:11px;color:#93c5fd">⚠️ تنبيه: احتمالات تعليمية. التشخيص النهائي يحتاج فحصاً سريرياً.</div>`; if(filtered.length===0) html+=`<div class="empty">🤔 لا توجد نتائج مطابقة. حاول إضافة تفاصيل أكثر.</div>`; else { html+=`<div style="margin-bottom:12px;padding-bottom:8px;border-bottom:1px dashed #334155"><h4 style="color:#60a5fa;margin:0;font-size:14px">📋 الأرجح سريريًا:</h4></div>`; filtered.forEach((r,i)=>{ const bc=r.sev==='طوارئ'?'#ef4444':'#3b82f6', sc=r.sev==='طوارئ'?'#ef4444':'#f59e0b', bcL=r.score>75?'conf-high':r.score>50?'conf-mid':'conf-low', lv=r.score>75?'مرتفع':r.score>50?'متوسط':'منخفض'; html+=`<div class="diagnosis-card" style="border-right-color:${bc}"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:4px"><span style="font-weight:700;color:#fff;font-size:13px">#${i+1} ${r.name} <span class="cat-tag">${r.cat}</span></span><div style="display:flex;gap:4px;align-items:center"><span class="conf-badge ${bcL}">${r.score}%</span><span style="font-size:9px;color:#94a3b8">أولوية:<b style="color:${sc}">${r.sev}</b></span></div></div><div class="section"><h5>🔍 العلامات</h5><p style="font-size:11px">${r.signs||'غير محدد'}</p></div><div class="section"><h5>💡 التفريق</h5><p style="font-size:11px;color:#cbd5e1">${r.diff||'يحتاج فحصاً مباشراً'}</p></div><div class="section"><h5>📖 العلاج</h5><p style="font-size:11px">${r.treat||'مراجعة الاختصاص'}</p></div></div>` }) } html+=`<div style="background:#0f172a;border:1px dashed #334155;border-radius:6px;padding:8px;margin-top:10px;text-align:center;font-size:10px;color:#64748b">📚 أداة تعليمية • لا تغني عن الفحص السريري</div></div>`; $('res').innerHTML=html; $('res').scrollIntoView({behavior:'smooth'}); btn.disabled=false; btn.textContent='🔍 تحليل' },100) }
+        function runDiagnosis() { const text=$('sym').value.trim(); if(!text)return toast('اكتب الأعراض'); const btn=document.querySelector('#diag .btn'); btn.disabled=true; btn.textContent='🔬 جاري...'; setTimeout(()=>{ const nText=norm(text), neg=extractNegations(nText), results=[]; for(let d of FULL_DB){ let r=calcScore(d,nText,neg); if(r.score>=25)results.push({...d,...r}) } results.sort((a,b)=>b.score-a.score); const filtered=results.slice(0,3); let html=`<div class="clinical-report"><div class="report-header"><div class="report-title">🔍 الاحتمالات التشخيصية</div><span style="font-size:10px;color:#94a3b8">v48.7 أوفلاين</span></div><div style="background:#172554;border:1px solid #1e40af;border-radius:6px;padding:8px;margin-bottom:12px;font-size:11px;color:#93c5fd">⚠️ تنبيه: احتمالات تعليمية. التشخيص النهائي يحتاج فحصاً سريرياً.</div>`; if(filtered.length===0) html+=`<div class="empty">🤔 لا توجد نتائج مطابقة. حاول إضافة تفاصيل أكثر.</div>`; else { html+=`<div style="margin-bottom:12px;padding-bottom:8px;border-bottom:1px dashed #334155"><h4 style="color:#60a5fa;margin:0;font-size:14px">📋 الأرجح سريريًا:</h4></div>`; filtered.forEach((r,i)=>{ const bc=r.sev==='طوارئ'?'#ef4444':'#3b82f6', sc=r.sev==='طوارئ'?'#ef4444':'#f59e0b', bcL=r.score>75?'conf-high':r.score>50?'conf-mid':'conf-low', lv=r.score>75?'مرتفع':r.score>50?'متوسط':'منخفض'; html+=`<div class="diagnosis-card" style="border-right-color:${bc}"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:4px"><span style="font-weight:700;color:#fff;font-size:13px">#${i+1} ${r.name} <span class="cat-tag">${r.cat}</span></span><div style="display:flex;gap:4px;align-items:center"><span class="conf-badge ${bcL}">${r.score}%</span><span style="font-size:9px;color:#94a3b8">أولوية:<b style="color:${sc}">${r.sev}</b></span></div></div><div class="section"><h5>🔍 العلامات</h5><p style="font-size:11px">${r.signs||'غير محدد'}</p></div><div class="section"><h5>💡 التفريق</h5><p style="font-size:11px;color:#cbd5e1">${r.diff||'يحتاج فحصاً مباشراً'}</p></div><div class="section"><h5>📖 العلاج</h5><p style="font-size:11px">${r.treat||'مراجعة الاختصاص'}</p></div></div>` }) } html+=`<div style="background:#0f172a;border:1px dashed #334155;border-radius:6px;padding:8px;margin-top:10px;text-align:center;font-size:10px;color:#64748b">📚 أداة تعليمية • لا تغني عن الفحص السريري</div></div>`; $('res').innerHTML=html; $('res').scrollIntoView({behavior:'smooth'}); btn.disabled=false; btn.textContent='🔍 تحليل' },100) }
         window.submitFeedback = (diseaseId, type, index) => { const card = document.getElementById(`card-${index}`); const likeBtn = document.getElementById(`like-${index}`); const dislikeBtn = document.getElementById(`dislike-${index}`); if(type==='like'){ likeBtn.classList.add('liked'); dislikeBtn.classList.remove('disliked'); card.classList.remove('rejected'); if(db) db.ref('feedback/'+diseaseId).push({type:'correct',user:user?.name||'مجهول'}); toast('✅ شكراً لتأكيد الدقة') } else { dislikeBtn.classList.add('disliked'); likeBtn.classList.remove('liked'); card.classList.add('rejected'); const correctDiagName=prompt("⚠️ ما هو اسم التشخيص الصحيح؟"); if(correctDiagName&&correctDiagName.trim()!==""){ const correctSigns=prompt("أذكر العلامات السريرية الرئيسية:")||"غير محدد"; const correctTreat=prompt("أذكر العلاج المقترح:")||"غير محدد"; const newDiagnosis={id:"custom_"+Date.now(),name:correctDiagName,cat:"مساهمات الأطباء",sev:"متوسط",location:"عام",keywords:[correctDiagName],signs:correctSigns,xray:"غير محدد",treat:correctTreat,diff:"أضيفت بواسطة: "+(user?.name||"طبيب")}; DYNAMIC_DB.push(newDiagnosis); FULL_DB=[...STATIC_DB,...DYNAMIC_DB]; if(db){ db.ref('custom_diagnoses').push(newDiagnosis).then(()=>{toast('✅ تم حفظ التشخيص في البنك بنجاح!');loadDynamicDiagnoses()}).catch(e=>toast('❌ فشل الحفظ: '+e.message)) }else{toast('✅ تمت الإضافة محلياً')} if(user&&user.id&&db){ db.ref('users/'+user.id+'/corrections').transaction(current=>(current||0)+1); user.corrections=(user.corrections||0)+1; $('user-corrections').textContent=user.corrections } }else{ toast('⚠️ تم إلغاء الإضافة'); dislikeBtn.classList.remove('disliked'); card.classList.remove('rejected') } } };
         
-        window.addCasesFromJSON = () => { const jsonText=$('json-input').value.trim(); if(!jsonText)return toast('⚠️ أدخل كود JSON'); let toAdd=[]; try{const p=JSON.parse(jsonText);if(Array.isArray(p))toAdd=p;else if(typeof p==='object'&&p.id)toAdd=[p];else throw new Error("خطأ")}catch(e){return toast('❌ خطأ في JSON: '+e.message)} const exist=new Set(FULL_DB.map(c=>c.id)), newIds=[]; toAdd.forEach(c=>{ if(!c.id||!c.name)return toast('⚠️ حالة ناقصة'); if(exist.has(c.id))return toast('⚠️ ID مكرر: '+c.id); const comp={id:c.id,name:c.name,cat:c.cat||"عام",sev:c.sev||"متوسط",location:c.location||"فم",keywords:c.keywords||[c.name],signs:c.signs||"",xray:c.xray||"",treat:c.treat||"",diff:c.diff||""}; newIds.push(c.id); DYNAMIC_DB.push(comp); FULL_DB.push(comp); exist.add(c.id) }); if(newIds.length>0){ toast('✅ أضيف '+newIds.length+' حالة'); $('json-input').value=''; updateDbStats(); lastAddedIds=newIds; $('undo-area').style.display='block'; let t=5; $('undo-timer').textContent=t; const timer=setInterval(()=>{t--;$('undo-timer').textContent=t;if(t<=0){clearInterval(timer);$('undo-area').style.display='none';lastAddedIds=[]}},1000) } };
+        // -------------------- إدارة الحالات الديناميكية (مصححة) --------------------
+        window.addCasesFromJSON = () => {
+            const jsonText = $('json-input').value.trim();
+            if (!jsonText) return toast('⚠️ الرجاء إدخال كود JSON');
+            
+            let casesToAdd = [];
+            try {
+                const parsed = JSON.parse(jsonText);
+                if (Array.isArray(parsed)) { casesToAdd = parsed; } 
+                else if (typeof parsed === 'object' && parsed.id) { casesToAdd = [parsed]; } 
+                else { throw new Error("تنسيق غير صالح"); }
+            } catch (e) { return toast('❌ خطأ في تنسيق JSON: ' + e.message); }
+            
+            const existingIds = new Set(FULL_DB.map(c => c.id));
+            const newIds = [];            let hasError = false;
+            
+            casesToAdd.forEach(c => {
+                if (!c.id || !c.name) { toast(`⚠️ حالة ناقصة ID أو Name`); hasError = true; } 
+                else if (existingIds.has(c.id)) { toast(`⚠️ ID مكرر تم تجاهله: ${c.id}`); } 
+                else {
+                    const completeCase = { 
+                        id: c.id, name: c.name, cat: c.cat || "عام", sev: c.sev || "متوسط", 
+                        location: c.location || "فم", keywords: c.keywords || [c.name], 
+                        signs: c.signs || "", xray: c.xray || "", treat: c.treat || "", diff: c.diff || "" 
+                    };
+                    newIds.push(c.id);
+                    DYNAMIC_DB.push(completeCase);
+                    FULL_DB.push(completeCase);
+                    existingIds.add(c.id);
+                }
+            });
+            
+            if (hasError && newIds.length === 0) return;
+            
+            if (db && newIds.length > 0) {
+                const updates = {};
+                newIds.forEach(id => {
+                    const caseData = DYNAMIC_DB.find(c => c.id === id);
+                    updates['custom_diagnoses/' + id] = caseData;
+                });
+                
+                db.ref().update(updates).then(() => {
+                    toast(`✅ تم حفظ ${newIds.length} حالة بنجاح في السحابة!`);
+                    $('json-input').value = '';
+                    updateDbStats();
+                    
+                    lastAddedIds = newIds;
+                    $('undo-area').style.display = 'block';
+                    let timeLeft = 5;
+                    $('undo-timer').textContent = timeLeft;
+                    const timer = setInterval(() => {
+                        timeLeft--;
+                        $('undo-timer').textContent = timeLeft;
+                        if (timeLeft <= 0) {
+                            clearInterval(timer);
+                            $('undo-area').style.display = 'none';
+                            lastAddedIds = [];
+                        }
+                    }, 1000);
+                }).catch(e => {
+                    toast('❌ فشل الحفظ في السحابة: ' + e.message);
+                    console.error(e);
+                });
+            } else {                toast('✅ تمت الإضافة محلياً (لا يوجد اتصال بالسحابة)');
+                updateDbStats();
+            }
+        };
+
+        function loadDynamicDiagnoses() { 
+            if(!db) { 
+                updateDbStats(); 
+                return; 
+            } 
+            
+            $('db-stats').textContent = `جاري المزامنة...`;
+            
+            db.ref('custom_diagnoses').once('value').then(snap => { 
+                DYNAMIC_DB = []; 
+                if(snap.exists()) {
+                    snap.forEach(child => { 
+                        DYNAMIC_DB.push(child.val()); 
+                    });
+                    console.log(`Loaded ${DYNAMIC_DB.length} dynamic cases from Firebase.`);
+                } else {
+                    console.log("No dynamic cases found in Firebase.");
+                }
+                
+                FULL_DB = [...STATIC_DB, ...DYNAMIC_DB]; 
+                updateDbStats(); 
+                
+                if(DYNAMIC_DB.length > 0) {
+                     toast(`🔄 تم تحديث القاعدة: ${DYNAMIC_DB.length} حالة إضافية`);
+                }
+            }).catch(err => {
+                console.error("Error loading diagnoses:", err);
+                toast('⚠️ خطأ في تحميل البيانات من السحابة');
+            }); 
+        }
+        
         window.undoLastAdd = () => { if(!lastAddedIds||lastAddedIds.length===0)return; if(confirm('حذف '+lastAddedIds.length+' حالة؟')){ FULL_DB=FULL_DB.filter(c=>!lastAddedIds.includes(c.id)); DYNAMIC_DB=DYNAMIC_DB.filter(c=>!lastAddedIds.includes(c.id)); toast('↩️ تم التراجع'); $('undo-area').style.display='none'; lastAddedIds=[]; updateDbStats() } };
         function updateDbStats(){ const t=FULL_DB.length,d=DYNAMIC_DB.length,s=STATIC_DB.length; $('db-stats').textContent=`كلي: ${t} (ثابت: ${s} + مضاف: ${d})` }
-        function loadDynamicDiagnoses(){ if(!db){updateDbStats();return} db.ref('custom_diagnoses').once('value').then(snap=>{ DYNAMIC_DB=[]; if(snap.exists())snap.forEach(child=>{DYNAMIC_DB.push(child.val())}); FULL_DB=[...STATIC_DB,...DYNAMIC_DB]; updateDbStats() }) }
         
-        window.onload = () => { updateDbStats(); const s = localStorage.getItem('d_session'); if(s){ try{ user = JSON.parse(s); enterApp(); if(user.role==='admin'){ $('admin').classList.add('active'); $('diag').classList.remove('active'); $('backToAdminBtn').style.display='block'; if(db){load();loadContributors();loadActivationRequests()} }else{ $('admin').classList.remove('active'); $('diag').classList.add('active'); updateUserStats() } }catch(e){localStorage.removeItem('d_session')} } };
+        window.onload = () => { 
+            // تأخير بسيط لضمان تحميل Firebase
+            setTimeout(() => {
+                loadDynamicDiagnoses(); 
+                const s = localStorage.getItem('d_session'); 
+                if(s){ 
+                    try{ 
+                        user = JSON.parse(s); 
+                        enterApp(); 
+                        if(user.role==='admin'){ 
+                            $('admin').classList.add('active');                             $('diag').classList.remove('active'); 
+                            $('backToAdminBtn').style.display='block'; 
+                            if(db){load();loadContributors();loadActivationRequests()} 
+                        }else{ 
+                            $('admin').classList.remove('active'); 
+                            $('diag').classList.add('active'); 
+                            updateUserStats() 
+                        } 
+                    }catch(e){localStorage.removeItem('d_session')} 
+                } 
+            }, 500);
+        };
         window.showReg = showReg; window.showLogin = showLogin; window.doLoginComplex = doLoginComplex; window.doRegister = doRegister; window.doLogout = doLogout; window.goDiag = goDiag; window.goAdmin = goAdmin; window.upd = upd; window.del = del;
     </script>
 </body>
