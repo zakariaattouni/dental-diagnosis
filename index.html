@@ -168,7 +168,7 @@
         }
         .banner-image {
             width: 100%;
-            min-height: 220px;
+            min-height: 200px;
             max-height: 300px;
             object-fit: contain;
             background: #020617;
@@ -520,7 +520,7 @@
                 else if(found.status==='pending') toast('⏳ قيد المراجعة'); 
                 else if(found.status==='rejected'||found.status==='disabled') toast('❌ غير مفعل'); 
                 else{ user={...found,role:'doc'}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; $('admin').classList.remove('active'); $('diag').classList.add('active'); updateUserStats(); toast('✅ أهلاً د/'+user.name); 
-                    // IMPORTANT: Load banner for normal user
+                    // تأكيد تحميل البوستر للمستخدم العادي
                     loadBannerFromFirebase(); 
                 } 
             }catch(err){ toast('❌ خطأ: '+err.message); } finally{ btn.disabled=false; btn.textContent='دخول آمن 🔐'; } 
