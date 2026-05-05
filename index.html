@@ -15,7 +15,578 @@
             padding: 25px 20px 20px;
             text-align: center;
             position: relative;
+       <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تشخيص أمراض الفم والأسنان - البوستر الإعلاني</title>
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2964/2964514.png">
+    <style>
+        :root { --bg: #020617; --card: #ffffff; --primary: #3b82f6; --success: #10b981; --warn: #f59e0b; --danger: #ef4444; --text: #f8fafc; --muted: #94a3b8; --border: #1e293b; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+        
+        .premium-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+            padding: 25px 20px 20px;
+            text-align: center;
+            position: relative;
             overflow: hidden;
+            border-bottom: 2px solid #3b82f6;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+        .premium-header::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 60%);
+            animation: rotateGlow 15s linear infinite;
+        }
+        @keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .header-content { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .header-icon-group { display: flex; align-items: center; gap: 10px; }
+        .header-tooth { font-size: 45px; filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.6)); }
+        .header-shield { font-size: 28px; filter: drop-shadow(0 0 8px #60a5fa); color: #60a5fa; }
+        .header-text { text-align: right; }
+        .header-text h1 { font-size: 28px; font-weight: 900; color: #fff; margin: 0; line-height: 1.1; text-shadow: 0 0 15px rgba(59, 130, 246, 0.6); }
+        .header-text h2 { font-size: 16px; font-weight: 600; color: #93c5fd; margin: 5px 0 0; letter-spacing: 0.5px; }
+        .dr-footer { margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 11px; color: #cbd5e1; }
+        .ai-badge { background: linear-gradient(135deg, #3b82f6, #06b6d4); color: #fff; padding: 2px 6px; border-radius: 6px; font-weight: bold; font-size: 10px; box-shadow: 0 0 8px rgba(59, 130, 246, 0.6); }
+        .star-effect { color: #fde047; animation: twinkle 2s infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
+        
+        .auth-screen { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .auth-card { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 30px; width: 100%; max-width: 360px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; }
+        .logo { font-size: 60px; margin-bottom: 15px; }
+        h1 { font-size: 22px; margin-bottom: 8px; color: #fff; }
+        .sub { font-size: 13px; color: var(--muted); margin-bottom: 25px; }
+        .input { width: 100%; padding: 14px; border: 1px solid #334155; border-radius: 12px; font-size: 15px; text-align: center; margin-bottom: 15px; background: #0f172a; color: #fff; transition: 0.3s; }
+        .input:focus { border-color: var(--primary); background: #1e293b; outline: none; box-shadow: 0 0 15px rgba(59,130,246,0.3); }
+        .btn { width: 100%; padding: 15px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border: none; border-radius: 12px; color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: transform 0.2s; }
+        .btn:active { transform: scale(0.98); }
+        .btn:disabled { opacity: 0.7; cursor: not-allowed; }
+        .btn-green { background: linear-gradient(135deg, #10b981, #059669); }
+        .btn-gray { background: #334155; }
+        .link { color: var(--primary); font-size: 13px; cursor: pointer; display: block; margin-top: 12px; text-decoration: none; }
+        .hide { display: none !important; }
+        
+        header { background: #1e293b; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; position: sticky; top: 0; z-index: 100; }
+        .logo-text { font-weight: 700; font-size: 14px; color: #60a5fa; display: flex; align-items: center; gap: 6px; }
+        .nav { display: flex; align-items: center; gap: 10px; }
+        .badge { background: var(--danger); color: #fff; padding: 3px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+        .logout-btn { background: #334155; color: #f87171; border: 1px solid #475569; padding: 5px 10px; border-radius: 8px; font-size: 12px; cursor: pointer; }
+        main { flex: 1; padding: 20px; max-width: 1000px; margin: auto; width: 100%; }
+        .view { display: none; animation: fade 0.3s ease; }
+        .view.active { display: block; }
+        @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .card { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .collapsible-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; padding: 8px 0; }
+        .collapsible-header h3 { margin: 0; font-size: 16px; color: #60a5fa; display: flex; align-items: center; gap: 8px; }
+        .toggle-icon { transition: transform 0.3s ease; font-size: 14px; color: var(--muted); }
+        .collapsible-content { max-height: 1000px; overflow: hidden; transition: max-height 0.4s ease-out, opacity 0.3s ease; opacity: 1; margin-top: 15px; }
+        .collapsible-content.collapsed { max-height: 0; opacity: 0; margin-top: 0; }
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+        .stat { background: #0f172a; padding: 12px; border-radius: 10px; text-align: center; border: 1px solid #334155; }
+        .stat-num { font-size: 22px; font-weight: 800; color: var(--primary); }
+        .stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+        textarea { width: 100%; padding: 16px; border: 1px solid #334155; border-radius: 12px; min-height: 120px; font-size: 14px; margin-bottom: 16px; background: #0f172a; color: #fff; resize: vertical; line-height: 1.6; transition: 0.3s; }
+        textarea:focus { border-color: var(--primary); background: #1e293b; outline: none; }
+        .clinical-report { background: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 16px; margin-top: 16px; }
+        .report-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #334155; flex-wrap: wrap; gap: 8px; }
+        .report-title { font-size: 16px; font-weight: 700; color: #60a5fa; display: flex; align-items: center; gap: 8px; }
+        .conf-badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+        .conf-high { background: #064e3b; color: #34d399; }
+        .conf-mid { background: #451a03; color: #fbbf24; }
+        .conf-low { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
+        .section { margin-bottom: 14px; }
+        .section h5 { font-size: 13px; color: #60a5fa; margin-bottom: 6px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+        .section p { font-size: 13px; color: #cbd5e1; line-height: 1.6; margin-bottom: 4px; }
+        .emergency-box { background: linear-gradient(135deg, #7f1d1d, #991b1b); border: 1px solid #b91c1c; color: #fca5a5; padding: 10px; border-radius: 8px; margin-top: 12px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .diff-note { background: #172554; border-right: 3px solid var(--primary); padding: 10px; border-radius: 6px; margin-top: 12px; font-size: 12px; color: #93c5fd; line-height: 1.6; }
+        .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid #334155; margin-top: 8px; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th { background: #0f172a; padding: 12px; text-align: right; color: var(--muted); font-weight: 600; border-bottom: 1px solid #334155; }
+        td { padding: 10px 12px; border-bottom: 1px solid #334155; }
+        tr:hover { background: #334155; }
+        .status { padding: 4px 8px; border-radius: 20px; font-size: 10px; font-weight: 600; }
+        .st-act { background: #064e3b; color: #34d399; }
+        .st-temp { background: #451a03; color: #fbbf24; }
+        .st-perm { background: #172554; color: #60a5fa; }
+        .st-pend { background: #451a03; color: #fbbf24; }
+        .st-rej { background: #7f1d1d; color: #fca5a5; }
+        .act-btn { padding: 4px 8px; border: none; border-radius: 6px; font-size: 10px; cursor: pointer; margin-left: 4px; font-weight: 600; }
+        .act-ok { background: var(--success); color: #fff; }
+        .act-no { background: var(--danger); color: #fff; }
+        .act-del { background: #7f1d1d; color: #fca5a5; }
+        footer { background: #0f172a; padding: 15px; text-align: center; color: var(--muted); margin-top: auto; border-top: 1px solid #334155; }
+        .wa-btn { display: inline-flex; align-items: center; gap: 6px; background: #25D366; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 12px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.2); margin-bottom: 8px; }
+        .wa-btn:hover { background: #1ebc57; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #3b82f6; color: #fff; padding: 10px 16px; border-radius: 8px; font-size: 13px; z-index: 999; opacity: 0; transition: 0.3s; pointer-events: none; }
+        .toast.show { opacity: 1; }
+        .empty { text-align: center; color: var(--muted); padding: 30px; font-size: 14px; background: #0f172a; border-radius: 10px; border: 1px dashed #334155; }
+        .diagnosis-card { transition: opacity 0.3s; background: #0f172a; border: 1px solid #334155; }
+        .diagnosis-card.rejected { opacity: 0.6; filter: grayscale(0.5); border: 1px solid #ef4444; }
+        .chat-fab { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4); cursor: pointer; z-index: 900; transition: transform 0.2s; }
+        .chat-fab:hover { transform: scale(1.1); }
+        .chat-modal { position: fixed; bottom: 80px; right: 20px; width: 360px; max-width: 90vw; height: 500px; background: #1e293b; border-radius: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); z-index: 901; display: none; flex-direction: column; overflow: hidden; border: 1px solid #334155; }
+        .chat-modal.active { display: flex; }
+        .chat-header { background: var(--primary); color: white; padding: 12px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
+        .chat-body { flex: 1; overflow-y: auto; padding: 10px; background: #0f172a; display: flex; flex-direction: column; gap: 8px; }
+        .chat-msg { background: #1e293b; padding: 8px 12px; border-radius: 12px; border-bottom-right-radius: 2px; font-size: 13px; position: relative; word-break: break-word; color: #cbd5e1; }
+        .chat-msg.admin { background: #172554; border: 1px solid #2563eb; color: #fff; }
+        .chat-meta { font-size: 10px; color: var(--muted); margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+        .chat-img { max-width: 100%; border-radius: 8px; margin-top: 5px; cursor: pointer; border: 1px solid #334155; display: block; }
+        .chat-img-container { position: relative; margin-top: 8px; }
+        .chat-img-container img { width: 100%; border-radius: 8px; }
+        .img-comment { margin-top: 8px; padding: 6px; background: #0f172a; border-radius: 6px; font-size: 11px; }
+        .msg-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; flex-wrap: wrap; gap: 6px; }
+        .reaction-btn { font-size: 14px; cursor: pointer; opacity: 0.6; transition: 0.2s; background: none; border: none; color: #cbd5e1; }
+        .reaction-btn:hover { opacity: 1; transform: scale(1.2); }
+        .delete-msg-btn { background: none; border: none; color: #ef4444; font-size: 12px; cursor: pointer; padding: 2px 6px; border-radius: 4px; transition: 0.2s; }
+        .delete-msg-btn:hover { background: #7f1d1d; color: white; }
+        .reactions-display { font-size: 12px; margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px; }
+        .reaction-tag { background: #334155; padding: 2px 6px; border-radius: 10px; font-size: 10px; }
+        .emoji-picker-msg { position: absolute; bottom: 100%; left: 0; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 5px; display: none; grid-template-columns: repeat(5, 1fr); gap: 5px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 905; width: 180px; }
+        .emoji-picker-msg.active { display: grid; }
+        .chat-input-area { padding: 8px; border-top: 1px solid #334155; display: flex; flex-direction: column; background: #1e293b; }
+        .image-preview { display: flex; align-items: center; gap: 8px; padding: 6px; background: #0f172a; border-radius: 6px; margin-bottom: 6px; }
+        .image-preview img { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; }
+        .image-preview button { background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+        .chat-input-row { display: flex; gap: 5px; align-items: center; }
+        .chat-input { flex: 1; padding: 8px; border: 1px solid #334155; border-radius: 20px; font-size: 13px; outline: none; background: #0f172a; color: #fff; }
+        .chat-tools { display: flex; gap: 5px; }
+        .tool-btn { background: none; border: none; font-size: 18px; cursor: pointer; padding: 5px; border-radius: 50%; transition: 0.2s; color: #cbd5e1; }
+        .tool-btn:hover { background: #334155; }
+        .emoji-picker-input { position: absolute; bottom: 60px; right: 10px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 5px; display: none; grid-template-columns: repeat(6, 1fr); gap: 5px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 902; width: 200px; }
+        .emoji-picker-input.active { display: grid; }
+        .emoji-item { font-size: 20px; cursor: pointer; text-align: center; padding: 5px; border-radius: 4px; }
+        .emoji-item:hover { background: #334155; }
+        .contributors-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid #334155; }
+        .contributor-item { display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #0f172a; border-radius: 6px; margin-bottom: 5px; font-size: 12px; }
+        .admin-alert { background: #451a03; border: 1px solid #78350f; border-radius: 8px; padding: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .admin-alert button { padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; margin-right: 5px; }
+        .btn-approve { background: var(--success); color: white; }
+        .btn-ignore { background: var(--muted); color: white; }
+        .user-stats { background: #172554; padding: 8px 12px; border-radius: 8px; font-size: 11px; margin-right: 10px; color: #60a5fa; }
+        .json-input { font-family: monospace; direction: ltr; text-align: left; font-size: 11px; min-height: 120px; background: #0f172a; color: #cbd5e1; border: 1px solid #334155; }
+        .undo-container { margin-top: 10px; display: none; }
+        .undo-btn { background: var(--warn); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+        .case-counter { background: #172554; color: #60a5fa; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; display: inline-block; margin-bottom: 8px; }
+        
+        /* بوستر إعلاني كبير وواضح للجميع - يعمل عبر رابط خارجي */
+        .banner-card {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            border: 2px solid #3b82f6;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+        .banner-image {
+            width: 100%;
+            min-height: 200px;
+            max-height: 300px;
+            object-fit: contain;
+            background: #020617;
+            display: block;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .banner-image:hover { transform: scale(1.01); }
+        .banner-placeholder {
+            padding: 40px 20px;
+            color: #94a3b8;
+            font-size: 15px;
+            text-align: center;
+            background: #0f172a;
+            border: 2px dashed #334155;
+            border-radius: 16px;
+            margin: 10px;
+        }
+        .admin-banner-upload {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .url-input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        .url-input {
+            flex: 1;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 10px;
+            color: #fff;
+            font-size: 13px;
+            direction: ltr;
+            text-align: left;
+        }
+        .url-input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        .banner-preview {
+            max-width: 200px;
+            max-height: 120px;
+            border-radius: 12px;
+            border: 2px solid #3b82f6;
+            margin-top: 10px;
+            object-fit: contain;
+        }
+        @media (max-width: 480px) {
+            .stats { grid-template-columns: 1fr; }
+            .auth-card { padding: 24px 18px; }
+            table { font-size: 11px; }
+            th, td { padding: 8px 6px; }
+            .report-header { flex-direction: column; align-items: flex-start; }
+            .chat-modal { width: 95vw; right: 2.5vw; bottom: 70px; }
+            .banner-image { min-height: 150px; max-height: 220px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="auth" class="auth-screen">
+        <div class="auth-card" id="login-card">
+            <div class="logo">🦷</div>
+            <h1>مرحباً بك</h1>
+            <p class="sub">أدخل بياناتك للوصول إلى النظام</p>
+            <input type="password" id="login-input" class="input" placeholder="كلمة المرور أو البريد" onkeydown="if(event.key==='Enter') doLoginComplex()">
+            <button class="btn" id="login-btn" onclick="doLoginComplex()">دخول آمن 🔐</button>
+            <span class="link" onclick="showReg()">📝 تسجيل طبيب جديد</span>
+        </div>
+        <div class="auth-card hide" id="reg-card">
+            <div class="logo">📝</div>
+            <h1>طلب انضمام</h1>
+            <p class="sub">ساهم في تطوير النظام</p>
+            <input type="text" id="r-name" class="input" placeholder="الاسم الكامل">
+            <input type="email" id="r-email" class="input" placeholder="البريد الإلكتروني">
+            <input type="password" id="r-pass" class="input" placeholder="كلمة المرور (6 أحرف+)">
+            <button class="btn" onclick="doRegister()">📤 إرسال الطلب</button>
+            <span class="link" onclick="showLogin()">← العودة للدخول</span>
+        </div>
+    </div>
+    <div id="app" class="hide">
+        <div class="premium-header">
+            <div class="header-content">
+                <div class="header-icon-group">
+                    <span class="header-tooth">🦷</span>
+                    <span class="header-shield">🛡️</span>
+                </div>
+                <div class="header-text">
+                    <h1>تشخيص <span class="star-effect">✦</span></h1>
+                    <h2>أمراض الفم والأسنان</h2>
+                </div>
+            </div>
+            <div class="dr-footer">
+                <span>تطبيقات الدكتور عطوني</span>
+                <span class="ai-badge">A+</span>
+            </div>
+        </div>
+        <header>
+            <div class="logo-text">🦷 القائمة الرئيسية</div>
+            <div class="nav">
+                <span class="badge" id="badge" style="display:none">0</span>
+                <span id="user-stats" class="user-stats" style="display:none">المساهمات: <b id="user-corrections">0</b></span>
+                <span style="font-size:12px;font-weight:600" id="uname">مستخدم</span>
+                <button class="logout-btn" onclick="doLogout()">خروج</button>
+            </div>
+        </header>
+        <main>
+            <!-- منطقة البوستر الإعلاني (تظهر للجميع) -->
+            <div id="bannerContainer" class="banner-card"></div>
+
+            <div id="admin" class="view">
+                <!-- قسم إدارة البوستر للإدارة فقط (باستخدام رابط الصورة) -->
+                <div class="card">
+                    <div class="collapsible-header" onclick="toggleCollapse('admin-banner-panel', 'banner-icon')">
+                        <h3>📢 إدارة البوستر الإعلاني (يظهر للجميع)</h3>
+                        <span id="banner-icon" class="toggle-icon">▼</span>
+                    </div>
+                    <div id="admin-banner-panel" class="collapsible-content">
+                        <p style="font-size:12px; color:#94a3b8; margin-bottom:12px;">أدخل رابط الصورة (Image URL) من Imgur أو أي موقع استضافة آخر:</p>
+                        <div class="admin-banner-upload">
+                            <div class="url-input-group">
+                                <input type="text" id="bannerUrlInput" class="url-input" placeholder="https://i.imgur.com/example.jpg" dir="ltr">
+                                <button class="btn" style="width:auto; padding:8px 16px; background:#10b981;" onclick="saveBannerUrl()">💾 حفظ الرابط</button>
+                                <button class="btn btn-gray" style="width:auto; padding:8px 16px; background:#ef4444;" onclick="deleteBanner()">🗑️ حذف البوستر</button>
+                            </div>
+                            <div id="adminBannerPreview" style="margin-top:15px; text-align:center;"></div>
+                        </div>
+                        <p style="font-size:11px; color:#60a5fa; margin-top:8px;">⚠️ ملاحظة: استخدم رابط مباشر لصورة (ينتهي بـ .jpg أو .png). الصورة ستظهر لجميع المستخدمين فوراً.</p>
+                    </div>
+                </div>
+                <!-- بقية بطاقات الإدارة -->
+                <div class="card">
+                    <h3>📊 إحصائيات المستخدمين</h3>
+                    <div class="stats">
+                        <div class="stat"><div class="stat-num" id="c-p">0</div><div class="stat-label">معلق</div></div>
+                        <div class="stat"><div class="stat-num" id="c-a">0</div><div class="stat-label">نشط</div></div>
+                        <div class="stat"><div class="stat-num" id="c-t">0</div><div class="stat-label">الكل</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="collapsible-header" onclick="toggleCollapse('add-case-container', 'add-case-icon')">
+                        <h3>➕ إضافة حالات (JSON) <span id="db-stats" class="case-counter">جاري...</span></h3>
+                        <span id="add-case-icon" class="toggle-icon">▼</span>
+                    </div>
+                    <div id="add-case-container" class="collapsible-content">
+                        <p style="font-size:11px; color:#94a3b8; margin-bottom:8px;">الصق كود JSON هنا:</p>
+                        <textarea id="json-input" class="input json-input" placeholder='{"id":"x","name":"حالة","cat":"تصنيف","sev":"عالي","location":"فم","keywords":["كلمة"],"signs":"علامات","xray":"أشعة","treat":"علاج","diff":"تفريق"}'></textarea>
+                        <button class="btn btn-green" onclick="addCasesFromJSON()">💾 حفظ</button>
+                        <div id="undo-area" class="undo-container">
+                            <button class="undo-btn" onclick="undoLastAdd()">↩️ تراجع (<span id="undo-timer">5</span>)</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="activation-requests"></div>
+                <div class="card contributors-section">
+                    <div class="collapsible-header" onclick="toggleCollapse('contrib-list', 'contrib-icon')">
+                        <h3>🏆 المساهمون</h3><span id="contrib-icon" class="toggle-icon">▼</span>
+                    </div>
+                    <div id="contrib-list" class="collapsible-content">
+                        <p style="font-size:11px; color:#666; margin-bottom:8px;">أفضل الأطباء:</p>
+                        <div id="contributors-list-content"><div class="empty">جاري...</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="collapsible-header" onclick="toggleCollapse('req-list-container', 'req-icon')">
+                        <h3>📥 طلبات التفعيل</h3><span id="req-icon" class="toggle-icon">▼</span>
+                    </div>
+                    <div id="req-list-container" class="collapsible-content">
+                        <div id="req-list" style="padding-top:10px;" class="empty">لا توجد طلبات</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="collapsible-header" onclick="toggleCollapse('doc-list-container', 'doc-icon')">
+                        <h3>👥 سجل الأطباء</h3><span id="doc-icon" class="toggle-icon">▼</span>
+                    </div>
+                    <div id="doc-list-container" class="collapsible-content">
+                        <div class="table-wrap" style="margin-top:15px;">
+                            <table>
+                                <thead><tr><th>الاسم</th><th>البريد</th><th>الحالة</th><th>المساهمات</th><th>إجراء</th></tr></thead>
+                                <tbody id="u-tbl"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-green" onclick="goDiag()">🔍 واجهة التشخيص الشامل</button>
+            </div>
+
+            <div id="diag" class="view">
+                <div class="card">
+                    <h3>📋 الوصف السريري للحالة</h3>
+                    <p style="font-size:11px;color:#94a3b8;margin-bottom:10px;">💡 اكتب الأعراض بدقة لتحصل على أدق تشخيص:</p>
+                    <textarea id="sym" placeholder="مثال: ألم خلف الضرس الأخير مع صعوبة فتح الفم ورائحة كريهة..."></textarea>
+                    <button class="btn" onclick="runDiagnosis()">🔍 تحليل الخبير السريري</button>
+                </div>
+                <div id="res"></div>
+                <button class="btn btn-gray" id="backToAdminBtn" onclick="goAdmin()" style="display:none;">⚙️ العودة للإدارة</button>
+            </div>
+        </main>
+        <footer>
+            <div><a href="https://wa.me/963939436998" target="_blank" class="wa-btn">📱 أرسل ملاحظاتك</a></div>
+            <div style="font-size:11px; opacity:0.85; margin-top:4px;">تطبيقات الدكتور عطوني | الإصدار v48.7 Ultimate</div>
+        </footer>
+    </div>
+    <div class="chat-fab" onclick="toggleChat()">💬</div>
+    <div id="chat-modal" class="chat-modal">
+        <div class="chat-header"><span>💬 النقاش العام</span><span style="cursor:pointer" onclick="toggleChat()">✕</span></div>
+        <div id="chat-body" class="chat-body"><div class="empty" style="padding:20px">جاري تحميل الرسائل...</div></div>
+        <div id="emoji-picker-input" class="emoji-picker-input"></div>
+        <div class="chat-input-area">
+            <div id="image-preview-area" class="image-preview" style="display:none">
+                <img id="preview-img" src="" alt="preview">
+                <span id="preview-name" style="font-size:11px;flex:1"></span>
+                <button onclick="cancelImage()">✖ إلغاء</button>
+            </div>
+            <div class="chat-input-row">
+                <div class="chat-tools">
+                    <button class="tool-btn" onclick="document.getElementById('chat-img-input').click()" title="إرفاق صورة">📷</button>
+                    <button class="tool-btn" onclick="toggleInputEmoji()" title="سمايلات">😊</button>
+                </div>
+                <input type="text" id="chat-input" class="chat-input" placeholder="اكتب رسالتك هنا...">
+                <button class="chat-send" onclick="sendChatMessage()" style="background:var(--primary);color:#fff;border:none;padding:8px 12px;border-radius:20px;cursor:pointer">➤</button>
+            </div>
+        </div>
+    </div>
+    <input type="file" id="chat-img-input" accept="image/*" style="display:none" onchange="handleImageSelect(this)">
+    <div class="toast" id="toast"></div>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script>
+        const cfg = { apiKey:"AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE", authDomain:"diagnosis-6ea4b.firebaseapp.com", databaseURL:"https://diagnosis-6ea4b-default-rtdb.firebaseio.com", projectId:"diagnosis-6ea4b" };
+        let db;
+        try { firebase.initializeApp(cfg); db = firebase.database(); } catch(e) { console.warn("⚠️ Offline Mode"); db = null; }
+        
+        const $=id=>document.getElementById(id);
+        const toast=m=>{ const t=$('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); };
+        const showReg=()=>{ $('login-card').classList.add('hide'); $('reg-card').classList.remove('hide'); };
+        const showLogin=()=>{ $('reg-card').classList.add('hide'); $('login-card').classList.remove('hide'); };
+        window.toggleCollapse = (c, i) => { const el=$(c), icon=$(i); if(el.classList.contains('collapsed')) { el.classList.remove('collapsed'); icon.style.transform='rotate(0deg)'; } else { el.classList.add('collapsed'); icon.style.transform='rotate(-90deg)'; } };
+        
+        // ========== نظام البوستر الإعلاني باستخدام رابط الصورة (URL) - يظهر للجميع ==========
+        let bannerUnsubscribe = null;
+        
+        function displayBanner(imageUrl) { 
+            const container = $('#bannerContainer');
+            if(!container) return;
+            if(imageUrl && imageUrl.trim() !== "" && (imageUrl.startsWith('http://') || imageUrl.startsWith('https://'))) {
+                container.innerHTML = `<img src="${imageUrl}" class="banner-image" alt="بوستر إعلاني" onclick="window.open(this.src)" title="اضغط لتكبير الصورة" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\'banner-placeholder\'>⚠️ خطأ في تحميل الصورة. تأكد من الرابط.</div>';">`;
+            } else {
+                container.innerHTML = `<div class="banner-placeholder">📢 لا يوجد بوستر إعلاني حالياً</div>`;
+            }
+        }
+        
+        function startBannerListener() {
+            if (!db) {
+                displayBanner(null);
+                return;
+            }
+            if (bannerUnsubscribe) bannerUnsubscribe();
+            const bannerRef = db.ref('public_banner_url');
+            bannerUnsubscribe = bannerRef.on('value', (snapshot) => {
+                const url = snapshot.val();
+                displayBanner(url);
+                // تحديث المعاينة في لوحة الإدارة
+                if ($('adminBannerPreview')) {
+                    if (url && url.trim() !== "") {
+                        $('adminBannerPreview').innerHTML = `<img src="${url}" class="banner-preview" onerror="this.style.display='none';this.nextSibling.style.display='block';"><p style="font-size:11px; margin-top:5px;">البوستر الحالي (يظهر للجميع)</p><p style="font-size:10px; color:#94a3b8; word-break:break-all;">${url}</p>`;
+                        if ($('bannerUrlInput')) $('bannerUrlInput').value = url;
+                    } else {
+                        $('adminBannerPreview').innerHTML = `<p style="color:#94a3b8;">لا يوجد بوستر حالياً</p>`;
+                        if ($('bannerUrlInput')) $('bannerUrlInput').value = '';
+                    }
+                }
+            }, (error) => {
+                console.error("خطأ في الاستماع للبوستر:", error);
+                displayBanner(null);
+            });
+        }
+        
+        window.saveBannerUrl = () => {
+            if (!db) return toast('❌ لا يوجد اتصال بقاعدة البيانات');
+            const url = $('#bannerUrlInput').value.trim();
+            if (!url) return toast('⚠️ الرجاء إدخال رابط الصورة');
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                return toast('⚠️ الرابط يجب أن يبدأ بـ http:// أو https://');
+            }
+            db.ref('public_banner_url').set(url)
+                .then(() => {
+                    toast('✅ تم حفظ رابط البوستر وسيظهر للجميع فوراً');
+                })
+                .catch(err => toast('❌ فشل الحفظ: ' + err.message));
+        };
+        
+        window.deleteBanner = () => {
+            if (!db) return toast('لا اتصال');
+            if (confirm('حذف البوستر الإعلاني نهائياً؟ سوف يختفي من جميع المستخدمين.')) {
+                db.ref('public_banner_url').remove()
+                    .then(() => {
+                        toast('🗑️ تم حذف البوستر');
+                        if ($('bannerUrlInput')) $('bannerUrlInput').value = '';
+                    })
+                    .catch(e => toast('فشل الحذف: ' + e.message));
+            }
+        };
+        
+        // معاينة الرابط قبل الحفظ
+        if ($('bannerUrlInput')) {
+            $('bannerUrlInput').addEventListener('input', function() {
+                const url = this.value.trim();
+                const previewDiv = $('#adminBannerPreview');
+                if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
+                    previewDiv.innerHTML = `<img src="${url}" class="banner-preview" onerror="this.style.display='none';this.nextSibling.style.display='block';"><span style="display:block;font-size:11px;">معاينة الرابط (لم يحفظ بعد)</span><p style="font-size:10px; color:#fbbf24; word-break:break-all;">${url}</p>`;
+                } else if (url) {
+                    previewDiv.innerHTML = `<p style="color:#ef4444;">⚠️ الرابط غير صالح (يجب أن يبدأ بـ http:// أو https://)</p>`;
+                } else {
+                    if (currentBannerUrl) {
+                        previewDiv.innerHTML = `<img src="${currentBannerUrl}" class="banner-preview"><p style="font-size:11px;">البوستر الحالي</p>`;
+                    } else {
+                        previewDiv.innerHTML = `<p style="color:#94a3b8;">لا يوجد بوستر</p>`;
+                    }
+                }
+            });
+        }
+        
+        // ========== باقي الدوال (الدردشة، الدخول، الإدارة، التشخيص) ==========
+        let pendingImage = null;
+        window.toggleChat=()=>{ const modal=$('chat-modal'); modal.classList.toggle('active'); if(modal.classList.contains('active')) loadChatMessages(); };
+        function handleImageSelect(input) { if (input.files && input.files[0]) { const file = input.files[0]; const reader = new FileReader(); reader.onload = function(e) { pendingImage = { data: e.target.result, name: file.name }; $('preview-img').src = e.target.result; $('preview-name').textContent = file.name.substring(0, 20) + '...'; $('image-preview-area').style.display = 'flex'; toast('✅ تم اختيار الصورة'); }; reader.readAsDataURL(file); } }
+        function cancelImage() { pendingImage = null; $('image-preview-area').style.display = 'none'; $('preview-img').src = ''; $('preview-name').textContent = ''; $('chat-img-input').value = ''; }
+        window.deleteChatMessage = (key) => { if(!db||!user) return; db.ref(`public_chat/${key}`).once('value').then(snap => { const msg=snap.val(); if(msg && (user.name===msg.user||user.role==='admin')){ if(confirm('حذف؟')) db.ref(`public_chat/${key}`).remove().then(()=>toast('تم الحذف')); } else toast('لا يمكنك الحذف'); }); };
+        function loadChatMessages(){ if(!db) { $('chat-body').innerHTML='<div class="empty">غير متاحة</div>'; return; } db.ref('public_chat').limitToLast(50).on('value', snap => { let html = ''; if(snap.exists()) snap.forEach(child => { const msg=child.val(), key=child.key; let reactionsHtml=''; if(msg.reactions) Object.entries(msg.reactions).forEach(([e,u])=>{ reactionsHtml+=`<span class="reaction-tag">${e} ${u.length}</span>`; }); let imgHtml = msg.image ? `<div class="chat-img-container"><img src="${msg.image}" class="chat-img" onclick="window.open(this.src)">${msg.imageComment?`<div class="img-comment">💬 ${msg.imageComment}</div>`:''}</div>` : ''; let deleteButton = (user && (user.name === msg.user || user.role === 'admin')) ? `<button class="delete-msg-btn" onclick="deleteChatMessage('${key}')">🗑️</button>` : ''; html+=`<div class="chat-msg ${msg.user==='المدير'?'admin':''}"><div class="chat-meta"><b>${msg.user}</b><span>${new Date(msg.date).toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})}</span></div><div>${msg.text||''}</div>${imgHtml}<div class="msg-actions"><div class="reactions-display">${reactionsHtml}</div><div style="display:flex; gap:6px;"><button class="reaction-btn" onclick="toggleReactionPicker('${key}')">😊</button>${deleteButton}</div></div><div id="react-picker-${key}" class="emoji-picker-msg">${['👍','❤️','😂','😮','😢','🦷'].map(e=>`<span class="emoji-item" onclick="addReaction('${key}','${e}')">${e}</span>`).join('')}</div></div>`; }); else html='<div class="empty">لا توجد رسائل</div>'; $('chat-body').innerHTML=html; $('chat-body').scrollTop=$('chat-body').scrollHeight; }); }
+        window.toggleReactionPicker=(key)=>{ document.querySelectorAll('.emoji-picker-msg').forEach(el=>el.classList.remove('active')); const p=$(`react-picker-${key}`); if(p) p.classList.toggle('active'); };
+        window.addReaction=(key,emoji)=>{ if(!user) return; const ref=db.ref(`public_chat/${key}/reactions/${emoji}`); ref.transaction(cur=>{ if(!cur) return [user.name]; if(cur.includes(user.name)) return cur.filter(u=>u!==user.name); return [...cur,user.name]; }); $(`react-picker-${key}`).classList.remove('active'); };
+        function sendChatMessage(){ if(!db) return toast('لا اتصال'); const input=$('chat-input'); const text=input.value.trim(); if(!text && !pendingImage) return toast('أدخل نصاً'); if(!user) return; let msgObj={user:user.name,date:Date.now(),text:text}; if(pendingImage) { msgObj.image = pendingImage.data; msgObj.imageName = pendingImage.name; } db.ref('public_chat').push(msgObj).then(()=>{ input.value=''; cancelImage(); toast('تم الإرسال'); }); }
+        const inputEmojis=['🦷','','👅','','😷','','🤕','','💉','','✅','','⚠️','👍','👎','😂','😢','😡','🤔','']; const inputPicker=$('emoji-picker-input'); inputEmojis.forEach(emoji=>{ const span=document.createElement('span'); span.className='emoji-item'; span.textContent=emoji; span.onclick=()=>{ $('chat-input').value+=emoji; $('chat-input').focus(); }; inputPicker.appendChild(span); });
+        window.toggleInputEmoji=()=>{ inputPicker.classList.toggle('active'); };
+        
+        // -------------------- نظام الدخول والإدارة --------------------
+        const SECRET_KEY="9591melas"; let user=null; let currentBannerUrl = null;
+        const doLoginComplex = async () => { 
+            const input=$('login-input').value.trim(); const btn=$('login-btn'); if(!input) return toast('⚠️ أدخل كلمة المرور'); 
+            btn.disabled=true; btn.textContent='⏳...';
+            if(input===SECRET_KEY||input.split('').reverse().join('')===SECRET_KEY){ 
+                user={name:'المدير',role:'admin'}; localStorage.setItem('d_session',JSON.stringify(user));
+                $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent='المدير';
+                $('admin').classList.add('active'); $('diag').classList.remove('active'); $('backToAdminBtn').style.display='block';
+                if(db){try{load();loadContributors();loadActivationRequests(); startBannerListener();}catch(e){}}
+                toast('✅ تم الدخول كمدير'); btn.disabled=false; btn.textContent='دخول آمن 🔐'; return; 
+            }
+            if(!db){ toast('❌ لا اتصال بالخادم'); btn.disabled=false; btn.textContent='دخول آمن 🔐'; return; }
+            try{ 
+                const snap=await db.ref('users').orderByChild('email').equalTo(input).once('value'); let found=null; 
+                if(snap.exists()) snap.forEach(child=>{ found={id:child.key,...child.val()}; });
+                if(!found) { const snap2=await db.ref('users').orderByChild('name').equalTo(input).once('value'); if(snap2.exists()) snap2.forEach(child=>{ found={id:child.key,...child.val()}; }); }
+                if(!found) toast('❌ بيانات غير صحيحة'); 
+                else if(found.status==='pending') toast('⏳ قيد المراجعة'); 
+                else if(found.status==='rejected'||found.status==='disabled') toast('❌ غير مفعل'); 
+                else{ user={...found,role:'doc'}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; $('admin').classList.remove('active'); $('diag').classList.add('active'); updateUserStats(); toast('✅ أهلاً د/'+user.name); 
+                    startBannerListener(); 
+                } 
+            }catch(err){ toast('❌ خطأ: '+err.message); } finally{ btn.disabled=false; btn.textContent='دخول آمن 🔐'; } 
+        };
+        const doRegister=()=>{ const n=$('r-name').value.trim(), e=$('r-email').value.trim().toLowerCase(), p=$('r-pass').value; if(!n||!e||!p) return toast('أكمل الحقول'); if(p.length<6) return toast('كلمة مرور قصيرة'); if(!db) return toast('❌ لا اتصال'); db.ref('users').push({name:n,email:e,pass:p,status:'pending',date:Date.now(),corrections:0}).then(()=>{ toast('✅ تم الإرسال'); $('r-name').value=''; $('r-email').value=''; $('r-pass').value=''; setTimeout(showLogin,2000); }).catch(e=>toast('❌ فشل: '+e.message)); };
+        const enterApp=()=>{}; const updateUserStats=()=>{ if(user?.id&&user.role==='doc'&&db) db.ref('users/'+user.id).once('value').then(snap=>{ const data=snap.val(); if(data?.corrections!==undefined){ user.corrections=data.corrections; $('user-corrections').textContent=data.corrections; $('user-stats').style.display='inline'; } }); };
+        const goDiag=()=>{ $('admin').classList.remove('active'); $('diag').classList.add('active'); $('backToAdminBtn').style.display='block'; if(user?.role==='doc') updateUserStats(); };
+        const goAdmin=()=>{ if(user && user.role === 'admin') { $('diag').classList.remove('active'); $('admin').classList.add('active'); $('backToAdminBtn').style.display='none'; if(db){ load(); loadContributors(); loadActivationRequests(); } } else { toast('غير مصرح'); } };
+        const doLogout=()=>{ localStorage.removeItem('d_session'); location.reload(); };
+        function loadActivationRequests(){ if(!db||user?.role!=='admin') return; db.ref('activation_requests').once('value').then(snap=>{ let html=''; if(snap.exists()) snap.forEach(child=>{ const req=child.val(); html+=`<div class="admin-alert"><div><b>🎓 ${req.userName}</b> (${req.corrections} تصحيح)</div><div><button class="btn-approve" onclick="approveActivation('${child.key}','${req.userId}')">✅</button><button class="btn-ignore" onclick="ignoreActivation('${child.key}')">❌</button></div></div>`; }); $('activation-requests').innerHTML=html||''; }); }
+        window.approveActivation=(reqId,userId)=>{ if(confirm('تفعيل؟')){ db.ref('users/'+userId).update({status:'permanent'}); db.ref('activation_requests/'+reqId).remove(); toast('✅ تم'); loadActivationRequests(); load(); } };
+        window.ignoreActivation=(reqId)=>{ db.ref('activation_requests/'+reqId).remove(); toast('⚠️ تجاهل'); loadActivationRequests(); };
+        function loadContributors(){ if(!db) return; db.ref('users').orderByChild('corrections').limitToLast(5).once('value').then(snap=>{ let html='', contributors=[]; if(snap.exists()) snap.forEach(child=>{ const u=child.val(); if(u.corrections>0) contributors.push(u); }); contributors.reverse().forEach(u=>{ let badge=u.corrections>=30?'🌟':(u.corrections>=10?'🎓':''); html+=`<div class="contributor-item"><span>${u.name||'مجهول'} ${badge}</span><span style="color:#60a5fa">${u.corrections} تصحيح</span></div>`; }); $('contributors-list-content').innerHTML=html||'<div class="empty">لا توجد</div>'; }); }
+        window.load=()=>{ if(!db||user?.role!=='admin') return; db.ref('users').once('value').then(snap=>{ const users=[]; if(snap.exists()) snap.forEach(child=>{ const v=child.val(); if(v) users.push({id:child.key,...v}); }); users.sort((a,b)=>(b.date||0)-(a.date||0)); const pending=users.filter(u=>u.status==='pending'); $('c-p').textContent=pending.length; $('c-a').textContent=users.filter(u=>u.status==='active').length; $('c-t').textContent=users.length; $('badge').textContent=pending.length; $('badge').style.display=pending.length?'inline':'none'; $('req-list').innerHTML=pending.length?pending.map(u=>`<div style="background:#172554;border:1px solid #1e40af;padding:10px;border-radius:8px;margin:6px 0;display:flex;justify-content:space-between"><div><b>${u.name||'-'}</b><br><small>${u.email||'-'}</small></div><div><button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button><button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button></div></div>`).join(''):'<div class="empty">✅ لا توجد طلبات</div>'; let tblHTML=''; users.forEach(u=>{ let sc='st-pend', st='معلق'; if(u.status==='active'){ sc='st-act'; st='نشط'; } if(u.status==='temp'){ sc='st-temp'; st='🕐 مؤقت'; } if(u.status==='permanent'){ sc='st-perm'; st='🌟 دائم'; } let badgeIcon=(u.corrections>=30)?'🌟':((u.corrections>=10)?'🎓':'-'); let act=u.status==='active'?`<button class="act-btn act-no" onclick="upd('${u.id}','disabled')">🚫</button>`:u.status==='disabled'||u.status==='rejected'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button>`:u.status==='pending'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button> <button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button>`:''; act+=` <button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button>`; tblHTML+=`<tr><td>${u.name||'-'}</td><td>${u.email||'-'}</td><td><span class="status ${sc}">${st}</span><td><td style="text-align:center">${badgeIcon} (${u.corrections||0})</td><td>${act}</td>`; }); $('u-tbl').innerHTML=tblHTML||'<tr><td colspan="5" class="empty">لا يوجد</td></tr>'; }); };        window.upd=(i,s)=>db&&db.ref('users/'+i).update({status:s}).then(load);
+        window.del=(i)=>{ if(confirm('حذف؟')&&db) db.ref('users/'+i).remove().then(load); };
+        
+        // -------------------- قاعدة البيانات الثابتة والديناميكية --------------------
+        const STATIC_DB = [
+            {id:"pericoronitis", name:"التهاب حول ضرس العقل", cat:"جراحة", sev:"عالي", location:"خلف", keywords:["التهاب حول ضرس العقل","غطاء لثوي","صعوبة فتح الفم","رائحة فم","ألم خلف الضرس الأخير","تواج"], signs:"انتفاخ حول التاج، صعوبة فتح الفم، رائحة كريهة.", xray:"سن منطمر جزئياً.", treat:"غسل، مضادات، قلع.", diff:"موقع خلفي + غطاء ملتهب + رائحة."},
+            {id:"ecc", name:"تسوس الطفولة المبكر", cat:"أطفال", sev:"عالي", location:"أسنان", keywords:["أسنان سوداء","أسنان متآكلة","نخور منتشرة","طفل","رضيع","رضاعة","زجاجة","بببرونة","أمامية"], signs:"نخر واسع حول عنق القواطع العلوية", xray:"نخر واسع", treat:"ترميم أو لب أو خلع", diff:"سن لبنية + رضاعة"},
+            {id:"pulp_child", name:"التهاب لب سن لبني", cat:"أطفال", sev:"عالي", location:"أسنان", keywords:["ألم طفل","سن لبني","أسنان مؤقتة","سن حليب","تورم لثة","خراج","ناسور","يبكي"], signs:"ناسور لثوي فوق السن", xray:"ارتشاف عظمي", treat:"بتر لب أو خلع", diff:"سن لبنية + ناسور"},
+        ];
+        let DYNAMIC_DB = []; let FULL_DB = [...STATIC_DB]; let lastAddedIds = [];
+        const SYNONYMS = { 'يوجعني':'ألم','وجع':'ألم','موجع':'ألم' };
+        function norm(t){ if(!t) return ''; return t.normalize('NFKD').replace(/[\u064B-\u065F\u0670]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/ؤ/g,'و').replace(/ئ/g,'ي').replace(/گ/g,'ك').replace(/پ/g,'ب').replace(/ڤ/g,'ف').replace(/ڠ/g,'ن').replace(/\s+/g,' ').trim().toLowerCase(); }
+        function extractNegations(t){ const n=new Set(); [/لا\s+(\w+)/g,/بدون\s+(\w+)/g,/غير\s+(\w+)/g,/ما\s+في\s+(\w+)/g].forEach(rx=>{let m;while((m=rx.exec(t))!==null)n.add(norm(m[1]))}); return n }
+        function lev(a,b){ const m=a.length,n=b.length;if(m===0)return n;if(n===0)return m;const d=Array.from({length:m+1},()=>Array(n+1).fill(0));for(let i=0;i<=m;i++)d[i][0]=i;for(let j=0;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[m][n] }
+        function calcScore(dis,input,neg){ let total=0,maxW=0;const words=input.split(/\s+/);for(let kw of dis.keywords){let kwN=norm(kw);if(kwN.length<2)continue;let w=1+(kwN.split(' ').length*.6)+(kwN.length/8);maxW+=w;let found=false,q=0;if(input.includes(kwN)){found=true;q=1}else{let parts=kwN.split(/\s+/).filter(p=>p.length>2),cnt=0;for(let pw of parts){let best=Infinity;for(let iw of words){let d=lev(pw,iw);if(d<best)best=d}if(best<=1)cnt++}if(cnt>0){found=true;q=cnt/parts.length}}if(found){let main=kwN.split(/\s+/)[0];if(neg.has(main)||neg.has(kwN))total-=w*2.5;else total+=w*q}}let raw=maxW>0?(total/maxW)*100:0;return{score:Math.round(Math.max(0,Math.min(100,raw)))}};
+        function runDiagnosis() { const text=$('sym').value.trim(); if(!text)return toast('اكتب الأعراض'); const btn=document.querySelector('#diag .btn'); btn.disabled=true; btn.textContent='🔬 جاري...'; setTimeout(()=>{ const nText=norm(text), neg=extractNegations(nText), results=[]; for(let d of FULL_DB){ let r=calcScore(d,nText,neg); if(r.score>=25)results.push({...d,...r}) } results.sort((a,b)=>b.score-a.score); const filtered=results.slice(0,3); let html=`<div class="clinical-report"><div class="report-header"><div class="report-title">🔍 الاحتمالات التشخيصية</div><span style="font-size:10px;color:#94a3b8">v48.7 أوفلاين</span></div><div style="background:#172554;border:1px solid #1e40af;border-radius:6px;padding:8px;margin-bottom:12px;font-size:11px;color:#93c5fd">⚠️ تنبيه: احتمالات تعليمية. التشخيص النهائي يحتاج فحصاً سريرياً.</div>`; if(filtered.length===0) html+=`<div class="empty">🤔 لا توجد نتائج مطابقة. حاول إضافة تفاصيل أكثر.</div>`; else { html+=`<div style="margin-bottom:12px;padding-bottom:8px;border-bottom:1px dashed #334155"><h4 style="color:#60a5fa;margin:0;font-size:14px">📋 الأرجح سريريًا:</h4></div>`; filtered.forEach((r,i)=>{ const bc=r.sev==='طوارئ'?'#ef4444':'#3b82f6', sc=r.sev==='طوارئ'?'#ef4444':'#f59e0b', bcL=r.score>75?'conf-high':r.score>50?'conf-mid':'conf-low'; html+=`<div class="diagnosis-card" style="border-right-color:${bc}"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:4px"><span style="font-weight:700;color:#fff;font-size:13px">#${i+1} ${r.name} <span class="cat-tag">${r.cat}</span></span><div style="display:flex;gap:4px;align-items:center"><span class="conf-badge ${bcL}">${r.score}%</span><span style="font-size:9px;color:#94a3b8">أولوية:<b style="color:${sc}">${r.sev}</b></span></div></div><div class="section"><h5>🔍 العلامات</h5><p style="font-size:11px">${r.signs||'غير محدد'}</p></div><div class="section"><h5>💡 التفريق</h5><p style="font-size:11px;color:#cbd5e1">${r.diff||'يحتاج فحصاً مباشراً'}</p></div><div class="section"><h5>📖 العلاج</h5><p style="font-size:11px">${r.treat||'مراجعة الاختصاص'}</p></div></div>` }) } html+=`<div style="background:#0f172a;border:1px dashed #334155;border-radius:6px;padding:8px;margin-top:10px;text-align:center;font-size:10px;color:#64748b">📚 أداة تعليمية • لا تغني عن الفحص السريري</div></div>`; $('res').innerHTML=html; $('res').scrollIntoView({behavior:'smooth'}); btn.disabled=false; btn.textContent='🔍 تحليل' },100) }
+        window.addCasesFromJSON = () => { const jsonText = $('json-input').value.trim(); if (!jsonText) return toast('⚠️ الرجاء إدخال كود JSON'); let casesToAdd = []; try { const parsed = JSON.parse(jsonText); if (Array.isArray(parsed)) casesToAdd = parsed; else if (typeof parsed === 'object' && parsed.id) casesToAdd = [parsed]; else throw new Error("تنسيق غير صالح"); } catch (e) { return toast('❌ خطأ في تنسيق JSON: ' + e.message); } const existingIds = new Set(FULL_DB.map(c => c.id)); const newIds = []; casesToAdd.forEach(c => { if (!c.id || !c.name) toast(`⚠️ حالة ناقصة ID أو Name`); else if (existingIds.has(c.id)) toast(`⚠️ ID مكرر: ${c.id}`); else { const completeCase = { id: c.id, name: c.name, cat: c.cat || "عام", sev: c.sev || "متوسط", location: c.location || "فم", keywords: c.keywords || [c.name], signs: c.signs || "", xray: c.xray || "", treat: c.treat || "", diff: c.diff || "" }; newIds.push(c.id); DYNAMIC_DB.push(completeCase); FULL_DB.push(completeCase); existingIds.add(c.id); } }); if(newIds.length===0) return; if(db){ const updates={}; newIds.forEach(id=>{ const caseData=DYNAMIC_DB.find(c=>c.id===id); updates['custom_diagnoses/'+id]=caseData; }); db.ref().update(updates).then(()=>{ toast(`✅ تم حفظ ${newIds.length} حالة`); $('json-input').value=''; updateDbStats(); lastAddedIds=newIds; $('#undo-area').style.display='block'; let timeLeft=5; $('#undo-timer').textContent=timeLeft; const timer=setInterval(()=>{ timeLeft--; $('#undo-timer').textContent=timeLeft; if(timeLeft<=0){ clearInterval(timer); $('#undo-area').style.display='none'; lastAddedIds=[]; } },1000); }).catch(e=>toast('❌ فشل الحفظ: '+e.message)); } else { toast('✅ تمت إضافة محلياً'); updateDbStats(); } };
+        function loadDynamicDiagnoses() { if(!db) { updateDbStats(); return; } db.ref('custom_diagnoses').once('value').then(snap => { DYNAMIC_DB = []; if(snap.exists()) snap.forEach(child => { DYNAMIC_DB.push(child.val()); }); FULL_DB = [...STATIC_DB, ...DYNAMIC_DB]; updateDbStats(); }); }
+        window.undoLastAdd = () => { if(!lastAddedIds||lastAddedIds.length===0)return; if(confirm('حذف '+lastAddedIds.length+' حالة؟')){ FULL_DB=FULL_DB.filter(c=>!lastAddedIds.includes(c.id)); DYNAMIC_DB=DYNAMIC_DB.filter(c=>!lastAddedIds.includes(c.id)); toast('↩️ تم التراجع'); $('#undo-area').style.display='none'; lastAddedIds=[]; updateDbStats(); } };
+        function updateDbStats(){ const t=FULL_DB.length,d=DYNAMIC_DB.length,s=STATIC_DB.length; $('#db-stats').textContent=`كلي: ${t} (ثابت: ${s} + مضاف: ${d})`; }
+        
+        window.onload = () => { setTimeout(() => { loadDynamicDiagnoses(); startBannerListener(); const s = localStorage.getItem('d_session'); if(s){ try{ user = JSON.parse(s); enterApp(); if(user.role==='admin'){ $('admin').classList.add('active'); $('diag').classList.remove('active'); $('backToAdminBtn').style.display='block'; if(db){load();loadContributors();loadActivationRequests();} }else{ $('admin').classList.remove('active'); $('diag').classList.add('active'); updateUserStats(); } }catch(e){localStorage.removeItem('d_session');} } }, 500); };
+        window.showReg = showReg; window.showLogin = showLogin; window.doLoginComplex = doLoginComplex; window.doRegister = doRegister; window.doLogout = doLogout; window.goDiag = goDiag; window.goAdmin = goAdmin; window.upd = upd; window.del = del;
+    </script>
+</body>
+</html>     overflow: hidden;
             border-bottom: 2px solid #3b82f6;
             box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
         }
