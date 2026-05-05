@@ -156,7 +156,7 @@
         .undo-btn { background: var(--warn); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; }
         .case-counter { background: #172554; color: #60a5fa; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; display: inline-block; margin-bottom: 8px; }
         
-        /* بوستر إعلاني كبير وواضح للجميع */
+        /* بوستر إعلاني كبير وواضح للجميع عبر رابط الصورة */
         .banner-card {
             background: linear-gradient(135deg, #0f172a, #1e293b);
             border: 2px solid #3b82f6;
@@ -190,25 +190,37 @@
         .admin-banner-upload {
             margin-top: 12px;
             display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .url-input-group {
+            display: flex;
             flex-wrap: wrap;
             gap: 10px;
             align-items: center;
-            justify-content: center;
         }
-        .file-input-label {
-            background: #334155;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            color: #cbd5e1;
+        .url-input {
+            flex: 1;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 10px;
+            color: #fff;
+            font-size: 13px;
+            direction: ltr;
+            text-align: left;
+        }
+        .url-input:focus {
+            border-color: var(--primary);
+            outline: none;
         }
         .banner-preview {
-            max-width: 150px;
-            max-height: 100px;
+            max-width: 200px;
+            max-height: 120px;
             border-radius: 12px;
             border: 2px solid #3b82f6;
             margin-top: 10px;
+            object-fit: contain;
         }
         @media (max-width: 480px) {
             .stats { grid-template-columns: 1fr; }
@@ -273,22 +285,23 @@
             <div id="bannerContainer" class="banner-card"></div>
 
             <div id="admin" class="view">
-                <!-- قسم رفع البوستر للإدارة فقط -->
+                <!-- قسم إدارة البوستر للإدارة فقط (باستخدام رابط الصورة) -->
                 <div class="card">
                     <div class="collapsible-header" onclick="toggleCollapse('admin-banner-panel', 'banner-icon')">
-                        <h3>📢 رفع بوستر إعلاني (يظهر للجميع)</h3>
+                        <h3>📢 إدارة البوستر الإعلاني (يظهر للجميع)</h3>
                         <span id="banner-icon" class="toggle-icon">▼</span>
                     </div>
                     <div id="admin-banner-panel" class="collapsible-content">
-                        <p style="font-size:12px; color:#94a3b8; margin-bottom:12px;">اختر صورة بوستر تظهر أعلى الصفحة للمدير ولجميع الأطباء والطلاب.</p>
+                        <p style="font-size:12px; color:#94a3b8; margin-bottom:12px;">أدخل رابط الصورة (Image URL) من Imgur أو أي موقع استضافة آخر:</p>
                         <div class="admin-banner-upload">
-                            <input type="file" id="bannerUploadInput" accept="image/jpeg,image/png,image/gif" style="display:none" onchange="previewBannerForAdmin(this)">
-                            <button class="btn btn-gray" style="width:auto; padding:8px 16px;" onclick="document.getElementById('bannerUploadInput').click()">📁 اختيار صورة</button>
-                            <button class="btn" style="width:auto; padding:8px 16px; background:#10b981;" onclick="uploadBannerToFirebase()">💾 حفظ البوستر</button>
-                            <button class="btn btn-gray" style="width:auto; padding:8px 16px; background:#ef4444;" onclick="deleteBanner()">🗑️ حذف البوستر</button>
+                            <div class="url-input-group">
+                                <input type="text" id="bannerUrlInput" class="url-input" placeholder="https://i.imgur.com/example.jpg" dir="ltr">
+                                <button class="btn" style="width:auto; padding:8px 16px; background:#10b981;" onclick="saveBannerUrl()">💾 حفظ الرابط</button>
+                                <button class="btn btn-gray" style="width:auto; padding:8px 16px; background:#ef4444;" onclick="deleteBanner()">🗑️ حذف البوستر</button>
+                            </div>
+                            <div id="adminBannerPreview" style="margin-top:15px; text-align:center;"></div>
                         </div>
-                        <div id="adminBannerPreview" style="margin-top:12px; text-align:center;"></div>
-                        <p style="font-size:11px; color:#60a5fa; margin-top:8px;">⚠️ ملاحظة: الصورة ستظهر لجميع المستخدمين (مدير، أطباء، طلاب) بعد حفظها.</p>
+                        <p style="font-size:11px; color:#60a5fa; margin-top:8px;">⚠️ ملاحظة: استخدم رابط مباشر لصورة (ينتهي بـ .jpg أو .png). الصورة ستظهر لجميع المستخدمين فوراً.</p>
                     </div>
                 </div>
                 <div class="card">
@@ -399,37 +412,40 @@
         const showLogin=()=>{ $('reg-card').classList.add('hide'); $('login-card').classList.remove('hide'); };
         window.toggleCollapse = (c, i) => { const el=$(c), icon=$(i); if(el.classList.contains('collapsed')) { el.classList.remove('collapsed'); icon.style.transform='rotate(0deg)'; } else { el.classList.add('collapsed'); icon.style.transform='rotate(-90deg)'; } };
         
-        // ========== نظام البوستر الإعلاني (للجميع) - مع مستمع مباشر ==========
-        let selectedBannerFile = null;
-        let bannerUnsubscribe = null; // للتنظيف لاحقاً
+        // ========== نظام البوستر الإعلاني باستخدام رابط الصورة (URL) ==========
+        let currentBannerUrl = null;
+        let bannerUnsubscribe = null;
         
-        function displayBanner(imageData) { 
+        function displayBanner(imageUrl) { 
             const container = $('#bannerContainer');
             if(!container) return;
-            if(imageData && imageData.startsWith('data:image')) {
-                container.innerHTML = `<img src="${imageData}" class="banner-image" alt="بوستر إعلاني" onclick="window.open(this.src)" title="اضغط لتكبير الصورة">`;
+            if(imageUrl && imageUrl.trim() !== "" && (imageUrl.startsWith('http://') || imageUrl.startsWith('https://'))) {
+                container.innerHTML = `<img src="${imageUrl}" class="banner-image" alt="بوستر إعلاني" onclick="window.open(this.src)" title="اضغط لتكبير الصورة" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\'banner-placeholder\'>⚠️ خطأ في تحميل الصورة. تأكد من الرابط.</div>';">`;
             } else {
                 container.innerHTML = `<div class="banner-placeholder">📢 لا يوجد بوستر إعلاني حالياً</div>`;
             }
         }
         
-        // بدء الاستماع للتغييرات في البوستر
         function startBannerListener() {
             if (!db) {
                 displayBanner(null);
                 return;
             }
-            if (bannerUnsubscribe) bannerUnsubscribe(); // إنهاء الاستماع السابق
-            const bannerRef = db.ref('public_banner');
+            if (bannerUnsubscribe) bannerUnsubscribe();
+            const bannerRef = db.ref('public_banner_url');
             bannerUnsubscribe = bannerRef.on('value', (snapshot) => {
                 const url = snapshot.val();
+                currentBannerUrl = url;
                 displayBanner(url);
-                // تحديث المعاينة في لوحة الإدارة إذا كانت موجودة
+                // تحديث المعاينة في لوحة الإدارة
                 if ($('adminBannerPreview')) {
-                    if (url && url.startsWith('data:image')) {
-                        $('adminBannerPreview').innerHTML = `<img src="${url}" class="banner-preview"><p style="font-size:11px;">البوستر الحالي (يظهر للجميع)</p>`;
+                    if (url && url.trim() !== "") {
+                        $('adminBannerPreview').innerHTML = `<img src="${url}" class="banner-preview" onerror="this.style.display='none';this.nextSibling.style.display='block';"><p style="font-size:11px; margin-top:5px;">البوستر الحالي (يظهر للجميع)</p><p style="font-size:10px; color:#94a3b8; word-break:break-all;">${url}</p>`;
+                        // تحديث حقل الإدخال
+                        if ($('bannerUrlInput')) $('bannerUrlInput').value = url;
                     } else {
                         $('adminBannerPreview').innerHTML = `<p style="color:#94a3b8;">لا يوجد بوستر حالياً</p>`;
+                        if ($('bannerUrlInput')) $('bannerUrlInput').value = '';
                     }
                 }
             }, (error) => {
@@ -438,54 +454,50 @@
             });
         }
         
-        window.previewBannerForAdmin = (input) => {
-            if(input.files && input.files[0]) {
-                selectedBannerFile = input.files[0];
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const previewDiv = $('#adminBannerPreview');
-                    previewDiv.innerHTML = `<img src="${e.target.result}" class="banner-preview"><span style="display:block;font-size:11px;">✓ تم اختيار الصورة (اضغط حفظ)</span>`;
-                };
-                reader.readAsDataURL(selectedBannerFile);
-            } else {
-                selectedBannerFile = null;
-                $('#adminBannerPreview').innerHTML = `<p style="color:#94a3b8;">لم تختر صورة</p>`;
-            }
-        };
-        
-        window.uploadBannerToFirebase = () => {
+        window.saveBannerUrl = () => {
             if (!db) return toast('❌ لا يوجد اتصال بقاعدة البيانات');
-            if (!selectedBannerFile) return toast('⚠️ الرجاء اختيار صورة أولاً عبر زر "اختيار صورة"');
-            if (selectedBannerFile.size > 500 * 1024) return toast('❌ الصورة كبيرة جداً (الحد الأقصى 500 كيلوبايت)');
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64 = e.target.result;
-                db.ref('public_banner').set(base64)
-                    .then(() => {
-                        toast('✅ تم حفظ البوستر الإعلاني وسيظهر للجميع فوراً');
-                        selectedBannerFile = null;
-                        document.getElementById('bannerUploadInput').value = '';
-                        // لا حاجة لتحديث يدوي لأن المستمع سيفعلها
-                    })
-                    .catch(err => toast('❌ فشل الحفظ: ' + err.message));
-            };
-            reader.onerror = () => toast('❌ فشل قراءة الصورة');
-            reader.readAsDataURL(selectedBannerFile);
+            const url = $('#bannerUrlInput').value.trim();
+            if (!url) return toast('⚠️ الرجاء إدخال رابط الصورة');
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                return toast('⚠️ الرابط يجب أن يبدأ بـ http:// أو https://');
+            }
+            db.ref('public_banner_url').set(url)
+                .then(() => {
+                    toast('✅ تم حفظ رابط البوستر وسيظهر للجميع فوراً');
+                })
+                .catch(err => toast('❌ فشل الحفظ: ' + err.message));
         };
         
         window.deleteBanner = () => {
             if (!db) return toast('لا اتصال');
             if (confirm('حذف البوستر الإعلاني نهائياً؟ سوف يختفي من جميع المستخدمين.')) {
-                db.ref('public_banner').remove()
+                db.ref('public_banner_url').remove()
                     .then(() => {
                         toast('🗑️ تم حذف البوستر');
-                        selectedBannerFile = null;
-                        document.getElementById('bannerUploadInput').value = '';
+                        if ($('bannerUrlInput')) $('bannerUrlInput').value = '';
                     })
                     .catch(e => toast('فشل الحذف: ' + e.message));
             }
         };
+        
+        // معاينة الرابط قبل الحفظ
+        if ($('bannerUrlInput')) {
+            $('bannerUrlInput').addEventListener('input', function() {
+                const url = this.value.trim();
+                const previewDiv = $('#adminBannerPreview');
+                if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
+                    previewDiv.innerHTML = `<img src="${url}" class="banner-preview" onerror="this.style.display='none';this.nextSibling.style.display='block';"><span style="display:block;font-size:11px;">معاينة الرابط (لم يحفظ بعد)</span><p style="font-size:10px; color:#fbbf24; word-break:break-all;">${url}</p>`;
+                } else if (url) {
+                    previewDiv.innerHTML = `<p style="color:#ef4444;">⚠️ الرابط غير صالح (يجب أن يبدأ بـ http:// أو https://)</p>`;
+                } else {
+                    if (currentBannerUrl) {
+                        previewDiv.innerHTML = `<img src="${currentBannerUrl}" class="banner-preview"><p style="font-size:11px;">البوستر الحالي</p>`;
+                    } else {
+                        previewDiv.innerHTML = `<p style="color:#94a3b8;">لا يوجد بوستر</p>`;
+                    }
+                }
+            });
+        }
         
         // ========== باقي الدوال (الدردشة، الدخول، الإدارة، التشخيص) ==========
         let pendingImage = null;
@@ -521,7 +533,6 @@
                 else if(found.status==='pending') toast('⏳ قيد المراجعة'); 
                 else if(found.status==='rejected'||found.status==='disabled') toast('❌ غير مفعل'); 
                 else{ user={...found,role:'doc'}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; $('admin').classList.remove('active'); $('diag').classList.add('active'); updateUserStats(); toast('✅ أهلاً د/'+user.name); 
-                    // بدء الاستماع للبوستر للمستخدم العادي
                     startBannerListener(); 
                 } 
             }catch(err){ toast('❌ خطأ: '+err.message); } finally{ btn.disabled=false; btn.textContent='دخول آمن 🔐'; } 
@@ -535,10 +546,10 @@
         window.approveActivation=(reqId,userId)=>{ if(confirm('تفعيل؟')){ db.ref('users/'+userId).update({status:'permanent'}); db.ref('activation_requests/'+reqId).remove(); toast('✅ تم'); loadActivationRequests(); load(); } };
         window.ignoreActivation=(reqId)=>{ db.ref('activation_requests/'+reqId).remove(); toast('⚠️ تجاهل'); loadActivationRequests(); };
         function loadContributors(){ if(!db) return; db.ref('users').orderByChild('corrections').limitToLast(5).once('value').then(snap=>{ let html='', contributors=[]; if(snap.exists()) snap.forEach(child=>{ const u=child.val(); if(u.corrections>0) contributors.push(u); }); contributors.reverse().forEach(u=>{ let badge=u.corrections>=30?'🌟':(u.corrections>=10?'🎓':''); html+=`<div class="contributor-item"><span>${u.name||'مجهول'} ${badge}</span><span style="color:#60a5fa">${u.corrections} تصحيح</span></div>`; }); $('contributors-list-content').innerHTML=html||'<div class="empty">لا توجد</div>'; }); }
-        window.load=()=>{ if(!db||user?.role!=='admin') return; db.ref('users').once('value').then(snap=>{ const users=[]; if(snap.exists()) snap.forEach(child=>{ const v=child.val(); if(v) users.push({id:child.key,...v}); }); users.sort((a,b)=>(b.date||0)-(a.date||0)); const pending=users.filter(u=>u.status==='pending'); $('c-p').textContent=pending.length; $('c-a').textContent=users.filter(u=>u.status==='active').length; $('c-t').textContent=users.length; $('badge').textContent=pending.length; $('badge').style.display=pending.length?'inline':'none'; $('req-list').innerHTML=pending.length?pending.map(u=>`<div style="background:#172554;border:1px solid #1e40af;padding:10px;border-radius:8px;margin:6px 0;display:flex;justify-content:space-between"><div><b>${u.name||'-'}</b><br><small>${u.email||'-'}</small></div><div><button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button><button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button></div></div>`).join(''):'<div class="empty">✅ لا توجد طلبات</div>'; let tblHTML=''; users.forEach(u=>{ let sc='st-pend', st='معلق'; if(u.status==='active'){ sc='st-act'; st='نشط'; } if(u.status==='temp'){ sc='st-temp'; st='🕐 مؤقت'; } if(u.status==='permanent'){ sc='st-perm'; st='🌟 دائم'; } let badgeIcon=(u.corrections>=30)?'🌟':((u.corrections>=10)?'🎓':'-'); let act=u.status==='active'?`<button class="act-btn act-no" onclick="upd('${u.id}','disabled')">🚫</button>`:u.status==='disabled'||u.status==='rejected'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button>`:u.status==='pending'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button> <button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button>`:''; act+=` <button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button>`; tblHTML+=`<tr><td>${u.name||'-'}</td><td>${u.email||'-'}</td><td><span class="status ${sc}">${st}</span></td><td style="text-align:center">${badgeIcon} (${u.corrections||0})</td><td>${act}</td>`; }); $('u-tbl').innerHTML=tblHTML||'</td><td colspan="5" class="empty">لا يوجد</td></tr>'; }); };        window.upd=(i,s)=>db&&db.ref('users/'+i).update({status:s}).then(load);
+        window.load=()=>{ if(!db||user?.role!=='admin') return; db.ref('users').once('value').then(snap=>{ const users=[]; if(snap.exists()) snap.forEach(child=>{ const v=child.val(); if(v) users.push({id:child.key,...v}); }); users.sort((a,b)=>(b.date||0)-(a.date||0)); const pending=users.filter(u=>u.status==='pending'); $('c-p').textContent=pending.length; $('c-a').textContent=users.filter(u=>u.status==='active').length; $('c-t').textContent=users.length; $('badge').textContent=pending.length; $('badge').style.display=pending.length?'inline':'none'; $('req-list').innerHTML=pending.length?pending.map(u=>`<div style="background:#172554;border:1px solid #1e40af;padding:10px;border-radius:8px;margin:6px 0;display:flex;justify-content:space-between"><div><b>${u.name||'-'}</b><br><small>${u.email||'-'}</small></div><div><button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button><button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button></div></div>`).join(''):'<div class="empty">✅ لا توجد طلبات</div>'; let tblHTML=''; users.forEach(u=>{ let sc='st-pend', st='معلق'; if(u.status==='active'){ sc='st-act'; st='نشط'; } if(u.status==='temp'){ sc='st-temp'; st='🕐 مؤقت'; } if(u.status==='permanent'){ sc='st-perm'; st='🌟 دائم'; } let badgeIcon=(u.corrections>=30)?'🌟':((u.corrections>=10)?'🎓':'-'); let act=u.status==='active'?`<button class="act-btn act-no" onclick="upd('${u.id}','disabled')">🚫</button>`:u.status==='disabled'||u.status==='rejected'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button>`:u.status==='pending'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button> <button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button>`:''; act+=` <button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button>`; tblHTML+=`<tr><td>${u.name||'-'}</td><td>${u.email||'-'}</td><td><span class="status ${sc}">${st}</span></td><td style="text-align:center">${badgeIcon} (${u.corrections||0})</td><td>${act}</td>`; }); $('u-tbl').innerHTML=tblHTML||'<tr><td colspan="5" class="empty">لا يوجد</td></tr>'; }); };        window.upd=(i,s)=>db&&db.ref('users/'+i).update({status:s}).then(load);
         window.del=(i)=>{ if(confirm('حذف؟')&&db) db.ref('users/'+i).remove().then(load); };
         
-        // -------------------- قاعدة البيانات الثابتة والديناميكية --------------------
+        // -------------------- قاعدة البيانات الثابتة والديناميكية (تم الحفاظ عليها كاملة) --------------------
         const STATIC_DB = [
             {id:"pericoronitis", name:"التهاب حول ضرس العقل", cat:"جراحة", sev:"عالي", location:"خلف", keywords:["التهاب حول ضرس العقل","غطاء لثوي","صعوبة فتح الفم","رائحة فم","ألم خلف الضرس الأخير","تواج"], signs:"انتفاخ حول التاج، صعوبة فتح الفم، رائحة كريهة.", xray:"سن منطمر جزئياً.", treat:"غسل، مضادات، قلع.", diff:"موقع خلفي + غطاء ملتهب + رائحة."},
             {id:"ecc", name:"تسوس الطفولة المبكر", cat:"أطفال", sev:"عالي", location:"أسنان", keywords:["أسنان سوداء","أسنان متآكلة","نخور منتشرة","طفل","رضيع","رضاعة","زجاجة","بببرونة","أمامية"], signs:"نخر واسع حول عنق القواطع العلوية", xray:"نخر واسع", treat:"ترميم أو لب أو خلع", diff:"سن لبنية + رضاعة"},
