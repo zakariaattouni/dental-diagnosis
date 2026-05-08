@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تشخيص سني ذكي - د. زكريا عطوني</title>
+    <title>مدرب التشخيص السني - د. زكريا عطوني</title>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <style>
@@ -11,51 +11,51 @@
         *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif}
         body{background:var(--bg);color:var(--t);min-height:100vh;display:flex;flex-direction:column}
         
-        .header{background:linear-gradient(135deg,#1e3a8a,#0f172a);padding:20px;text-align:center;border-bottom:3px solid var(--p)}
-        .header h1{font-size:24px;margin:0}
-        #status{font-size:12px;color:var(--m);margin-top:5px;padding:4px 8px;border-radius:6px;display:inline-block}
+        .header{background:linear-gradient(135deg,#1e3a8a,#0f172a);padding:15px;text-align:center;border-bottom:3px solid var(--p)}
+        #status{font-size:11px;color:var(--m);margin-top:5px;padding:4px 8px;border-radius:6px;display:inline-block}
         .status-ok{background:#064e3b;color:#34d399}
         .status-warn{background:#451a03;color:#fbbf24}
-        .status-err{background:#7f1d1d;color:#fca5a5}
         
-        .auth{flex:1;display:flex;align-items:center;justify-content:center;padding:20px}
-        .auth-card{background:var(--card);padding:25px;border-radius:16px;width:100%;max-width:380px;border:1px solid #334155}
-        .tabs{display:flex;gap:4px;margin-bottom:20px;background:#0f172a;padding:4px;border-radius:12px}
-        .tab{flex:1;padding:10px;border:none;background:transparent;color:var(--m);cursor:pointer;border-radius:8px;font-weight:600}
+        .auth{flex:1;display:flex;align-items:center;justify-content:center;padding:15px}
+        .auth-card{background:var(--card);padding:20px;border-radius:16px;width:100%;max-width:380px;border:1px solid #334155}
+        .tabs{display:flex;gap:4px;margin-bottom:15px;background:#0f172a;padding:4px;border-radius:12px}
+        .tab{flex:1;padding:10px;border:none;background:transparent;color:var(--m);cursor:pointer;border-radius:8px;font-weight:600;font-size:14px}
         .tab.active{background:var(--p);color:#fff}
-        .inp{width:100%;padding:12px;margin:8px 0;border:1px solid #334155;border-radius:10px;background:#0f172a;color:#fff;text-align:center}
-        .btn{width:100%;padding:14px;border:none;border-radius:10px;font-weight:700;cursor:pointer;margin:5px 0}
+        
+        .inp{width:100%;padding:12px;margin:6px 0;border:1px solid #334155;border-radius:10px;background:#0f172a;color:#fff;text-align:center}
+        .btn{width:100%;padding:12px;border:none;border-radius:10px;font-weight:700;cursor:pointer;margin:5px 0}
         .btn-p{background:var(--p);color:#fff}
         .btn-s{background:var(--s);color:#fff}
-        .btn-g{background:#334155;color:#cbd5e1}
+        .btn-d{background:var(--d);color:#fff;font-size:11px;padding:5px}
         
-        .app{max-width:900px;margin:auto;padding:15px;display:none}
-        .nav{display:flex;gap:8px;margin-bottom:15px}
-        .view{display:none}
-        .view.active{display:block;animation:f .3s}
-        @keyframes f{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-        .card{background:var(--card);border-radius:12px;padding:15px;margin-bottom:12px;border:1px solid #334155}
+        .app{max-width:900px;margin:auto;padding:10px;display:none;width:100%}
+        .nav{display:flex;gap:5px;margin-bottom:10px}
+        .view{display:none}.view.active{display:block;animation:f .3s}
+        @keyframes f{from{opacity:0}to{opacity:1}}
         
-        .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
-        .stat{background:#0f172a;padding:10px;border-radius:8px;text-align:center}
-        .stat-n{font-size:20px;font-weight:800;color:var(--p)}
+        .card{background:var(--card);border-radius:12px;padding:15px;margin-bottom:10px;border:1px solid #334155}
         
-        textarea{width:100%;padding:12px;border:1px solid #334155;border-radius:10px;background:#0f172a;color:#fff;min-height:100px;resize:vertical}
+        /* الدردشة */
+        #chat-box{height:450px;overflow-y:auto;background:#0f172a;border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px}
+        .msg{background:#1e293b;padding:10px;border-radius:12px;max-width:85%;align-self:flex-start;position:relative;border:1px solid #334155}
+        .msg.me{align-self:flex-end;background:#1e3a8a;border-color:var(--p)}
+        .msg-user{font-size:10px;font-weight:bold;color:var(--p);display:block;margin-bottom:3px}
+        .msg-img{max-width:100%;border-radius:8px;margin:5px 0;border:1px solid #ffffff22;display:block}
+        .msg-reply-ref{background:rgba(0,0,0,0.3);padding:5px;border-radius:5px;font-size:10px;border-right:3px solid var(--w);margin-bottom:5px;color:var(--m)}
+        .msg-actions{display:flex;gap:12px;margin-top:5px;font-size:10px;color:var(--m)}
         
-        .res{border-right:3px solid var(--p);background:#1a2234;padding:12px;border-radius:8px;margin:10px 0}
-        .tag{display:inline-block;padding:2px 6px;background:#334155;border-radius:4px;font-size:10px;margin:2px;color:#93c5fd}
-        .conf{padding:3px 8px;border-radius:12px;font-size:10px;font-weight:700}
-        .c-h{background:#064e3b;color:#34d399}.c-m{background:#451a03;color:#fbbf24}.c-l{background:#1e293b;color:#94a3b8}
+        #reply-preview{background:var(--card);padding:8px;border-radius:10px 10px 0 0;border-bottom:2px solid var(--w);display:none}
+        .chat-tools{display:flex;gap:5px;background:#1e293b;padding:8px;border-radius:0 0 10px 10px}
         
-        .hide{display:none!important}        .empty{text-align:center;color:var(--m);padding:20px;background:#0f172a;border-radius:8px}
-        
-        @media(max-width:480px){.stats{grid-template-columns:1fr}.nav{flex-direction:column}}
+        .user-row{display:flex;justify-content:space-between;padding:10px;border-bottom:1px solid #334155;align-items:center}
+        .hide{display:none!important}
     </style>
 </head>
 <body>
+
 <div class="header">
     <h1>🦷 مدرب التشخيص السني</h1>
-    <div id="status" class="status-warn">⏳ جاري التهيئة...</div>
+    <div id="status" class="status-warn">⏳ جاري الاتصال...</div>
 </div>
 
 <div id="auth" class="auth">
@@ -70,12 +70,15 @@
             <button class="btn btn-p" onclick="loginAdmin()">دخول المسؤول</button>
         </div>
         <div id="auth-student" class="hide">
-            <input type="text" id="std-id" class="inp" placeholder="الرقم الجامعي">
+            <input type="text" id="std-user" class="inp" placeholder="اسم المستخدم">
+            <input type="password" id="std-pass" class="inp" placeholder="كلمة السر">
             <button class="btn btn-s" onclick="loginStudent()">دخول الطالب</button>
         </div>
         <div id="auth-new" class="hide">
             <input type="text" id="reg-name" class="inp" placeholder="الاسم الكامل">
-            <button class="btn btn-p" onclick="alert('✅ تم إرسال الطلب')">إرسال</button>
+            <input type="text" id="reg-user" class="inp" placeholder="اسم المستخدم المطلوب">
+            <input type="password" id="reg-pass" class="inp" placeholder="كلمة السر">
+            <button class="btn btn-p" onclick="registerRequest()">إرسال طلب تسجيل</button>
         </div>
     </div>
 </div>
@@ -83,348 +86,215 @@
 <div id="app" class="app">
     <div class="nav">
         <button class="btn btn-p" style="flex:1" onclick="show('diag')">🔍 التشخيص</button>
+        <button class="btn btn-g" style="flex:1" onclick="show('chat')">💬 الدردشة</button>
         <button id="nav-admin" class="btn btn-s hide" style="flex:1" onclick="show('admin')">⚙️ الإدارة</button>
-        <button class="btn btn-g" style="flex:1" onclick="show('chat')">💬 دردشة</button>
     </div>
 
     <div id="diag" class="view active">
         <div class="card">
-            <h3>📋 وصف الحالة السريري</h3>
-            <textarea id="sym" placeholder="مثال: ألم نابض ليلي في الضرس الأخير مع تورم لثوي..."></textarea>
-            <button class="btn btn-p" onclick="runDiag()">🔬 تحليل بالذكاء المحلي</button>
+            <h3>📋 وصف الحالة</h3>
+            <textarea id="sym" class="inp" style="height:100px; text-align:right" placeholder="اكتب الأعراض هنا..."></textarea>
+            <button class="btn btn-p" onclick="runDiag()">🔬 تحليل الحالة</button>
         </div>
         <div id="res"></div>
     </div>
 
-    <div id="admin" class="view">        <div class="card">
-            <h3>📊 الإحصائيات</h3>
-            <div class="stats">
-                <div class="stat"><div class="stat-n" id="stat-on">0</div><div>متصل</div></div>
-                <div class="stat"><div class="stat-n" id="stat-cases">0</div><div>حالة</div></div>
-                <div class="stat"><div class="stat-n" id="stat-users">0</div><div>مستخدم</div></div>
+    <div id="chat" class="view">
+        <div id="chat-box"></div>
+        <div id="reply-preview">
+            <div style="display:flex; justify-content:space-between; font-size:11px">
+                <span id="reply-text" style="color:var(--w)"></span>
+                <span onclick="cancelReply()" style="cursor:pointer">✕</span>
             </div>
-            <div id="online-list" style="font-size:11px;color:var(--s);text-align:center"></div>
         </div>
-        <div class="card">
-            <h3>👥 المتصلون</h3>
-            <div id="users-table" class="empty">في انتظار البيانات...</div>
+        <div class="chat-tools">
+            <button type="button" class="btn" style="background:#334155; width:auto; padding:10px 15px;" onclick="document.getElementById('img-input').click()">📎</button>
+            <input type="file" id="img-input" accept="image/*" style="display:none" onchange="handleImg(this)">
+            <input type="text" id="chat-inp" class="inp" style="margin:0; flex:1" placeholder="اكتب رسالة...">
+            <button class="btn btn-p" style="width:auto; margin:0; padding:10px 18px" onclick="sendChat()">➤</button>
         </div>
-        <div class="card">
-            <h3>📥 إضافة حالات (JSON)</h3>
-            <textarea id="json-in" class="inp" style="height:80px;font-size:11px" placeholder='[{"id":"x","name":"حالة","keywords":["كلمة"],"signs":"علامات","treat":"علاج"}]'></textarea>
-            <button class="btn btn-s" onclick="addCases()">💾 حفظ</button>
-        </div>
+        <div id="img-preview-label" style="display:none; color:var(--s); font-size:11px; padding:5px">📸 تم إرفاق صورة</div>
     </div>
 
-    <div id="chat" class="view">
+    <div id="admin" class="view">
         <div class="card">
-            <h3>💬 دردشة الفريق</h3>
-            <div id="chat-box" style="height:250px;overflow-y:auto;background:#0f172a;border-radius:8px;padding:10px;margin-bottom:10px"></div>
-            <div style="display:flex;gap:8px">
-                <input type="text" id="chat-inp" class="inp" style="margin:0;flex:1" placeholder="اكتب رسالتك...">
-                <button class="btn btn-p" style="width:auto;margin:0;padding:12px 20px" onclick="sendChat()">➤</button>
-            </div>
+            <h3>👥 طلبات التسجيل والأعضاء</h3>
+            <div id="users-list"></div>
         </div>
     </div>
 </div>
 
 <script>
-// 🔹 إعدادات فايربيس - اختياري تماماً
+// --- إعدادات فايربيس ---
 const FB_CONFIG = { 
     apiKey: "AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE", 
     databaseURL: "https://diagnosis-6ea4b-default-rtdb.firebaseio.com" 
 };
 
-let db = null, fbReady = false, currentUser = null;
+let db = null, fbReady = false, currentUser = null, selectedImg = null, replyTo = null;
 
-// محاولة تهيئة فايربيس بأمان (لن يتعطل التطبيق إذا فشل)
 try {
     firebase.initializeApp(FB_CONFIG);
     db = firebase.database();
-    
-    // فحص حالة الاتصال الحقيقية
-    db.ref('.info/connected').on('value', snap => {
-        fbReady = (snap.val() === true);
-        updateStatus();    });
-} catch(e) {
-    console.warn("⚠️ فايربيس غير متاح - التطبيق يعمل أوفلاين");
-    updateStatus();
-}
+    db.ref('.info/connected').on('value', s => { fbReady = s.val(); updateStatus(); });
+} catch(e) { updateStatus(); }
 
 function updateStatus() {
     const s = document.getElementById('status');
-    if(fbReady) { s.textContent = "🟢 متصل بفايربيس | " + (currentUser?.name || ""); s.className = "status-ok"; }
-    else { s.textContent = "🟡 وضع أوفلاين - كل الميزات تعمل"; s.className = "status-warn"; }
+    s.textContent = fbReady ? "🟢 متصل بالسحابة | " + (currentUser?.name || "") : "🟡 وضع أوفلاين";
+    s.className = fbReady ? "status-ok" : "status-warn";
 }
 
-// 🧠 قاعدة المعرفة التشخيصية المحلية (المُحسّنة)
-const KB = [
-    {id:"pulp_acute", name:"التهاب لب حاد", cat:"لبية", sev:"عالي", loc:"سن", kw:["نابض","ليلي","عفوي","لا ينام","ألم مستمر","حار","بارد"], signs:"ألم عفوي نابض يزداد ليلاً وعند الاستلقاء، حساسية للحرارة تستمر", treat:"علاج لبّي عاجل أو استئصال", diff:"ألم ليلي ذاتي + استجابة طويلة للبرد"},
-    {id:"apical_abscess", name:"خراج ذروي حاد", cat:"عدوى", sev:"طوارئ", loc:"سن", kw:["تورم","انتفاخ","نقرة","قيح","صديد","حرارة","وجه","خد"], signs:"ألم شديد عند النقر العمودي، تورم لثوي أو وجهي، قد يصاحبها حمى", treat:"تصريف فوري + مضادات حيوية + علاج جذر", diff:"تورم + ألم نقر + صديد"},
-    {id:"pericoronitis", name:"التهاب حول التاج (تواج)", cat:"جراحة", sev:"عالي", loc:"خلف", kw:["عقل","بلع","صعب","فتحة","خلف","رائحة","أذن"], signs:"التهاب الأنسجة حول تاج الرحى الثالثة المنطمرة جزئياً، صعوبة فتح الفم", treat:"غسيل موضعي، مضادات، ثم القلع الجراحي", diff:"موقع خلفي + غطاء لثوي ملتهب + رائحة"},
-    {id:"dry_socket", name:"جفاف السنخ (التهاب عظمي)", cat:"جراحة", sev:"متوسط", loc:"سن", kw:["بعد القلع","عظم","فارغ","رائحة","يوم ثالث","دخان"], signs:"ألم شديد جداً يشع للأذن يبدأ بعد 48-72 ساعة من القلع، سنخ فارغ", treat:"تطهير الفجوة ووضع ضماد مسكن (Alveogyl)", diff:"ألم متأخر بعد القلع + رائحة + فراغ"},
-    {id:"gingivitis", name:"التهاب لثة بسيط", cat:"لثة", sev:"منخفض", loc:"لثة", kw:["نازفة","حمراء","متورمة","تفريش","جير"], signs:"احمرار، تورم، نزيف عند التفريش، بدون فقدان عظمي", treat:"تنظيف مهني، تعليمات نظافة فموية", diff:"عكوس + بدون جيوب عميقة"},
-    {id:"periodontitis", name:"التهاب دواعم سن", cat:"لثة", sev:"عالي", loc:"لثة", kw:["حركة","جيوب","تراجع","ارتشاف","رخوة","مضغ"], signs:"جيوب لثوية عميقة، فقدان عظمي، حركة أسنان، تراجع لثوي", treat:"كشط جذري، جراحة لثوية، صيانة دورية", diff:"غير عكوس + فقد عظمي شعاعياً"},
-    {id:"caries_deep", name:"تسوس عميق قريب من اللب", cat:"لبية", sev:"متوسط", loc:"سن", kw:["حلو","بارد","ثقب","حفرة","مسوس","حساسية"], signs:"تجويف نخرى عميق، ألم مثير يزول بزوال المؤثر", treat:"حشوة عميقة مع بطانة أو علاج لبّي وقائي", diff:"ألم مثير عابر + نخر عميق"},
-    {id:"cracked_tooth", name:"السن المتشقق", cat:"لبية", sev:"عالي", loc:"سن", kw:["مضغ","فك","حاد","قضم","ألم إطلاق"], signs:"ألم حاد عند المضغ أو عند إطلاق الضغط، قد لا يظهر شعاعياً", treat:"تاج واقي، أو علاج جذر إذا وصل لللب", diff:"ألم عند الفك/الإطلاق + سن سليم ظاهرياً"},
-    {id:"herpes_simplex", name:"الهربس البسيط الفموي", cat:"فيروسي", sev:"متوسط", loc:"فم", kw:["بثور","فقاعات","شفتين","عقبول","حرقان"], signs:"حويصلات صغيرة متجمعة تنفجر مكونة قرحات مؤلمة", treat:"أسيكلوفير موضعي أو فموي، مسكنات", diff:"حويصلات سابقة للقرحات + موقع شفوي"},
-    {id:"aphthous_ulcer", name:"القرحة القلاعية", cat:"أنسجة", sev:"منخفض", loc:"فم", kw:["قرحة","بيضاء","أصفر","هالة","مؤلمة","تعود"], signs:"قرحة بيضاوية ذات مركز أصفر/أبيض وهالة حمراء، مؤلمة", treat:"كورتيزون موضعي، غسول ملطف، تجنب المهيجات", diff:"تعود متكرر + لا تسبقها حويصلات"},
-    {id:"candidiasis", name:"السلاق الفموي (فطريات)", cat:"فطري", sev:"متوسط", loc:"فم", kw:["أبيض","يمسح","حرقان","طقم","مضاد","سكري"], signs:"بقع بيضاء كريمية قابلة للكشط تترك سطحاً أحمر", treat:"نيستاتين موضعي أو فلوكونازول فموي", diff:"قابل للكشط + عوامل مساعدة"},
-    {id:"tmd_myofascial", name:"ألم عضلي مفصلي", cat:"مفصل", sev:"متوسط", loc:"مفصل", kw:["عضلات","صداع","طحن","تشنج","أذن","مضغ"], signs:"ألم في عضلات المضغ، صداع، ألم أذن مرجعه سني", treat:"راحة، كمادات، واقي ليلي، علاج فيزيائي", diff:"ألم عضلي + عدم وجود مرض سني"},
-    {id:"cellulitis", name:"التهاب خلوي وجهي", cat:"طوارئ", sev:"طوارئ", loc:"وجه", kw:["منتشر","صلب","حمى","تنفس","صعب","مفتوح"], signs:"تورم صلب منتشر في الوجه، حمى، قد يصعب التنفس", treat:"مضادات وريدية عاجلة، مراقبة مجرى الهواء", diff:"تورم صلب غير متموج + أعراض جهازية"},
-    {id:"fracture_mandible", name:"كسر الفك السفلي", cat:"رضوض", sev:"طوارئ", loc:"فك", kw:["ضربة","وقعة","انحراف","سوء إطباق","تنميل"], signs:"ألم، تورم، سوء إطباق، تنميل الشفة، خطوة عظمية", treat:"تثبيت جراحي، مضادات، متابعة", diff:"رضة حديثة + سوء إطباق + علامات شعاعية"},
-    {id:"malignancy_suspect", name:"آفة مشبوهة (إحالة)", cat:"أورام", sev:"طوارئ", loc:"فم", kw:["لا تشفى","أسابيع","صلبة","نزف","خدر","تدخين"], signs:"قرحة أو كتلة لا تشفى خلال 3 أسابيع، قد تنزف", treat:"إحالة عاجلة للخزعة والتشخيص النسيجي", diff:">3 أسابيع بدون تحسن + عوامل خطر"},
-    // ... يمكن إضافة مئات الحالات الأخرى هنا بنفس الهيكل
-];
-
-// 🔄 معجم المرادفات الذكي (للهجات والأخطاء الشائعة)
-const SYNONYMS = {
-    'يوجعني':'ألم','وجع':'ألم','موجع':'ألم','الم':'ألم','بيوجع':'ألم','عم يعور':'ألم',
-    'نابض':'ألم نابض','خفقان':'ألم نابض','ليلي':'ألم ليلي','بالليل':'ألم ليلي','يسهر':'ألم ليلي',
-    'ضرس':'سن','اضراس':'أسنان','سنان':'أسنان','ضروس':'أسنان','لبنية':'سن لبني','حليب':'سن لبني',
-    'منخور':'تسوس','حفرة':'نخر','ثقب':'نخر','أسود':'نخر','جير':'قلح','ترسبات':'قلح',
-    'نازفة':'نزيف','ينزف':'نزيف','دم':'نزيف','حمراء':'احمرار','محمر':'احمرار',
-    'منتفخة':'تورم','متورمة':'تورم','ورم':'تورم','وجه منتفخ':'تورم وجه',
-    'صديد':'قيح','خرّاج':'قيح','دمل':'قيح','حمى':'حرارة','ارتفاع':'حرارة',
-    'حساس':'حساسية','عابر':'حساسية','مثير':'حساسية','يزول':'حساسية',
-    'منطمر':'مطمور','لم يبزغ':'منطمر','عقل':'ضرس عقل','خلف':'موقع خلفي',
-    'بعد القلع':'جفاف السنخ','فراغ':'جفاف السنخ','يوم ثالث':'جفاف السنخ',
-    'بثور':'حويصلات','فقاعات':'حويصلات','عقبول':'هربس','تعقيبة':'هربس',
-    'قرحة':'قلاعية','أصفر':'قلاعية','تعود':'قلاعية','هالة':'قلاعية',
-    'أبيض':'فطريات','يمسح':'فطريات','حرقان':'فطريات','طقم':'فطريات',
-    'عضلات':'مفصل','صداع':'مفصل','طحن':'مفصل','صرير':'مفصل','أذن':'مفصل',
-    'منتشر':'خلوي','صلب':'خلوي','تنفس':'خلوي','صعب فتح':'خلوي',
-    'ضربة':'كسر','وقعة':'كسر','انحراف':'كسر','سوء إطباق':'كسر','تنميل':'كسر',    'لا تشفى':'ورم','أسابيع':'ورم','خدر':'ورم','تدخين':'ورم'
-};
-
-// 🔧 دوال مساعدة
-const $ = id => document.getElementById(id);
-const toast = msg => { /* يمكن إضافة نظام تنبيهات هنا */ console.log(msg); };
-
-// 🔀 تبديل تبويبات الدخول
+// --- نظام الدخول ---
 function sw(tab, btn) {
     document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    ['admin','student','new'].forEach(t => $(`auth-${t}`).classList.add('hide'));
-    $(`auth-${tab}`).classList.remove('hide');
+    ['admin','student','new'].forEach(t => document.getElementById(`auth-${t}`).classList.add('hide'));
+    document.getElementById(`auth-${tab}`).classList.remove('hide');
 }
 
-// 🔐 دخول المسؤول - محلي 100% مضمون
 function loginAdmin() {
-    const pass = $('admin-pass').value.trim();
-    // كلمة السر تعمل في الاتجاهين للسهولة
-    if(pass === "9591melas" || pass === "salem1959" || pass.split('').reverse().join('') === "9591melas") {
-        currentUser = { role: 'admin', name: 'د. عطوني' };
-        $('nav-admin').classList.remove('hide');
+    const pass = document.getElementById('admin-pass').value;
+    if(pass === "9591melas" || pass === "salem1959") {
+        currentUser = { role: 'admin', name: 'د. عطوني', username: 'admin' };
+        document.getElementById('nav-admin').classList.remove('hide');
         startApp();
-    } else {
-        alert("⚠️ كلمة السر غير صحيحة");
-    }
+        loadUsersManager();
+    } else alert("كلمة السر خطأ");
 }
 
-// 🎓 دخول الطالب
-function loginStudent() {
-    const id = $('std-id').value.trim();
-    if(id.length >= 3) {
-        currentUser = { role: 'student', name: 'طالب: ' + id };
+async function loginStudent() {
+    const u = document.getElementById('std-user').value;
+    const p = document.getElementById('std-pass').value;
+    const snap = await db.ref('users/' + u).once('value');
+    const data = snap.val();
+    if(data && data.pass === p && data.status === 'active') {
+        currentUser = { role: 'student', name: data.name, username: u };
         startApp();
-    } else alert("أدخل رقم جامعي صحيح");
+    } else alert("الحساب غير مفعل أو البيانات خطأ");
 }
 
-// 🚀 بدء التطبيق
+function registerRequest() {
+    const u = document.getElementById('reg-user').value;
+    const n = document.getElementById('reg-name').value;
+    const p = document.getElementById('reg-pass').value;
+    if(!u || !n || !p) return alert("املأ البيانات");
+    db.ref('users/' + u).set({ name: n, pass: p, status: 'pending' })
+    .then(() => { alert("تم الإرسال.. بانتظار تفعيل الدكتور زكريا"); location.reload(); });
+}
+
 function startApp() {
-    $('auth').classList.add('hide');
-    $('app').style.display = 'block';
-    updateStatus();
-    
-    // مزامنة فايربيس فقط إذا كان متاحاً (بدون إيقاف التطبيق إذا فشل)
-    if(fbReady && db) {
-        syncOnline().catch(err => console.warn("⚠️ فايربيس: ", err.message));
-        loadChat();
-    }
-}
-// ☁️ مزامنة حالة "أونلاين" مع فايربيس (آمنة)
-async function syncOnline() {
-    if(!db || !currentUser) return;
-    try {
-        const uid = currentUser.name.replace(/\s/g, '_');
-        const ref = db.ref('online/' + uid);
-        await ref.set({ name: currentUser.name, time: Date.now(), role: currentUser.role });
-        ref.onDisconnect().remove();
-        
-        // تحديث القائمة لحظياً
-        db.ref('online').on('value', snap => {
-            $('stat-on').textContent = snap.numChildren();
-            let names = [], rows = "";
-            snap.forEach(c => {
-                const u = c.val();
-                names.push(u.name);
-                rows += `<div style="padding:6px;border-bottom:1px solid #334155;display:flex;justify-content:space-between"><span>${u.name}</span><span style="color:var(--s)">●</span></div>`;
-            });
-            $('online-list').textContent = names.length ? names.join('، ') : "لا أحد متصل";
-            $('users-table').innerHTML = rows || '<div class="empty">انتظر ظهور المتصلين...</div>';
-            $('stat-users').textContent = names.length;
-        });
-    } catch(e) {
-        console.warn("⚠️ تعذرت المزامنة:", e.message);
-    }
+    document.getElementById('auth').classList.add('hide');
+    document.getElementById('app').style.display = 'block';
+    loadChat();
 }
 
-// 🔍 عرض قسم
-function show(id) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    $(id).classList.add('active');
-}
-
-// 🧠 محرك التشخيص الذكي المحلي
-function runDiag() {
-    const input = $('sym').value.toLowerCase().trim();
-    if(!input) return alert("اكتب الأعراض أولاً");
-    
-    // تطبيع النص ومعالجة النفي
-    const norm = t => t.normalize('NFKD').replace(/[\u064B-\u065F]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/\s+/g,' ').trim();
-    const nInput = norm(input);
-    const negations = new Set();
-    [/لا\s+(\w+)/g,/بدون\s+(\w+)/g,/غير\s+(\w+)/g].forEach(rx => {
-        let m; while((m = rx.exec(input)) !== null) negations.add(norm(m[1]));
-    });
-    
-    // حساب الدرجات
-    let results = [];
-    for(const dis of KB) {
-        let score = 0, matched = [], totalWeight = 0;        
-        // وزن الكلمات الرئيسية
-        for(const kw of dis.kw) {
-            const kwN = norm(kw);
-            const weight = 1 + (kwN.split(' ').length * 0.5) + (kwN.length / 10);
-            totalWeight += weight;
-            
-            let found = false, quality = 0;
-            // مطابقة مباشرة
-            if(nInput.includes(kwN)) { found = true; quality = 1; }
-            // مطابقة عبر المرادفات
-            else {
-                for(const [syn, target] of Object.entries(SYNONYMS)) {
-                    if(norm(target) === kwN && nInput.includes(norm(syn))) {
-                        found = true; quality = 0.9; break;
-                    }
-                }
-            }
-            
-            if(found) {
-                // خصم إذا كانت الكلمة منفية
-                const mainWord = kwN.split(' ')[0];
-                if(negations.has(mainWord) || negations.has(kwN)) {
-                    score -= weight * 2; // خصم كبير للنفي
-                } else {
-                    score += weight * quality;
-                    matched.push(kw);
-                }
-            }
-        }
-        
-        // بونص للموقع
-        if(dis.loc && nInput.includes(dis.loc)) score += 5;
-        // بونص للطوارئ
-        if(dis.sev === 'طوارئ' && /(طوارئ|مستشفى|اختناق|نزف شديد|تورم سريع)/.test(input)) score += 10;
-        
-        // حساب النسبة النهائية
-        if(totalWeight > 0 && score > 3) {
-            const finalScore = Math.min(99, Math.round((score / totalWeight) * 100));
-            if(finalScore >= 25) {
-                results.push({ ...dis, score: finalScore, matched });
-            }
-        }
+// --- الدردشة المتطورة ---
+function handleImg(input) {
+    const file = input.files[0];
+    if (file) {
+        if (file.size > 1.5 * 1024 * 1024) return alert("الصورة كبيرة جداً");
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            selectedImg = e.target.result;
+            document.getElementById('img-preview-label').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
     }
-    
-    // ترتيب وعرض النتائج
-    results.sort((a,b) => b.score - a.score);
-    displayResults(results.slice(0, 3));
-}
-function displayResults(arr) {
-    const out = $('res');
-    if(!arr.length) {
-        out.innerHTML = `<div class="card" style="border-right:4px solid var(--w)"><b>🔍 لم أجد تطابقاً دقيقاً</b><br><small style="color:var(--m)">جرب كلمات مثل: "نابض"، "تورم"، "ليلي"، "بعد القلع"، "نازفة"</small></div>`;
-        return;
-    }
-    
-    let html = `<div class="card"><h4>📋 النتائج المقترحة:</h4>`;
-    arr.forEach((r, i) => {
-        const col = r.score >= 70 ? 'var(--s)' : r.score >= 40 ? 'var(--p)' : 'var(--w)';
-        const confClass = r.score >= 70 ? 'c-h' : r.score >= 40 ? 'c-m' : 'c-l';
-        html += `
-        <div class="res" style="border-right-color:${col}">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-                <b style="color:${col}">#${i+1} ${r.name}</b>
-                <span class="conf ${confClass}">${r.score}% ثقة</span>
-            </div>
-            <div style="margin:5px 0">${r.matched.map(m => `<span class="tag">${m}</span>`).join('')}</div>
-            <p style="font-size:12px;margin:5px 0"><b>📌 العلامات:</b> ${r.signs}</p>
-            <p style="font-size:12px;color:var(--s);margin:5px 0"><b>💊 الخطة:</b> ${r.treat}</p>
-            ${r.sev==='طوارئ' ? `<div class="emergency-box" style="background:#7f1d1d;color:#fca5a5;padding:8px;border-radius:6px;margin-top:8px;font-size:11px">⚠️ حالة طوارئ: تتطلب تدخلاً فورياً</div>` : ''}
-        </div>`;
-    });
-    html += `<div style="font-size:10px;color:var(--m);text-align:center;margin-top:10px">🦷 أداة تعليمية • التشخيص النهائي يحتاج فحصاً سريرياً</div></div>`;
-    out.innerHTML = html;
-}
-
-// 💬 الدردشة (تعمل مع فايربيس فقط)
-function loadChat() {
-    if(!db) { $('chat-box').innerHTML = '<div class="empty">الدردشة تتطلب اتصالاً بفايربيس</div>'; return; }
-    db.ref('chat').limitToLast(50).on('child_added', snap => {
-        const d = snap.val();
-        const div = document.createElement('div');
-        div.style.cssText = "background:#1e293b;padding:8px 12px;border-radius:12px;margin:4px 0;font-size:13px";
-        div.innerHTML = `<b style="color:var(--p)">${d.name}</b>: ${d.text} <small style="color:var(--m)">${new Date(d.time).toLocaleTimeString()}</small>`;
-        $('chat-box').appendChild(div);
-        $('chat-box').scrollTop = 9999;
-    });
 }
 
 function sendChat() {
-    const txt = $('chat-inp').value.trim();
-    if(!txt || !currentUser || !db) return;
-    db.ref('chat').push({ name: currentUser.name, text: txt, time: Date.now() });
-    $('chat-inp').value = '';
+    const txt = document.getElementById('chat-inp').value.trim();
+    if(!txt && !selectedImg) return;
+
+    db.ref('chat').push({
+        name: currentUser.name,
+        user: currentUser.username,
+        text: txt,
+        img: selectedImg || null,
+        reply: replyTo || null,
+        time: Date.now()
+    });
+
+    document.getElementById('chat-inp').value = '';
+    selectedImg = null;
+    replyTo = null;
+    document.getElementById('img-preview-label').style.display = 'none';
+    document.getElementById('reply-preview').style.display = 'none';
+    document.getElementById('img-input').value = "";
 }
 
-// 📥 إضافة حالات من JSON
-function addCases() {
-    const txt = $('json-in').value.trim();    if(!txt) return alert("الصق البيانات أولاً");
-    try {
-        const data = JSON.parse(txt);
-        const arr = Array.isArray(data) ? data : [data];
-        let added = 0;
-        for(const c of arr) {
-            if(c.id && c.name && !KB.find(x => x.id === c.id)) {
-                KB.push({
-                    id: c.id, name: c.name, cat: c.cat||"عام", sev: c.sev||"متوسط",
-                    loc: c.loc||"فم", kw: c.keywords||[c.name], 
-                    signs: c.signs||"", treat: c.treat||"", diff: c.diff||""
-                });
-                added++;
-            }
-        }
-        alert(`✅ تمت إضافة ${added} حالة محلياً`);
-        $('stat-cases').textContent = KB.length;
-        
-        // حفظ في فايربيس إذا متاح
-        if(fbReady && db && added > 0) {
-            const updates = {};
-            arr.forEach(c => { if(c.id) updates['cases/' + c.id] = c; });
-            db.ref().update(updates).catch(e => console.warn("⚠️ لم يحفظ في السحابة:", e.message));
-        }
-    } catch(e) {
-        alert("❌ خطأ في JSON: " + e.message);
-    }
+function loadChat() {
+    db.ref('chat').on('value', snap => {
+        const box = document.getElementById('chat-box');
+        box.innerHTML = '';
+        snap.forEach(child => {
+            const m = child.val();
+            const id = child.key;
+            const isMe = m.user === currentUser.username;
+            const div = document.createElement('div');
+            div.className = `msg ${isMe ? 'me' : ''}`;
+            div.innerHTML = `
+                <span class="msg-user">${m.name}</span>
+                ${m.reply ? `<div class="msg-reply-ref">رد على: ${m.reply.text.substring(0,30)}..</div>` : ''}
+                ${m.img ? `<img src="${m.img}" class="msg-img" onclick="window.open(this.src)">` : ''}
+                <div style="word-break:break-word">${m.text}</div>
+                <div class="msg-actions">
+                    <span onclick="setReply('${id}', '${m.text}')" style="cursor:pointer">↩ رد</span>
+                    ${(isMe || currentUser.role === 'admin') ? `<span style="color:var(--d); cursor:pointer" onclick="deleteMsg('${id}')">🗑 حذف</span>` : ''}
+                </div>
+            `;
+            box.appendChild(div);
+        });
+        box.scrollTop = box.scrollHeight;
+    });
 }
 
-// 🎯 تهيئة أولية
-window.addEventListener('load', () => {
-    $('stat-cases').textContent = KB.length;
-    updateStatus();
-    console.log("✅ النظام جاهز. الذكاء المحلي يعمل 100%. فايربيس: " + (fbReady ? "متصل 🟢" : "أوفلاين 🟡"));
-});
+function setReply(id, text) {
+    replyTo = { id, text };
+    document.getElementById('reply-preview').style.display = 'block';
+    document.getElementById('reply-text').textContent = "رد على: " + text;
+}
+
+function cancelReply() {
+    replyTo = null;
+    document.getElementById('reply-preview').style.display = 'none';
+}
+
+function deleteMsg(id) {
+    if(confirm('حذف هذه الرسالة؟')) db.ref('chat/' + id).remove();
+}
+
+// --- إدارة الأعضاء ---
+function loadUsersManager() {
+    db.ref('users').on('value', snap => {
+        const list = document.getElementById('users-list');
+        list.innerHTML = '';
+        snap.forEach(u => {
+            const data = u.val(); const id = u.key;
+            list.innerHTML += `
+                <div class="user-row">
+                    <div><b>${data.name}</b> <br><small>${data.status}</small></div>
+                    <div style="display:flex; gap:5px">
+                        ${data.status === 'pending' ? `<button class="btn btn-s" style="padding:5px 10px" onclick="db.ref('users/${id}').update({status:'active'})">تفعيل</button>` : ''}
+                        <button class="btn btn-d" onclick="if(confirm('حذف الحساب؟')) db.ref('users/${id}').remove()">حذف</button>
+                    </div>
+                </div>`;
+        });
+    });
+}
+
+// --- محرك التشخيص ---
+function runDiag() {
+    const input = document.getElementById('sym').value;
+    if(!input) return;
+    document.getElementById('res').innerHTML = `<div class="card"><b>جاري التحليل السريري...</b><br>سيتم مطابقة الأعراض مع قاعدة البيانات المحلية.</div>`;
+}
+
+function show(id) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
 </script>
 </body>
 </html>
