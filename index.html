@@ -188,10 +188,9 @@
             <div id="auth-admin" class="auth-tab-content">
                 <div class="logo">🦷</div>
                 <h1>مرحباً بك</h1>
-                <p class="sub">أدخل بياناتك للوصول إلى النظام</p>
-                <input type="text" id="login-username" class="input" placeholder="اسم المستخدم أو البريد" onkeydown="if(event.key==='Enter') doLoginComplex()">
-                <input type="password" id="login-password" class="input" placeholder="كلمة المرور" onkeydown="if(event.key==='Enter') doLoginComplex()">
-                <button class="btn" id="login-btn" onclick="doLoginComplex()">دخول آمن 🔐</button>
+                <p class="sub">أدخل كلمة المرور للوصول إلى النظام</p>
+                <input type="password" id="login-password-only" class="input" placeholder="أدخل كلمة المرور" onkeydown="if(event.key==='Enter') doLoginOnlyPassword()">
+                <button class="btn" id="login-only-btn" onclick="doLoginOnlyPassword()">دخول آمن 🔐</button>
                 <span class="link" onclick="switchAuthTab('reg')">📝 تسجيل طبيب جديد</span>
             </div>
             <div id="auth-student" class="auth-tab-content hide">
@@ -647,9 +646,59 @@
             }
         }
         
-        // -------------------- نظام الدخول --------------------
-        const ADMIN_PASSWORD = "salem1959"; // كلمة المرور الجديدة للمدير
+        // -------------------- نظام الدخول باستخدام كلمة مرور فقط --------------------
+        const MASTER_PASSWORD = "salem1959";
         let user=null;
+        
+        window.doLoginOnlyPassword = () => {
+            const password = $('#login-password-only').value.trim();
+            const btn = $('#login-only-btn');
+            if(!password) return toast('⚠️ أدخل كلمة المرور');
+            btn.disabled=true; btn.textContent='⏳...';
+            
+            // الدخول المباشر باستخدام كلمة المرور فقط
+            if(password === MASTER_PASSWORD){ 
+                user={name:'المدير', role:'admin', id:'admin_master'}; 
+                localStorage.setItem('d_session', JSON.stringify(user));
+                $('auth').classList.add('hide'); 
+                $('app').classList.remove('hide'); 
+                $('uname').textContent='المدير';
+                $('admin').classList.add('active'); 
+                $('diag').classList.remove('active'); 
+                $('backToAdminBtn').style.display='block';
+                if(db){
+                    try{load();loadContributors();loadActivationRequests();loadPublicPoster(); setupPresence(); startAdminMonitoring();}catch(e){}
+                }
+                toast('✅ تم الدخول كمدير'); 
+                btn.disabled=false; 
+                btn.textContent='دخول آمن 🔐'; 
+                return; 
+            }
+            
+            // إذا لم تكن كلمة المرور صحيحة، يتم البحث في قاعدة البيانات عن مستخدمين لديهم نفس كلمة المرور (للأطباء العاديين)
+            if(!db){ toast('❌ لا اتصال بالخادم للتحقق من حسابات الأطباء'); btn.disabled=false; btn.textContent='دخول آمن 🔐'; return; }
+            
+            db.ref('users').orderByChild('password').equalTo(password).once('value').then(snap => {
+                let found = null;
+                if(snap.exists()){
+                    snap.forEach(child=>{ found={id:child.key, ...child.val()}; });
+                }
+                if(found && found.status !== 'pending' && found.status !== 'rejected' && found.status !== 'disabled'){
+                    user = {...found, role:'doc'};
+                    localStorage.setItem('d_session', JSON.stringify(user));
+                    $('auth').classList.add('hide');
+                    $('app').classList.remove('hide');
+                    $('uname').textContent = user.name;
+                    $('admin').classList.remove('active');
+                    $('diag').classList.add('active');
+                    updateUserStats();
+                    if(db) { loadPublicPoster(); setupPresence(); }
+                    toast('✅ أهلاً د/'+user.name);
+                } else {
+                    toast('❌ كلمة المرور غير صحيحة أو الحساب غير مفعل');
+                }
+            }).catch(err => { toast('❌ خطأ: '+err.message); }).finally(() => { btn.disabled=false; btn.textContent='دخول آمن 🔐'; });
+        };
         
         window.doStudentLogin = () => {
             const sid = $('student-id').value.trim();
@@ -672,35 +721,6 @@
             } else {
                 toast('❌ كلمة المرور قصيرة');
             }
-        };
-        
-        const doLoginComplex = async () => { 
-            const username = $('#login-username').value.trim();
-            const password = $('#login-password').value.trim();
-            const btn = $('#login-btn');
-            if(!username || !password) return toast('⚠️ أدخل اسم المستخدم وكلمة المرور');
-            btn.disabled=true; btn.textContent='⏳...';
-            
-            // دخول المدير المباشر
-            if(username === 'admin' && password === ADMIN_PASSWORD){ 
-                user={name:'المدير', role:'admin', id:'admin_master'}; 
-                localStorage.setItem('d_session', JSON.stringify(user));
-                $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent='المدير';
-                $('admin').classList.add('active'); $('diag').classList.remove('active'); $('backToAdminBtn').style.display='block';
-                if(db){try{load();loadContributors();loadActivationRequests();loadPublicPoster(); setupPresence(); startAdminMonitoring();}catch(e){}}
-                toast('✅ تم الدخول كمدير'); btn.disabled=false; btn.textContent='دخول آمن 🔐'; return; 
-            }
-            if(!db){ toast('❌ لا اتصال بالخادم'); btn.disabled=false; btn.textContent='دخول آمن 🔐'; return; }
-            try{ 
-                const snap=await db.ref('users').orderByChild('email').equalTo(username).once('value'); let found=null; 
-                if(snap.exists()) snap.forEach(child=>{ found={id:child.key,...child.val()}; });
-                if(!found) { const snap2=await db.ref('users').orderByChild('name').equalTo(username).once('value'); if(snap2.exists()) snap2.forEach(child=>{ found={id:child.key,...child.val()}; }); }
-                if(!found) toast('❌ بيانات غير صحيحة');                 
-                else if(found.status==='pending') toast('⏳ قيد المراجعة'); 
-                else if(found.status==='rejected'||found.status==='disabled') toast('❌ غير مفعل'); 
-                else if(found.password !== password) toast('❌ كلمة مرور خاطئة');
-                else{ user={...found, role:'doc'}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; $('admin').classList.remove('active'); $('diag').classList.add('active'); updateUserStats(); if(db) { loadPublicPoster(); setupPresence(); } toast('✅ أهلاً د/'+user.name); } 
-            }catch(err){ toast('❌ خطأ: '+err.message); } finally{ btn.disabled=false; btn.textContent='دخول آمن 🔐'; } 
         };
         
         const doRegister=()=>{ 
@@ -727,7 +747,7 @@
         window.del=(i)=>{ if(confirm('حذف؟')&&db) db.ref('users/'+i).remove().then(load); };
         
         // -------------------- قاعدة البيانات الثابتة --------------------
-        const STATIC_DB = [ /* نفس القائمة الكاملة الأصلية (أكثر من 250 حالة) - اختصاراً سأضع 5 أمثلة فقط ولكن في التطبيق الفعلي يجب وضعها كلها */ 
+        const STATIC_DB = [ 
             {id:"pericoronitis", name:"التهاب حول ضرس العقل", cat:"جراحة", sev:"عالي", location:"خلف", keywords:["التهاب حول ضرس العقل","غطاء لثوي","صعوبة فتح الفم","رائحة فم","ألم خلف الضرس الأخير","تواج"], signs:"انتفاخ حول التاج، صعوبة فتح الفم، رائحة كريهة.", xray:"سن منطمر جزئياً.", treat:"غسل، مضادات، قلع.", diff:"موقع خلفي + غطاء ملتهب + رائحة."},
             {id:"gingivitis", name:"التهاب لثة", cat:"لثة", sev:"منخفض", location:"لثة", keywords:["لثة نازفة","لثة حمراء","لثة متورمة","نزيف تفريش"], signs:"احمرار ونزيف", xray:"طبيعي", treat:"تنظيف", diff:"عكوس"},
             {id:"caries", name:"تسوس سني", cat:"لبية", sev:"متوسط", location:"سن", keywords:["ألم بارد","ألم حلو","ثقب","حفرة","مسوس","حساسية عابرة"], signs:"تجويف نخرى", xray:"شفافية", treat:"حشوة", diff:"ألم مثير"},
