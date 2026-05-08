@@ -3,275 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مدرب التشخيص السني | د. زكريا عطوني</title>
+    <title>تطبيق التشخيص السني الاحترافي | د. زكريا</title>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <style>
-        :root {
-            --bg: #0f172a; --card: #1e293b; --p: #3b82f6; --s: #10b981; 
-            --w: #f59e0b; --d: #ef4444; --t: #f8fafc; --m: #94a3b8;
-            --grad: linear-gradient(135deg, #3b82f6, #1e40af);
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-        body { background: var(--bg); color: var(--t); min-height: 100vh; line-height: 1.6; overflow-x: hidden; }
-
-        /* Header & Status */
-        .header { background: rgba(30, 41, 59, 0.9); backdrop-filter: blur(10px); padding: 20px; text-align: center; border-bottom: 2px solid var(--p); position: sticky; top: 0; z-index: 1000; }
-        #status { font-size: 10px; margin-top: 8px; padding: 4px 12px; border-radius: 20px; font-weight: bold; display: inline-block; }
-        .status-ok { background: rgba(16, 185, 129, 0.2); color: var(--s); }
-        .status-warn { background: rgba(245, 158, 11, 0.2); color: var(--w); }
+        :root { --bg: #0f172a; --card: #1e293b; --p: #3b82f6; --s: #10b981; --w: #f59e0b; --d: #ef4444; --t: #f8fafc; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background: var(--bg); color: var(--t); margin: 0; direction: rtl; line-height: 1.6; }
+        
+        .header { background: #1e293b; padding: 20px; text-align: center; border-bottom: 3px solid var(--p); position: sticky; top: 0; z-index: 100; }
+        .container { max-width: 900px; margin: auto; padding: 15px; }
 
         /* Auth Screen */
-        .auth-screen { display: flex; align-items: center; justify-content: center; padding: 20px; min-height: 85vh; }
-        .auth-box { background: var(--card); padding: 30px; border-radius: 24px; width: 100%; max-width: 400px; text-align: center; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5); }
-        .tabs-row { display: flex; gap: 5px; margin-bottom: 20px; background: #0f172a; padding: 5px; border-radius: 12px; }
-        .tab-btn { flex: 1; padding: 10px; border: none; border-radius: 8px; cursor: pointer; background: transparent; color: var(--m); font-weight: bold; transition: 0.3s; }
-        .tab-btn.active { background: var(--p); color: #fff; }
+        .auth-box { background: var(--card); padding: 30px; border-radius: 20px; text-align: center; margin-top: 40px; border: 1px solid rgba(255,255,255,0.1); }
+        .tab-row { display: flex; gap: 5px; margin-bottom: 25px; background: #0f172a; padding: 5px; border-radius: 12px; }
+        .tab-btn { flex: 1; padding: 12px; border: none; background: none; color: #94a3b8; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .tab-btn.active { background: var(--p); color: white; border-radius: 10px; }
 
-        /* General UI Elements */
-        .inp { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 12px; border: 1px solid #334155; background: #0f172a; color: #fff; text-align: center; font-size: 15px; }
-        .btn { width: 100%; padding: 14px; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-p { background: var(--grad); color: #fff; }
-        .btn-s { background: var(--s); color: #fff; }
-        .btn-d { background: var(--d); color: #fff; }
+        /* Forms & Inputs */
+        .inp { width: 100%; padding: 14px; margin: 10px 0; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; text-align: center; font-size: 16px; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; color: white; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-p { background: var(--p); } .btn-s { background: var(--s); } .btn-w { background: var(--w); }
 
-        /* Main App Layout */
-        #app { max-width: 900px; margin: auto; padding: 15px; display: none; }
-        .nav { display: flex; gap: 10px; margin-bottom: 25px; }
-        .nav .btn { flex: 1; font-size: 14px; padding: 10px; }
-        .view { display: none; animation: fadeIn 0.4s ease; }
+        /* Main Layout */
+        #app { display: none; }
+        .nav { display: flex; gap: 10px; margin-bottom: 20px; }
+        .nav-btn { flex: 1; padding: 12px; border: none; border-radius: 10px; background: #334155; color: white; cursor: pointer; font-weight: bold; }
+        .view { display: none; animation: fadeIn 0.3s; }
         .view.active { display: block; }
 
-        /* Diagnostic Cards UI */
-        .search-area { background: var(--card); padding: 25px; border-radius: 20px; margin-bottom: 20px; border: 1px solid var(--p); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2); }
-        .case-card { background: var(--card); border-radius: 16px; margin-bottom: 12px; border: 1px solid rgba(59, 130, 246, 0.2); transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; }
-        .case-card:hover { transform: translateY(-3px); border-color: var(--p); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .case-header { padding: 18px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); }
-        .case-title { font-weight: bold; color: var(--t); display: flex; align-items: center; gap: 10px; }
-        .case-badge { font-size: 10px; background: var(--p); color: #fff; padding: 3px 10px; border-radius: 8px; }
-        .case-content { max-height: 0; overflow: hidden; transition: 0.4s; background: #161e2e; }
-        .case-card.open .case-content { max-height: 1000px; padding: 20px; border-top: 1px solid rgba(255,255,255,0.05); }
-        .info-box { margin-bottom: 15px; }
-        .info-box b { color: var(--w); font-size: 13px; display: block; margin-bottom: 5px; }
-        .info-box b::before { content: '•'; color: var(--p); margin-left: 8px; }
-        .info-box p { font-size: 14.5px; color: #cbd5e1; padding-right: 15px; }
+        /* Diagnostic Cards */
+        .case-card { background: var(--card); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 15px; margin-bottom: 12px; overflow: hidden; transition: 0.3s; }
+        .case-head { padding: 18px; background: rgba(255,255,255,0.02); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .case-body { max-height: 0; overflow: hidden; transition: 0.4s ease-out; background: #161e2e; }
+        .case-card.open .case-body { max-height: 1000px; padding: 20px; border-top: 1px solid #334155; }
+        .label { color: var(--w); font-size: 13px; font-weight: bold; display: block; margin-bottom: 5px; }
+        .val { margin-bottom: 15px; font-size: 15px; color: #cbd5e1; border-right: 3px solid var(--p); padding-right: 10px; }
 
         /* Chat System */
-        #chat-box { height: 450px; overflow-y: auto; background: #0f172a; border-radius: 16px; padding: 15px; display: flex; flex-direction: column; gap: 10px; border: 1px solid #334155; }
-        .msg { background: #1e293b; padding: 12px; border-radius: 15px; max-width: 85%; align-self: flex-start; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .msg.me { align-self: flex-end; background: #1e3a8a; border-bottom-right-radius: 2px; }
-        .msg-img { max-width: 100%; border-radius: 10px; margin-top: 8px; cursor: pointer; display: block; }
+        #chat-box { height: 400px; overflow-y: auto; background: #0f172a; border-radius: 15px; padding: 15px; display: flex; flex-direction: column; gap: 12px; border: 1px solid #334155; }
+        .msg { padding: 12px; border-radius: 15px; max-width: 80%; background: #1e293b; }
+        .msg.me { align-self: flex-end; background: #1e40af; }
+        .msg img { max-width: 100%; border-radius: 10px; margin-top: 10px; }
 
-        /* Admin Panels */
-        .admin-panel { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid var(--d); margin-top: 20px; }
-        .user-row { background: #0f172a; padding: 12px; border-radius: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         .hide { display: none !important; }
-        .chevron { transition: 0.3s; font-size: 12px; color: var(--m); }
-        .case-card.open .chevron { transform: rotate(180deg); }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h1>🦷 مدرب التشخيص السني</h1>
-    <div id="status" class="status-warn">⏳ جاري الاتصال...</div>
+    <h2>🦷 منظومة التشخيص السني</h2>
+    <div id="status" style="font-size: 11px; color: var(--s);">جاري التحقق من السحابة...</div>
 </div>
 
-<div id="auth-screen" class="auth-screen">
-    <div class="auth-box">
-        <h2 style="margin-bottom:20px; color:var(--p)">دخول النظام</h2>
-        <div class="tabs-row">
-            <button class="tab-btn active" id="t-admin" onclick="selTab('admin')">🔐 إداري</button>
-            <button class="tab-btn" id="t-std" onclick="selTab('std')">🎓 طالب</button>
-            <button class="tab-btn" id="t-reg" onclick="selTab('reg')">📝 جديد</button>
+<div class="container">
+    <div id="auth-view" class="auth-box">
+        <div class="tab-row">
+            <button class="tab-btn active" onclick="sel('admin', this)">قفل المدير</button>
+            <button class="tab-btn" onclick="sel('std', this)">دخول الطلاب</button>
+            <button class="tab-btn" onclick="sel('reg', this)">طلب انضمام</button>
         </div>
-
         <div id="f-admin">
-            <input type="password" id="admin-pass" class="inp" placeholder="كلمة سر الإدارة">
-            <button class="btn btn-p" onclick="login('admin')">دخول المدير</button>
+            <input type="password" id="pass-admin" class="inp" placeholder="كلمة السر">
+            <button class="btn btn-p" onclick="login('admin')">دخول المسؤول</button>
         </div>
-
         <div id="f-std" class="hide">
-            <input type="text" id="std-user" class="inp" placeholder="اسم المستخدم">
-            <input type="password" id="std-pass" class="inp" placeholder="كلمة السر">
-            <button class="btn btn-s" onclick="login('std')">دخول الطلاب</button>
+            <input type="text" id="user-std" class="inp" placeholder="اسم المستخدم">
+            <input type="password" id="pass-std" class="inp" placeholder="كلمة السر">
+            <button class="btn btn-s" onclick="login('std')">دخول الطالب</button>
         </div>
-
         <div id="f-reg" class="hide">
-            <input type="text" id="reg-name" class="inp" placeholder="الاسم الرباعي">
-            <input type="text" id="reg-user" class="inp" placeholder="اسم مستخدم مقترح">
-            <input type="password" id="reg-pass" class="inp" placeholder="كلمة السر">
-            <button class="btn btn-p" style="background:var(--w)" onclick="register()">إرسال طلب الانضمام</button>
+            <input type="text" id="reg-n" class="inp" placeholder="الاسم الكامل">
+            <input type="text" id="reg-u" class="inp" placeholder="اسم مستخدم جديد">
+            <input type="password" id="reg-p" class="inp" placeholder="كلمة سر">
+            <button class="btn btn-w" onclick="register()">إرسال طلب للمدير</button>
         </div>
     </div>
-</div>
 
-<div id="app">
-    <div class="nav">
-        <button class="btn btn-p" onclick="switchView('diag-view')">🔍 التشخيص</button>
-        <button class="btn" style="background:#334155" onclick="switchView('chat-view')">💬 النقاش</button>
-        <button id="admin-nav" class="btn hide" style="background:var(--d)" onclick="switchView('admin-view')">⚙️ الإدارة</button>
-    </div>
-
-    <div id="diag-view" class="view active">
-        <div class="search-area">
-            <b style="color:var(--p); display:block; margin-bottom:10px">🔍 حلل الأعراض السريرية:</b>
-            <input type="text" id="search-input" class="inp" style="text-align:right" placeholder="مثلاً: ألم نابض، تورم لثوي، بقعة حمراء..." oninput="doSearch()">
+    <div id="app">
+        <div class="nav">
+            <button class="nav-btn" onclick="v('diag')">🔍 التشخيص</button>
+            <button class="nav-btn" onclick="v('chat')">💬 النقاش</button>
+            <button id="admin-link" class="nav-btn hide" style="background:var(--d)" onclick="v('admin')">⚙️ الإدارة</button>
         </div>
-        <div id="results-container"></div>
-    </div>
 
-    <div id="chat-view" class="view">
-        <div id="chat-box"></div>
-        <div style="display:flex; gap:8px; margin-top:10px">
-            <button class="btn" style="background:#475569; width:auto" onclick="document.getElementById('file-inp').click()">📎</button>
-            <input type="file" id="file-inp" accept="image/*" class="hide" onchange="previewImg(this)">
-            <input type="text" id="chat-msg" class="inp" style="margin:0; flex:1; text-align:right" placeholder="اكتب استفسارك هنا...">
-            <button class="btn btn-p" style="width:auto" onclick="sendMsg()">➤</button>
+        <div id="view-diag" class="view active">
+            <div style="background:var(--card); padding:20px; border-radius:15px; margin-bottom:20px">
+                <input type="text" id="search-q" class="inp" placeholder="ابحث عن أعراض (ألم، نزف، تورم، حار)..." oninput="search()">
+            </div>
+            <div id="results"></div>
         </div>
-        <small id="file-notice" class="hide" style="color:var(--s); display:block; margin-top:5px">📸 صورة جاهزة للإرسال</small>
-    </div>
 
-    <div id="admin-view" class="view">
-        <div class="admin-panel">
-            <h3>📦 قاعدة بيانات الحالات</h3>
-            <textarea id="json-input" class="inp" style="height:120px; font-family:monospace; font-size:11px; margin-top:10px" placeholder="الصق كود الـ 100 حالة هنا..."></textarea>
-            <button class="btn btn-p" onclick="importCases()">تنزيل البيانات للقاموس</button>
+        <div id="view-chat" class="view">
+            <div id="chat-box"></div>
+            <div style="display:flex; gap:10px; margin-top:15px">
+                <button class="btn" style="width:50px; background:#475569" onclick="document.getElementById('file').click()">📸</button>
+                <input type="file" id="file" class="hide" accept="image/*" onchange="prepImg(this)">
+                <input type="text" id="msg-t" class="inp" style="margin:0; flex:1" placeholder="اكتب سؤالاً أو حالة هنا...">
+                <button class="btn btn-p" style="width:70px" onclick="send()">➤</button>
+            </div>
+            <p id="img-notif" class="hide" style="color:var(--s); font-size:12px">الصورة جاهزة للإرسال ✅</p>
         </div>
-        <div class="admin-panel" style="border-color:var(--s)">
-            <h3>👥 طلبات الطلاب الجدد</h3>
-            <div id="pending-users" style="margin-top:10px"></div>
+
+        <div id="view-admin" class="view">
+            <div class="auth-box" style="margin-top:0; text-align:right">
+                <h3 style="color:var(--p)">📥 تغذية قاعدة البيانات</h3>
+                <textarea id="json-input" class="inp" style="height:120px; text-align:left; font-family:monospace" placeholder="الصق الـ 100 حالة هنا بصيغة JSON"></textarea>
+                <button class="btn btn-p" onclick="saveData()">تحديث القاموس فوراً</button>
+                <hr style="opacity:0.1; margin:25px 0">
+                <h3 style="color:var(--s)">👥 إدارة الطلاب الجدد</h3>
+                <div id="users-list"></div>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-// Firebase Configuration
+// Configuration
 const firebaseConfig = { apiKey: "AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE", databaseURL: "https://diagnosis-6ea4b-default-rtdb.firebaseio.com" };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-let allCases = [], currentUser = null, pendingImg = null;
+let allCases = [], curUser = null, tmpImg = null;
 
-// Real-time Connection Status
-db.ref('.info/connected').on('value', snap => {
-    const s = document.getElementById('status');
-    s.className = snap.val() ? "status-ok" : "status-warn";
-    s.innerText = snap.val() ? "● متصل بقاعدة البيانات" : "○ أوفلاين (تحقق من الإنترنت)";
+// Firebase Connectivity
+db.ref('.info/connected').on('value', s => {
+    document.getElementById('status').innerText = s.val() ? "● متصل بالسحابة" : "○ جاري الاتصال...";
 });
 
-// Navigation Functions
-function selTab(t) {
-    ['admin','std','reg'].forEach(i => {
-        document.getElementById('f-'+i).classList.add('hide');
-        document.getElementById('t-'+i).classList.remove('active');
-    });
+// UI Controls
+function sel(t, b) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    b.classList.add('active');
+    ['admin','std','reg'].forEach(i => document.getElementById('f-'+i).classList.add('hide'));
     document.getElementById('f-'+t).classList.remove('hide');
-    document.getElementById('t-'+t).classList.add('active');
 }
 
-function switchView(id) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+function v(id) {
+    document.querySelectorAll('.view').forEach(vw => vw.classList.remove('active'));
+    document.getElementById('view-'+id).classList.add('active');
 }
 
-// Auth Functions
+// Auth & Users
 function login(role) {
-    const p = (role === 'admin') ? document.getElementById('admin-pass').value : document.getElementById('std-pass').value;
-    const u = document.getElementById('std-user').value;
-
-    if(role === 'admin' && (p === '9591melas' || p === 'salem1959')) {
-        currentUser = { name: "د. زكريا", role: "admin", uid: "admin" };
-        document.getElementById('admin-nav').classList.remove('hide');
-        launchApp();
-    } else if(role === 'std') {
+    if(role === 'admin') {
+        const p = document.getElementById('pass-admin').value;
+        if(p === '9591melas' || p === 'salem1959') {
+            curUser = { n: "د. زكريا", role: "admin", id: "admin" };
+            document.getElementById('admin-link').classList.remove('hide');
+            launch();
+        } else alert("خطأ في كلمة السر");
+    } else {
+        const u = document.getElementById('user-std').value;
+        const p = document.getElementById('pass-std').value;
         db.ref('users/'+u).once('value', s => {
             const d = s.val();
-            if(d && d.pass === p && d.status === 'active') {
-                currentUser = { name: d.name, role: "std", uid: u };
-                launchApp();
-            } else alert("بيانات خاطئة أو لم يتم تفعيل الحساب بعد");
+            if(d && d.pass === p && d.status === 'active') { curUser = { n: d.name, role: "std", id: u }; launch(); }
+            else alert("الحساب غير مفعل أو البيانات خاطئة");
         });
-    } else alert("كلمة السر غير صحيحة");
+    }
 }
 
 function register() {
-    const u = document.getElementById('reg-user').value;
-    const n = document.getElementById('reg-name').value;
-    const p = document.getElementById('reg-pass').value;
-    if(!u || !n || !p) return alert("يرجى ملء جميع الخانات");
-    db.ref('users/'+u).set({ name: n, pass: p, status: 'pending' })
-    .then(() => { alert("تم إرسال طلبك للمدير. يرجى الانتظار لحين التفعيل."); selTab('std'); });
+    const u = document.getElementById('reg-u').value, n = document.getElementById('reg-n').value, p = document.getElementById('reg-p').value;
+    if(!u || !n || !p) return alert("اكمل البيانات");
+    db.ref('users/'+u).set({ name: n, pass: p, status: 'pending' }).then(() => { alert("تم الإرسال بنجاح"); location.reload(); });
 }
 
-// App Initialization
-function launchApp() {
-    document.getElementById('auth-screen').classList.add('hide');
+function launch() {
+    document.getElementById('auth-view').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     db.ref('clinical_cases').on('value', s => { allCases = []; s.forEach(c => allCases.push(c.val())); });
     loadChat();
-    if(currentUser.role === 'admin') loadAdminUsers();
+    if(curUser.role === 'admin') loadUsers();
 }
 
-// Search Logic
-function doSearch() {
-    const q = document.getElementById('search-input').value.toLowerCase().trim();
-    const cont = document.getElementById('results-container');
-    if(q.length < 2) { cont.innerHTML = ""; return; }
-
-    const found = allCases.filter(c => 
-        c.name.toLowerCase().includes(q) || 
-        c.signs.toLowerCase().includes(q) || 
-        (c.keywords && c.keywords.some(k => k.toLowerCase().includes(q)))
+// Diagnostic Engine
+function search() {
+    const q = document.getElementById('search-q').value.toLowerCase().trim();
+    const res = document.getElementById('results');
+    if(q.length < 2) { res.innerHTML = ""; return; }
+    
+    const matched = allCases.filter(c => 
+        c.name.includes(q) || c.signs.includes(q) || (c.keywords && c.keywords.some(k => k.includes(q)))
     );
 
-    cont.innerHTML = found.length ? "" : '<div style="text-align:center; padding:20px; opacity:0.6">لم يتم العثور على تشخيص مطابق للأعراض...</div>';
-    
-    found.forEach(c => {
+    res.innerHTML = matched.length ? "" : "لم يتم العثور على حالة مطابقة";
+    matched.forEach(c => {
         const div = document.createElement('div');
         div.className = "case-card";
-        div.innerHTML = `
-            <div class="case-header" onclick="this.parentElement.classList.toggle('open')">
-                <div class="case-title">
-                    <span class="case-badge">${c.cat || 'عام'}</span>
-                    ${c.name}
-                </div>
-                <span class="chevron">▼</span>
-            </div>
-            <div class="case-content">
-                <div class="info-box"><b>🔍 العلامات السريرية:</b><p>${c.signs}</p></div>
-                <div class="info-box"><b>✅ الخطة العلاجية:</b><p>${c.treat}</p></div>
-                <div class="info-box"><b>⚖️ التشخيص التفريقي:</b><p>${c.diff}</p></div>
-            </div>`;
-        cont.appendChild(div);
+        div.innerHTML = `<div class="case-head" onclick="this.parentElement.classList.toggle('open')">
+            <span><b>${c.name}</b> <small style="opacity:0.6">(${c.cat})</small></span> <span>▼</span>
+        </div>
+        <div class="case-body">
+            <span class="label">🔍 العلامات السريرية:</span><div class="val">${c.signs}</div>
+            <span class="label">✅ الخطة العلاجية:</span><div class="val">${c.treat}</div>
+            <span class="label">⚖️ التشخيص التفريقي:</span><div class="val">${c.diff}</div>
+        </div>`;
+        res.appendChild(div);
     });
 }
 
-// Chat Functions
-function previewImg(i) {
-    const r = new FileReader();
-    r.onload = e => { pendingImg = e.target.result; document.getElementById('file-notice').classList.remove('hide'); };
-    r.readAsDataURL(i.files[0]);
+// Chat Logic
+function prepImg(i) {
+    const reader = new FileReader();
+    reader.onload = e => { tmpImg = e.target.result; document.getElementById('img-notif').classList.remove('hide'); };
+    reader.readAsDataURL(i.files[0]);
 }
 
-function sendMsg() {
-    const t = document.getElementById('chat-msg').value;
-    if(!t && !pendingImg) return;
-    db.ref('chat').push({ sender: currentUser.name, uid: currentUser.uid, text: t, img: pendingImg || null, ts: Date.now() });
-    document.getElementById('chat-msg').value = ""; pendingImg = null; document.getElementById('file-notice').classList.add('hide');
+function send() {
+    const text = document.getElementById('msg-t').value;
+    if(!text && !tmpImg) return;
+    db.ref('chat').push({ n: curUser.n, id: curUser.id, text: text, img: tmpImg || null, ts: Date.now() });
+    document.getElementById('msg-t').value = ""; tmpImg = null; document.getElementById('img-notif').classList.add('hide');
 }
 
 function loadChat() {
     db.ref('chat').on('value', s => {
         const box = document.getElementById('chat-box'); box.innerHTML = "";
         s.forEach(m => {
-            const d = m.val(); const isMe = d.uid === currentUser.uid;
+            const d = m.val(); const isMe = d.id === curUser.id;
             box.innerHTML += `<div class="msg ${isMe?'me':''}">
-                <small style="color:var(--p); font-size:10px">${d.sender}</small>
-                ${d.img ? `<img src="${d.img}" class="msg-img" onclick="window.open(this.src)">` : ''}
-                <div style="margin-top:5px">${d.text}</div>
+                <small style="color:var(--w); font-size:10px">${d.n}</small>
+                ${d.img ? `<img src="${d.img}" onclick="window.open(this.src)">` : ''}
+                <div>${d.text}</div>
             </div>`;
         });
         box.scrollTop = box.scrollHeight;
@@ -279,24 +235,23 @@ function loadChat() {
 }
 
 // Admin Logic
-function importCases() {
+function saveData() {
     try {
         const data = JSON.parse(document.getElementById('json-input').value);
         data.forEach(x => db.ref('clinical_cases/'+x.id).set(x));
-        alert("تم بنجاح تحديث " + data.length + " حالة في القاموس.");
-        document.getElementById('json-input').value = "";
-    } catch(e) { alert("خطأ في تنسيق الكود! تأكد من نسخ الـ JSON كاملاً."); }
+        alert("تم تحديث القاموس بنجاح!");
+    } catch(e) { alert("خطأ في تنسيق الكود"); }
 }
 
-function loadAdminUsers() {
+function loadUsers() {
     db.ref('users').on('value', s => {
-        const l = document.getElementById('pending-users'); l.innerHTML = "";
+        const l = document.getElementById('users-list'); l.innerHTML = "";
         s.forEach(u => {
             const d = u.val();
             if(d.status === 'pending') {
-                l.innerHTML += `<div class="user-row">
-                    <span><b>${d.name}</b></span>
-                    <button class="btn btn-s" style="width:auto; padding:5px 15px" onclick="db.ref('users/${u.key}').update({status:'active'})">تفعيل الحساب</button>
+                l.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:10px; background:#0f172a; padding:12px; border-radius:10px">
+                    <span>${d.name}</span>
+                    <button class="btn-s" style="width:auto; padding:5px 15px; border-radius:8px" onclick="db.ref('users/${u.key}').update({status:'active'})">تفعيل الحساب</button>
                 </div>`;
             }
         });
