@@ -28,18 +28,19 @@
         .inp{width:100%;padding:12px;margin:6px 0;border:1px solid #334155;border-radius:10px;background:#0f172a;color:#fff;text-align:right}
         .btn{width:100%;padding:12px;border:none;border-radius:10px;font-weight:700;cursor:pointer;margin:5px 0}
         .btn-p{background:var(--p);color:#fff}
-        .btn-s{background:var(--s);color:#fff}
-        .btn-d{background:var(--d);color:#fff}
+        .btn-s{background:var(--s);color:#fff; padding: 5px 10px; width: auto; font-size: 12px;}
+        .btn-d{background:var(--d);color:#fff; padding: 5px 10px; width: auto; font-size: 12px;}
         
         .app{max-width:900px;margin:auto;padding:10px;display:none;width:100%}
         .nav{display:flex;gap:5px;margin-bottom:10px}
         .view{display:none}.view.active{display:block}
         
-        /* خاصية الطي */
+        /* نظام الطي (Accordion) */
         .accordion{background:var(--card);border:1px solid #334155;border-radius:10px;margin-bottom:8px;overflow:hidden}
-        .acc-head{padding:12px;background:rgba(255,255,255,0.05);cursor:pointer;display:flex;justify-content:space-between;font-weight:bold}
-        .acc-body{padding:12px;display:none;border-top:1px solid #334155;font-size:14px;line-height:1.6}
+        .acc-head{padding:12px;background:rgba(255,255,255,0.05);cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:bold;color:var(--p)}
+        .acc-body{padding:12px;display:none;border-top:1px solid #334155;font-size:14px;line-height:1.6;background:#0f172a}
         .acc-active .acc-body{display:block}
+        .acc-active .acc-head{background:rgba(59, 130, 246, 0.1)}
         
         /* الدردشة */
         #chat-box{height:400px;overflow-y:auto;background:#0f172a;border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px}
@@ -47,6 +48,7 @@
         .msg.me{align-self:flex-end;background:#1e3a8a}
         .msg-img{max-width:100%;border-radius:8px;margin-top:5px}
         
+        .user-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid #1e293b}
         .hide{display:none!important}
     </style>
 </head>
@@ -71,11 +73,11 @@
         <div id="auth-student" class="hide">
             <input type="text" id="std-user" class="inp" placeholder="اسم المستخدم">
             <input type="password" id="std-pass" class="inp" placeholder="كلمة السر">
-            <button class="btn btn-s" onclick="loginStudent()">دخول</button>
+            <button class="btn btn-s" style="width:100%" onclick="loginStudent()">دخول</button>
         </div>
         <div id="auth-new" class="hide">
             <input type="text" id="reg-name" class="inp" placeholder="الاسم الكامل">
-            <input type="text" id="reg-user" class="inp" placeholder="اسم المستخدم">
+            <input type="text" id="reg-user" class="inp" placeholder="اسم المستخدم المطلوب">
             <input type="password" id="reg-pass" class="inp" placeholder="كلمة السر">
             <button class="btn btn-p" onclick="registerRequest()">طلب انضمام</button>
         </div>
@@ -85,15 +87,18 @@
 <div id="app" class="app">
     <div class="nav">
         <button class="btn btn-p" style="flex:1" onclick="show('diag')">🔍 التشخيص</button>
-        <button class="btn btn-s" style="flex:1" onclick="show('chat')">💬 الدردشة</button>
+        <button class="btn btn-p" style="background:var(--s); flex:1" onclick="show('chat')">💬 الدردشة</button>
         <button id="nav-admin" class="btn btn-d hide" style="flex:1" onclick="show('admin')">⚙️ الإدارة</button>
     </div>
 
     <div id="diag" class="view active">
         <div class="accordion acc-active">
-            <div class="acc-head">🔬 محرك البحث عن الحالات</div>
+            <div class="acc-head" onclick="this.parentElement.classList.toggle('acc-active')">
+                <span>🔬 ابحث عن الحالة (من الداتا المرفوعة)</span>
+                <span>▼</span>
+            </div>
             <div class="acc-body">
-                <input type="text" id="search-inp" class="inp" placeholder="اكتب عرضاً (مثل: ألم ذروي، نزف، بقعة بيضاء)..." oninput="runDiag()">
+                <input type="text" id="search-inp" class="inp" placeholder="اكتب عرضاً (مثل: ألم، نزف، بقعة)..." oninput="runDiag()">
             </div>
         </div>
         <div id="res"></div>
@@ -101,9 +106,6 @@
 
     <div id="chat" class="view">
         <div id="chat-box"></div>
-        <div id="reply-preview" style="display:none; background:#1e293b; padding:5px; border-bottom:2px solid var(--w)">
-            <small id="reply-text"></small> <span onclick="cancelReply()">✕</span>
-        </div>
         <div style="display:flex; gap:5px; margin-top:5px">
             <button class="btn" style="background:#334155; width:auto" onclick="document.getElementById('img-input').click()">📎</button>
             <input type="file" id="img-input" accept="image/*" class="hide" onchange="handleImg(this)">
@@ -115,38 +117,45 @@
 
     <div id="admin" class="view">
         <div class="accordion acc-active">
-            <div class="acc-head">📦 تغذية الحالات (JSON)</div>
+            <div class="acc-head" onclick="this.parentElement.classList.toggle('acc-active')">
+                <span>📦 تغذية الحالات (JSON)</span>
+                <span>▼</span>
+            </div>
             <div class="acc-body">
-                <textarea id="json-input" class="inp" style="height:100px; font-family:monospace; font-size:12px; text-align:left; direction:ltr" placeholder='[{"id":"1", "name":"Case Name", ...}]'></textarea>
+                <textarea id="json-input" class="inp" style="height:100px; font-family:monospace; font-size:12px; text-align:left; direction:ltr" placeholder='[{"id":"1", "name":"Case", ...}]'></textarea>
                 <button class="btn btn-p" onclick="importData()">استيراد الدفعة</button>
             </div>
         </div>
+
         <div class="accordion">
-            <div class="acc-head">👥 إدارة الأعضاء</div>
-            <div id="users-list" class="acc-body"></div>
+            <div class="acc-head" onclick="this.parentElement.classList.toggle('acc-active')">
+                <span>👥 إدارة الأعضاء والتفعيل</span>
+                <span>▼</span>
+            </div>
+            <div class="acc-body" id="users-list" style="padding:0">
+                </div>
         </div>
     </div>
 </div>
 
 <script>
-// إعدادات فايربيس
 const FB_CONFIG = { 
     apiKey: "AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE", 
     databaseURL: "https://diagnosis-6ea4b-default-rtdb.firebaseio.com" 
 };
 
-let db = null, currentUser = null, cases = [], selectedImg = null, replyTo = null;
+let db = null, currentUser = null, cases = [], selectedImg = null;
 
 try {
     firebase.initializeApp(FB_CONFIG);
     db = firebase.database();
     db.ref('.info/connected').on('value', s => { 
-        document.getElementById('status').className = s.val() ? "status-ok" : "status-warn";
-        document.getElementById('status').innerText = s.val() ? "🟢 متصل بالسحابة" : "🟡 أوفلاين";
+        const st = document.getElementById('status');
+        st.className = s.val() ? "status-ok" : "status-warn";
+        st.innerText = s.val() ? "🟢 متصل بالسحابة" : "🟡 أوفلاين";
     });
 } catch(e) { console.error(e); }
 
-// التنقل والتبديل
 function sw(t, b) {
     document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
     b.classList.add('active');
@@ -159,32 +168,33 @@ function show(id) {
     document.getElementById(id).classList.add('active');
 }
 
-// الدخول والإدارة
 function loginAdmin() {
-    if(["9591melas","salem1959"].includes(document.getElementById('admin-pass').value)) {
+    const p = document.getElementById('admin-pass').value;
+    if(p === "9591melas" || p === "salem1959") {
         currentUser = { role: 'admin', name: 'د. زكريا', username: 'admin' };
         document.getElementById('nav-admin').classList.remove('hide');
         startApp();
-    } else alert("خطأ!");
+    } else alert("كلمة السر خاطئة");
 }
 
 async function loginStudent() {
     const u = document.getElementById('std-user').value;
     const p = document.getElementById('std-pass').value;
     const snap = await db.ref('users/' + u).once('value');
-    if(snap.val()?.pass === p && snap.val()?.status === 'active') {
-        currentUser = { role: 'student', name: snap.val().name, username: u };
+    const d = snap.val();
+    if(d && d.pass === p && d.status === 'active') {
+        currentUser = { role: 'student', name: d.name, username: u };
         startApp();
-    } else alert("بيانات خاطئة أو غير مفعل");
+    } else alert("الحساب غير موجود، كلمة السر خطأ، أو بانتظار التفعيل");
 }
 
 function registerRequest() {
     const u = document.getElementById('reg-user').value;
-    db.ref('users/'+u).set({
-        name: document.getElementById('reg-name').value,
-        pass: document.getElementById('reg-pass').value,
-        status: 'pending'
-    }).then(() => alert("تم الإرسال.. بانتظار التفعيل"));
+    const n = document.getElementById('reg-name').value;
+    const p = document.getElementById('reg-pass').value;
+    if(!u || !n || !p) return alert("يرجى ملء كافة الخانات");
+    db.ref('users/'+u).set({ name: n, pass: p, status: 'pending' })
+    .then(() => alert("تم إرسال طلبك بنجاح. يرجى التواصل مع الدكتور زكريا للتفعيل."));
 }
 
 function startApp() {
@@ -192,10 +202,9 @@ function startApp() {
     document.getElementById('app').style.display = 'block';
     loadCases();
     loadChat();
-    loadUsers();
+    if(currentUser.role === 'admin') loadUsers();
 }
 
-// إدارة البيانات
 function loadCases() {
     db.ref('clinical_cases').on('value', snap => {
         cases = [];
@@ -206,110 +215,90 @@ function loadCases() {
 function importData() {
     try {
         const data = JSON.parse(document.getElementById('json-input').value);
-        if(!Array.isArray(data)) throw "يجب أن يكون ملف JSON مصفوفة []";
         data.forEach(item => db.ref('clinical_cases/' + item.id).set(item));
-        alert("تمت إضافة " + data.length + " حالة بنجاح!");
+        alert("تم تحديث " + data.length + " حالة.");
         document.getElementById('json-input').value = "";
-    } catch(e) { alert("خطأ في تنسيق البيانات: " + e); }
+    } catch(e) { alert("خطأ في التنسيق"); }
 }
 
-// محرك التشخيص والطي
 function runDiag() {
-    const query = document.getElementById('search-inp').value.toLowerCase();
-    const resDiv = document.getElementById('res');
-    resDiv.innerHTML = "";
-    
-    if(query.length < 2) return;
+    const q = document.getElementById('search-inp').value.toLowerCase();
+    const res = document.getElementById('res');
+    res.innerHTML = "";
+    if(q.length < 2) return;
 
-    const filtered = cases.filter(c => 
-        c.name.includes(query) || 
-        c.keywords.some(k => k.includes(query))
-    );
-
-    filtered.forEach(c => {
-        const div = document.createElement('div');
-        div.className = "accordion";
-        div.innerHTML = `
-            <div class="acc-head" onclick="this.parentElement.classList.toggle('acc-active')">
-                <span>${c.name}</span> <span>▼</span>
-            </div>
-            <div class="acc-body">
-                <p><b>الفئة:</b> ${c.cat}</p>
-                <p><b>العلامات:</b> ${c.signs}</p>
-                <p><b>العلاج:</b> ${c.treat}</p>
-                <p><b>التشخيص التفريقي:</b> ${c.diff}</p>
-            </div>
-        `;
-        resDiv.appendChild(div);
+    cases.filter(c => c.name.includes(q) || c.keywords.some(k => k.includes(q)))
+    .forEach(c => {
+        const d = document.createElement('div');
+        d.className = "accordion";
+        d.innerHTML = `<div class="acc-head" onclick="this.parentElement.classList.toggle('acc-active')">
+            <span>${c.name}</span><span>▼</span></div>
+            <div class="acc-body"><p><b>التشخيص:</b> ${c.signs}</p><p><b>العلاج:</b> ${c.treat}</p></div>`;
+        res.appendChild(d);
     });
 }
 
-// الدردشة
-function handleImg(input) {
-    const file = input.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = e => {
-            selectedImg = e.target.result;
-            document.getElementById('img-label').classList.remove('hide');
-        };
-        reader.readAsDataURL(file);
-    }
+// وظائف الدردشة
+function handleImg(i) {
+    const r = new FileReader();
+    r.onload = e => { selectedImg = e.target.result; document.getElementById('img-label').classList.remove('hide'); };
+    r.readAsDataURL(i.files[0]);
 }
 
 function sendChat() {
-    const txt = document.getElementById('chat-inp').value;
-    if(!txt && !selectedImg) return;
-    db.ref('chat').push({
-        name: currentUser.name,
-        user: currentUser.username,
-        text: txt,
-        img: selectedImg || null,
-        time: Date.now()
-    });
-    document.getElementById('chat-inp').value = "";
-    selectedImg = null;
-    document.getElementById('img-label').classList.add('hide');
+    const t = document.getElementById('chat-inp').value;
+    if(!t && !selectedImg) return;
+    db.ref('chat').push({ name: currentUser.name, user: currentUser.username, text: t, img: selectedImg || null, time: Date.now() });
+    document.getElementById('chat-inp').value = ""; selectedImg = null; document.getElementById('img-label').classList.add('hide');
 }
 
 function loadChat() {
     db.ref('chat').on('value', snap => {
-        const box = document.getElementById('chat-box');
-        box.innerHTML = "";
-        snap.forEach(c => {
-            const m = c.val();
-            const isMe = m.user === currentUser.username;
-            box.innerHTML += `
-                <div class="msg ${isMe?'me':''}">
-                    <small style="color:var(--p)">${m.name}</small><br>
-                    ${m.img? `<img src="${m.img}" class="msg-img" onclick="window.open(this.src)">` : ''}
-                    <div>${m.text}</div>
-                    <small style="font-size:8px; opacity:0.5" onclick="if(confirm('حذف؟')) db.ref('chat/${c.key}').remove()">🗑</small>
-                </div>`;
+        const b = document.getElementById('chat-box'); b.innerHTML = "";
+        snap.forEach(s => {
+            const m = s.val(); const isMe = m.user === currentUser.username;
+            b.innerHTML += `<div class="msg ${isMe?'me':''}">
+                <small style="color:var(--p); font-size:10px">${m.name}</small><br>
+                ${m.img?`<img src="${m.img}" class="msg-img">`:''}
+                <div>${m.text}</div>
+                ${(isMe || currentUser.role==='admin')?`<span style="cursor:pointer; font-size:10px" onclick="db.ref('chat/${s.key}').remove()">🗑</span>`:''}
+            </div>`;
         });
-        box.scrollTop = box.scrollHeight;
+        b.scrollTop = b.scrollHeight;
     });
 }
 
+// وظيفة التفعيل المصححة
 function loadUsers() {
     db.ref('users').on('value', snap => {
         const list = document.getElementById('users-list');
         list.innerHTML = "";
         snap.forEach(u => {
             const d = u.val();
-            list.innerHTML += `
-                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid #334155; padding:5px">
-                    <span>${d.name} (${d.status})</span>
-                    <button class="btn-s" style="padding:2px 10px" onclick="db.ref('users/${u.key}').update({status:'active'})">تفعيل</button>
+            const id = u.key;
+            const div = document.createElement('div');
+            div.className = "user-item";
+            div.innerHTML = `
+                <div style="font-size:13px"><b>${d.name}</b><br><small>${d.status === 'active' ? '✅ مفعل' : '⏳ معلق'}</small></div>
+                <div>
+                    ${d.status === 'pending' ? `<button class="btn-s" onclick="activateUser('${id}')">تفعيل</button>` : ''}
+                    <button class="btn-d" onclick="deleteUser('${id}')">حذف</button>
                 </div>`;
+            list.appendChild(div);
         });
     });
 }
 
-// تفعيل الضغط على العناوين
-document.querySelectorAll('.acc-head').forEach(h => {
-    h.addEventListener('click', () => h.parentElement.classList.toggle('acc-active'));
-});
+function activateUser(id) {
+    db.ref('users/' + id).update({ status: 'active' })
+    .then(() => alert("تم تفعيل الحساب بنجاح"));
+}
+
+function deleteUser(id) {
+    if(confirm("هل أنت متأكد من حذف هذا العضو؟")) {
+        db.ref('users/' + id).remove();
+    }
+}
 </script>
 </body>
 </html>
