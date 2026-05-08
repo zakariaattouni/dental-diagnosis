@@ -2,328 +2,1157 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تشخيص سني ذكي - د. زكريا عطوني</title>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تشخيص أمراض الفم والأسنان - تتبع المستخدمين</title>
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2964/2964514.png">
     <style>
-        :root{--bg:#020617;--card:#1e293b;--p:#3b82f6;--s:#10b981;--w:#f59e0b;--d:#ef4444;--t:#f8fafc;--m:#94a3b8}
-        *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif}
-        body{background:var(--bg);color:var(--t);min-height:100vh;display:flex;flex-direction:column}
-        
-        .header{background:linear-gradient(135deg,#1e3a8a,#0f172a);padding:20px;text-align:center;border-bottom:3px solid var(--p)}
-        .header h1{font-size:24px;margin:0}
-        #status{font-size:12px;color:var(--m);margin-top:5px;padding:4px 8px;border-radius:6px;display:inline-block}
-        .status-ok{background:#064e3b;color:#34d399}
-        .status-warn{background:#451a03;color:#fbbf24}
-        .status-err{background:#7f1d1d;color:#fca5a5}
-        
-        .auth{flex:1;display:flex;align-items:center;justify-content:center;padding:20px}
-        .auth-card{background:var(--card);padding:25px;border-radius:16px;width:100%;max-width:380px;border:1px solid #334155}
-        .tabs{display:flex;gap:4px;margin-bottom:20px;background:#0f172a;padding:4px;border-radius:12px}
-        .tab{flex:1;padding:10px;border:none;background:transparent;color:var(--m);cursor:pointer;border-radius:8px;font-weight:600}
-        .tab.active{background:var(--p);color:#fff}
-        .inp{width:100%;padding:12px;margin:8px 0;border:1px solid #334155;border-radius:10px;background:#0f172a;color:#fff;text-align:center}
-        .btn{width:100%;padding:14px;border:none;border-radius:10px;font-weight:700;cursor:pointer;margin:5px 0}
-        .btn-p{background:var(--p);color:#fff}
-        .btn-s{background:var(--s);color:#fff}
-        .btn-g{background:#334155;color:#cbd5e1}
-        .btn-d{background:var(--d);color:#fff;padding:5px 10px;font-size:11px}
-        .btn-w{background:var(--w);color:#fff;padding:5px 10px;font-size:11px}
-        
-        .app{max-width:900px;margin:auto;padding:15px;display:none}
-        .nav{display:flex;gap:8px;margin-bottom:15px}
-        .view{display:none}
-        .view.active{display:block;animation:f .3s}
-        @keyframes f{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-        .card{background:var(--card);border-radius:12px;padding:15px;margin-bottom:12px;border:1px solid #334155}
-        
-        .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
-        .stat{background:#0f172a;padding:10px;border-radius:8px;text-align:center}
-        .stat-n{font-size:20px;font-weight:800;color:var(--p)}
-        
-        textarea{width:100%;padding:12px;border:1px solid #334155;border-radius:10px;background:#0f172a;color:#fff;min-height:100px;resize:vertical}
-        
-        .res{border-right:3px solid var(--p);background:#1a2234;padding:12px;border-radius:8px;margin:10px 0}
-        .tag{display:inline-block;padding:2px 6px;background:#334155;border-radius:4px;font-size:10px;margin:2px;color:#93c5fd}
-        .conf{padding:3px 8px;border-radius:12px;font-size:10px;font-weight:700}
-        .c-h{background:#064e3b;color:#34d399}.c-m{background:#451a03;color:#fbbf24}.c-l{background:#1e293b;color:#94a3b8}
-        
-        .hide{display:none!important}
-        .empty{text-align:center;color:var(--m);padding:20px;background:#0f172a;border-radius:8px}
-        
-        /* تحسين جدول المستخدمين */
-        .user-row{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid #334155;font-size:13px}
-        .user-info{display:flex;flex-direction:column;gap:2px}
-        .u-active{color:var(--s)}.u-pending{color:var(--w)}.u-blocked{color:var(--d)}
-        @media(max-width:480px){.stats{grid-template-columns:1fr}.nav{flex-direction:column}}
+        :root { --bg: #020617; --card: #ffffff; --primary: #3b82f6; --success: #10b981; --warn: #f59e0b; --danger: #ef4444; --text: #f8fafc; --muted: #94a3b8; --border: #1e293b; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+        .premium-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+            padding: 25px 20px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 2px solid #3b82f6;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+        .premium-header::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 60%);
+            animation: rotateGlow 15s linear infinite;
+        }
+        @keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .header-content { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .header-icon-group { display: flex; align-items: center; gap: 10px; }
+        .header-tooth { font-size: 45px; filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.6)); }
+        .header-shield { font-size: 28px; filter: drop-shadow(0 0 8px #60a5fa); color: #60a5fa; }
+        .header-text { text-align: right; }
+        .header-text h1 { font-size: 28px; font-weight: 900; color: #fff; margin: 0; line-height: 1.1; text-shadow: 0 0 15px rgba(59, 130, 246, 0.6); }
+        .header-text h2 { font-size: 16px; font-weight: 600; color: #93c5fd; margin: 5px 0 0; letter-spacing: 0.5px; }
+        .dr-footer { margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 11px; color: #cbd5e1; }
+        .ai-badge { background: linear-gradient(135deg, #3b82f6, #06b6d4); color: #fff; padding: 2px 6px; border-radius: 6px; font-weight: bold; font-size: 10px; box-shadow: 0 0 8px rgba(59, 130, 246, 0.6); }
+        .star-effect { color: #fde047; animation: twinkle 2s infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
+        .auth-screen { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .auth-card { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 30px; width: 100%; max-width: 360px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; }
+        .logo { font-size: 60px; margin-bottom: 15px; }
+        h1 { font-size: 22px; margin-bottom: 8px; color: #fff; }
+        .sub { font-size: 13px; color: var(--muted); margin-bottom: 25px; }
+        .input { width: 100%; padding: 14px; border: 1px solid #334155; border-radius: 12px; font-size: 15px; text-align: center; margin-bottom: 15px; background: #0f172a; color: #fff; transition: 0.3s; }
+        .input:focus { border-color: var(--primary); background: #1e293b; outline: none; box-shadow: 0 0 15px rgba(59,130,246,0.3); }
+        .btn { width: 100%; padding: 15px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border: none; border-radius: 12px; color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: transform 0.2s; }
+        .btn:active { transform: scale(0.98); }
+        .btn:disabled { opacity: 0.7; cursor: not-allowed; }
+        .btn-green { background: linear-gradient(135deg, #10b981, #059669); }
+        .btn-gray { background: #334155; }
+        .link { color: var(--primary); font-size: 13px; cursor: pointer; display: block; margin-top: 12px; text-decoration: none; }
+        .hide { display: none !important; }
+        .auth-tabs { display: flex; gap: 4px; margin-bottom: 20px; background: #0f172a; padding: 4px; border-radius: 12px; border: 1px solid #334155; }
+        .auth-tab { flex: 1; padding: 10px 8px; border: none; background: transparent; color: var(--muted); font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 8px; transition: 0.3s; }
+        .auth-tab.active { background: var(--primary); color: #fff; box-shadow: 0 2px 8px rgba(59,130,246,0.4); }
+        .auth-tab:hover:not(.active) { background: #1e293b; color: #cbd5e1; }
+        header { background: #1e293b; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; position: sticky; top: 0; z-index: 100; }
+        .logo-text { font-weight: 700; font-size: 14px; color: #60a5fa; display: flex; align-items: center; gap: 6px; }
+        .nav { display: flex; align-items: center; gap: 10px; }
+        .badge { background: var(--danger); color: #fff; padding: 3px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+        .logout-btn { background: #334155; color: #f87171; border: 1px solid #475569; padding: 5px 10px; border-radius: 8px; font-size: 12px; cursor: pointer; }
+        main { flex: 1; padding: 20px; max-width: 900px; margin: auto; width: 100%; }
+        .view { display: none; animation: fade 0.3s ease; }
+        .view.active { display: block; }
+        @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .card { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .collapsible-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; padding: 8px 0; }
+        .collapsible-header h3 { margin: 0; font-size: 16px; color: #60a5fa; display: flex; align-items: center; gap: 8px; }
+        .toggle-icon { transition: transform 0.3s ease; font-size: 14px; color: var(--muted); }
+        .collapsible-content { max-height: 1000px; overflow: hidden; transition: max-height 0.4s ease-out, opacity 0.3s ease; opacity: 1; margin-top: 15px; }
+        .collapsible-content.collapsed { max-height: 0; opacity: 0; margin-top: 0; }
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+        .stat { background: #0f172a; padding: 12px; border-radius: 10px; text-align: center; border: 1px solid #334155; }
+        .stat-num { font-size: 22px; font-weight: 800; color: var(--primary); }
+        .stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+        textarea { width: 100%; padding: 16px; border: 1px solid #334155; border-radius: 12px; min-height: 120px; font-size: 14px; margin-bottom: 16px; background: #0f172a; color: #fff; resize: vertical; line-height: 1.6; transition: 0.3s; }
+        textarea:focus { border-color: var(--primary); background: #1e293b; outline: none; }
+        .clinical-report { background: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 16px; margin-top: 16px; }
+        .report-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #334155; flex-wrap: wrap; gap: 8px; }
+        .report-title { font-size: 16px; font-weight: 700; color: #60a5fa; display: flex; align-items: center; gap: 8px; }
+        .conf-badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+        .conf-high { background: #064e3b; color: #34d399; }
+        .conf-mid { background: #451a03; color: #fbbf24; }
+        .conf-low { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
+        .section { margin-bottom: 14px; }
+        .section h5 { font-size: 13px; color: #60a5fa; margin-bottom: 6px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+        .section p { font-size: 13px; color: #cbd5e1; line-height: 1.6; margin-bottom: 4px; }
+        .emergency-box { background: linear-gradient(135deg, #7f1d1d, #991b1b); border: 1px solid #b91c1c; color: #fca5a5; padding: 10px; border-radius: 8px; margin-top: 12px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .diff-note { background: #172554; border-right: 3px solid var(--primary); padding: 10px; border-radius: 6px; margin-top: 12px; font-size: 12px; color: #93c5fd; line-height: 1.6; }
+        .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid #334155; margin-top: 8px; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th { background: #0f172a; padding: 12px; text-align: right; color: var(--muted); font-weight: 600; border-bottom: 1px solid #334155; }
+        td { padding: 10px 12px; border-bottom: 1px solid #334155; }
+        tr:hover { background: #334155; }
+        .status { padding: 4px 8px; border-radius: 20px; font-size: 10px; font-weight: 600; }
+        .st-act { background: #064e3b; color: #34d399; }
+        .st-temp { background: #451a03; color: #fbbf24; }
+        .st-perm { background: #172554; color: #60a5fa; }
+        .st-pend { background: #451a03; color: #fbbf24; }
+        .st-rej { background: #7f1d1d; color: #fca5a5; }
+        .act-btn { padding: 4px 8px; border: none; border-radius: 6px; font-size: 10px; cursor: pointer; margin-left: 4px; font-weight: 600; }
+        .act-ok { background: var(--success); color: #fff; }
+        .act-no { background: var(--danger); color: #fff; }
+        .act-del { background: #7f1d1d; color: #fca5a5; }
+        footer { background: #0f172a; padding: 15px; text-align: center; color: var(--muted); margin-top: auto; border-top: 1px solid #334155; }
+        .wa-btn { display: inline-flex; align-items: center; gap: 6px; background: #25D366; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 12px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.2); margin-bottom: 8px; }
+        .wa-btn:hover { background: #1ebc57; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #3b82f6; color: #fff; padding: 10px 16px; border-radius: 8px; font-size: 13px; z-index: 999; opacity: 0; transition: 0.3s; pointer-events: none; }
+        .toast.show { opacity: 1; }
+        .empty { text-align: center; color: var(--muted); padding: 30px; font-size: 14px; background: #0f172a; border-radius: 10px; border: 1px dashed #334155; }
+        .no-result-guide { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; margin-top: 20px; text-align: center; }
+        .guide-title { font-size: 16px; font-weight: 700; color: #60a5fa; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .guide-text { font-size: 13px; color: #cbd5e1; margin-bottom: 15px; line-height: 1.6; }
+        .cat-tag { font-size: 9px; padding: 2px 6px; border-radius: 4px; background: #0f172a; color: #94a3b8; margin-right: 6px; border: 1px solid #334155; }
+        .feedback-actions { display: flex; gap: 10px; margin-top: 15px; padding-top: 10px; border-top: 1px dashed #334155; }
+        .fb-btn { flex: 1; padding: 8px; border: 1px solid #334155; background: #0f172a; border-radius: 6px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 5px; transition: 0.2s; color: #cbd5e1; }
+        .fb-btn:hover { background: #1e293b; border-color: var(--primary); }
+        .fb-btn.liked { background: #064e3b; border-color: #10b981; color: #34d399; }
+        .fb-btn.disliked { background: #7f1d1d; border-color: #ef4444; color: #fca5a5; }
+        .diagnosis-card { transition: opacity 0.3s; background: #0f172a; border: 1px solid #334155; }
+        .diagnosis-card.rejected { opacity: 0.6; filter: grayscale(0.5); border: 1px solid #ef4444; }
+        .chat-fab { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4); cursor: pointer; z-index: 900; transition: transform 0.2s; }
+        .chat-fab:hover { transform: scale(1.1); }
+        .chat-modal { position: fixed; bottom: 80px; right: 20px; width: 360px; max-width: 90vw; height: 500px; background: #1e293b; border-radius: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); z-index: 901; display: none; flex-direction: column; overflow: hidden; border: 1px solid #334155; }
+        .chat-modal.active { display: flex; }
+        .chat-header { background: var(--primary); color: white; padding: 12px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
+        .chat-body { flex: 1; overflow-y: auto; padding: 10px; background: #0f172a; display: flex; flex-direction: column; gap: 8px; }
+        .chat-msg { background: #1e293b; padding: 8px 12px; border-radius: 12px; border-bottom-right-radius: 2px; font-size: 13px; position: relative; word-break: break-word; color: #cbd5e1; }
+        .chat-msg.admin { background: #172554; border: 1px solid #2563eb; color: #fff; }
+        .chat-meta { font-size: 10px; color: var(--muted); margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+        .chat-img { max-width: 100%; border-radius: 8px; margin-top: 5px; cursor: pointer; border: 1px solid #334155; display: block; }
+        .chat-img-container { position: relative; margin-top: 8px; }
+        .chat-img-container img { width: 100%; border-radius: 8px; }
+        .img-comment { margin-top: 8px; padding: 6px; background: #0f172a; border-radius: 6px; font-size: 11px; }
+        .msg-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; flex-wrap: wrap; gap: 6px; }
+        .reaction-btn { font-size: 14px; cursor: pointer; opacity: 0.6; transition: 0.2s; background: none; border: none; color: #cbd5e1; }
+        .reaction-btn:hover { opacity: 1; transform: scale(1.2); }
+        .delete-msg-btn { background: none; border: none; color: #ef4444; font-size: 12px; cursor: pointer; padding: 2px 6px; border-radius: 4px; transition: 0.2s; }
+        .delete-msg-btn:hover { background: #7f1d1d; color: white; }
+        .reactions-display { font-size: 12px; margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px; }
+        .reaction-tag { background: #334155; padding: 2px 6px; border-radius: 10px; font-size: 10px; }
+        .emoji-picker-msg { position: absolute; bottom: 100%; left: 0; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 5px; display: none; grid-template-columns: repeat(5, 1fr); gap: 5px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 905; width: 180px; }
+        .emoji-picker-msg.active { display: grid; }
+        .chat-input-area { padding: 8px; border-top: 1px solid #334155; display: flex; flex-direction: column; background: #1e293b; }
+        .image-preview { display: flex; align-items: center; gap: 8px; padding: 6px; background: #0f172a; border-radius: 6px; margin-bottom: 6px; }
+        .image-preview img { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; }
+        .image-preview button { background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+        .chat-input-row { display: flex; gap: 5px; align-items: center; }
+        .chat-input { flex: 1; padding: 8px; border: 1px solid #334155; border-radius: 20px; font-size: 13px; outline: none; background: #0f172a; color: #fff; }
+        .chat-tools { display: flex; gap: 5px; }
+        .tool-btn { background: none; border: none; font-size: 18px; cursor: pointer; padding: 5px; border-radius: 50%; transition: 0.2s; color: #cbd5e1; }
+        .tool-btn:hover { background: #334155; }
+        .emoji-picker-input { position: absolute; bottom: 60px; right: 10px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 5px; display: none; grid-template-columns: repeat(6, 1fr); gap: 5px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 902; width: 200px; }
+        .emoji-picker-input.active { display: grid; }
+        .emoji-item { font-size: 20px; cursor: pointer; text-align: center; padding: 5px; border-radius: 4px; }
+        .emoji-item:hover { background: #334155; }
+        .contributors-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid #334155; }
+        .contributor-item { display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #0f172a; border-radius: 6px; margin-bottom: 5px; font-size: 12px; }
+        .contributor-badge { font-size: 16px; margin-left: 5px; }
+        .admin-alert { background: #451a03; border: 1px solid #78350f; border-radius: 8px; padding: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .admin-alert button { padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; margin-right: 5px; }
+        .btn-approve { background: var(--success); color: white; }
+        .btn-ignore { background: var(--muted); color: white; }
+        .user-stats { background: #172554; padding: 8px 12px; border-radius: 8px; font-size: 11px; margin-right: 10px; color: #60a5fa; }
+        .json-input { font-family: monospace; direction: ltr; text-align: left; font-size: 11px; min-height: 120px; background: #0f172a; color: #cbd5e1; border: 1px solid #334155; }
+        .undo-container { margin-top: 10px; display: none; }
+        .undo-btn { background: var(--warn); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+        .case-counter { background: #172554; color: #60a5fa; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; display: inline-block; margin-bottom: 8px; }
+        .online-user { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #334155; font-size: 13px; }
+        .activity-item { padding: 8px; border-bottom: 1px solid #334155; font-size: 12px; }
+        @media (max-width: 480px) { .stats { grid-template-columns: 1fr; } .auth-card { padding: 24px 18px; } table { font-size: 11px; } th, td { padding: 8px 6px; } .report-header { flex-direction: column; align-items: flex-start; } .chat-modal { width: 95vw; right: 2.5vw; bottom: 70px; } }
     </style>
 </head>
 <body>
-<div class="header">
-    <h1>🦷 مدرب التشخيص السني</h1>
-    <div id="status" class="status-warn">⏳ جاري التهيئة...</div>
-</div>
-<div id="auth" class="auth">
-    <div class="auth-card">
-        <div class="tabs">
-            <button class="tab active" onclick="sw('admin',this)">🔐 إداري</button>
-            <button class="tab" onclick="sw('student',this)">🎓 طالب</button>
-            <button class="tab" onclick="sw('new',this)">📝 جديد</button>
-        </div>
-        <div id="auth-admin">
-            <input type="password" id="admin-pass" class="inp" placeholder="كلمة السر الإدارية">
-            <button class="btn btn-p" onclick="loginAdmin()">دخول المسؤول</button>
-        </div>
-        <div id="auth-student" class="hide">
-            <input type="text" id="std-user" class="inp" placeholder="اسم المستخدم">
-            <input type="password" id="std-pass" class="inp" placeholder="كلمة السر">
-            <button class="btn btn-s" onclick="loginStudent()">دخول الطالب</button>
-        </div>
-        <div id="auth-new" class="hide">
-            <input type="text" id="reg-name" class="inp" placeholder="الاسم الكامل">
-            <input type="text" id="reg-user" class="inp" placeholder="اسم المستخدم المطلوب">
-            <input type="password" id="reg-pass" class="inp" placeholder="اختر كلمة سر">
-            <button class="btn btn-p" onclick="registerRequest()">إرسال طلب انضمام</button>
-        </div>
-    </div>
-</div>
-<div id="app" class="app">
-    <div class="nav">
-        <button class="btn btn-p" style="flex:1" onclick="show('diag')">🔍 التشخيص</button>
-        <button id="nav-admin" class="btn btn-s hide" style="flex:1" onclick="show('admin')">⚙️ الإدارة</button>
-        <button class="btn btn-g" style="flex:1" onclick="show('chat')">💬 دردشة</button>
-    </div>
-    <div id="diag" class="view active">
-        <div class="card">
-            <h3>📋 وصف الحالة السريري</h3>
-            <textarea id="sym" placeholder="مثال: ألم نابض ليلي في الضرس الأخير مع تورم لثوي..."></textarea>
-            <button class="btn btn-p" onclick="runDiag()">🔬 تحليل بالذكاء المحلي</button>
-        </div>
-        <div id="res"></div>
-    </div>
-    <div id="admin" class="view">
-        <div class="card">
-            <h3>👥 إدارة الأعضاء والطلاب</h3>
-            <div id="users-list" style="max-height: 400px; overflow-y: auto;">
-                <div class="empty">جاري تحميل قائمة المستخدمين...</div>
+    <div id="auth" class="auth-screen">
+        <div class="auth-card" style="padding: 20px 20px 30px;">
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tab-admin" onclick="switchAuthTab('admin')">🔐 إدارة</button>
+                <button class="auth-tab" id="tab-student" onclick="switchAuthTab('student')">🎓 طالب</button>
+                <button class="auth-tab" id="tab-reg" onclick="switchAuthTab('reg')">📝 تسجيل</button>
             </div>
-        </div>
-        
-        <div class="card">
-            <h3>📊 الإحصائيات</h3>
-            <div class="stats">
-                <div class="stat"><div class="stat-n" id="stat-on">0</div><div>متصل</div></div>
-                <div class="stat"><div class="stat-n" id="stat-cases">0</div><div>حالة</div></div>
-                <div class="stat"><div class="stat-n" id="stat-users">0</div><div>مستخدم</div></div>
+            <div id="auth-admin" class="auth-tab-content">
+                <div class="logo">🦷</div>
+                <h1>مرحباً بك</h1>
+                <p class="sub">أدخل بياناتك للوصول إلى النظام</p>
+                <input type="password" id="login-input" class="input" placeholder="كلمة المرور أو البريد" onkeydown="if(event.key==='Enter') doLoginComplex()">
+                <button class="btn" id="login-btn" onclick="doLoginComplex()">دخول آمن 🔐</button>
+                <span class="link" onclick="showReg()">📝 تسجيل طبيب جديد</span>
+            </div>
+            <div id="auth-student" class="auth-tab-content hide">
+                <div class="logo">🎓</div>
+                <h1>دخول الطالب</h1>
+                <p class="sub">أدخل بياناتك كطالب للوصول للمحتوى التعليمي</p>
+                <input type="text" id="student-id" class="input" placeholder="الرقم الجامعي أو البريد">
+                <input type="password" id="student-pass" class="input" placeholder="كلمة المرور" onkeydown="if(event.key==='Enter') doStudentLogin()">
+                <button class="btn btn-green" onclick="doStudentLogin()">دخول الطالب 🎓</button>
+                <span class="link" onclick="switchAuthTab('admin')">← العودة لدخول الإدارة</span>
+            </div>
+            <div id="auth-reg" class="auth-tab-content hide">
+                <div class="logo">📝</div>
+                <h1>طلب انضمام</h1>
+                <p class="sub">ساهم في تطوير النظام</p>
+                <input type="text" id="r-name" class="input" placeholder="الاسم الكامل">
+                <input type="email" id="r-email" class="input" placeholder="البريد الإلكتروني">
+                <input type="password" id="r-pass" class="input" placeholder="كلمة المرور (6 أحرف+)">
+                <button class="btn" onclick="doRegister()">📤 إرسال الطلب</button>
+                <span class="link" onclick="showLogin()">← العودة للدخول</span>
             </div>
         </div>
     </div>
-    <div id="chat" class="view">
-        <div class="card">
-            <h3>💬 دردشة الفريق</h3>
-            <div id="chat-box" style="height:250px;overflow-y:auto;background:#0f172a;border-radius:8px;padding:10px;margin-bottom:10px"></div>
-            <div style="display:flex;gap:8px">
-                <input type="text" id="chat-inp" class="inp" style="margin:0;flex:1" placeholder="اكتب رسالتك...">
-                <button class="btn btn-p" style="width:auto;margin:0;padding:12px 20px" onclick="sendChat()">➤</button>
+    <div id="app" class="hide">
+        <div class="premium-header">
+            <div class="header-content">
+                <div class="header-icon-group">
+                    <span class="header-tooth">🦷</span>
+                    <span class="header-shield">🛡️</span>
+                </div>
+                <div class="header-text">
+                    <h1>تشخيص <span class="star-effect">✦</span></h1>
+                    <h2>أمراض الفم والأسنان</h2>
+                </div>
+            </div>
+            <div class="dr-footer">
+                <span>تطبيقات الدكتور عطوني</span>
+                <span class="ai-badge">A+</span>
             </div>
         </div>
-    </div>
-</div>
-<script>
-const FB_CONFIG = { 
-    apiKey: "AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE", 
-    databaseURL: "https://diagnosis-6ea4b-default-rtdb.firebaseio.com" 
-};
-let db = null, fbReady = false, currentUser = null;
-try {
-    firebase.initializeApp(FB_CONFIG);
-    db = firebase.database();
-    db.ref('.info/connected').on('value', snap => {
-        fbReady = (snap.val() === true);
-        updateStatus();
-    });
-} catch(e) {
-    updateStatus();
-}
-function updateStatus() {
-    const s = document.getElementById('status');
-    if(fbReady) { s.textContent = "🟢 متصل بفايربيس | " + (currentUser?.name || ""); s.className = "status-ok"; }
-    else { s.textContent = "🟡 وضع أوفلاين - سجل الدخول للمزامنة"; s.className = "status-warn"; }
-}
-// 🔀 تبديل تبويبات الدخول
-function sw(tab, btn) {
-    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    ['admin','student','new'].forEach(t => document.getElementById(`auth-${t}`).classList.add('hide'));
-    document.getElementById(`auth-${tab}`).classList.remove('hide');
-}
-// 🔐 دخول المسؤول
-function loginAdmin() {
-    const pass = document.getElementById('admin-pass').value.trim();
-    if(pass === "9591melas" || pass === "salem1959") {
-        currentUser = { role: 'admin', name: 'د. عطوني' };
-        document.getElementById('nav-admin').classList.remove('hide');
-        startApp();
-        loadUsersManager(); // تحميل نظام إدارة المستخدمين
-    } else {
-        alert("⚠️ كلمة السر غير صحيحة");
-    }
-}
-// 🎓 دخول الطالب (نظام التحقق الجديد)
-async function loginStudent() {
-    const user = document.getElementById('std-user').value.trim();
-    const pass = document.getElementById('std-pass').value.trim();
-    
-    if(!fbReady) return alert("يجب أن تكون متصلاً بالإنترنت لتسجيل الدخول");
-    
-    const snap = await db.ref('users/' + user).once('value');
-    const data = snap.val();
-    
-    if(data && data.pass === pass) {
-        if(data.status === 'active') {
-            currentUser = { role: 'student', name: data.name, username: user };
-            startApp();
-        } else {
-            alert("⚠️ حسابك قيد المراجعة أو معطل من قبل الإدارة.");
-        }
-    } else {
-        alert("❌ اسم المستخدم أو كلمة السر خطأ");
-    }
-}
-// 📝 طلب تسجيل جديد
-function registerRequest() {
-    const name = document.getElementById('reg-name').value.trim();
-    const user = document.getElementById('reg-user').value.trim();
-    const pass = document.getElementById('reg-pass').value.trim();
-    
-    if(!name || !user || !pass) return alert("يرجى ملء كافة الحقول");
-    
-    db.ref('users/' + user).set({
-        name: name,
-        pass: pass,
-        status: 'pending', // الحالة الافتراضية
-        requestedAt: Date.now()
-    }).then(() => {
-        alert("✅ تم إرسال طلبك. انتظر تفعيل الحساب من قبل الدكتور.");
-        location.reload();
-    });
-}
-// ⚙️ نظام إدارة المستخدمين (للإدمن فقط)
-function loadUsersManager() {
-    db.ref('users').on('value', snap => {
-        const users = snap.val();
-        const container = document.getElementById('users-list');
-        let html = "";
-        let count = 0;
-        
-        if(!users) {
-            container.innerHTML = '<div class="empty">لا يوجد مستخدمون حالياً</div>';
-            return;
-        }
-        for(let id in users) {
-            count++;
-            const u = users[id];
-            const statusText = u.status === 'active' ? 'مفعل' : (u.status === 'pending' ? 'قيد الانتظار' : 'معطل');
-            const statusClass = u.status === 'active' ? 'u-active' : (u.status === 'pending' ? 'u-pending' : 'u-blocked');
+        <header>
+            <div class="logo-text">🦷 القائمة الرئيسية</div>
+            <div class="nav">
+                <span class="badge" id="badge" style="display:none">0</span>
+                <span id="user-stats" class="user-stats" style="display:none">المساهمات: <b id="user-corrections">0</b></span>
+                <span style="font-size:12px;font-weight:600" id="uname">مستخدم</span>
+                <button class="logout-btn" onclick="doLogout()">خروج</button>
+            </div>
+        </header>
+        <main>
+            <div id="public-poster-banner" class="card" style="display:none; padding:10px; text-align:center; background:linear-gradient(135deg, #1e3a8a22, #0f172a); border:1px solid #3b82f644; position:relative;">
+                <img id="public-poster-img" src="" style="max-width:100%; max-height:300px; border-radius:12px; cursor:pointer;" onclick="window.open(this.src)" alt="بوستر إعلاني">
+                <button class="act-btn act-del" onclick="closePosterBanner()" style="position:absolute; left:15px; top:15px; padding:4px 8px; z-index:10;">✕</button>
+            </div>
             
-            html += `
-            <div class="user-row">
-                <div class="user-info">
-                    <b>${u.name} (@${id})</b>
-                    <span class="${statusClass}">${statusText}</span>
+            <div id="admin" class="view active">
+                <div class="card">
+                    <h3>📊 إحصائيات المستخدمين</h3>
+                    <div class="stats">
+                        <div class="stat"><div class="stat-num" id="c-p">0</div><div class="stat-label">معلق</div></div>
+                        <div class="stat"><div class="stat-num" id="c-a">0</div><div class="stat-label">نشط</div></div>
+                        <div class="stat"><div class="stat-num" id="c-t">0</div><div class="stat-label">الكل</div></div>
+                    </div>
                 </div>
-                <div style="display:flex;gap:5px">
-                    ${u.status !== 'active' ? `<button class="btn-s" style="padding:5px" onclick="updateUserStatus('${id}', 'active')">تفعيل</button>` : `<button class="btn-w" onclick="updateUserStatus('${id}', 'blocked')">تعطيل</button>`}
-                    <button class="btn-d" onclick="deleteUser('${id}')">حذف</button>
+                
+                <!-- قسم المستخدمين النشطين الآن -->
+                <div class="card">
+                    <h3>🟢 المستخدمون النشطون الآن</h3>
+                    <div id="online-users-list" class="empty">جاري التحميل...</div>
                 </div>
-            </div>`;
-        }
-        container.innerHTML = html || '<div class="empty">لا يوجد طلبات حالياً</div>';
-        document.getElementById('stat-users').textContent = count;
-    });
-}
-function updateUserStatus(uid, newStatus) {
-    db.ref('users/' + uid).update({ status: newStatus });
-}
-function deleteUser(uid) {
-    if(confirm('هل أنت متأكد من حذف هذا المستخدم نهائياً؟')) {
-        db.ref('users/' + uid).remove();
-    }
-}
-// 🚀 بدء التطبيق واستمرارية الوظائف السابقة
-function startApp() {
-    document.getElementById('auth').classList.add('hide');
-    document.getElementById('app').style.display = 'block';
-    updateStatus();
-    if(fbReady && db) {
-        syncOnline();
-        loadChat();
-    }
-}
-function show(id) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-}
-// --- (بقية الأكواد السابقة الخاصة بالتشخيص والدردشة تبقى كما هي دون تغيير) ---
-const KB = [
-    {id:"pulp_acute", name:"التهاب لب حاد", cat:"لبية", sev:"عالي", loc:"سن", kw:["نابض","ليلي","عفوي","لا ينام","ألم مستمر","حار","بارد"], signs:"ألم عفوي نابض يزداد ليلاً وعند الاستلقاء، حساسية للحرارة تستمر", treat:"علاج لبّي عاجل أو استئصال", diff:"ألم ليلي ذاتي + استجابة طويلة للبرد"},
-    {id:"apical_abscess", name:"خراج ذروي حاد", cat:"عدوى", sev:"طوارئ", loc:"سن", kw:["تورم","انتفاخ","نقرة","قيح","صديد","حرارة","وجه","خد"], signs:"ألم شديد عند النقر العمودي، تورم لثوي أو وجهي، قد يصاحبها حمى", treat:"تصريف فوري + مضادات حيوية + علاج جذر", diff:"تورم + ألم نقر + صديد"},
-    {id:"pericoronitis", name:"التهاب حول التاج (تواج)", cat:"جراحة", sev:"عالي", loc:"خلف", kw:["عقل","بلع","صعب","فتحة","خلف","رائحة","أذن"], signs:"التهاب الأنسجة حول تاج الرحى الثالثة المنطمرة جزئياً، صعوبة فتح الفم", treat:"غسيل موضعي، مضادات، ثم القلع الجراحي", diff:"موقع خلفي + غطاء لثوي ملتهب + رائحة"}
-];
-const SYNONYMS = {'يوجعني':'ألم','وجع':'ألم','نابض':'ألم نابض','ورم':'تورم','ضرس':'سن'};
-function runDiag() {
-    const input = document.getElementById('sym').value.toLowerCase().trim();
-    if(!input) return alert("اكتب الأعراض أولاً");
+                
+                <!-- قسم آخر النشاطات خلال 24 ساعة -->
+                <div class="card">
+                    <h3>📅 آخر النشاطات (24 ساعة)</h3>
+                    <div id="recent-activity-list" class="empty">جاري التحميل...</div>
+                </div>
+                
+                <div class="card">
+                    <div class="collapsible-header" onclick="toggleCollapse('poster-container', 'poster-icon')">
+                        <h3>🖼️ البوستر الإعلاني</h3>
+                        <span id="poster-icon" class="toggle-icon">▼</span>
+                    </div>
+                    <div id="poster-container" class="collapsible-content collapsed">
+                        <p style="font-size:11px; color:#94a3b8; margin-bottom:8px;">أدخل رابط الصورة لعرضها كبوستر إعلاني للجميع:</p>
+                        <input type="url" id="poster-url-input" class="input" placeholder="https://example.com/poster.jpg" style="margin-bottom:10px; direction:ltr; text-align:left;">
+                        <button class="btn btn-green" onclick="savePoster()" style="margin-bottom:8px;">💾 حفظ البوستر</button>
+                        <button class="btn btn-gray" onclick="deletePoster()">🗑️ حذف البوستر</button>
+                        <div id="poster-preview" style="margin-top:12px; text-align:center; display:none;">
+                            <p style="font-size:11px; color:#94a3b8; margin-bottom:6px;">معاينة:</p>
+                            <img id="poster-preview-img" src="" style="max-width:100%; max-height:200px; border-radius:8px; border:1px solid #334155;">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="collapsible-header" onclick="toggleCollapse('add-case-container', 'add-case-icon')">
+                        <h3>➕ إضافة حالات (JSON) <span id="db-stats" class="case-counter">جاري...</span></h3>
+                        <span id="add-case-icon" class="toggle-icon">▼</span>
+                    </div>
+                    <div id="add-case-container" class="collapsible-content">
+                        <p style="font-size:11px; color:#94a3b8; margin-bottom:8px;">الصق كود JSON هنا:</p>
+                        <textarea id="json-input" class="input json-input" placeholder='{"id":"x","name":"حالة","cat":"تصنيف","sev":"عالي","location":"فم","keywords":["كلمة"],"signs":"علامات","xray":"أشعة","treat":"علاج","diff":"تفريق"}'></textarea>
+                        <button class="btn btn-green" onclick="addCasesFromJSON()">💾 حفظ</button>
+                        <div id="undo-area" class="undo-container">
+                            <button class="undo-btn" onclick="undoLastAdd()">↩️ تراجع (<span id="undo-timer">5</span>)</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="activation-requests"></div>
+                <div class="card contributors-section">
+                    <div class="collapsible-header" onclick="toggleCollapse('contrib-list', 'contrib-icon')">
+                        <h3>🏆 المساهمون</h3><span id="contrib-icon" class="toggle-icon">▼</span>
+                    </div>
+                    <div id="contrib-list" class="collapsible-content">
+                        <p style="font-size:11px; color:#666; margin-bottom:8px;">أفضل الأطباء:</p>
+                        <div id="contributors-list-content"><div class="empty">جاري...</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="collapsible-header" onclick="toggleCollapse('req-list-container', 'req-icon')">
+                        <h3>📥 طلبات التفعيل</h3><span id="req-icon" class="toggle-icon">▼</span>
+                    </div>
+                    <div id="req-list-container" class="collapsible-content">
+                        <div id="req-list" style="padding-top:10px;" class="empty">لا توجد طلبات</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="collapsible-header" onclick="toggleCollapse('doc-list-container', 'doc-icon')">
+                        <h3>👥 سجل الأطباء</h3><span id="doc-icon" class="toggle-icon">▼</span>
+                    </div>
+                    <div id="doc-list-container" class="collapsible-content">
+                        <div class="table-wrap" style="margin-top:15px;">
+                            <table>
+                                <thead><tr><th>الاسم</th><th>البريد</th><th>الحالة</th><th>المساهمات</th><th>إجراء</th></tr></thead>
+                                <tbody id="u-tbl"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-green" onclick="goDiag()">🔍 واجهة التشخيص الشامل</button>
+            </div>
+            
+            <div id="diag" class="view">
+                <div class="card">
+                    <h3>📋 الوصف السريري للحالة</h3>
+                    <p style="font-size:11px;color:#94a3b8;margin-bottom:10px;">💡 اكتب الأعراض بدقة لتحصل على أدق تشخيص:</p>
+                    <textarea id="sym" placeholder="مثال: ألم خلف الضرس الأخير مع صعوبة فتح الفم ورائحة كريهة..."></textarea>
+                    <button class="btn" onclick="runDiagnosis()">🔍 تحليل الخبير السريري</button>
+                </div>
+                <div id="res"></div>
+                <button class="btn btn-gray" id="backToAdminBtn" onclick="goAdmin()" style="display:none;">⚙️ العودة للإدارة</button>
+            </div>
+        </main>
+        
+        <footer>
+            <div><a href="https://wa.me/963939436998" target="_blank" class="wa-btn">📱 أرسل ملاحظاتك</a></div>
+            <div style="font-size:11px; opacity:0.85; margin-top:4px;">تطبيقات الدكتور عطوني | الإصدار v48.8 تتبع المستخدمين</div>
+        </footer>
+    </div>
+    <div class="chat-fab" onclick="toggleChat()">💬</div>
     
-    let results = [];
-    for(const dis of KB) {
-        let score = 0, matched = [];
-        for(const kw of dis.kw) {
-            if(input.includes(kw)) { score += 20; matched.push(kw); }
+    <div id="chat-modal" class="chat-modal">
+        <div class="chat-header"><span>💬 النقاش العام</span><span style="cursor:pointer" onclick="toggleChat()">✕</span></div>
+        <div id="chat-body" class="chat-body"><div class="empty" style="padding:20px">جاري تحميل الرسائل...</div></div>
+        <div id="emoji-picker-input" class="emoji-picker-input"></div>
+        <div class="chat-input-area">
+            <div id="image-preview-area" class="image-preview" style="display:none">
+                <img id="preview-img" src="" alt="preview">
+                <span id="preview-name" style="font-size:11px;flex:1"></span>
+                <button onclick="cancelImage()">✖ إلغاء</button>
+            </div>
+            <div class="chat-input-row">
+                <div class="chat-tools">
+                    <button class="tool-btn" onclick="document.getElementById('chat-img-input').click()" title="إرفاق صورة">📷</button>
+                    <button class="tool-btn" onclick="toggleInputEmoji()" title="سمايلات">😊</button>
+                </div>
+                <input type="text" id="chat-input" class="chat-input" placeholder="اكتب رسالتك هنا...">
+                <button class="chat-send" onclick="sendChatMessage()" style="background:var(--primary);color:#fff;border:none;padding:8px 12px;border-radius:20px;cursor:pointer">➤</button>
+            </div>
+        </div>
+    </div>
+    
+    <input type="file" id="chat-img-input" accept="image/*" style="display:none" onchange="handleImageSelect(this)">
+    <div class="toast" id="toast"></div>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script>
+        const cfg = { apiKey:"AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE", authDomain:"diagnosis-6ea4b.firebaseapp.com", databaseURL:"https://diagnosis-6ea4b-default-rtdb.firebaseio.com", projectId:"diagnosis-6ea4b" };
+        let db;
+        try { firebase.initializeApp(cfg); db = firebase.database(); } catch(e) { console.warn("⚠️ Offline Mode"); db = null; }
+        
+        const $=id=>document.getElementById(id);
+        const toast=m=>{ const t=$('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); };
+        const showReg=()=>{ switchAuthTab('reg'); };
+        const showLogin=()=>{ switchAuthTab('admin'); };
+        
+        window.switchAuthTab = (tabName) => {
+            document.querySelectorAll('.auth-tab-content').forEach(el => el.classList.add('hide'));
+            document.querySelectorAll('.auth-tab').forEach(el => el.classList.remove('active'));
+            if(tabName === 'admin') {
+                $('auth-admin').classList.remove('hide');
+                $('tab-admin').classList.add('active');
+            } else if(tabName === 'student') {
+                $('auth-student').classList.remove('hide');
+                $('tab-student').classList.add('active');
+            } else if(tabName === 'reg') {
+                $('auth-reg').classList.remove('hide');
+                $('tab-reg').classList.add('active');
+            }
+        };
+        
+        window.toggleCollapse = (c, i) => { const el=$(c), icon=$(i); if(el.classList.contains('collapsed')) { el.classList.remove('collapsed'); icon.style.transform='rotate(0deg)'; } else { el.classList.add('collapsed'); icon.style.transform='rotate(-90deg)'; } };
+        
+        // -------------------- الدردشة مع الصور --------------------
+        let pendingImage = null;
+        window.toggleChat=()=>{ const modal=$('chat-modal'); modal.classList.toggle('active'); if(modal.classList.contains('active')){ loadChatMessages(); } };
+        
+        function handleImageSelect(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    pendingImage = { data: e.target.result, name: file.name };
+                    $('preview-img').src = e.target.result;
+                    $('preview-name').textContent = file.name.substring(0, 20) + '...';
+                    $('image-preview-area').style.display = 'flex';
+                    toast('✅ تم اختيار الصورة');
+                };
+                reader.readAsDataURL(file);
+            }
         }
-        if(score > 0) results.push({ ...dis, score: Math.min(score, 99), matched });
-    }
-    displayResults(results.sort((a,b) => b.score - a.score).slice(0, 3));
-}
-function displayResults(arr) {
-    const out = document.getElementById('res');
-    if(!arr.length) { out.innerHTML = `<div class="card">لم يتم العثور على نتائج دقيقة</div>`; return; }
-    let html = `<div class="card"><h4>📋 النتائج المقترحة:</h4>`;
-    arr.forEach(r => {
-        html += `<div class="res"><b>${r.name}</b> (${r.score}%)<br><small>${r.signs}</small><br><small style="color:var(--s)">${r.treat}</small></div>`;
-    });
-    out.innerHTML = html + "</div>";
-}
-async function syncOnline() {
-    if(!db || !currentUser) return;
-    const uid = currentUser.name.replace(/\s/g, '_');
-    const ref = db.ref('online/' + uid);
-    await ref.set({ name: currentUser.name, role: currentUser.role });
-    ref.onDisconnect().remove();
-    db.ref('online').on('value', snap => {
-        document.getElementById('stat-on').textContent = snap.numChildren();
-    });
-}
-function loadChat() {
-    db.ref('chat').limitToLast(20).on('child_added', snap => {
-        const d = snap.val();
-        const div = document.createElement('div');
-        div.style.cssText = "background:#1e293b;padding:8px;border-radius:8px;margin:4px 0;font-size:13px";
-        div.innerHTML = `<b>${d.name}</b>: ${d.text}`;
-        document.getElementById('chat-box').appendChild(div);
-        document.getElementById('chat-box').scrollTop = 999;
-    });
-}
-function sendChat() {
-    const txt = document.getElementById('chat-inp').value;
-    if(!txt) return;
-    db.ref('chat').push({ name: currentUser.name, text: txt });
-    document.getElementById('chat-inp').value = '';
-}
-window.addEventListener('load', () => {
-    document.getElementById('stat-cases').textContent = KB.length;
-});
-</script>
+        
+        function cancelImage() {
+            pendingImage = null;
+            $('image-preview-area').style.display = 'none';
+            $('preview-img').src = '';
+            $('preview-name').textContent = '';
+            $('chat-img-input').value = '';
+        }
+        
+        window.deleteChatMessage = (key) => {
+            if(!db) return toast('❌ لا يمكن الحذف بدون اتصال');
+            if(!user) return toast('يجب تسجيل الدخول');
+            db.ref(`public_chat/${key}`).once('value').then(snap => {
+                const msg = snap.val();
+                if(!msg) { toast('⚠️ الرسالة غير موجودة'); return; }
+                const isOwner = (user.name === msg.user);
+                const isAdmin = (user.role === 'admin');
+                if(isOwner || isAdmin) {
+                    if(confirm('هل تريد حذف هذه الرسالة نهائياً؟')) {
+                        db.ref(`public_chat/${key}`).remove().then(() => {
+                            toast('🗑️ تم حذف الرسالة');
+                        }).catch(e => toast('❌ فشل الحذف: '+e.message));
+                    }
+                } else {
+                    toast('⚠️ لا يمكنك حذف رسائل الآخرين');
+                }
+            }).catch(e => toast('خطأ: '+e.message));
+        };
+        
+        function loadChatMessages(){
+            if(!db) { $('chat-body').innerHTML='<div class="empty">الدردشة غير متاحة (تحقق من الإنترنت)</div>'; return; }
+            db.ref('public_chat').limitToLast(50).on('value', snap => {
+                let html = '';
+                if(snap.exists()) snap.forEach(child => {
+                    const msg=child.val(), key=child.key;
+                    let reactionsHtml='';
+                    if(msg.reactions) Object.entries(msg.reactions).forEach(([e,u])=>{ reactionsHtml+=`<span class="reaction-tag">${e} ${u.length}</span>`; });
+                    let imgHtml = '';
+                    if(msg.image) {
+                        imgHtml = `
+                            <div class="chat-img-container">
+                                <img src="${msg.image}" class="chat-img" onclick="window.open(this.src)" alt="image">
+                                ${msg.imageComment ? `<div class="img-comment">💬 ${msg.imageComment}</div>` : ''}
+                            </div>
+                        `;
+                    }
+                    let deleteButton = '';
+                    if(user && (user.name === msg.user || user.role === 'admin')) {
+                        deleteButton = `<button class="delete-msg-btn" onclick="deleteChatMessage('${key}')" title="حذف">🗑️</button>`;
+                    }
+                    html+=`<div class="chat-msg ${msg.user==='المدير'?'admin':''}" id="msg-${key}">
+                        <div class="chat-meta"><b>${msg.user}</b><span>${new Date(msg.date).toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})}</span></div>
+                        <div>${msg.text||''}</div>
+                        ${imgHtml}
+                        <div class="msg-actions">
+                            <div class="reactions-display">${reactionsHtml}</div>
+                            <div style="display:flex; gap:6px;">
+                                <button class="reaction-btn" onclick="toggleReactionPicker('${key}')">😊</button>
+                                ${deleteButton}
+                            </div>
+                        </div>
+                        <div id="react-picker-${key}" class="emoji-picker-msg">${['👍','❤️','😂','😮','😢','🦷'].map(e=>`<span class="emoji-item" onclick="addReaction('${key}','${e}')">${e}</span>`).join('')}</div>
+                    </div>`;
+                });
+                else html='<div class="empty">لا توجد رسائل</div>';
+                $('chat-body').innerHTML=html;
+                $('chat-body').scrollTop=$('chat-body').scrollHeight;
+            });
+        }
+        
+        window.toggleReactionPicker=(key)=>{
+            document.querySelectorAll('.emoji-picker-msg').forEach(el=>el.classList.remove('active'));
+            const p=$(`react-picker-${key}`); if(p) p.classList.toggle('active');
+        };
+        
+        window.addReaction=(key,emoji)=>{
+            if(!user) return toast('يجب تسجيل الدخول أولاً');
+            const ref=db.ref(`public_chat/${key}/reactions/${emoji}`);
+            ref.transaction(cur=>{
+                if(!cur) return [user.name];
+                if(cur.includes(user.name)) return cur.filter(u=>u!==user.name);
+                return [...cur,user.name];
+            });
+            $(`react-picker-${key}`).classList.remove('active');
+        };
+        
+        function sendChatMessage(){
+            if(!db) return toast('❌ لا يوجد اتصال بالخادم');
+            const input=$('chat-input');
+            const text=input.value.trim();
+            if(!text && !pendingImage) return toast('اكتب نصاً أو اختر صورة');
+            if(!user) return toast('يجب تسجيل الدخول أولاً');
+            const badWords=['سب','شتم','غبي'];
+            if(badWords.some(w=>text.includes(w))) return toast('⚠️ الأدب من فضلك');
+            
+            let msgObj={user:user.name,date:Date.now(),text:text};
+            if(pendingImage) {
+                msgObj.image = pendingImage.data;
+                msgObj.imageName = pendingImage.name;
+            }
+            
+            const sendBtn = document.querySelector('.chat-send');
+            if(sendBtn) sendBtn.disabled = true;
+            
+            db.ref('public_chat').push(msgObj).then(()=>{
+                input.value='';
+                cancelImage();
+                toast('✅ تم الإرسال');
+                if(sendBtn) sendBtn.disabled = false;
+            }).catch(e=>{
+                toast('❌ فشل الإرسال');
+                if(sendBtn) sendBtn.disabled = false;
+            });
+        }
+        
+        const inputEmojis=['🦷','','👅','','😷','','🤕','','💉','','✅','','⚠️','👍','👎','😂','😢','😡','🤔',''];
+        const inputPicker=$('emoji-picker-input');
+        inputEmojis.forEach(emoji=>{
+            const span=document.createElement('span');
+            span.className='emoji-item';
+            span.textContent=emoji;
+            span.onclick=()=>{ $('chat-input').value+=emoji; $('chat-input').focus(); };
+            inputPicker.appendChild(span);
+        });
+        window.toggleInputEmoji=()=>{ inputPicker.classList.toggle('active'); };
+        
+        // ==================== دوال البوستر الإعلاني ====================
+        window.savePoster = () => {
+            if(user?.role !== 'admin') return toast('⚠️ غير مصرح');
+            const url = $('poster-url-input').value.trim();
+            if(!url) return toast('⚠️ أدخل رابط الصورة');
+            if(!db) return toast('❌ لا يوجد اتصال بالخادم');
+            
+            const posterData = {
+                url: url,
+                addedBy: user.name,
+                date: Date.now(),
+                active: true
+            };
+            
+            db.ref('admin_poster').set(posterData).then(() => {
+                toast('✅ تم حفظ البوستر بنجاح');
+                $('poster-url-input').value = '';
+                loadPublicPoster();
+                updatePosterPreview(url);
+            }).catch(e => toast('❌ فشل الحفظ: '+e.message));
+        };
+        window.deletePoster = () => {
+            if(user?.role !== 'admin') return toast('⚠️ غير مصرح');
+            if(!confirm('هل تريد حذف البوستر الإعلاني؟')) return;
+            if(!db) return toast('❌ لا يوجد اتصال');
+            
+            db.ref('admin_poster').remove().then(() => {
+                toast('🗑️ تم حذف البوستر');
+                $('public-poster-banner').style.display = 'none';
+                $('poster-preview').style.display = 'none';
+            }).catch(e => toast('❌ فشل الحذف: '+e.message));
+        };
+        function updatePosterPreview(url) {
+            const preview = $('poster-preview');
+            const img = $('poster-preview-img');
+            if(url && url.startsWith('http')) {
+                img.src = url;
+                preview.style.display = 'block';
+                img.onerror = () => { toast('⚠️ الرابط غير صالح'); preview.style.display = 'none'; };
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+        function loadPublicPoster() {
+            if(!db) return;
+            db.ref('admin_poster').once('value').then(snap => {
+                const banner = $('public-poster-banner');
+                const img = $('public-poster-img');
+                if(snap.exists() && snap.val().active) {
+                    const data = snap.val();
+                    img.src = data.url;
+                    banner.style.display = 'block';
+                    img.onerror = () => { banner.style.display = 'none'; };
+                } else {
+                    banner.style.display = 'none';
+                }
+            }).catch(() => {});
+        }
+        window.closePosterBanner = () => {
+            $('public-poster-banner').style.display = 'none';
+        };
+        
+        // ============ دوال تتبع المستخدمين (الحضور وآخر النشاط) ============
+        let presenceInterval = null;
+        
+        function setUserPresence(userId, userName, userRole) {
+            if(!db) return;
+            const userRef = db.ref(`users/${userId}`);
+            const connectedRef = db.ref('.info/connected');
+            connectedRef.on('value', (snap) => {
+                if(snap.val() === true) {
+                    userRef.child('state').set('online');
+                    userRef.child('last_seen').set(Date.now());
+                    userRef.child('state').onDisconnect().set('offline');
+                    userRef.child('last_seen').onDisconnect().set(Date.now());
+                    if(presenceInterval) clearInterval(presenceInterval);
+                    presenceInterval = setInterval(() => {
+                        if(user && user.id === userId) userRef.child('last_seen').set(Date.now());
+                        else clearInterval(presenceInterval);
+                    }, 60000);
+                }
+            });
+        }
+        
+        function recordLoginHistory(userId, name, role) {
+            if(!db) return;
+            db.ref('login_history').push({
+                userId: userId,
+                name: name,
+                role: role,
+                timestamp: Date.now(),
+                dateString: new Date().toISOString()
+            }).catch(e => console.warn);
+        }
+        
+        // دوال التحميل للمدير
+        function loadOnlineUsers() {
+            if(!db || user?.role !== 'admin') return;
+            db.ref('users').orderByChild('state').equalTo('online').once('value', snap => {
+                let html = '';
+                if(snap.exists()) {
+                    snap.forEach(child => {
+                        const u = child.val();
+                        const lastSeen = u.last_seen ? new Date(u.last_seen).toLocaleString() : 'غير معروف';
+                        html += `<div class="online-user">🟢 <b>${u.name || 'مجهول'}</b> (${u.role || 'طبيب'}) – آخر نشاط: ${lastSeen}</div>`;
+                    });
+                } else html = '<div class="empty">لا يوجد مستخدمون نشطون حالياً</div>';
+                $('#online-users-list').innerHTML = html;
+            });
+        }
+        
+        function loadRecentActivity() {
+            if(!db || user?.role !== 'admin') return;
+            const since = Date.now() - 24*60*60*1000;
+            db.ref('login_history').orderByChild('timestamp').startAt(since).once('value', snap => {
+                let items = [];
+                if(snap.exists()) {
+                    snap.forEach(child => { items.push(child.val()); });
+                    items.sort((a,b)=>b.timestamp - a.timestamp);
+                    let html = '';
+                    items.forEach(act => {
+                        html += `<div class="activity-item">📌 ${act.name} (${act.role}) – ${new Date(act.timestamp).toLocaleString()}</div>`;
+                    });
+                    $('#recent-activity-list').innerHTML = html;
+                } else $('#recent-activity-list').innerHTML = '<div class="empty">لا توجد أنشطة خلال آخر 24 ساعة</div>';
+            });
+        }
+        
+        function startAdminMonitoring() {
+            if(user?.role === 'admin') {
+                loadOnlineUsers();
+                loadRecentActivity();
+                setInterval(() => { loadOnlineUsers(); loadRecentActivity(); }, 10000);
+            }
+        }
+        
+        // -------------------- نظام الدخول --------------------
+        const SECRET_KEY="9591melas"; let user=null;
+        
+        window.doStudentLogin = () => {
+            const sid = $('student-id').value.trim();
+            const spass = $('student-pass').value.trim();
+            if(!sid || !spass) return toast('⚠️ أكمل جميع الحقول');
+            if(spass.length >= 4) {
+                user = {name: 'طالب: '+sid, role: 'student', studentId: sid, id: 'student_'+Date.now()};
+                localStorage.setItem('d_session', JSON.stringify(user));
+                $('auth').classList.add('hide');
+                $('app').classList.remove('hide');
+                $('uname').textContent = user.name;
+                $('admin').classList.remove('active');
+                $('diag').classList.add('active');
+                $('backToAdminBtn').style.display = 'none';
+                if(db) {
+                    loadPublicPoster();
+                    setUserPresence(user.id, user.name, 'student');
+                    recordLoginHistory(user.id, user.name, 'student');
+                }
+                toast('✅ أهلاً بك يا طالب');
+            } else {
+                toast('❌ كلمة المرور قصيرة');
+            }
+        };
+        
+        const doLoginComplex = async () => {
+            const input=$('login-input').value.trim(); const btn=$('login-btn'); if(!input) return toast('⚠️ أدخل كلمة المرور');
+            btn.disabled=true; btn.textContent='⏳...';
+            if(input===SECRET_KEY||input.split('').reverse().join('')===SECRET_KEY){
+                user={name:'المدير',role:'admin', id:'admin_master'}; localStorage.setItem('d_session',JSON.stringify(user));
+                $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent='المدير';
+                $('admin').classList.add('active'); $('diag').classList.remove('active'); $('backToAdminBtn').style.display='block';
+                if(db){
+                    try{load();loadContributors();loadActivationRequests();loadPublicPoster(); setUserPresence('admin_master','المدير','admin'); recordLoginHistory('admin_master','المدير','admin'); startAdminMonitoring();}catch(e){}
+                }
+                toast('✅ تم الدخول كمدير'); btn.disabled=false; btn.textContent='دخول آمن 🔐'; return;
+            }
+            if(!db){ toast('❌ لا اتصال بالخادم'); btn.disabled=false; btn.textContent='دخول آمن 🔐'; return; }
+            try{
+                const snap=await db.ref('users').orderByChild('email').equalTo(input).once('value'); let found=null;
+                if(snap.exists()) snap.forEach(child=>{ found={id:child.key,...child.val()}; });
+                if(!found) { const snap2=await db.ref('users').orderByChild('name').equalTo(input).once('value'); if(snap2.exists()) snap2.forEach(child=>{ found={id:child.key,...child.val()}; }); }
+                if(!found) toast('❌ بيانات غير صحيحة');
+                else if(found.status==='pending') toast('⏳ قيد المراجعة');
+                else if(found.status==='rejected'||found.status==='disabled') toast('❌ غير مفعل');
+                else{ user={...found,role:'doc'}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; $('admin').classList.remove('active'); $('diag').classList.add('active'); updateUserStats(); if(db) { loadPublicPoster(); setUserPresence(user.id, user.name, 'doc'); recordLoginHistory(user.id, user.name, 'doc'); } toast('✅ أهلاً د/'+user.name); }
+            }catch(err){ toast('❌ خطأ: '+err.message); } finally{ btn.disabled=false; btn.textContent='دخول آمن 🔐'; }
+        };
+        const doRegister=()=>{ const n=$('r-name').value.trim(), e=$('r-email').value.trim().toLowerCase(), p=$('r-pass').value; if(!n||!e||!p) return toast('أكمل الحقول'); if(p.length<6) return toast('كلمة مرور قصيرة'); if(!db) return toast('❌ لا اتصال'); db.ref('users').push({name:n,email:e,pass:p,status:'pending',date:Date.now(),corrections:0}).then(()=>{ toast('✅ تم الإرسال'); $('r-name').value=''; $('r-email').value=''; $('r-pass').value=''; setTimeout(showLogin,2000); }).catch(e=>toast('❌ فشل: '+e.message)); };
+        const updateUserStats=()=>{ if(user?.id&&user.role==='doc'&&db) db.ref('users/'+user.id).once('value').then(snap=>{ const data=snap.val(); if(data?.corrections!==undefined){ user.corrections=data.corrections; $('user-corrections').textContent=data.corrections; $('user-stats').style.display='inline'; } }); };
+        const goDiag=()=>{ $('admin').classList.remove('active'); $('diag').classList.add('active'); $('backToAdminBtn').style.display='block'; if(user?.role==='doc') updateUserStats(); };
+        const goAdmin=()=>{ if(user && user.role === 'admin') { $('diag').classList.remove('active'); $('admin').classList.add('active'); $('backToAdminBtn').style.display='none'; if(db){ load(); loadContributors(); loadActivationRequests(); loadOnlineUsers(); loadRecentActivity(); } } else { toast('غير مصرح'); } };
+        const doLogout=()=>{ if(db && user && user.id) { db.ref(`users/${user.id}/state`).set('offline'); db.ref(`users/${user.id}/last_seen`).set(Date.now()); if(presenceInterval) clearInterval(presenceInterval); } localStorage.removeItem('d_session'); location.reload(); };
+        
+        // -------------------- إدارة الحالات --------------------
+        function loadActivationRequests(){ if(!db||user?.role!=='admin') return; db.ref('activation_requests').once('value').then(snap=>{ let html=''; if(snap.exists()) snap.forEach(child=>{ const req=child.val(); html+=`<div class="admin-alert"><div><b>🎓 ${req.userName}</b> (${req.corrections} تصحيح)</div><div><button class="btn-approve" onclick="approveActivation('${child.key}','${req.userId}')">✅</button><button class="btn-ignore" onclick="ignoreActivation('${child.key}')">❌</button></div></div>`; }); $('activation-requests').innerHTML=html||''; }); }
+        window.approveActivation=(reqId,userId)=>{ if(confirm('تفعيل؟')){ db.ref('users/'+userId).update({status:'permanent'}); db.ref('activation_requests/'+reqId).remove(); toast('✅ تم'); loadActivationRequests(); load(); } };
+        window.ignoreActivation=(reqId)=>{ db.ref('activation_requests/'+reqId).remove(); toast('⚠️ تجاهل'); loadActivationRequests(); };
+        function loadContributors(){ if(!db) return; db.ref('users').orderByChild('corrections').limitToLast(5).once('value').then(snap=>{ let html='', contributors=[]; if(snap.exists()) snap.forEach(child=>{ const u=child.val(); if(u.corrections>0) contributors.push(u); }); contributors.reverse().forEach(u=>{ let badge=u.corrections>=30?'🌟':(u.corrections>=10?'🎓':''); html+=`<div class="contributor-item"><span>${u.name||'مجهول'} ${badge}</span><span style="color:#60a5fa">${u.corrections} تصحيح</span></div>`; }); $('contributors-list-content').innerHTML=html||'<div class="empty">لا توجد</div>'; }); }
+        window.load=()=>{ if(!db||user?.role!=='admin') return; db.ref('users').once('value').then(snap=>{ const users=[]; if(snap.exists()) snap.forEach(child=>{ const v=child.val(); if(v) users.push({id:child.key,...v}); }); users.sort((a,b)=>(b.date||0)-(a.date||0)); const pending=users.filter(u=>u.status==='pending'); $('c-p').textContent=pending.length; $('c-a').textContent=users.filter(u=>u.status==='active').length; $('c-t').textContent=users.length; $('badge').textContent=pending.length; $('badge').style.display=pending.length?'inline':'none'; $('req-list').innerHTML=pending.length?pending.map(u=>`<div style="background:#172554;border:1px solid #1e40af;padding:10px;border-radius:8px;margin:6px 0;display:flex;justify-content:space-between"><div><b>${u.name||'-'}</b><br><small>${u.email||'-'}</small></div><div><button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button><button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button></div></div>`).join(''):'<div class="empty">✅ لا توجد طلبات</div>'; let tblHTML=''; users.forEach(u=>{ let sc='st-pend', st='معلق'; if(u.status==='active'){ sc='st-act'; st='نشط'; } if(u.status==='temp'){ sc='st-temp'; st='🕐 مؤقت'; } if(u.status==='permanent'){ sc='st-perm'; st='🌟 دائم'; } let badgeIcon=(u.corrections>=30)?'🌟':((u.corrections>=10)?'🎓':'-'); let act=u.status==='active'?`<button class="act-btn act-no" onclick="upd('${u.id}','disabled')">🚫</button>`:u.status==='disabled'||u.status==='rejected'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button>`:u.status==='pending'?`<button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button> <button class="act-btn act-no" onclick="upd('${u.id}','rejected')">❌</button>`:''; act+=` <button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button>`; tblHTML+=`<tr><td>${u.name||'-'}</td><td>${u.email||'-'}</td><td><span class="status ${sc}">${st}</span></td><td style="text-align:center">${badgeIcon} (${u.corrections||0})</td><td>${act}</td></tr>`; }); $('u-tbl').innerHTML=tblHTML||'<tr><td colspan="5" class="empty">لا يوجد</td></tr>'; }); };
+        window.upd=(i,s)=>db&&db.ref('users/'+i).update({status:s}).then(load);
+        window.del=(i)=>{ if(confirm('حذف؟')&&db) db.ref('users/'+i).remove().then(load); };
+        
+        // -------------------- قاعدة البيانات الثابتة الكاملة --------------------
+        const STATIC_DB = [
+            {id:"pericoronitis", name:"التهاب حول ضرس العقل", cat:"جراحة", sev:"عالي", location:"خلف", keywords:["التهاب حول ضرس العقل","غطاء لثوي","صعوبة فتح الفم","رائحة فم","ألم خلف الضرس الأخير","تواج"], signs:"انتفاخ حول التاج، صعوبة فتح الفم، رائحة كريهة.", xray:"سن منطمر جزئياً.", treat:"غسل، مضادات، قلع.", diff:"موقع خلفي + غطاء ملتهب + رائحة."},
+            {id:"ecc", name:"تسوس الطفولة المبكر", cat:"أطفال", sev:"عالي", location:"أسنان", keywords:["أسنان سوداء","أسنان متآكلة","نخور منتشرة","طفل","رضيع","رضاعة","زجاجة","بببرونة","أمامية"], signs:"نخر واسع حول عنق القواطع العلوية", xray:"نخر واسع", treat:"ترميم أو لب أو خلع", diff:"سن لبنية + رضاعة"},
+            {id:"pulp_child", name:"التهاب لب سن لبني", cat:"أطفال", sev:"عالي", location:"أسنان", keywords:["ألم طفل","سن لبني","أسنان مؤقتة","سن حليب","تورم لثة","خراج","ناسور","يبكي"], signs:"ناسور لثوي فوق السن", xray:"ارتشاف عظمي", treat:"بتر لب أو خلع", diff:"سن لبنية + ناسور"},
+            {id:"fluorosis", name:"التسمم الفلوري", cat:"تصبغات", sev:"منخفض", location:"أسنان", keywords:["بقع بيضاء على الأسنان","بقع طبشورية","بقع بنية","مبقعة","فلورايد","ماء آبار"], signs:"بقع متناظرة", xray:"طبيعي", treat:"تبييض أو قشور", diff:"توزيع متناظر + فلورايد"},
+            {id:"tetracycline", name:"تصبغ التتراسيكلين", cat:"تصبغات", sev:"متوسط", location:"أسنان", keywords:["أسنان رمادية","أسنان بنية","تصبغ خطوط","تتراسيكلين","حمل","أدوية"], signs:"تصبغ منتشر", xray:"طبيعي", treat:"تبييض أو تيجان", diff:"تاريخ دوائي"},
+            {id:"crowding", name:"تزاحم الأسنان", cat:"تقويم", sev:"منخفض", location:"أسنان", keywords:["أسنان ملتوية","متراكبة","متزاحمة","معوجة","تزاحم","صعبة التنظيف"], signs:"تداخل التيجان", xray:"ازدحام جذري", treat:"تقويم", diff:"مظهر مزدحم"},
+            {id:"diastema", name:"فراغات بين الأسنان", cat:"تقويم", sev:"منخفض", location:"أسنان", keywords:["فراغ بين الأسنان","مسافة","تباعد","فتحة","متباعدة","افلج","فلج"], signs:"فراغات مرئية", xray:"مسافة بين الجذور", treat:"تقويم أو رابطة", diff:"مسافات واضحة"},
+            {id:"malocclusion", name:"سوء الإطباق", cat:"تقويم", sev:"متوسط", location:"فك", keywords:["فك بارز","ذقن صغيرة","عضة معكوسة","عميقة","مفتوحة","مضغ صعب"], signs:"عدم تطابق الفكين", xray:"علاقة عظمية غير طبيعية", treat:"تقويم أو جراحة", diff:"مشكلة إطباقية"},
+            {id:"peri_implantitis", name:"التهاب حول الزرعة", cat:"زراعة", sev:"عالي", location:"زراعة", keywords:["زرعة ملتهبة","التهاب حول الزرعة","نزيف زرعة","صديد زرعة","حركة زرعة"], signs:"نزيف وارتشاف عظمي", xray:"فقدان عظمي حول الزرعة", treat:"تنظيف ومضادات", diff:"وجود زرعة"},
+            {id:"edentulism", name:"فقدان الأسنان", cat:"تعويضات", sev:"متوسط", location:"أسنان", keywords:["سن مفقود","مكان فارغ","قلع","مقلوع","انزياح"], signs:"فراغ في القوس", xray:"عظم مرتشف", treat:"زراعة أو جسر", diff:"سن مفقود"},
+            {id:"denture_stomatitis", name:"التهاب تحت الطقم", cat:"تعويضات", sev:"منخفض", location:"حنك", keywords:["طقم","احمرار حنك","حرق تحت الطقم","فطريات","نوم بطقم"], signs:"احمرار تحت الطقم", xray:"غير مطلوب", treat:"تعقيم وعدم النوم به", diff:"ارتداء طقم"},
+            {id:"impacted", name:"سن منطمر", cat:"جراحة", sev:"متوسط", location:"أسنان", keywords:["ضرس عقل منطمر","سن منطمر","مدفون","عقل","لم يطلع"], signs:"غطاء لثوي ملتهب", xray:"سن داخل العظم", treat:"قلع جراحي", diff:"غير ظاهر سريرياً"},
+            {id:"dry_socket", name:"جفاف السنخ", cat:"جراحة", sev:"متوسط", location:"سن", keywords:["ألم بعد خلع","رائحة كريهة","فراغ فارغ","الجرح بعد قلع السن عم يعورني"], signs:"سنخ مكشوف", xray:"فارغ", treat:"ضماد طبي", diff:"بعد 48 ساعة من القلع"},
+            {id:"cyst", name:"كيسة فكية", cat:"جراحة", sev:"عالي", location:"فك", keywords:["تورم فك","انتفاخ","كيس","سائل","توسع","شعاعيا حواف منتظمة"], signs:"انتفاخ قاسي", xray:"شفافية محددة، حواف واضحة", treat:"استئصال", diff:"توسع عظمي"},
+            {id:"gingivitis", name:"التهاب لثة", cat:"لثة", sev:"منخفض", location:"لثة", keywords:["لثة نازفة","لثة حمراء","لثة متورمة","نزيف تفريش"], signs:"احمرار ونزيف", xray:"طبيعي", treat:"تنظيف", diff:"عكوس"},
+            {id:"perio", name:"التهاب دواعم سن", cat:"لثة", sev:"عالي", location:"لثة", keywords:["حركة أسنان","جيوب لثوية","تراجع لثة","ارتشاف"], signs:"جيوب وحركة", xray:"فقدان عظمي", treat:"كشط وجراحة", diff:"غير عكوس"},
+            {id:"nug", name:"التهاب لثة نخري", cat:"لثة", sev:"عالي", location:"لثة", keywords:["ألم شديد لثة","نزيف تلقائي","رائحة كريهة","حمى","اللثة عم تتاكل"], signs:"تقرح الحليمات", xray:"غير محدد", treat:"مضادات وتنظيف", diff:"ألم مفاجئ + تقرح"},
+            {id:"caries", name:"تسوس سني", cat:"لبية", sev:"متوسط", location:"سن", keywords:["ألم بارد","ألم حلو","ثقب","حفرة","مسوس","حساسية عابرة"], signs:"تجويف نخرى", xray:"شفافية", treat:"حشوة", diff:"ألم مثير"},
+            {id:"reversible_pulpitis", name:"التهاب لب رجعي", cat:"لبية", sev:"منخفض", location:"سن", keywords:["ألم بارد","يزول سريعاً","حشو حديث","بوجعني شوي وبروح"], signs:"استجابة سريعة للبرد", xray:"طبيعي", treat:"مراقبة، حشوة محافظة", diff:"ألم قصير"},
+            {id:"irreversible_pulpitis", name:"التهاب لب لا رجعي", cat:"لبية", sev:"عالي", location:"سن", keywords:["ألم نابض","ألم ليلي","ألم ذاتي","مستمر","لا ينام","الم مثار"], signs:"ألم مستمر", xray:"طبيعي", treat:"علاج جذر", diff:"ألم ليلي ذاتي"},
+            {id:"pulp_necrosis", name:"تنخر لب", cat:"لبية", sev:"عالي", location:"سن", keywords:["سن ميت","لا يستجيب","تغير لون","السن مات وما عم يحس"], signs:"سن غير حي", xray:"شفافية ذروية", treat:"علاج جذر", diff:"لا يستجيب للبرودة"},
+            {id:"cracked_tooth", name:"السن المتشقق", cat:"لبية", sev:"عالي", location:"سن", keywords:["ألم عند المضغ","ألم عند الفك","حاد","بعورني لما قضم"], signs:"ألم عند الإطلاق", xray:"غالباً طبيعي", treat:"تاج", diff:"ألم عند الفك"},
+            {id:"abscess", name:"خراج ذروي", cat:"عدوى", sev:"طوارئ", location:"سن", keywords:["تورم وجه","وزمة","صديد","قيح","حمى","نابض"], signs:"تورم متموج", xray:"شفافية ذروية", treat:"تصريف", diff:"تورم + صديد"},
+            {id:"cellulitis", name:"التهاب خلوي", cat:"عدوى", sev:"طوارئ", location:"وجه", keywords:["تورم منتشر","صلب","حمى","صعوبة تنفس","الوجه منفوش كلو"], signs:"تورم صلب", xray:"غير محدد", treat:"مضادات وريدية", diff:"تورم صلب منتشر"},
+            {id:"candida", name:"سلاق فموي", cat:"أنسجة", sev:"متوسط", location:"لسان", keywords:["بقع بيضاء على اللسان","مساحات بيضاء","قابلة للكشط","يمسح","يحترق"], signs:"بقع كريمية", xray:"غير مطلوب", treat:"مضاد فطري", diff:"قابل للكشط"},
+            {id:"herpes", name:"الهربس", cat:"فيروسي", sev:"متوسط", location:"فم", keywords:["بثور","فقاعات","شفتين","عقبول","تعقيبة"], signs:"حويصلات متجمعة", xray:"غير مطلوب", treat:"أسيكلوفير", diff:"حويصلات سابقة"},
+            {id:"aphthous", name:"قرحة قلاعية", cat:"أنسجة", sev:"منخفض", location:"فم", keywords:["قرحة بيضاء","أفت","أصفر","مؤلمة","طلعتلي حبة بيضا"], signs:"قرحة بهالة حمراء", xray:"غير مطلوب", treat:"كورتيزون", diff:"تعود متكرر"},
+            {id:"leukoplakia", name:"طلاوة بيضاء", cat:"أنسجة", sev:"عالي", location:"لسان", keywords:["بقعة بيضاء على اللسان","لا تمسح","تدخين","صلبة"], signs:"لويحة ملتصقة", xray:"غير مطلوب", treat:"استئصال وخزعة", diff:"غير قابل للكشط"},
+            {id:"lichen", name:"الحزاز المسطح", cat:"مناعي", sev:"متوسط", location:"خد", keywords:["خطوط بيضاء","شبكة","دانتيل","ثنائي","جوا خدي خطوط بيضا متشابكة"], signs:"خطوط متشابكة", xray:"غير مطلوب", treat:"كورتيزون", diff:"نمط شبكي"},
+            {id:"fibroma", name:"ورم ليفي", cat:"أنسجة", sev:"منخفض", location:"فم", keywords:["كتلة","نفس اللون","مطاطي","عض","طلعلي لحمية بفمي"], signs:"عقدة ملساء", xray:"غير مطلوب", treat:"استئصال", diff:"قوام مطاطي"},
+            {id:"mucocele", name:"كيسة مخاطية", cat:"غدد", sev:"منخفض", location:"شفة", keywords:["كيسة على الشفة","كيس","أزرق","شفاف","طلعلي حبة مي"], signs:"تورم شفاف", xray:"غير مطلوب", treat:"استئصال", diff:"موقع شائع"},
+            {id:"tmd_myofascial", name:"ألم عضلي مفصلي", cat:"مفصل", sev:"متوسط", location:"مفصل", keywords:["ألم عضلات","صداع","طحن","تشنج","ألم أذن"], signs:"ألم عند الجس", xray:"طبيعي", treat:"راحة وكمادات", diff:"ألم عضلي"},
+            {id:"tmd_disc", name:"إزاحة القرص", cat:"مفصل", sev:"متوسط", location:"مفصل", keywords:["طقطقة في المفصل","فرقعة","قفل الفك","فكي يطلع صوت طق طق"], signs:"صوت نقر", xray:"MRI", treat:"واقي", diff:"أصوات مفصلية"},
+            {id:"fracture", name:"كسر فك", cat:"رضوض", sev:"طوارئ", location:"فك", keywords:["ضربة على الفك","وقعة","لكمة","سوء إطباق","تنميل"], signs:"خطوة عظمية", xray:"خط كسر", treat:"تثبيت", diff:"رضة حديثة"},
+            {id:"malignancy", name:"ورم خبيث", cat:"أورام", sev:"طوارئ", location:"فم", keywords:["قرحة لا تشفى","كتلة صلبة","نزيف","خدر شفة","تدخين"], signs:"قرحة مقلوبة", xray:"تآكل", treat:"إحالة", diff:">3 أسابيع"},
+            {id:"viral_infant_stomatitis", name:"التهاب الفم الفيروسي عند الرضع", cat:"أطفال", sev:"عالي", location:"فم", keywords:["حرارة","تقرحات","بكاء","فم ملتهب","رفض رضاعة"], signs:"حرارة، تقرحات فموية، بكاء مستمر", xray:"غير مطلوب", treat:"مسكنات، سوائل، مراقبة", diff:"رضيع + حرارة + تقرحات"},
+            {id:"bacterial_child_stomatitis", name:"التهاب الفم البكتيري عند الأطفال", cat:"أطفال", sev:"متوسط", location:"فم", keywords:["قيح","ألم","رائحة","خراج صغير","تقرحات صفراء"], signs:"تقرحات صفراء، ألم، حرارة، رائحة فم", xray:"غير مطلوب", treat:"مضادات حيوية، غسول مطهر", diff:"تقرحات صفراء + قيح"},
+            {id:"primary_herpes_stomatitis", name:"التهاب الفم الفيروسي بالهربس الأولي", cat:"أطفال", sev:"عالي", location:"فم", keywords:["حويصلات","حرارة","ألم","تقرحات كثيرة","نزف لثوي","كل فمو قرحات"], signs:"حويصلات كثيرة، حرارة عالية، نزف لثوي", xray:"غير مطلوب", treat:"أسيكلوفير، مسكنات، سوائل", diff:"هبس أولي + حرارة عالية + نزف"},
+            {id:"post_abx_candida", name:"التهاب الفم الفطري بعد المضادات", cat:"أطفال", sev:"منخفض", location:"فم", keywords:["بقع بيضاء","حرقان","القلاع","طعم سيء","بعد المضاد الحيوي"], signs:"بقع بيضاء قابلة للكشط، حرقان، طعم سيء", xray:"غير مطلوب", treat:"نيستاتين، بروبايوتيك", diff:"تاريخ مضادات حيوية + بقع بيضاء"},
+            {id:"teething_gingivitis", name:"التهاب اللثة بسبب التسنين", cat:"أطفال", sev:"منخفض", location:"لثة", keywords:["تورم","سيلان لعاب","أسنان طالعة","رغبة بالعض"], signs:"تورم لثوي، رغبة بالعض، بكاء", xray:"غير مطلوب", treat:"حلقات تبريد، مسكنات خفيفة", diff:"عمر التسنين + تورم موضعي"},
+            {id:"measles_stomatitis", name:"التهاب الفم الفيروسي بالحصبة", cat:"أطفال", sev:"عالي", location:"فم", keywords:["بقع كوبليك","طفح","حرارة"], signs:"بقع كوبليك، طفح جلدي، حرارة", xray:"غير مطلوب", treat:"داعم، عزل، فيتامين A", diff:"بقع كوبليك + طفح جسمي"},
+            {id:"chickenpox_stomatitis", name:"التهاب الفم بالجدري المائي", cat:"أطفال", sev:"متوسط", location:"فم", keywords:["حويصلات","حكة","فقاعات","حرارة"], signs:"حويصلات فموية، حكة، حرارة", xray:"غير مطلوب", treat:"مسكنات، مضاد حكة، عزل", diff:"حويصلات منتشرة + حكة"},
+            {id:"lip_biting_stomatitis", name:"التهاب الفم بسبب عضّ الشفاه", cat:"أطفال", sev:"منخفض", location:"فم", keywords:["تقرحات","عادة","عضّ الشفة","خطوط بيضاء"], signs:"تقرحات متكررة، خطوط بيضاء", xray:"غير مطلوب", treat:"تعديل سلوك، واقي شفاه", diff:"تقرحات على الشفة + عادة"},
+            {id:"mouth_breathing_stomatitis", name:"التهاب الفم بسبب التنفس الفموي", cat:"أطفال", sev:"منخفض", location:"فم", keywords:["جفاف","احمرار","فم مفتوح","جفاف لثوي"], signs:"جفاف لثوي، احمرار", xray:"غير مطلوب", treat:"ترطيب، علاج سبب الانسداد", diff:"فم مفتوح دائماً + جفاف"},
+            {id:"adenovirus_stomatitis", name:"التهاب الفم الفيروسي Adenovirus", cat:"أطفال", sev:"متوسط", location:"فم", keywords:["حرارة","ألم","التهاب قوي","احمرار فموي"], signs:"احمرار فموي، حرارة، ألم عند البلع", xray:"غير مطلوب", treat:"داعم، مسكنات", diff:"حرارة + احمرار عام"},
+            {id:"flu_stomatitis", name:"التهاب الفم الفيروسي بالإنفلونزا", cat:"أطفال", sev:"منخفض", location:"فم", keywords:["جفاف","ألم","فم ناشف","ألم عند الأكل"], signs:"جفاف فم، ألم عند الأكل", xray:"غير مطلوب", treat:"سوائل، مسكنات", diff:"أعراض إنفلونزا عامة"},
+            {id:"coxsackie_stomatitis", name:"التهاب الفم الفيروسي Coxsackie", cat:"أطفال", sev:"متوسط", location:"فم", keywords:["طفح","حرارة","حبة الفم","طفح يد–قدم–فم"], signs:"طفح يد–قدم–فم، تقرحات", xray:"غير مطلوب", treat:"داعم، عزل", diff:"تقرحات + طفح يد وقدم"},
+            {id:"necrotizing_child_gingivitis", name:"التهاب اللثة التقرحي عند الأطفال", cat:"أطفال", sev:"عالي", location:"لثة", keywords:["نزف","ألم","ريحة مزعجة","ألم شديد"], signs:"نزف لثوي، ألم شديد", xray:"غير مطلوب", treat:"تنظيف لطيف، مضادات، غسول", diff:"ألم شديد + نزف + رائحة"},
+            {id:"resistant_fungal_stomatitis", name:"التهاب الفم الفطري المقاوم", cat:"أطفال", sev:"متوسط", location:"فم", keywords:["بقع ثابتة","ألم","فطريات قوية","بقع بيضاء ثابتة"], signs:"بقع بيضاء ثابتة، ألم", xray:"غير مطلوب", treat:"فلوكونازول، مراجعة مناعة", diff:"فطريات لا تستجيب للعلاج المحلي"},
+            {id:"iron_def_child_stomatitis", name:"التهاب الفم بسبب نقص الحديد", cat:"أطفال", sev:"متوسط", location:"فم", keywords:["شحوب","تقرحات","فقر دم","شحوب لثوي"], signs:"شحوب لثوي، تقرحات", xray:"غير مطلوب", treat:"مكملات حديد", diff:"شحوب + فقر دم مخبري"},
+            {id:"b12_def_child_stomatitis", name:"التهاب الفم بسبب نقص B12", cat:"أطفال", sev:"متوسط", location:"فم", keywords:["احمرار","ألم","لسان محروق","احمرار لثوي"], signs:"احمرار لثوي، ألم", xray:"غير مطلوب", treat:"مكملات B12", diff:"احمرار + نقص B12"},
+            {id:"folate_def_child_stomatitis", name:"التهاب الفم بسبب نقص الفولات", cat:"أطفال", sev:"متوسط", location:"فم", keywords:["تقرحات","التهاب","نقص فيتامين","تقرحات فموية"], signs:"تقرحات فموية، ألم", xray:"غير مطلوب", treat:"مكملات فوليك", diff:"تقرحات + نقص فوليك"},
+            {id:"toothpaste_allergy", name:"التهاب الفم بسبب الحساسية من معجون الأسنان", cat:"أطفال", sev:"منخفض", location:"فم", keywords:["حرقان","احمرار","معجون جديد","احمرار فموي"], signs:"احمرار فموي، حرقان", xray:"غير مطلوب", treat:"تغيير معجون، غسول ملطف", diff:"ارتباط بمعجون جديد"},
+            {id:"candy_allergy", name:"التهاب الفم بسبب الحساسية من الحلوى", cat:"أطفال", sev:"منخفض", location:"فم", keywords:["حكة","احمرار","حلوى حمضية"], signs:"احمرار، حكة", xray:"غير مطلوب", treat:"تجنب الحلوى، ماء", diff:"ارتباط بحلوى حمضية"},
+            {id:"malnutrition_child_stomatitis", name:"التهاب الفم بسبب سوء التغذية", cat:"أطفال", sev:"متوسط", location:"فم", keywords:["نزف","تقرحات","ضعف عام","نزف لثوي"], signs:"نزف لثوي، تقرحات", xray:"غير مطلوب", treat:"تحسين تغذية، مكملات", diff:"سوء تغذية واضح"},
+            {id:"zinc_def_stomatitis", name:"التهاب الفم بسبب نقص الزنك", cat:"أطفال", sev:"متوسط", location:"فم", keywords:["تقرحات","تأخر شفاء","مناعة ضعيفة","تقرحات متكررة"], signs:"تقرحات متكررة", xray:"غير مطلوب", treat:"مكملات زنك", diff:"تأخر شفاء الجروح"},
+            {id:"vitc_def_stomatitis", name:"التهاب الفم بسبب نقص فيتامين C", cat:"أطفال", sev:"متوسط", location:"فم", keywords:["نزف","ألم","اللثة بتنزل دم","نزف لثوي"], signs:"نزف لثوي، ألم", xray:"غير مطلوب", treat:"فيتامين C، فواكه", diff:"نزف لثوي تلقائي"},
+            {id:"cheek_biting_stomatitis", name:"التهاب الفم بسبب عضّ الخد", cat:"أطفال", sev:"منخفض", location:"فم", keywords:["خطوط","سماكة","عضّ الخد","خطوط بيضاء"], signs:"خطوط بيضاء، سماكة مخاطية", xray:"غير مطلوب", treat:"تعديل سلوك", diff:"خطوط بيضاء على الخد"},
+            {id:"ortho_appliance_stomatitis", name:"التهاب الفم بسبب الأجهزة التقويمية", cat:"أطفال", sev:"منخفض", location:"فم", keywords:["احتكاك","ألم","سلك بيجرح","تقرحات"], signs:"تقرحات، ألم", xray:"غير مطلوب", treat:"شمع تقويمي، تعديل سلك", diff:"وجود جهاز تقويمي"},
+            {id:"night_dry_mouth", name:"التهاب الفم بسبب جفاف الفم الليلي", cat:"أطفال", sev:"منخفض", location:"فم", keywords:["جفاف","تشقق","فم ناشف"], signs:"جفاف، تشقق", xray:"غير مطلوب", treat:"ترطيب، معالجة انسداد أنفي", diff:"جفاف صباحي"},
+            {id:"reflux_stomatitis", name:"التهاب الفم بسبب ارتجاع معدي", cat:"أطفال", sev:"متوسط", location:"فم", keywords:["حرقان","ألم","حموضة"], signs:"حرقان، ألم", xray:"غير مطلوب", treat:"علاج ارتجاع، مضادات حموضة", diff:"أعراض هضمية + حرقان"},
+            {id:"drug_allergy_stomatitis", name:"التهاب الفم بسبب الحساسية من الأدوية", cat:"أطفال", sev:"عالي", location:"فم", keywords:["طفح","تورم","حساسية دواء","طفح فموي"], signs:"طفح فموي، تورم", xray:"غير مطلوب", treat:"إيقاف دواء، مضاد تحسس", diff:"ارتباط بدواء جديد"},
+            {id:"immunodef_stomatitis", name:"التهاب الفم بسبب نقص المناعة", cat:"أطفال", sev:"عالي", location:"فم", keywords:["تقرحات","عدوى","مناعة ضعيفة","تقرحات متكررة"], signs:"تقرحات متكررة", xray:"غير مطلوب", treat:"تعزيز مناعة، علاج عدوى", diff:"عدوى متكررة + مناعة ضعيفة"},
+            {id:"mixed_viral_stomatitis", name:"التهاب الفم بسبب التهابات فيروسية مختلطة", cat:"أطفال", sev:"عالي", location:"فم", keywords:["حويصلات","حرارة","التهاب مزدوج"], signs:"حويصلات، حرارة", xray:"غير مطلوب", treat:"داعم، عزل", diff:"أعراض فيروسية متعددة"},
+            {id:"resistant_fungal_child", name:"التهاب الفم بسبب فطريات مقاومة", cat:"أطفال", sev:"متوسط", location:"فم", keywords:["بقع ثابتة","ألم","فطريات قوية"], signs:"بقع بيضاء ثابتة", xray:"غير مطلوب", treat:"مضاد فطري جهازي", diff:"فطريات لا تستجيب للعلاج"},
+            {id:"poor_hygiene_stomatitis", name:"التهاب الفم بسبب سوء العناية الفموية", cat:"أطفال", sev:"منخفض", location:"فم", keywords:["ترسبات","رائحة","أسنان وسخة","ترسبات كثيرة"], signs:"ترسبات كثيرة", xray:"غير مطلوب", treat:"تنظيف، تعليمات نظافة", diff:"نظافة فموية سيئة"},
+            {id:"tongue_biting_sleep", name:"التهاب الفم بسبب عضّ اللسان أثناء النوم", cat:"أطفال", sev:"منخفض", location:"فم", keywords:["جرح","ألم","عضّ اللسان","جرح جانبي"], signs:"جرح جانبي، ألم", xray:"غير مطلوب", treat:"واقي ليلي، تقييم نوم", diff:"جرح على حافة اللسان"},
+            {id:"gum_allergy", name:"التهاب الفم بسبب الحساسية من العلكة", cat:"أطفال", sev:"منخفض", location:"فم", keywords:["حكة","تورم","علكة جديدة","احمرار"], signs:"احمرار، تورم", xray:"غير مطلوب", treat:"توقف عن المضغ", diff:"ارتباط بالعلكة"},
+            {id:"dehydration_stomatitis", name:"التهاب الفم بسبب نقص السوائل", cat:"أطفال", sev:"متوسط", location:"فم", keywords:["جفاف","تشقق","قلة شرب"], signs:"جفاف، تشقق", xray:"غير مطلوب", treat:"تعويض سوائل", diff:"جفاف عام + قلة شرب"},
+            {id:"oral_abscess_emergency", name:"خراج فموي منتشر", cat:"طوارئ", sev:"طوارئ", location:"فم", keywords:["تورم","حرارة","ورم كبير","تورم شديد"], signs:"تورم شديد، حرارة", xray:"غير مطلوب", treat:"تصريف عاجل، مضادات", diff:"تورم سريع الانتشار"},
+            {id:"facial_cellulitis", name:"التهاب نسيج خلوي وجهي", cat:"طوارئ", sev:"طوارئ", location:"وجه", keywords:["انتفاخ","ألم","الوجه مورّم","انتفاخ منتشر"], signs:"انتفاخ منتشر", xray:"غير مطلوب", treat:"مضادات وريدية، مراقبة مجرى هواء", diff:"انتفاخ صلب + حرارة"},
+            {id:"orbital_abscess", name:"خراج حول العين", cat:"طوارئ", sev:"طوارئ", location:"وجه", keywords:["تورم عين","خطر","العين مسكّرة","تورم حول العين"], signs:"تورم حول العين", xray:"CT", treat:"إحالة طارئة، مضادات", diff:"تورم يهدد البصر"},
+            {id:"tmj_dislocation", name:"خلع الفك السفلي", cat:"طوارئ", sev:"طوارئ", location:"فك", keywords:["فم مفتوح","ألم","ما عم يسكر","فكي طلع من مكانو"], signs:"فم مفتوح", xray:"طبيعي أو انزياح", treat:"رد خلع، تثبيت", diff:"عدم قدرة على إغلاق الفم"},
+            {id:"mandible_fracture", name:"كسر الفك السفلي", cat:"طوارئ", sev:"طوارئ", location:"فك", keywords:["ألم","انحراف","فكي مال","ألم شديد"], signs:"ألم شديد", xray:"خط كسر", treat:"تثبيت جراحي", diff:"رضة + سوء إطباق"},
+            {id:"maxilla_fracture", name:"كسر الفك العلوي", cat:"طوارئ", sev:"طوارئ", location:"فك", keywords:["حركة","نزف","الفك عم يتحرك","حركة غير طبيعية"], signs:"حركة غير طبيعية", xray:"خط كسر", treat:"تثبيت جراحي", diff:"حركة في الفك العلوي"},
+            {id:"post_extraction_bleeding", name:"نزف بعد القلع", cat:"طوارئ", sev:"طوارئ", location:"سن", keywords:["نزف","دم","ما عم يوقف","نزف مستمر"], signs:"نزف مستمر", xray:"غير مطلوب", treat:"ضغط، خياطة، غازل", diff:"نزف لا يتوقف بالضغط"},
+            {id:"acute_glossitis", name:"التهاب لسان حاد", cat:"طوارئ", sev:"عالي", location:"لسان", keywords:["تورم","ألم","لساني مورّم","تورم لسان"], signs:"تورم لسان", xray:"غير مطلوب", treat:"مضادات، كورتيزون", diff:"تورم لسان يهدد المجاري"},
+            {id:"acute_drug_allergy", name:"حساسية دوائية حادة", cat:"طوارئ", sev:"طوارئ", location:"فم", keywords:["تورم","طفح","اختناق","تورم شفاه ولسان"], signs:"تورم شفاه ولسان", xray:"غير مطلوب", treat:"أدرينالين، طوارئ", diff:"تورم سريع + صعوبة تنفس"},
+            {id:"acute_pericoronitis", name:"التهاب حول التاج الحاد", cat:"طوارئ", sev:"عالي", location:"خلف", keywords:["ألم","رائحة","ضرس العقل","ألم خلف الضرس"], signs:"ألم خلف الضرس", xray:"سن منطمر", treat:"غسل، مضادات، قلع", diff:"ألم خلفي + غطاء ملتهب"},
+            {id:"acute_alveolitis", name:"التهاب سنخي حاد", cat:"طوارئ", sev:"متوسط", location:"سن", keywords:["ألم","رائحة","جرح ناشف","ألم شديد"], signs:"ألم شديد", xray:"سنخ فارغ", treat:"ضماد، مسكنات", diff:"ألم بعد 48 ساعة من القلع"},
+            {id:"acute_necrotizing_gingivitis", name:"التهاب لثة نخرِي حاد", cat:"طوارئ", sev:"عالي", location:"لثة", keywords:["رائحة قوية","ألم","اللغة عم تذوب","نزف"], signs:"نزف، ألم", xray:"غير مطلوب", treat:"تنظيف لطيف، مضادات", diff:"تقرح حليمات + رائحة نتنة"},
+            {id:"sublingual_abscess", name:"خراج تحت اللسان", cat:"طوارئ", sev:"طوارئ", location:"لسان", keywords:["تورم","ألم","تحت لساني مورّم","تورم تحت اللسان"], signs:"تورم تحت اللسان", xray:"غير مطلوب", treat:"تصريف عاجل", diff:"تورم أرضية الفم"},
+            {id:"submandibular_abscess", name:"خراج تحت الفك", cat:"طوارئ", sev:"طوارئ", location:"فك", keywords:["انتفاخ","ألم","حرارة","انتفاخ تحت الفك","تحت دقني في ورم"], signs:"انتفاخ تحت الفك", xray:"غير مطلوب", treat:"تصريف، مضادات", diff:"انتفاخ تحت الفك + حرارة"},
+            {id:"acute_parotitis", name:"التهاب غدة نكفية حاد", cat:"طوارئ", sev:"عالي", location:"وجه", keywords:["انتفاخ","ألم","الغدة مورّمة","انتفاخ أمام الأذن"], signs:"انتفاخ أمام الأذن", xray:"غير مطلوب", treat:"مضادات، ترطيب", diff:"انتفاخ أمام الأذن + ألم"},
+            {id:"submandibular_gland_inflammation", name:"التهاب غدة تحت الفك", cat:"طوارئ", sev:"عالي", location:"فك", keywords:["كتلة","ألم","ورم تحت الفك","كتلة مؤلمة"], signs:"كتلة مؤلمة", xray:"غير مطلوب", treat:"مضادات، تدليك", diff:"كتلة تحت الفك"},
+            {id:"caustic_stomatitis", name:"التهاب فم بسبب مادة كاوية", cat:"طوارئ", sev:"طوارئ", location:"فم", keywords:["حرق","ألم","بلع مادة","حروق مخاطية"], signs:"حروق مخاطية", xray:"غير مطلوب", treat:"غسل، طوارئ", diff:"تاريخ بلع مادة كاوية"},
+            {id:"thermal_burn_stomatitis", name:"التهاب فم بسبب حرارة عالية", cat:"طوارئ", sev:"متوسط", location:"فم", keywords:["حرق","ألم","شرب شي سخن","تقرحات"], signs:"تقرحات", xray:"غير مطلوب", treat:"مسكنات، غذاء بارد", diff:"حرق حراري"},
+            {id:"chemical_stomatitis", name:"التهاب فم بسبب مواد تنظيف", cat:"طوارئ", sev:"طوارئ", location:"فم", keywords:["حرق","ألم","مواد كيميائية","حروق"], signs:"حروق", xray:"غير مطلوب", treat:"غسل، طوارئ", diff:"تعرض لمواد كيميائية"},
+            {id:"food_allergy_emergency", name:"التهاب فم بسبب حساسية طعام", cat:"طوارئ", sev:"عالي", location:"فم", keywords:["تورم","حكة","حساسية","تورم شفاه"], signs:"تورم شفاه", xray:"غير مطلوب", treat:"مضاد هيستامين، مراقبة", diff:"تورم سريع بعد أكل"},
+            {id:"insect_bite_stomatitis", name:"التهاب فم بسبب لدغة حشرة", cat:"طوارئ", sev:"متوسط", location:"فم", keywords:["تورم","حكة","قرصة","تورم موضعي"], signs:"تورم موضعي", xray:"غير مطلوب", treat:"كمادات، مضاد تحسس", diff:"تورم مفاجئ + حكة"},
+            {id:"crown_fracture", name:"كسر تاج السن", cat:"رضوض", sev:"متوسط", location:"سن", keywords:["كسر سن","سقوط","صدمة","جزء مكسور","حافة حادة"], signs:"فقدان جزء من التاج، قد ينكشف العاج أو اللب", xray:"خط كسر في التاج", treat:"ترميم أو تغطية لب أو علاج جذر", diff:"تاريخ رضة + كسر مرئي"},
+            {id:"root_fracture", name:"كسر جذر السن", cat:"رضوض", sev:"عالي", location:"سن", keywords:["كسر جذر","حركة سن","ألم عند العض","صدمة"], signs:"حركة غير طبيعية، ألم عند الطرق", xray:"خط كسر في الجذر", treat:"تثبيت جبيرة أو قلع", diff:"يحتاج أشعة لتشخيصه"},
+            {id:"avulsion", name:"خلع السن الكامل", cat:"رضوض", sev:"طوارئ", location:"سن", keywords:["سن مخلوع","سقط سن","سن خارج","صدمة شديدة"], signs:"فراغ سنخي، السن موجود خارج الفم", xray:"فراغ سنخي", treat:"إعادة زراعة فورية أو حفظ في حليب", diff:"سن مفقود كلياً بسبب رض"},
+            {id:"ameloblastoma", name:"الورم الميلومي", cat:"أورام", sev:"عالي", location:"فك", keywords:["توسع فك","كتلة فكية","توسع عظمي","ورم فك"], signs:"توسع عظمي بطيء وغير مؤلم، قد يسبب تخلخل", xray:"توسع فقاعي متعدد الحجرات", treat:"استئصال جراحي واسع", diff:"ورم حميد لكنه عدوائي ومحلي"},
+            {id:"fibrous_dysplasia", name:"خلل التنسج الليفي", cat:"تطور", sev:"متوسط", location:"فك", keywords:["تشوه فك","توسع عظمي","صعب الفصل","أرضية زجاجية"], signs:"توسع عظمي صلب، اندماج مع العظم الطبيعي", xray:"مظهر زجاجي مطحون", treat:"مراقبة أو نحت تجميلي", diff:"لا ينفصل عن العظم السليم"},
+            {id:"enamel_hypoplasia", name:"نقص تنسج المينا", cat:"تطور", sev:"منخفض", location:"أسنان", keywords:["حفر مينا","خطوط مينا","عيوب تكوين","أسنان خشنة"], signs:"حفر أو أخاديد في سطح المينا", xray:"نقص سماكة المينا", treat:"ترميم تجميلي أو وقائي", diff:"عيوب في الكمية وليس اللون فقط"},
+            {id:"dentinogenesis_imperfecta", name:"تكون العاج الناقص", cat:"تطور", sev:"متوسط", location:"أسنان", keywords:["أسنان زرقاء","أسنان كهرمانية","تآكل سريع","جذور قصيرة"], signs:"لون أزرق-رمادي أو بني، تآكل سريع للمينا", xray:"جذور قصيرة ورفيعة، تجاويف لبية مختفية", treat:"تيجان لحماية الأسنان", diff:"وراثي + لون مميز + جذور قصيرة"},
+            {id:"supernumerary", name:"السن الزائد", cat:"تطور", sev:"متوسط", location:"أسنان", keywords:["سن زائد","سن إضافي","تأخر بزوغ","تزاحم"], signs:"سن إضافي (غالباً بين القواطع)", xray:"سن إضافي في العظم", treat:"قلع جراحي", diff:"عدد أسنان أكثر من الطبيعي"},
+            {id:"sjogren_syndrome", name:"متلازمة شوغرن", cat:"مناعي", sev:"متوسط", location:"فم", keywords:["جفاف فم","جفاف عينين","صعوبة بلع","جفاف شديد"], signs:"جفاف فموي شديد، تضخم غدد لعابية", xray:"غير مطلوب", treat:"ترطيب، تحفيز لعابي", diff:"جفاف فم + جفاف عينين معاً"},
+            {id:"pleomorphic_adenoma", name:"ورم الغدة النكفية الحميد", cat:"أورام", sev:"متوسط", location:"وجه", keywords:["كتلة أمام الأذن","بطيئة النمو","غير مؤلمة","ورم غدة"], signs:"كتلة صلبة متحركة وغير مؤلمة أمام الأذن", xray:"MRI أو CT", treat:"استئصال جراحي", diff:"ورم غددي شائع، بطيء وغير مؤلم"},
+            {id:"pregnancy_tumor", name:"ورم لثوي حملي", cat:"لثة", sev:"متوسط", location:"لثة", keywords:["كتلة لثوية حمراء","نزف لمس","حمل","نمو سريع"], signs:"كتلة حمراء نازفة تنمو بسرعة", xray:"غير مطلوب", treat:"مراقبة أو استئصال بعد الحمل", diff:"كتلة وعائية + حمل + نمو سريع"},
+            {id:"chronic_apical", name:"التهاب ذروي مزمن", cat:"لبية", sev:"متوسط", location:"سن", keywords:["ألم خفيف","ضغط على السن","حساسية طرق","سن ملون","خراج مزمن"], signs:"قرحة أو ناسور، ألم خفيف عند الطرق", xray:"شفافية ذروية منتظمة", treat:"علاج جذر أو إعادة علاج", diff:"ناسور لثوي + شفافية شعاعية"},
+            {id:"condensing_osteitis", name:"التهاب العظم المتكثف", cat:"لبية", sev:"منخفض", location:"سن", keywords:["كتلة عظم بيضاء شعاعيا","ألم خفيف","سن مسوس كبير"], signs:"تكثف عظمي حول الذروة، غالباً بدون أعراض", xray:"منطقة كثيفة حول جذر سن حي أو ميت", treat:"علاج جذر", diff:"عكس الارتشاف العظمي"},
+            {id:"internal_resorption", name:"ارتشاف داخلي للسن", cat:"لبية", sev:"عالي", location:"سن", keywords:["بقعة وردية على السن","شفافية داخل الجذر","حساسية"], signs:"بقعة وردية أو بقع داكنة داخل السن", xray:"توسع قناة اللب بشكل غير منتظم", treat:"علاج جذر عاجل", diff:"توسع من داخل القناة للخارج"},
+            {id:"external_resorption", name:"ارتشاف خارجي للسن", cat:"لبية", sev:"عالي", location:"سن", keywords:["تآكل جذر","رضة سابقة","تقويم","حساسية"], signs:"فقدان بنية الجذر الخارجية", xray:"تآكل خارجي غير منتظم للجذر", treat:"علاج جذر، إزالة محفز، جراحة", diff:"تآكل يبدأ من الخارج للداخل"},
+            {id:"hyperplastic_pulpitis", name:"التهاب لب تضخمي (بوليب لب)", cat:"لبية", sev:"متوسط", location:"سن", keywords:["كتلة لحمية داخل سن","نزيف عند اللمس","سن مفتوح","طفل أو شاب"], signs:"نمو لبّي وردي داخل تجويف سني مفتوح", xray:"تجاويف واسعة في تاج السن", treat:"بتر لب أو قلع أو علاج جذر", diff:"كتلة وردية تنزف بسهولة داخل سن مفتوح"},
+            {id:"referred_otalgia", name:"ألم أذن مرجعه سني", cat:"عصبي", sev:"متوسط", location:"فك", keywords:["ألم أذن","أسنان طبيعية في الفحص","ألم مفصل","ألم ضرس عقل"], signs:"ألم ينتشر للأذن دون مرض أذني", xray:"أشعة سنية أو مفصلية طبيعية أو مرضية", treat:"علاج السبب السني أو المفصلي", diff:"فحص أذن طبيعي + ألم سني كامن"},
+            {id:"maxillary_sinusitis_dental", name:"التهاب الجيب الفكي السنني", cat:"عدوى", sev:"عالي", location:"فك", keywords:["ألم خد","إفرازات أنفية","ضغط عند الانحناء","أسنان علوية متعددة مؤلمة"], signs:"ألم وجهي، إفراز صديدي أنفي", xray:"عكامة في الجيب الفكي، جذور قريبة من الجيب", treat:"مضادات، علاج الأسنان السبب، ENT", diff:"ألم متعدد الأسنان العلوية + أعراض أنفية"},
+            {id:"periodontal_abscess", name:"خراج لثوي (دواعم)", cat:"لثة", sev:"عالي", location:"لثة", keywords:["ورم لثة مؤلم","قيح يخرج من الجيب","سن ثابت","ألم مضغ"], signs:"انتفاخ لثوي أحمر، قيح من الجيب", xray:"فقدان عظمي أفقي أو عمودي", treat:"تصريف، تنظيف جذور، مضادات", diff:"سن حي + جيب لثوي عميق"},
+            {id:"perio_endo", name:"آفة مشتركة لبية-لثوية", cat:"لبية", sev:"عالي", location:"سن", keywords:["ألم شديد","سن ميت","جيب لثوي عميق","قيح"], signs:"ناسور لثوي، سن غير حي، جيب عميق", xray:"فقدان عظمي يمتد للذروة", treat:"علاج جذر أولاً ثم علاج لثوي", diff:"ارتباط لب ميت مع جيب لثوي"},
+            {id:"gingival_recession", name:"تراجع اللثة", cat:"لثة", sev:"منخفض", location:"لثة", keywords:["حساسية برد","سن يبدو أطول","جذر مكشوف","فرشاة قوية"], signs:"انكشاف الجذر، تراجع مستوى اللثة", xray:"فقدان عظمي أفقي طفيف أو معتدل", treat:"تغيير تفريش، طعم لثوي، فلورايد", diff:"جذر مكشوف + حساسية"},
+            {id:"root_caries", name:"تسوس جذر السن", cat:"لبية", sev:"متوسط", location:"سن", keywords:["ألم عند الحلو","جذر مكشوف","كبار سن","لثة متراجعة"], signs:"تجويف بني أو أسود على الجذر", xray:"شفافية عند عنق السن أو الجذر", treat:"ترميم، فلورايد، علاج جذر إذا عميق", diff:"موقع تحت مستوى اللثة على الجذر"},
+            {id:"occlusal_trauma", name:"رضة إطباقية", cat:"إطباق", sev:"متوسط", location:"سن", keywords:["ألم عند المضغ","سن مرتفع","حركة سن","صرير ليلي"], signs:"اتساع رباط سنخي، ألم عند الطرق", xray:"اتساع رباط سنخي، فقد عظمي زاوي", treat:"تعديل إطباق، واقي ليلي", diff:"ألم موضعي عند المضغ + حركة"},
+            {id:"bruxism", name:"صرير الأسنان", cat:"مفصل", sev:"متوسط", location:"فم", keywords:["ألم عضلات","تآكل أسنان","صداع صباحي","تعب فك","أضراس مسطحة"], signs:"تآكل مينا، تضخم عضلات المضغ", xray:"تسطح أسطح المضغ", treat:"واقي ليلي، إدارة إجهاد", diff:"تآكل متماثل + أعراض عضلية"},
+            {id:"attrition", name:"بلى الأسنان الاحتكاكي", cat:"تآكل", sev:"متوسط", location:"أسنان", keywords:["أسنان قصيرة","تآكل حواف","صرير","سني مسطح"], signs:"تسطح أسطح الإطباق، كشف عاج", xray:"قرب العاج من السطح", treat:"واقي، ترميم، تعديل إطباق", diff:"تآكل ميكانيكي متماثل"},
+            {id:"abrasion", name:"بلى الأسنان الاحتكاكي الخارجي", cat:"تآكل", sev:"منخفض", location:"أسنان", keywords:["أخاديد على الأعناق","فرشاة قاسية","معجون كاشط","حساسية"], signs:"أخاديد عميقة عند عنق السن", xray:"عاج مكشوف", treat:"تفريش ناعم، ترميم", diff:"موقع عنق السن + شكل إسفيني"},
+            {id:"erosion", name:"تآكل الأسنان الكيميائي", cat:"تآكل", sev:"متوسط", location:"أسنان", keywords:["حموضة","مشروبات غازية","ارتجاع","أسنان شفافة","حساسية"], signs:"نقص مينا، أسنان ملساء ولامعة", xray:"نقص سماكة مينا عام", treat:"تعديل غذاء، علاج ارتجاع، فلورايد", diff:"انتشار عام + ارتباط بالأحماض"},
+            {id:"abfraction", name:"انكسار عنق السن", cat:"تآكل", sev:"منخفض", location:"سن", keywords:["أخاديد عنقية","إجهاد مضغ","حساسية","سن سليم"], signs:"آفات إسفينية عند العنق", xray:"غير مطلوب", treat:"تخفيف إطباق، ترميم إذا حساس", diff:"موقع عنقي + إجهاد مضغي"},
+            {id:"dentin_hypersensitivity", name:"حساسية العاج", cat:"لبية", sev:"منخفض", location:"سن", keywords:["ألم بارد سريع","ألم حلو","ألم هواء","حساسية مؤقتة"], signs:"استجابة سريعة ومزيلة للألم للمؤثرات", xray:"طبيعي أو كشف عاج", treat:"معجون حساسية، فلورايد، ترميم", diff:"ألم عابر يزول بزوال المؤثر"},
+            {id:"split_tooth", name:"السن المنشطر", cat:"لبية", sev:"عالي", location:"سن", keywords:["ألم عند الفك","سن ينقسم","ألم مضغ","شق عميق"], signs:"شق يمتد للجذر، ألم عند الإطلاق", xray:"غالباً طبيعي، أحياناً خط كسر", treat:"قلع أو تثبيت إذا مبكر", diff:"ألم عند الفك + شق مرئي"},
+            {id:"vertical_root_fracture", name:"كسر جذر عمودي", cat:"لبية", sev:"عالي", location:"سن", keywords:["ألم مضغ","جيب لثوي ضيق","سن معالج جذر","ألم خفيف مستمر"], signs:"جيب ضيق عميق، ألم عند المضغ", xray:"شفافية على شكل حرف J أو هالة", treat:"قلع غالباً", diff:"جيب ضيق + سن معالج سابقاً"},
+            {id:"pulp_calcification", name:"تكلس قناة اللب", cat:"لبية", sev:"منخفض", location:"سن", keywords:["سن أصفر","لا يستجيب بارد","رضة قديمة","سن قديم"], signs:"تغير لون، عدم استجابة حيوية", xray:"قناة ضيقة أو مختفية، غرفة لب صغيرة", treat:"مراقبة أو علاج جذر صعب", diff:"قناة غير مرئية شعاعياً"},
+            {id:"taurodontism", name:"السن الثوراني", cat:"تطور", sev:"منخفض", location:"سن", keywords:["غرفة لب كبيرة","جذور قصيرة","أضراس طويلة"], signs:"جسم سن ممتد، جذور قصيرة", xray:"غرفة لب ممتدة جذرياً", treat:"مراقبة، حذر في علاج الجذر", diff:"تشوه شكل الجذر والغرفة"},
+            {id:"dens_invaginatus", name:"التدسن الغائري", cat:"تطور", sev:"متوسط", location:"سن", keywords:["سن بشكل غريب","تسوس سريع","قناة داخل قناة","أمامي علوي"], signs:"انغماس المينا داخل اللب", xray:"صورة سن داخل سن", treat:"عزل، علاج جذر معقد", diff:"تشوه بنيوي داخلي"},
+            {id:"dens_evaginatus", name:"التدسن البارز", cat:"تطور", sev:"متوسط", location:"سن", keywords:["نتوء على سطح المضغ","كسر نتوء","ألم لب"], signs:"نتوء مينا-عاج على السطح الإطباقي", xray:"بروز يحتوي لب", treat:"حماية نتوء أو علاج لب", diff:"نتوء خارجي يحتوي لب"},
+            {id:"gemination", name:"التوأمة السنية", cat:"تطور", sev:"منخفض", location:"سن", keywords:["سن عريض","تاج منفصل","جذر واحد","عدد أسنان طبيعي"], signs:"تاج كبير مشقوق، جذر مشترك", xray:"جذر واحد أو قناة واحدة", treat:"مراقبة أو تجميل", diff:"عدد أسنان طبيعي + تاج مزدوج"},
+            {id:"fusion", name:"الالتحام السني", cat:"تطور", sev:"منخفض", location:"سن", keywords:["سنان ملتصقان","عدد أسنان ناقص","جذران منفصلان"], signs:"التحام سنيين، فقدان سن واحد من العدد", xray:"قناتان أو جذران منفصلان", treat:"مراقبة أو فصل جراحي", diff:"نقص عدد + جذران"},
+            {id:"concrescence", name:"الالتحام الملاطي", cat:"تطور", sev:"منخفض", location:"سن", keywords:["سنان ملتصقان بالملاط","قلع صعب","كبار سن"], signs:"التحام جذرين بالملاط فقط", xray:"التحام جذري", treat:"قلع جراحي حذر", diff:"التحام ملاطي فقط"},
+            {id:"enamel_pearl", name:"لؤلؤة المينا", cat:"تطور", sev:"منخفض", location:"جذر", keywords:["كتلة صغيرة على الجذر","جيب لثوي موضعي","طحن سفلي"], signs:"عقدة مينا صغيرة عند تجذر الأسنان", xray:"ظل دائري كثيف عند الجذر", treat:"إزالة إذا سبب جيب لثوي", diff:"عقدة مينا عند التجذر"},
+            {id:"cervical_projection", name:"نتوء عنقي", cat:"تطور", sev:"منخفض", location:"سن", keywords:["فقدان عظمي أمامي","أضراس عليا","جيب لثوي"], signs:"امتداد مينا لعنق السن", xray:"بروز مينا عند العنق", treat:"تنظيف، تعديل شكل إذا لزم", diff:"موقع عنقي + فقد عظمي أمامي"},
+            {id:"palatogingival_groove", name:"أخدود حنكي لثوي", cat:"تطور", sev:"متوسط", location:"سن", keywords:["جيب لثوي خلفي","أمامي علوي","صعب تنظيف","فقدان عظمي"], signs:"أخدود عميق على السطح الحنكي", xray:"خط شفاف على الجذر الحنكي", treat:"ترميم الأخدود، جراحة لثوية", diff:"أخدود حنكي + جيب لثوي"},
+            {id:"hutchinson_teeth", name:"أسنان هاتشنسون", cat:"تطور", sev:"متوسط", location:"أسنان", keywords:["قواطع مشقوقة","برغي","زهري خلقي","أسنان أمامية"], signs:"قواطع علوية مسننة مشقوقة", xray:"غير مطلوب", treat:"ترميم تجميلي", diff:"شكل برغي مميز + زهري خلقي"},
+            {id:"mulberry_molars", name:"أضراس التوت", cat:"تطور", sev:"متوسط", location:"أسنان", keywords:["أضراس مستديرة","عقيدات صغيرة","زهري خلقي"], signs:"أضراس أولى سفلية بعقيدات متعددة", xray:"غير مطلوب", treat:"وقائي أو ترميمي", diff:"شكل توت مميز"},
+            {id:"neonatal_teeth", name:"أسنان حديثي الولادة", cat:"أطفال", sev:"متوسط", location:"أسنان", keywords:["أسنان بعد الولادة","رضاعة صعبة","حركة"], signs:"بزوغ خلال أول 30 يوم", xray:"غير مطلوب غالباً", treat:"مراقبة أو قلع إذا حركة خطيرة", diff:"بزوغ بعد الولادة مباشرة"},
+            {id:"natal_teeth", name:"أسنان ما قبل الولادة", cat:"أطفال", sev:"متوسط", location:"أسنان", keywords:["سن عند الولادة","رضاعة","حركة"], signs:"وجود سن عند الميلاد", xray:"غير مطلوب", treat:"مراقبة أو قلع", diff:"موجود عند الولادة"},
+            {id:"regional_odontodysplasia", name:"خلل التنسج السني الإقليمي", cat:"تطور", sev:"متوسط", location:"أسنان", keywords:["أسنان شبحية","تأخر بزوغ","منطقة محددة","ألم"], signs:"أسنان صغيرة رقيقة المينا والعاج", xray:"مظهر شبحي، غرف لب كبيرة", treat:"قلع أو ترميم شامل", diff:"مظهر شعاعي شبحي"},
+            {id:"ankylosis", name:"التحام السن بالعظم", cat:"تطور", sev:"متوسط", location:"سن", keywords:["سن غائر","صوت معدني عند الطرق","لا يتحرك","تأخر سقوط"], signs:"انخفاض مستوى السن، صوت طرق معدني", xray:"اختفاء رباط سنخي موضعي", treat:"مراقبة أو قلع وتعويض", diff:"انخفاض مستوى السن + صوت معدني"},
+            {id:"submerged_tooth", name:"السن الغائر", cat:"أطفال", sev:"متوسط", location:"أسنان", keywords:["سن لبنية غائرة","أسنان دائمة فوقها","تأخر سقوط"], signs:"سن لبني تحت مستوى الإطباق", xray:"التحام عظمي، تأخر بزوغ دائم", treat:"قلع السن اللبني، مراقبة", diff:"موقع تحت خط الإطباق"},
+            {id:"ectopic_eruption", name:"البزوغ المنتبذ", cat:"تقويم", sev:"متوسط", location:"أسنان", keywords:["سن يبرز في مكان غريب","ألم","ازدحام","ضرس عقل مائل"], signs:"بزوغ خارج القوس السنية", xray:"موقع غير طبيعي للسن", treat:"تقويم أو قلع", diff:"موقع خارج المسار الطبيعي"},
+            {id:"premature_loss", name:"الفقدان المبكر للأسنان اللبنية", cat:"أطفال", sev:"متوسط", location:"أسنان", keywords:["فقدان سن لبني مبكر","انزياح أسنان","ازدحام"], signs:"فراغ مبكر، انزياح أسنان مجاورة", xray:"فقدان سن لبني، سن دائم تحت", treat:"حافظ مسافة", diff:"فقدان قبل الوقت الطبيعي"},
+            {id:"anodontia", name:"عدم تكون الأسنان", cat:"تطور", sev:"عالي", location:"أسنان", keywords:["لا أسنان","فم فارغ","وراثي","خلقي"], signs:"غياب كامل للأسنان", xray:"عدم تكون براعم سنية", treat:"أطقم مبكرة، زراعة لاحقاً", diff:"غياب كلي شعاعياً وسريرياً"},
+            {id:"hypodontia", name:"نقص عدد الأسنان", cat:"تطور", sev:"متوسط", location:"أسنان", keywords:["سن مفقود","فراغ دائم","ضرس عقل مفقود"], signs:"فقدان 1-6 أسنان (غير الثالث)", xray:"غياب براعم محددة", treat:"إغلاق فراغ أو زراعة", diff:"نقص محدود في العدد"},
+            {id:"oligodontia", name:"قلة الأسنان الشديدة", cat:"تطور", sev:"عالي", location:"أسنان", keywords:["عدد قليل من الأسنان","فراغات كبيرة","وراثي"], signs:"فقدان أكثر من 6 أسنان", xray:"غياب متعدد للبراعم", treat:"تعويض شامل، زراعة", diff:"نقص شديد في العدد"},
+            {id:"complex_odontoma", name:"ورم سني معقد", cat:"أورام", sev:"منخفض", location:"فك", keywords:["كتلة عشوائية","عاج ومينا مختلط","أطفال"], signs:"كتلة صلبة غير منتظمة", xray:"كتلة كثيفة عشوائية", treat:"استئصال", diff:"كتلة عشوائية الكثافة"},
+            {id:"compound_odontoma", name:"ورم سني مركب", cat:"أورام", sev:"منخفض", location:"فك", keywords:["أسنان صغيرة كثيرة","كتلة أمامية","أطفال"], signs:"مجموعة أسنان صغيرة مصغرة", xray:"هياكل شبيهة بأسنان صغيرة", treat:"استئصال", diff:"هياكل سنية مصغرة"},
+            {id:"amelogenesis_imperfecta", name:"خلل تكون المينا", cat:"تطور", sev:"متوسط", location:"أسنان", keywords:["مينا رقيقة","أسنان صفراء","حساسية","وراثي"], signs:"مينا شاحبة أو رقيقة أو متقشرة", xray:"مينا رقيقة جداً أو غائبة", treat:"ترميم شامل، تيجان", diff:"عيوب مينا عامة + وراثي"},
+            {id:"dentin_dysplasia", name:"خلل تكون العاج", cat:"تطور", sev:"متوسط", location:"أسنان", keywords:["جذور قصيرة","مينا طبيعية","أسنان متحركة","لون طبيعي"], signs:"أسنان بلون طبيعي لكن جذور قصيرة", xray:"جذور قصيرة، غرف لب صغيرة", treat:"مراقبة أو تيجان", diff:"جذور قصيرة مع تاج طبيعي"},
+            {id:"fordyce_granules", name:"حبيبات فوردايس", cat:"أنسجة", sev:"منخفض", location:"فم", keywords:["بقع صفراء صغيرة","خد","شفة","غير مؤلمة"], signs:"بقع صفراء صغيرة متجمعة", xray:"غير مطلوب", treat:"مراقبة، لا علاج لازم", diff:"بقع صفراء طبيعية"},
+            {id:"linea_alba", name:"الخط الأبيض", cat:"أنسجة", sev:"منخفض", location:"خد", keywords:["خط أبيض على الخد","مضغ","غير مؤلم","ثنائي"], signs:"خط أبيض أفقي على مستوى المضغ", xray:"غير مطلوب", treat:"لا علاج", diff:"موقع خط المضغ"},
+            {id:"frictional_keratosis", name:"تقرن احتكاكي", cat:"أنسجة", sev:"منخفض", location:"فم", keywords:["بقعة بيضاء خشنة","احتكاك مستمر","غير مؤلم"], signs:"لويحة بيضاء متهيجة موضعياً", xray:"غير مطلوب", treat:"إزالة سبب الاحتكاك", diff:"ارتباط بمحفز ميكانيكي"},
+            {id:"nicotine_stomatitis", name:"التهاب حنك المدخن", cat:"أنسجة", sev:"متوسط", location:"حنك", keywords:["غليون","سيجار","نقاط حمراء على حنك أبيض","مدخن"], signs:"حنك أبيض متشقق بنقاط حمراء", xray:"غير مطلوب", treat:"إيقاف تدخين", diff:"ارتباط بالتدخين الثقيل"},
+            {id:"verrucous_carcinoma", name:"سرطان ثؤلولي", cat:"أورام", sev:"طوارئ", location:"فم", keywords:["كتلة بيضاء ثؤلولية","تنخر","بطيء","مدخن"], signs:"كتلة بيضاء خشنة تنتشر ببطء", xray:"غير مطلوب", treat:"استئصال واسع", diff:"سطح ثؤلولي + نمو بطيء"},
+            {id:"erythroplakia", name:"طلاوة حمراء", cat:"أورام", sev:"طوارئ", location:"فم", keywords:["بقعة حمراء مخملية","خطورة عالية","خزعة ضرورية"], signs:"بقعة حمراء مخملية لا تمسح", xray:"غير مطلوب", treat:"خزعة عاجلة، استئصال", diff:"مخملية حمراء + خطر تحول عالي"},
+            {id:"speckled_leukoplakia", name:"طلاوة منقطة", cat:"أورام", sev:"عالي", location:"فم", keywords:["بقع بيضاء وحمراء مختلطة","خطورة","تدخين"], signs:"لويحة بيضاء بمناطق حمراء", xray:"غير مطلوب", treat:"خزعة، مراقبة مشددة", diff:"مناطق حمراء ضمن طلاء أبيض"},
+            {id:"actinic_cheilitis", name:"التهاب شفوي شمسي", cat:"أنسجة", sev:"متوسط", location:"شفة", keywords:["شفة سفلى","شمس","جفاف","تقشر"], signs:"جفاف، تقشر، فقدان حدود شفوي", xray:"غير مطلوب", treat:"حماية شمسية، مرهم", diff:"شفة سفلى + تعرض شمس"},
+            {id:"pyogenic_granuloma", name:"الورم الحبيبي المقيح", cat:"لثة", sev:"منخفض", location:"لثة", keywords:["كتلة حمراء","تنزف بسهولة","حمل","تهيج"], signs:"عقيدة حمراء تنزف بلمس", xray:"غير مطلوب", treat:"استئصال + إزالة المهيج", diff:"نزف بسهولة + محفز موضعي"},
+            {id:"peripheral_giant_cell", name:"ورم الخلايا العملاقة المحيطي", cat:"لثة", sev:"متوسط", location:"لثة", keywords:["كتلة زرقاء محمرة","لثة","تآكل عظمي خفيف"], signs:"كتلة أرجوانية على اللثة", xray:"تآكل قشري خفيف", treat:"استئصال حتى العظم", diff:"لون أرجواني + تآكل عظمي سطحي"},
+            {id:"peripheral_ossifying", name:"الورم المتعظم المحيطي", cat:"لثة", sev:"منخفض", location:"لثة", keywords:["كتلة صلبة","لثة","تكلس"], signs:"عقيدة قاسية وردية أو حمراء", xray:"تكلسات داخلية", treat:"استئصال عميق", diff:"صلابة + تكلس شعاعي"},
+            {id:"gingival_fibromatosis", name:"تضخم اللثة الليفي", cat:"لثة", sev:"متوسط", location:"لثة", keywords:["لثة تغطي أسنان","صلبة","وراثة","أدوية"], signs:"تضخم لثوي صلب يغطي التيجان", xray:"غير مطلوب", treat:"استئصال جراحي، تغيير دواء", diff:"تغطية أسنان + قوام صلب"},
+            {id:"drug_gingival", name:"تضخم لثة دوائي", cat:"لثة", sev:"متوسط", location:"لثة", keywords:["فينيتوين","سيكلوسبورين","نفيديبين","لثة منتفخة"], signs:"تضخم لثوي زهري قاسي", xray:"غير مطلوب", treat:"تغيير دواء، تنظيف، استئصال", diff:"تاريخ أدوية محددة"},
+            {id:"desquamative_gingivitis", name:"التهاب لثة مقشر", cat:"لثة", sev:"عالي", location:"لثة", keywords:["لثة تنسلخ","ألم","نساء","مناعي"], signs:"انسلخ لثوي مؤلم", xray:"غير مطلوب", treat:"كورتيزون موضعي، مناعي", diff:"انسلخ + ألم + غالباً إناث"},
+            {id:"plasma_cell_gingivitis", name:"التهاب لثة خلوي بلازمي", cat:"لثة", sev:"متوسط", location:"لثة", keywords:["لثة حمراء منتفخة","علكة","نكهات","حساسية"], signs:"احمرار وتورم لثوي منتشر", xray:"غير مطلوب", treat:"إزالة مهيج، كورتيزون", diff:"انتشار + ارتباط بنكهة/علكة"},
+            {id:"linear_gingival_erythema", name:"حمامى لثوية خطية", cat:"لثة", sev:"عالي", location:"لثة", keywords:["خط أحمر لثة","فطريات","إيدز","مناعة"], signs:"شريط أحمر على حافة اللثة", xray:"غير مطلوب", treat:"مضاد فطري، كلورهيكسيدين", diff:"خط أحمر مميز + نقص مناعة"},
+            {id:"aggressive_periodontitis", name:"التهاب دواعم عدواني", cat:"لثة", sev:"عالي", location:"لثة", keywords:["فقدان عظمي سريع","شباب","أسنان أمامية","نظافة جيدة"], signs:"فقدان عظمي سريع غير متناسب مع العمر", xray:"فقدان عظمي عمودي سريع", treat:"تنظيف عميق، مضادات، جراحة", diff:"سرعة فقدان العظم + عمر صغير"},
+            {id:"necrotizing_periodontitis", name:"التهاب دواعم نخري", cat:"لثة", sev:"عالي", location:"لثة", keywords:["ألم شديد","نزف","رائحة","نخر لثة","إيدز","إجهاد"], signs:"نخر حليمات، نزف، ألم", xray:"غير مطلوب", treat:"تنظيف لطيف، مضادات، دعم", diff:"نخر لثوي + رائحة نتنة"},
+            {id:"food_impaction", name:"انحشار الطعام", cat:"إطباق", sev:"منخفض", location:"لثة", keywords:["طعام يعلق بين الأسنان","ألم لثة","رائحة","فراغ"], signs:"ألم لثوي موضعي، رائحة", xray:"فقدان عظمي بيني أحياناً", treat:"إزالة طعام، ترميم فراغ، تنظيف", diff:"طعام محشور + ألم موضعي"},
+            {id:"fibrous_epulis", name:"ورم ليفي لثوي", cat:"لثة", sev:"منخفض", location:"لثة", keywords:["كتلة وردية صلبة","لثة","تهيج مزمن"], signs:"كتلة لثوية وردية قاسية", xray:"غير مطلوب", treat:"استئصال", diff:"صلابة + موقع لثوي"},
+            {id:"pregnancy_epulis", name:"ورم حمل لثوي", cat:"لثة", sev:"متوسط", location:"لثة", keywords:["كتلة لثوية حمراء","حمل","تنزف","نمو سريع"], signs:"كتلة حمراء نازفة تنمو بسرعة", xray:"غير مطلوب", treat:"مراقبة أو استئصال بعد الحمل", diff:"حمل + نمو سريع نازف"},
+            {id:"granuloma_fissuratum", name:"ورم حبيبي متشقق", cat:"أنسجة", sev:"منخفض", location:"فم", keywords:["شقوق في طية","طقم متحرك","تهيج"], signs:"شقوق لحمية في طية المخاط", xray:"غير مطلوب", treat:"تعديل طقم، استئصال إذا لزم", diff:"ارتباط بطقم + شقوق"},
+            {id:"inflammatory_papillary_hyperplasia", name:"فرط تنسج حليمي التهابي", cat:"أنسجة", sev:"متوسط", location:"حنك", keywords:["طقم","نوم بطقم","حنك أحمر حبيبي","حكة"], signs:"سطح حنكي أحمر حبيبي تحت الطقم", xray:"غير مطلوب", treat:"عدم نوم بطقم، جراحة إذا شديد", diff:"نوم بطقم + سطح حبيبي"},
+            {id:"traumatic_ulcer", name:"قرحة رضحية", cat:"رضوض", sev:"منخفض", location:"فم", keywords:["عض خد","فرشاة خشنة","ألم موضعي","قرحة حديثة"], signs:"قرحة بيضاوية بموقع رض", xray:"غير مطلوب", treat:"إزالة مهيج، غسول", diff:"موقع رض واضح"},
+            {id:"riga_fede", name:"داء ريغا فيد", cat:"أطفال", sev:"متوسط", location:"لسان", keywords:["رضيع","أسنان سفلية بارزة","قرحة تحت لسان"], signs:"قرحة تحت اللسان بسبب أسنان سفلية", xray:"غير مطلوب", treat:"تسنين الأسنان أو إزالة حواف", diff:"رضيع + أسنان بارزة + قرحة تحت لسان"},
+            {id:"bednar_aphthae", name:"قلاعية بيدنار", cat:"أطفال", sev:"منخفض", location:"فم", keywords:["رضيع","قرحات حنك","رضاعة","صناعية"], signs:"قرحات على الحنك الخلفي", xray:"غير مطلوب", treat:"تعديل رضاعة، مسكنات", diff:"رضيع + حنك خلفي"},
+            {id:"herpangina", name:"هيبانجينا", cat:"فيروسي", sev:"متوسط", location:"فم", keywords:["حمى","تقرحات حنك","ألم بلع","أطفال","كوكساكي"], signs:"حويصلات ثم قرحات على الحنك الرخو", xray:"غير مطلوب", treat:"داعم، سوائل، مسكنات", diff:"حنك رخو + حمى + فيروس"},
+            {id:"erythema_multiforme", name:"حمامى متعددة الأشكال", cat:"مناعي", sev:"عالي", location:"فم", keywords:["حمامى","بقع مستهدفة","شفتين","حويصلات","حساسية دواء"], signs:"بقع مستهدفة على الشفاه والفم", xray:"غير مطلوب", treat:"إيقاف الدواء، كورتيزون", diff:"بقع دائرية مركزها أغمق"},
+            {id:"pemphigus_vulgaris", name:"الفقاع العادي", cat:"مناعي", sev:"عالي", location:"فم", keywords:["فقاعات","تنفجر بسهولة","قرحات مؤلمة","لثة تنسلخ"], signs:"فقاعات رقيقة تنفجر بسهولة", xray:"غير مطلوب", treat:"مثبطات مناعة، كورتيزون", diff:"تقشر بلمس خفيف"},
+            {id:"mucous_membrane_pemphigoid", name:"الفقاع المخاطي الندبي", cat:"مناعي", sev:"عالي", location:"لثة", keywords:["لثة منسلخة","ندبات","عينين","تليف"], signs:"انفصال لثوي ندبي", xray:"غير مطلوب", treat:"كورتيزون، مناعي", diff:"تليف + ندبات"},
+            {id:"epidermolysis_bullosa", name:"انحلال البشرة الفقاعي", cat:"مناعي", sev:"عالي", location:"فم", keywords:["رضيع","بثور","حساسية لمس","وراثي"], signs:"بثور وجلد ينفصل بلمس خفيف", xray:"غير مطلوب", treat:"داعم، حماية", diff:"بثور منذ الصغر + وراثي"},
+            {id:"lichen_planus_erosive", name:"حزاز مسطح تآكلي", cat:"مناعي", sev:"عالي", location:"فم", keywords:["تآكل مؤلم","خطوط بيضاء","حرقان","توتر"], signs:"تقرحات حمراء محاطة بخطوط بيضاء", xray:"غير مطلوب", treat:"كورتيزون موضعي", diff:"تآكل + شبكة بيضاء"},
+            {id:"lupus_oral", name:"الذئبة الحمامية فموية", cat:"مناعي", sev:"عالي", location:"فم", keywords:["قرحة ذئبة","حساسية شمس","ألم مفاصل","طفح"], signs:"قرحة مركزية بيضاء بهالة حمراء", xray:"غير مطلوب", treat:"كورتيزون، مناعي", diff:"قرحة ذئبة مميزة"},
+            {id:"sarcoidosis_oral", name:"الساركويد فموي", cat:"جهازي", sev:"متوسط", location:"فم", keywords:["تضخم غدد","رئة","جلد","فم"], signs:"تضخم غدي أو آفات فموية", xray:"صورة صدر، خزعة", treat:"كورتيزون", diff:"رئة + غدد + فم"},
+            {id:"crohns_oral", name:"علامات كرون فموية", cat:"جهازي", sev:"متوسط", location:"فم", keywords:["تقرحات","تورم شفة","ألم بطني","إسهال"], signs:"قرحات خطية، تورم شفوي", xray:"غير مطلوب", treat:"علاج أمعاء، كورتيزون", diff:"أعراض هضمية + تقرحات خطية"},
+            {id:"behcet_disease", name:"داء بهجت", cat:"مناعي", sev:"عالي", location:"فم", keywords:["تقرحات فموية","تقرحات تناسلية","التهاب عين","ثلاثي"], signs:"تقرحات قلاعية متكررة شديدة", xray:"غير مطلوب", treat:"كولشيسين، كورتيزون", diff:"فم + تناسل + عين"},
+            {id:"wegener_granulomatosis", name:"ورام حبيبي ويغنر", cat:"مناعي", sev:"عالي", location:"فم", keywords:["لثة فراولة","نزف","أنف","كلية"], signs:"لثة حمراء حبيبة نزفية", xray:"غير مطلوب", treat:"مناعي، كورتيزون", diff:"لثة فراولة + أعراض كلية/أنفية"},
+            {id:"hiv_oral", name:"علامات الإيدز فموية", cat:"جهازي", sev:"عالي", location:"فم", keywords:["إيدز","بقع بيضاء","مناعة ضعيفة","حرقان"], signs:"بقع بيضاء سميكة، تقرحات، فطريات", xray:"غير مطلوب", treat:"فلوكونازول، مضاد فيروسات", diff:"نقص مناعة شديد + بقع سميكة"},
+            {id:"kaposi_sarcoma", name:"ساركوما كابوزي", cat:"أورام", sev:"طوارئ", location:"فم", keywords:["بقعة بنفسجية","حنك","إيدز","فيروس هربس 8"], signs:"آفة بنفسجية أو حمراء مسطحة أو بارزة", xray:"غير مطلوب", treat:"مضاد فيروسات، إشعاع", diff:"لون بنفسجي + نقص مناعة"},
+            {id:"non_hodgkin_lymphoma", name:"لمفوما لا هودجكن فموية", cat:"أورام", sev:"طوارئ", location:"فم", keywords:["تورم سريع","لوزة","حنك","نزف"], signs:"كتلة سريعة النمو تنزف", xray:"خزعة ضرورية", treat:"كيميائي، إشعاعي", diff:"نمو سريع + نزف"},
+            {id:"leukemia_oral", name:"علامات اللوكيميا الفموية", cat:"جهازي", sev:"طوارئ", location:"فم", keywords:["نزف لثوي","تقرحات","شحوب","حمى","إرهاق"], signs:"تورم لثوي إسفنجي، نزف تلقائي", xray:"غير مطلوب", treat:"إحالة طارئة لأورام الدم", diff:"نزف تلقائي + أعراض دموية"},
+            {id:"multiple_myeloma", name:"الورم النقوي المتعدد", cat:"أورام", sev:"طوارئ", location:"فك", keywords:["ألم فك","كسور","تعب","فقدان وزن","كلى"], signs:"تورم فكي، ألم عظمي", xray:"آفات مثقوبة (Punched out)", treat:"كيميائي، دعم عظمي", diff:"آفات شعاعية مثقوبة + أعراض دموية"},
+            {id:"amyloidosis_oral", name:"الداء النشواني فموي", cat:"جهازي", sev:"عالي", location:"فم", keywords:["لسان متضخم","صلب","ترسب بروتين"], signs:"ضخامة لسان قاسي", xray:"غير مطلوب", treat:"علاج مرض أساسي", diff:"لسان متضخم صلب"},
+            {id:"addison_disease", name:"داء أديسون", cat:"جهازي", sev:"عالي", location:"فم", keywords:["تصبغ فموي","إرهاق","انخفاض ضغط","كظرية"], signs:"تصبغات بنية منتشرة بالفم", xray:"غير مطلوب", treat:"تعويض كورتيزون", diff:"تصبغ عام + أعراض جهازية"},
+            {id:"cushing_syndrome", name:"متلازمة كوشينغ", cat:"جهازي", sev:"متوسط", location:"فم", keywords:["وجه قمري","فم فطريات","كورتيزون عالي"], signs:"وجه منتفخ، قرحات فموية", xray:"غير مطلوب", treat:"خفض كورتيزون", diff:"وجه قمري + سمنة مركزية"},
+            {id:"hyperparathyroidism", name:"فرط جارات الدرق", cat:"جهازي", sev:"عالي", location:"فك", keywords:["كيسات بنية","كلسيوم عالي","كلوى","عظم رقيق"], signs:"كيسات متعددة (ورم بني)", xray:"كيسات متعددة، فقدان صفيحة قاسية", treat:"استئصال جارات درق", diff:"كيسات متعددة + كلسيوم عالي"},
+            {id:"hypoparathyroidism", name:"قصور جارات الدرق", cat:"جهازي", sev:"عالي", location:"فم", keywords:["تنميل","تشنج عضلي","كلسيوم منخفض","جراحة عنق"], signs:"تنميل حول الفم، تشنجات", xray:"غير مطلوب", treat:"كالسيوم، فيتامين د", diff:"كلسيوم منخفض + تشنجات"},
+            {id:"acromegaly", name:"ضخامة الأطراف", cat:"جهازي", sev:"متوسط", location:"فك", keywords:["فك كبير","تباعد أسنان","لسان كبير","يد كبيرة"], signs:"تضخم فك، تباعد أسنان، لسان ضخم", xray:"تضخم فكي، جيوب كبيرة", treat:"علاج هرموني، جراحة", diff:"فك ضخم + تباعد أسنان"},
+            {id:"paget_disease_bone", name:"داء باجيت العظمي", cat:"عظم", sev:"عالي", location:"فك", keywords:["توسع فكي","أسنان متباعدة","ألم عظم","كبار سن"], signs:"توسع فكي، تباعد أسنان", xray:"قطن صوفي", treat:"بيسفوسفونات، مراقبة", diff:"توسع فكي + تباعد أسنان"},
+            {id:"osteogenesis_imperfecta", name:"تكون العظم الناقص", cat:"عظم", sev:"عالي", location:"فك", keywords:["عظم سهل الكسر","زرق صلبة","صمم","أسنان عاجية"], signs:"كسور متكررة، أسنان عاجية اللون", xray:"عظم رقيق، أسنان جذور قصيرة", treat:"حماية، علاج داعم", diff:"كسور متكررة + أسنان زرقاء"},
+            {id:"cleidocranial_dysplasia", name:"خلل الترقوة القحفي", cat:"تطور", sev:"متوسط", location:"فك", keywords:["أسنان زائدة كثيرة","ترقوة غائبة","جمجمة كبيرة","تأخر بزوغ"], signs:"كثرة أسنان زائدة، تأخر بزوغ", xray:"سنون متعددة، غياب ترقوة", treat:"قلع زائد، تقويم، جراحة", diff:"ثلاثي: أسنان زائدة + ترقوة + جمجمة"},
+            {id:"ectodermal_dysplasia", name:"خلل التنسج الأديمي", cat:"تطور", sev:"متوسط", location:"فم", keywords:["أسنان مخروطية","قلة عرق","شعر خفيف","حرارة عالية"], signs:"أسنان مخروطية أو ناقصة", xray:"نقص أسنان", treat:"أطقم مبكرة، زراعة", diff:"أسنان مخروطية + أعراض جلدية"},
+            {id:"down_syndrome_oral", name:"متلازمة داون فموية", cat:"تطور", sev:"متوسط", location:"فم", keywords:["لغة كبيرة","فك صغير","لثة ملتهبة","تأخر نمو"], signs:"فك صغير، لسان بارز، التهاب لثة سريع", xray:"جذور قصيرة أحياناً", treat:"نظافة مكثفة، تقويم", diff:"ملامح وجهية مميزة + تأخر"},
+            {id:"crouzon_syndrome", name:"متلازمة كروزون", cat:"تطور", sev:"عالي", location:"فك", keywords:["فك علوي صغير","عيون بارزة","صعوبة تنفس"], signs:"نقص تنسج فك علوي، بروز عينين", xray:"قحف وجهي مشوه", treat:"جراحة فك، متابعة تنفس", diff:"قحفي وجهي + تنفس"},
+            {id:"pierre_robin", name:"متلازمة بيير روبن", cat:"تطور", sev:"عالي", location:"فك", keywords:["فك سفلي صغير","لسان ساقط","صعوبة تنفس رضيع"], signs:"صغر الفك السفلي، تراجع لسان", xray:"صغر فكي", treat:"وضع خاص، جراحة تثبيت", diff:"ثلاثي: فم صغير + لسان ساقط + تنفس"},
+            {id:"treacher_collins", name:"متلازمة تريشر كولينز", cat:"تطور", sev:"عالي", location:"فك", keywords:["تشوه وجهي","أذنان","فك صغير","عيون مائلة"], signs:"نقص تنسج عظام وجهية", xray:"تشوه عظمي", treat:"جراحة ترميمية متعددة", diff:"تشوه وجهي متماثل"},
+            {id:"hemifacial_microsomia", name:"صغر نصف الوجه", cat:"تطور", sev:"عالي", location:"وجه", keywords:["وجه غير متماثل","أذن مشوهة","فك صغير جانب واحد"], signs:"نقص نمو نصف وجهي", xray:"نقص عظمي جانبي", treat:"جراحة ترميمية، إطالة", diff:"عدم تماثل وجهي"},
+            {id:"condylar_hyperplasia", name:"فرط تنسج اللقمة", cat:"تطور", sev:"متوسط", location:"فك", keywords:["فك منحرف","كبر وجه جانب واحد","عضة معكوسة"], signs:"انحراف ذقني، كبر لقمة", xray:"لقمة متضخمة", treat:"استئصال لقمة، تقويم", diff:"انحراف فكي + لقمة كبيرة"},
+            {id:"condylar_hypoplasia", name:"نقص تنسج اللقمة", cat:"تطور", sev:"متوسط", location:"فك", keywords:["صغر فك","عدم تماثل","عضة مفتوحة","ألم"], signs:"صغر فكي، عدم تماثل وجهي", xray:"لقمة صغيرة أو مشوهة", treat:"جراحة تعويض، تقويم", diff:"لقمة صغيرة + عدم تماثل"},
+            {id:"coronoid_hyperplasia", name:"فرط تنسج الناتئ الإكليلي", cat:"تطور", sev:"متوسط", location:"فك", keywords:["صعوبة فتح فم تدريجية","ألم","صدمة"], signs:"محدودية فتح الفم", xray:"إطالة الناتئ الإكليلي", treat:"استئصال إكليلي", diff:"فتح محدود + لقمة طبيعية"},
+            {id:"torus_palatinus", name:"نتوء حنكي عظمي", cat:"تطور", sev:"منخفض", location:"حنك", keywords:["كتلة عظم صلب","سقف حنك","موجود من زمان"], signs:"نتوء عظمي صلب في منتصف الحنك", xray:"عظم طبيعي", treat:"مراقبة أو نحت لطقم", diff:"صلب عظمي + موقع وسطي"},
+            {id:"torus_mandibularis", name:"نتوء فكي سفلي عظمي", cat:"تطور", sev:"منخفض", location:"فك", keywords:["كتلة صلبة تحت لسان","ثنائي","فك سفلي"], signs:"نتوءات عظمية على السطح اللساني للفك", xray:"عظم طبيعي", treat:"مراقبة", diff:"ثنائي + تحت لسان"},
+            {id:"exostosis", name:"نمو عظمي زائد", cat:"تطور", sev:"منخفض", location:"فك", keywords:["نتوء عظمي","خدي","صعب لمس"], signs:"نتوءات عظمية على الوجه الخدي", xray:"عظم طبيعي", treat:"مراقبة", diff:"وجه خدي + عظمي"},
+            {id:"osteoma", name:"ورم عظمي حميد", cat:"أورام", sev:"متوسط", location:"فك", keywords:["كتلة عظم بطيئة","صلبة جداً","مفرد"], signs:"كتلة عظمية قاسية بطيئة النمو", xray:"كتلة عظمية كثيفة", treat:"استئصال", diff:"عظمي صلب + نمو بطيء"},
+            {id:"osteoid_osteoma", name:"ورم عظمي صغير", cat:"أورام", sev:"متوسط", location:"فك", keywords:["ألم ليلي","يزول بأسبرين","عظم"], signs:"ألم ليلي يستجيب للمسكنات", xray:"نقطة شفافة محاطة بصلب", treat:"استئصال", diff:"ألم ليلي + استجابة للأسبرين"},
+            {id:"osteoblastoma", name:"ورم الأرومات العظمية", cat:"أورام", sev:"عالي", location:"فك", keywords:["ألم","توسع عظمي","كبير","شباب"], signs:"توسع عظمي مؤلم", xray:"شفافية مع تكلس", treat:"استئصال", diff:"حجم أكبر من عظمي صغير"},
+            {id:"cementoblastoma", name:"ورم الملاط", cat:"أورام", sev:"متوسط", location:"سن", keywords:["كتلة مرتبطة بجذر","ألم","عظم"], signs:"كتلة عظمية ملتصقة بجذر السن", xray:"كتلة كثيفة حول الجذر", treat:"قلع سن + استئصال كتلة", diff:"ملتصق بالجذر شعاعياً"},
+            {id:"ossifying_fibroma", name:"ورم ليفي متعظم", cat:"أورام", sev:"متوسط", location:"فك", keywords:["توسع فكي","عظم جديد","بطيء"], signs:"توسع عظمي صلب", xray:"عظم جديد داخل كتلة", treat:"استئصال", diff:"تكون عظمي داخل ورم ليفي"},
+            {id:"cherubism", name:"الشبيبية", cat:"تطور", sev:"عالي", location:"فك", keywords:["وجه طفل","فك منتفخ","وراثي","أطفال"], signs:"توسع فكي ثنائي متماثل", xray:"توسع متعدد الحجرات", treat:"مراقبة، جراحة تجميلية لاحقاً", diff:"وجه طفل + توسع فكي ثنائي"},
+            {id:"central_giant_cell", name:"ورم الخلايا العملاقة المركزي", cat:"أورام", sev:"عالي", location:"فك", keywords:["توسع فكي","ألم","شباب","فك أمامي"], signs:"توسع عظمي قد يسبب خدر", xray:"شفافية متعددة الحجرات", treat:"كشط، حقن كورتيزون، جراحة", diff:"توسع فكي + شباب"},
+            {id:"aneurysmal_bone_cyst", name:"كيسة عظمية وعائية", cat:"كيسات", sev:"عالي", location:"فك", keywords:["تورم سريع","ألم","دموي","شباب"], signs:"تورم عظمي سريع ومؤلم", xray:"فقاعات دموية", treat:"كشط، تعبئة، استئصال", diff:"نمو سريع + وعائي"}
+        ];
+        
+        let DYNAMIC_DB = [];
+        let FULL_DB = [...STATIC_DB];
+        let lastAddedIds = [];
+        
+        // دوال إدارة الحالات الديناميكية
+        window.addCasesFromJSON = () => {
+            const jsonText = $('json-input').value.trim();
+            if (!jsonText) return toast('⚠️ الرجاء إدخال كود JSON');
+            
+            let casesToAdd = [];
+            try {
+                const parsed = JSON.parse(jsonText);
+                if (Array.isArray(parsed)) { casesToAdd = parsed; }
+                else if (typeof parsed === 'object' && parsed.id) { casesToAdd = [parsed]; }
+                else { throw new Error("تنسيق غير صالح"); }
+            } catch (e) { return toast('❌ خطأ في تنسيق JSON: ' + e.message); }
+            
+            const existingIds = new Set(FULL_DB.map(c => c.id));
+            const newIds = [];
+            let hasError = false;
+            
+            casesToAdd.forEach(c => {
+                if (!c.id || !c.name) { toast(`⚠️ حالة ناقصة ID أو Name`); hasError = true; }
+                else if (existingIds.has(c.id)) { toast(`⚠️ ID مكرر تم تجاهله: ${c.id}`); }
+                else {
+                    const completeCase = {
+                        id: c.id, name: c.name, cat: c.cat || "عام", sev: c.sev || "متوسط",
+                        location: c.location || "فم", keywords: c.keywords || [c.name],
+                        signs: c.signs || "", xray: c.xray || "", treat: c.treat || "", diff: c.diff || ""
+                    };
+                    newIds.push(c.id);
+                    DYNAMIC_DB.push(completeCase);
+                    FULL_DB.push(completeCase);
+                    existingIds.add(c.id);
+                }
+            });
+            
+            if (hasError && newIds.length === 0) return;
+            
+            if (db && newIds.length > 0) {
+                const updates = {};
+                newIds.forEach(id => {
+                    const caseData = DYNAMIC_DB.find(c => c.id === id);
+                    updates['custom_diagnoses/' + id] = caseData;
+                });
+                
+                db.ref().update(updates).then(() => {
+                    toast(`✅ تم حفظ ${newIds.length} حالة بنجاح في السحابة!`);
+                    $('json-input').value = '';
+                    updateDbStats();
+                    
+                    lastAddedIds = newIds;
+                    $('undo-area').style.display = 'block';
+                    let timeLeft = 5;
+                    $('undo-timer').textContent = timeLeft;
+                    const timer = setInterval(() => {
+                        timeLeft--;
+                        $('undo-timer').textContent = timeLeft;
+                        if (timeLeft <= 0) {
+                            clearInterval(timer);
+                            $('undo-area').style.display = 'none';
+                            lastAddedIds = [];
+                        }
+                    }, 1000);
+                }).catch(e => {
+                    toast('❌ فشل الحفظ في السحابة: ' + e.message);
+                    console.error(e);
+                });
+            } else {
+                toast(`✅ تمت الإضافة محلياً (لا يوجد اتصال) ${newIds.length} حالة`);
+                updateDbStats();
+            }
+        };
+        
+        function loadDynamicDiagnoses() {
+            if(!db) {
+                updateDbStats();
+                return;
+            }
+            $('db-stats').textContent = `جاري المزامنة...`;
+            db.ref('custom_diagnoses').once('value').then(snap => {
+                DYNAMIC_DB = [];
+                if(snap.exists()) {
+                    snap.forEach(child => { DYNAMIC_DB.push(child.val()); });
+                }
+                FULL_DB = [...STATIC_DB, ...DYNAMIC_DB];
+                updateDbStats();
+            }).catch(err => {
+                console.error(err);
+                toast('⚠️ خطأ في تحميل البيانات');
+            });
+        }
+        
+        window.undoLastAdd = () => {
+            if(!lastAddedIds||lastAddedIds.length===0)return;
+            if(confirm('حذف '+lastAddedIds.length+' حالة؟')){
+                FULL_DB = FULL_DB.filter(c=>!lastAddedIds.includes(c.id));
+                DYNAMIC_DB = DYNAMIC_DB.filter(c=>!lastAddedIds.includes(c.id));
+                toast('↩️ تم التراجع');
+                $('undo-area').style.display='none';
+                lastAddedIds=[];
+                updateDbStats();
+            }
+        };
+        
+        function updateDbStats(){
+            const t=FULL_DB.length, d=DYNAMIC_DB.length, s=STATIC_DB.length;
+            $('db-stats').textContent = `كلي: ${t} (ثابت: ${s} + مضاف: ${d})`;
+        }
+        
+        // دوال التشخيص المبسطة (نفس النسخة السابقة مع تحسين طفيف)
+        function norm(t){ if(!t) return ''; return t.normalize('NFKD').replace(/[\u064B-\u065F\u0670]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/ؤ/g,'و').replace(/ئ/g,'ي').replace(/گ/g,'ك').replace(/پ/g,'ب').replace(/ڤ/g,'ف').replace(/ڠ/g,'ن').replace(/\s+/g,' ').trim().toLowerCase(); }
+        function extractNegations(t){ const n=new Set(); [/لا\s+(\w+)/g,/بدون\s+(\w+)/g,/غير\s+(\w+)/g,/ما\s+في\s+(\w+)/g].forEach(rx=>{let m;while((m=rx.exec(t))!==null)n.add(norm(m[1]))}); return n }
+        function lev(a,b){ const m=a.length,n=b.length;if(m===0)return n;if(n===0)return m;const d=Array.from({length:m+1},()=>Array(n+1).fill(0));for(let i=0;i<=m;i++)d[i][0]=i;for(let j=0;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[m][n]; }
+        function calcScore(dis,input,neg){ let total=0,matched=[],maxW=0;const words=input.split(/\s+/);for(let kw of dis.keywords){let kwN=norm(kw);if(kwN.length<2)continue;let w=1+(kwN.split(' ').length*.6)+(kwN.length/8);maxW+=w;let found=false,q=0;if(input.includes(kwN)){found=true;q=1}else{let parts=kwN.split(/\s+/).filter(p=>p.length>2),cnt=0;for(let pw of parts){let best=Infinity;for(let iw of words){let d=lev(pw,iw);if(d<best)best=d}if(best<=1)cnt++}if(cnt>0){found=true;q=cnt/parts.length}}if(found){let main=kwN.split(/\s+/)[0];if(neg.has(main)||neg.has(kwN))total-=w*2.5;else{total+=w*q;matched.push(kw)}}}let locB=0;const locM={ضرس:'سن',سن:'سن',لثة:'لثة',فك:'فك',لسان:'لسان',خد:'خد',شفة:'شفة',حنك:'حنك',وجه:'وجه',غدة:'غدد',مفصل:'مفصل',أذن:'أذن',عين:'عين'};for(let[w,c]of Object.entries(locM))if(input.includes(w)&&dis.cat&&dis.cat.includes(c))locB+=8;let emergB=dis.sev==='طوارئ'&&/(طوارئ|مستشفى|اختناق|نزف شديد|تورم سريع|حرارة عالية|صعوبة تنفس)/.test(input)?15:0;let raw=maxW>0?(total/maxW)*100:0;return{score:Math.round(Math.max(0,Math.min(100,raw+locB+emergB))),matched}}
+        
+        window.runDiagnosis = function() {
+            const text = $('sym').value.trim();
+            if(!text) return toast('اكتب الأعراض');
+            const btn = document.querySelector('#diag .btn');
+            btn.disabled = true;
+            btn.textContent = '🔬 جاري...';
+            setTimeout(()=>{
+                const nText = norm(text);
+                const neg = extractNegations(nText);
+                const results = [];
+                for(let d of FULL_DB){
+                    let r = calcScore(d, nText, neg);
+                    if(r.score >= 25) results.push({...d, ...r});
+                }
+                results.sort((a,b)=>b.score - a.score);
+                const filtered = results.slice(0,3);
+                let html = `<div class="clinical-report"><div class="report-header"><div class="report-title">🔍 الاحتمالات التشخيصية</div><span style="font-size:10px;color:#94a3b8">v48.8 تتبع المستخدمين</span></div><div style="background:#172554;border:1px solid #1e40af;border-radius:6px;padding:8px;margin-bottom:12px;font-size:11px;color:#93c5fd">⚠️ تنبيه: احتمالات تعليمية. التشخيص النهائي يحتاج فحصاً سريرياً.</div>`;
+                if(filtered.length === 0) html += `<div class="empty">🤔 لا توجد نتائج مطابقة. حاول إضافة تفاصيل أكثر.</div>`;
+                else {
+                    html += `<div style="margin-bottom:12px;padding-bottom:8px;border-bottom:1px dashed #334155"><h4 style="color:#60a5fa;margin:0;font-size:14px">📋 الأرجح سريريًا:</h4></div>`;
+                    filtered.forEach((r,i)=>{
+                        const bc = r.sev==='طوارئ'?'#ef4444':'#3b82f6';
+                        const bcL = r.score>75?'conf-high':r.score>50?'conf-mid':'conf-low';
+                        html += `<div class="diagnosis-card" style="border-right-color:${bc}"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:4px"><span style="font-weight:700;color:#fff;font-size:13px">#${i+1} ${r.name} <span class="cat-tag">${r.cat}</span></span><div style="display:flex;gap:4px;align-items:center"><span class="conf-badge ${bcL}">${r.score}%</span><span style="font-size:9px;color:#94a3b8">أولوية:<b style="color:${r.sev==='طوارئ'?'#ef4444':'#f59e0b'}">${r.sev}</b></span></div></div><div class="section"><h5>🔍 العلامات</h5><p style="font-size:11px">${r.signs||'غير محدد'}</p></div><div class="section"><h5>💡 التفريق</h5><p style="font-size:11px;color:#cbd5e1">${r.diff||'يحتاج فحصاً مباشراً'}</p></div><div class="section"><h5>📖 العلاج</h5><p style="font-size:11px">${r.treat||'مراجعة الاختصاص'}</p></div></div>`;
+                    });
+                }
+                html += `<div style="background:#0f172a;border:1px dashed #334155;border-radius:6px;padding:8px;margin-top:10px;text-align:center;font-size:10px;color:#64748b">📚 أداة تعليمية • لا تغني عن الفحص السريري</div></div>`;
+                $('res').innerHTML = html;
+                $('res').scrollIntoView({behavior:'smooth'});
+                btn.disabled = false;
+                btn.textContent = '🔍 تحليل';
+            },100);
+        };
+        
+        // تهيئة أولية
+        window.onload = () => {
+            setTimeout(() => {
+                loadDynamicDiagnoses();
+                const s = localStorage.getItem('d_session');
+                if(s){
+                    try{
+                        user = JSON.parse(s);
+                        $('#auth').classList.add('hide');
+                        $('#app').classList.remove('hide');
+                        $('#uname').textContent = user.name;
+                        if(user.role === 'admin'){
+                            $('#admin').classList.add('active');
+                            $('#diag').classList.remove('active');
+                            $('#backToAdminBtn').style.display = 'block';
+                            if(db){
+                                load();
+                                loadContributors();
+                                loadActivationRequests();
+                                loadPublicPoster();
+                                setUserPresence(user.id, user.name, 'admin');
+                                recordLoginHistory(user.id, user.name, 'admin');
+                                startAdminMonitoring();
+                            }
+                        } else {
+                            $('#admin').classList.remove('active');
+                            $('#diag').classList.add('active');
+                            if(db){
+                                loadPublicPoster();
+                                setUserPresence(user.id, user.name, user.role);
+                                recordLoginHistory(user.id, user.name, user.role);
+                            }
+                            updateUserStats();
+                        }
+                    } catch(e){ localStorage.removeItem('d_session'); }
+                }
+            }, 500);
+        };
+    </script>
 </body>
 </html>
