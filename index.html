@@ -531,7 +531,7 @@
             });
         }
         
-        const inputEmojis=['🦷','','👅','','😷','','🤕','','💉','','✅','','⚠️','👍','👎','😂','😢','😡','🤔',''];
+        const inputEmojis=['🦷','👅','😷','🤕','💉','✅','⚠️','👍','👎','😂','😢','😡','🤔'];
         const inputPicker=$('emoji-picker-input');
         inputEmojis.forEach(emoji=>{
             const span=document.createElement('span');
@@ -603,6 +603,84 @@
         window.closePosterBanner = () => {
             $('public-poster-banner').style.display = 'none';
         };
+        
+        // ============ نظام الإشعارات للمدير عند تسجيل مشترك جديد ============
+        async function requestNotificationPermission() {
+            if (!("Notification" in window)) {
+                console.log("هذا المتصفح لا يدعم الإشعارات");
+                return false;
+            }
+            if (Notification.permission === "granted") {
+                return true;
+            }
+            if (Notification.permission !== "denied") {
+                const permission = await Notification.requestPermission();
+                return permission === "granted";
+            }
+            return false;
+        }
+        
+        function sendPushNotificationToAdmin(newUserName, userEmail) {
+            if (!("Notification" in window)) return;
+            if (Notification.permission !== "granted") return;
+            
+            // التحقق من أن المستخدم الحالي هو مدير (سيظهر له الإشعار إذا كان مديراً)
+            // نرسل الإشعار فقط للمديرين المتصلين، هذه الدالة تستدعى عند إضافة مستخدم جديد
+            const notification = new Notification("📢 تسجيل مشترك جديد - تطبيق التشخيص", {
+                body: `مشترك جديد: ${newUserName} (${userEmail})\nاضغط للمراجعة`,
+                icon: "https://cdn-icons-png.flaticon.com/512/2964/2964514.png",
+                badge: "https://cdn-icons-png.flaticon.com/512/2964/2964514.png",
+                tag: "new-user-registration",
+                requireInteraction: true,
+                silent: false
+            });
+            
+            notification.onclick = function() {
+                window.focus();
+                if (user && user.role === 'admin') {
+                    load();
+                    loadContributors();
+                    loadActivationRequests();
+                }
+                notification.close();
+            };
+            
+            setTimeout(() => notification.close(), 10000);
+        }
+        
+        // استماع لإضافة مستخدم جديد في Firebase
+        function listenForNewUsers() {
+            if (!db) return;
+            // مراقبة عقدة users للتعرف على الإضافات الجديدة
+            db.ref('users').on('child_added', (snapshot) => {
+                const newUser = snapshot.val();
+                if (newUser && newUser.date && (Date.now() - newUser.date < 5000)) { // خلال 5 ثواني فقط
+                    // إرسال إشعار للمدير (إذا كان المدير مسجلاً)
+                    if (user && user.role === 'admin') {
+                        sendPushNotificationToAdmin(newUser.name || 'مستخدم جديد', newUser.email || 'بريد غير محدد');
+                    } else {
+                        // حتى لو لم يكن المدير مسجلاً الآن، نخزن الإشعار للعرض لاحقاً
+                        // ولكن أفضل: نرسل إشعار للمديرين الحاليين من خلال قاعدة البيانات
+                    }
+                    toast(`📢 تم تسجيل مستخدم جديد: ${newUser.name}`);
+                }
+            });
+        }
+        
+        // دالة لطلب صلاحية الإشعارات عند دخول المدير
+        function initAdminNotifications() {
+            if (user && user.role === 'admin') {
+                requestNotificationPermission().then(granted => {
+                    if (granted) {
+                        console.log("تم تفعيل الإشعارات للمدير");
+                        toast("🔔 تم تفعيل الإشعارات - سيتم إعلامك عند تسجيل أي مشترك جديد");
+                    } else {
+                        console.log("لم يتم منح صلاحية الإشعارات");
+                    }
+                });
+                listenForNewUsers();
+            }
+        }
         
         // ============ دوال تتبع المستخدمين (الحضور وآخر النشاط) ============
         let presenceInterval = null;
@@ -713,7 +791,7 @@
                 $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent='المدير';
                 $('admin').classList.add('active'); $('diag').classList.remove('active'); $('backToAdminBtn').style.display='block';
                 if(db){
-                    try{load();loadContributors();loadActivationRequests();loadPublicPoster(); setUserPresence('admin_master','المدير','admin'); recordLoginHistory('admin_master','المدير','admin'); startAdminMonitoring();}catch(e){}
+                    try{load();loadContributors();loadActivationRequests();loadPublicPoster(); setUserPresence('admin_master','المدير','admin'); recordLoginHistory('admin_master','المدير','admin'); startAdminMonitoring(); initAdminNotifications();}catch(e){}
                 }
                 toast('✅ تم الدخول كمدير'); btn.disabled=false; btn.textContent='دخول آمن 🔐'; return;
             }
@@ -1075,34 +1153,17 @@
             $('db-stats').textContent = `كلي: ${t} (ثابت: ${s} + مضاف: ${d})`;
         }
         
-        // Auto-refresh: عند تنشيط نافذة التشخيص لحالة جديدة، يتم مسح نتائج سابقة وتحديث النافذة تلقائياً.
-        // الهدف: كلما تم الانتقال إلى واجهة التشخيص (diag view) يتم مسح مربع الأعراض والنتائج السابقة،
-        // أو عند الضغط على زر "تحليل الخبير" يتم عرض النتائج الجديدة بوضوح.
-        // هذا يحقق "نافذة الأعراض في التApplication يجب ان تتجدد تلقائياً او بx مع تنشيط نافذة التشخيص لحالة جديدة"
-        // نضيف مراقبة عند تفعيل view diag لمسح المحتوى وتجديده.
+        // عند التبديل للتشخيص نقوم بتجديد النافذة
         const originalGoDiag = goDiag;
         window.goDiag = function() {
-            // عند الانتقال للتشخيص، قم بتجديد النافذة: مسح النص والنتائج
             const symArea = $('sym');
             if(symArea) symArea.value = '';
             const resArea = $('res');
             if(resArea) resArea.innerHTML = '';
-            originalGoDiag(); // إظهار view diag
+            originalGoDiag();
             toast('🔄 نافذة الأعراض جاهزة لحالة جديدة');
         };
         
-        // أيضًا في runDiagnosis, نضمن أن النتائج تُعرض بشكل محدّث دون أي تداخل (تم التعديل مسبقاً)
-        // وهذا يكفي مع إضافة مراقبة تغيير النافذة.
-        
-        // مراقبة إضافية: عند عرض view diag والتشخيص، نضمن أن محتوى النتائج محدث.
-        // وكل استدعاء runDiagnosis سيعيد تحليل الأعراض الحالية وعرض النتائج الجديدة فقط.
-        // منع أي تخزين مؤقت للنتائج يعود لحالة سابقة.
-        
-        // تعديل دالة runDiagnosis لإضافة خيار "x" رسومي: لا حاجة تعديل، فهي تعيد تحليل النص الحالي.
-        // لكن نضيف خاصية: إذا كان المستخدم طبيباً أو طالباً، يتم تسجيل استخدامه. 
-        // نوثق أن النافذة تتجدد كل مرة يُفتح فيها التشخيص.
-        
-        // دوال التشخيص المبسطة (نفس النسخة السابقة مع تحسين طفيف)
         function norm(t){ if(!t) return ''; return t.normalize('NFKD').replace(/[\u064B-\u065F\u0670]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/ؤ/g,'و').replace(/ئ/g,'ي').replace(/گ/g,'ك').replace(/پ/g,'ب').replace(/ڤ/g,'ف').replace(/ڠ/g,'ن').replace(/\s+/g,' ').trim().toLowerCase(); }
         function extractNegations(t){ const n=new Set(); [/لا\s+(\w+)/g,/بدون\s+(\w+)/g,/غير\s+(\w+)/g,/ما\s+في\s+(\w+)/g].forEach(rx=>{let m;while((m=rx.exec(t))!==null)n.add(norm(m[1]))}); return n }
         function lev(a,b){ const m=a.length,n=b.length;if(m===0)return n;if(n===0)return m;const d=Array.from({length:m+1},()=>Array(n+1).fill(0));for(let i=0;i<=m;i++)d[i][0]=i;for(let j=0;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[m][n]; }
@@ -1165,6 +1226,7 @@
                                 setUserPresence(user.id, user.name, 'admin');
                                 recordLoginHistory(user.id, user.name, 'admin');
                                 startAdminMonitoring();
+                                initAdminNotifications(); // تفعيل الإشعارات للمدير
                             }
                         } else {
                             $('#admin').classList.remove('active');
