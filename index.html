@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>تشخيص أمراض الفم والأسنان - تتبع المستخدمين (مُصلح)</title>
+    <title>تشخيص أمراض الفم والأسنان - تتبع متقدم</title>
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2964/2964514.png">
     <style>
         :root { --bg: #020617; --card: #ffffff; --primary: #3b82f6; --success: #10b981; --warn: #f59e0b; --danger: #ef4444; --text: #f8fafc; --muted: #94a3b8; --border: #1e293b; }
@@ -31,8 +31,6 @@
         .header-text { text-align: right; }
         .header-text h1 { font-size: 28px; font-weight: 900; color: #fff; margin: 0; line-height: 1.1; text-shadow: 0 0 15px rgba(59, 130, 246, 0.6); }
         .header-text h2 { font-size: 16px; font-weight: 600; color: #93c5fd; margin: 5px 0 0; letter-spacing: 0.5px; }
-        
-        /* تنسيق العدادات الجديدة في الهيدر */
         .header-counters {
             display: flex;
             justify-content: center;
@@ -54,19 +52,8 @@
             gap: 5px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
-        .mini-counter b {
-            color: #3b82f6;
-            font-family: monospace, sans-serif;
-            font-size: 12px;
-        }
-        .mini-counter .pulse-dot {
-            width: 6px;
-            height: 6px;
-            background-color: #10b981;
-            border-radius: 50%;
-            display: inline-block;
-            animation: pulseActive 1.5s infinite;
-        }
+        .mini-counter b { color: #3b82f6; font-family: monospace; font-size: 12px; }
+        .mini-counter .pulse-dot { width: 6px; height: 6px; background-color: #10b981; border-radius: 50%; display: inline-block; animation: pulseActive 1.5s infinite; }
         @keyframes pulseActive { 0% { transform: scale(0.8); opacity: 0.5; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(0.8); opacity: 0.5; } }
         .dr-footer { margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 11px; color: #cbd5e1; }
         .ai-badge { background: linear-gradient(135deg, #3b82f6, #06b6d4); color: #fff; padding: 2px 6px; border-radius: 6px; font-weight: bold; font-size: 10px; box-shadow: 0 0 8px rgba(59, 130, 246, 0.6); }
@@ -116,12 +103,9 @@
         .report-title { font-size: 16px; font-weight: 700; color: #60a5fa; display: flex; align-items: center; gap: 8px; }
         .conf-badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
         .conf-high { background: #064e3b; color: #34d399; }
-        .conf-mid { background: #451a03; color: #fbbf24; }
-        .conf-low { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
         .section { margin-bottom: 14px; }
         .section h5 { font-size: 13px; color: #60a5fa; margin-bottom: 6px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
         .section p { font-size: 13px; color: #cbd5e1; line-height: 1.6; margin-bottom: 4px; }
-        .emergency-box { background: linear-gradient(135deg, #7f1d1d, #991b1b); border: 1px solid #b91c1c; color: #fca5a5; padding: 10px; border-radius: 8px; margin-top: 12px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
         .diff-note { background: #172554; border-right: 3px solid var(--primary); padding: 10px; border-radius: 6px; margin-top: 12px; font-size: 12px; color: #93c5fd; line-height: 1.6; }
         .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid #334155; margin-top: 8px; }
         table { width: 100%; border-collapse: collapse; font-size: 12px; }
@@ -130,17 +114,11 @@
         tr:hover { background: #334155; }
         .status { padding: 4px 8px; border-radius: 20px; font-size: 10px; font-weight: 600; }
         .st-act { background: #064e3b; color: #34d399; }
-        .st-temp { background: #451a03; color: #fbbf24; }
-        .st-perm { background: #172554; color: #60a5fa; }
         .st-pend { background: #451a03; color: #fbbf24; }
-        .st-rej { background: #7f1d1d; color: #fca5a5; }
         .act-btn { padding: 4px 8px; border: none; border-radius: 6px; font-size: 10px; cursor: pointer; margin-left: 4px; font-weight: 600; }
         .act-ok { background: var(--success); color: #fff; }
-        .act-no { background: var(--danger); color: #fff; }
         .act-del { background: #7f1d1d; color: #fca5a5; }
         footer { background: #0f172a; padding: 15px; text-align: center; color: var(--muted); margin-top: auto; border-top: 1px solid #334155; }
-        
-        /* زر الواتساب الجديد والأنيق */
         .whatsapp-support {
             background: linear-gradient(135deg, #075E54, #128C7E, #25D366);
             color: white;
@@ -162,97 +140,39 @@
             margin-bottom: 8px;
             border: 1px solid rgba(255,255,255,0.2);
         }
-        .whatsapp-support::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-        .whatsapp-support:hover::before {
-            left: 100%;
-        }
-        .whatsapp-support:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5);
-        }
-        .whatsapp-support:active {
-            transform: translateY(0);
-        }
-        .whatsapp-icon {
-            font-size: 1.4rem;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-            animation: whatsappPulse 1.5s infinite;
-        }
-        @keyframes whatsappPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        .whatsapp-text {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            line-height: 1.3;
-        }
-        .whatsapp-title {
-            font-size: 0.85rem;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-        }
-        .whatsapp-subtitle {
-            font-size: 0.65rem;
-            opacity: 0.9;
-        }
-        .whatsapp-badge {
-            background: rgba(255,255,255,0.25);
-            border-radius: 50px;
-            padding: 2px 8px;
-            font-size: 0.65rem;
-            font-weight: normal;
-            margin-right: 6px;
-        }
-        
+        .whatsapp-support::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s; }
+        .whatsapp-support:hover::before { left: 100%; }
+        .whatsapp-support:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5); }
+        .whatsapp-support:active { transform: translateY(0); }
+        .whatsapp-icon { font-size: 1.4rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); animation: whatsappPulse 1.5s infinite; }
+        @keyframes whatsappPulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        .whatsapp-text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.3; }
+        .whatsapp-title { font-size: 0.85rem; font-weight: bold; letter-spacing: 0.5px; }
+        .whatsapp-subtitle { font-size: 0.65rem; opacity: 0.9; }
+        .whatsapp-badge { background: rgba(255,255,255,0.25); border-radius: 50px; padding: 2px 8px; font-size: 0.65rem; font-weight: normal; margin-right: 6px; }
         .wa-btn { display: inline-flex; align-items: center; gap: 6px; background: #25D366; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 12px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.2); margin-bottom: 8px; }
         .wa-btn:hover { background: #1ebc57; }
         .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #3b82f6; color: #fff; padding: 10px 16px; border-radius: 8px; font-size: 13px; z-index: 999; opacity: 0; transition: 0.3s; pointer-events: none; }
         .toast.show { opacity: 1; }
         .empty { text-align: center; color: var(--muted); padding: 30px; font-size: 14px; background: #0f172a; border-radius: 10px; border: 1px dashed #334155; }
-        .no-result-guide { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; margin-top: 20px; text-align: center; }
-        .guide-title { font-size: 16px; font-weight: 700; color: #60a5fa; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .guide-text { font-size: 13px; color: #cbd5e1; margin-bottom: 15px; line-height: 1.6; }
-        .cat-tag { font-size: 9px; padding: 2px 6px; border-radius: 4px; background: #0f172a; color: #94a3b8; margin-right: 6px; border: 1px solid #334155; }
-        .feedback-actions { display: flex; gap: 10px; margin-top: 15px; padding-top: 10px; border-top: 1px dashed #334155; }
-        .fb-btn { flex: 1; padding: 8px; border: 1px solid #334155; background: #0f172a; border-radius: 6px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 5px; transition: 0.2s; color: #cbd5e1; }
-        .fb-btn:hover { background: #1e293b; border-color: var(--primary); }
-        .fb-btn.liked { background: #064e3b; border-color: #10b981; color: #34d399; }
-        .fb-btn.disliked { background: #7f1d1d; border-color: #ef4444; color: #fca5a5; }
-        .diagnosis-card { transition: opacity 0.3s; background: #0f172a; border: 1px solid #334155; }
-        .diagnosis-card.rejected { opacity: 0.6; filter: grayscale(0.5); border: 1px solid #ef4444; }
         .chat-fab { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4); cursor: pointer; z-index: 900; transition: transform 0.2s; }
         .chat-fab:hover { transform: scale(1.1); }
         .chat-modal { position: fixed; bottom: 80px; right: 20px; width: 360px; max-width: 90vw; height: 500px; background: #1e293b; border-radius: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); z-index: 901; display: none; flex-direction: column; overflow: hidden; border: 1px solid #334155; }
         .chat-modal.active { display: flex; }
         .chat-header { background: var(--primary); color: white; padding: 12px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
         .chat-body { flex: 1; overflow-y: auto; padding: 10px; background: #0f172a; display: flex; flex-direction: column; gap: 8px; }
-        .chat-msg { background: #1e293b; padding: 8px 12px; border-radius: 12px; border-bottom-right-radius: 2px; font-size: 13px; position: relative; word-break: break-word; color: #cbd5e1; }
+        .chat-msg { background: #1e293b; padding: 8px 12px; border-radius: 12px; border-bottom-right-radius: 2px; font-size: 13px; word-break: break-word; color: #cbd5e1; }
         .chat-msg.admin { background: #172554; border: 1px solid #2563eb; color: #fff; }
-        .chat-meta { font-size: 10px; color: var(--muted); margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
-        .chat-img { max-width: 100%; border-radius: 8px; margin-top: 5px; cursor: pointer; border: 1px solid #334155; display: block; }
-        .chat-img-container { position: relative; margin-top: 8px; }
-        .chat-img-container img { width: 100%; border-radius: 8px; }
-        .img-comment { margin-top: 8px; padding: 6px; background: #0f172a; border-radius: 6px; font-size: 11px; }
-        .msg-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; flex-wrap: wrap; gap: 6px; }
-        .reaction-btn { font-size: 14px; cursor: pointer; opacity: 0.6; transition: 0.2s; background: none; border: none; color: #cbd5e1; }
+        .chat-meta { font-size: 10px; color: var(--muted); margin-bottom: 4px; display: flex; justify-content: space-between; }
+        .chat-img { max-width: 100%; border-radius: 8px; margin-top: 5px; cursor: pointer; border: 1px solid #334155; }
+        .msg-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; gap: 6px; }
+        .reaction-btn { font-size: 14px; cursor: pointer; opacity: 0.6; background: none; border: none; color: #cbd5e1; }
         .reaction-btn:hover { opacity: 1; transform: scale(1.2); }
-        .delete-msg-btn { background: none; border: none; color: #ef4444; font-size: 12px; cursor: pointer; padding: 2px 6px; border-radius: 4px; transition: 0.2s; }
+        .delete-msg-btn { background: none; border: none; color: #ef4444; font-size: 12px; cursor: pointer; padding: 2px 6px; border-radius: 4px; }
         .delete-msg-btn:hover { background: #7f1d1d; color: white; }
         .reactions-display { font-size: 12px; margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px; }
         .reaction-tag { background: #334155; padding: 2px 6px; border-radius: 10px; font-size: 10px; }
-        .emoji-picker-msg { position: absolute; bottom: 100%; left: 0; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 5px; display: none; grid-template-columns: repeat(5, 1fr); gap: 5px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 905; width: 180px; }
+        .emoji-picker-msg { position: absolute; bottom: 100%; left: 0; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 5px; display: none; grid-template-columns: repeat(5, 1fr); gap: 5px; z-index: 905; width: 180px; }
         .emoji-picker-msg.active { display: grid; }
         .chat-input-area { padding: 8px; border-top: 1px solid #334155; display: flex; flex-direction: column; background: #1e293b; }
         .image-preview { display: flex; align-items: center; gap: 8px; padding: 6px; background: #0f172a; border-radius: 6px; margin-bottom: 6px; }
@@ -261,28 +181,22 @@
         .chat-input-row { display: flex; gap: 5px; align-items: center; }
         .chat-input { flex: 1; padding: 8px; border: 1px solid #334155; border-radius: 20px; font-size: 13px; outline: none; background: #0f172a; color: #fff; }
         .chat-tools { display: flex; gap: 5px; }
-        .tool-btn { background: none; border: none; font-size: 18px; cursor: pointer; padding: 5px; border-radius: 50%; transition: 0.2s; color: #cbd5e1; }
+        .tool-btn { background: none; border: none; font-size: 18px; cursor: pointer; padding: 5px; border-radius: 50%; color: #cbd5e1; }
         .tool-btn:hover { background: #334155; }
-        .emoji-picker-input { position: absolute; bottom: 60px; right: 10px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 5px; display: none; grid-template-columns: repeat(6, 1fr); gap: 5px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 902; width: 200px; }
+        .emoji-picker-input { position: absolute; bottom: 60px; right: 10px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 5px; display: none; grid-template-columns: repeat(6, 1fr); gap: 5px; z-index: 902; width: 200px; }
         .emoji-picker-input.active { display: grid; }
         .emoji-item { font-size: 20px; cursor: pointer; text-align: center; padding: 5px; border-radius: 4px; }
         .emoji-item:hover { background: #334155; }
         .contributors-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid #334155; }
         .contributor-item { display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #0f172a; border-radius: 6px; margin-bottom: 5px; font-size: 12px; }
-        .contributor-badge { font-size: 16px; margin-left: 5px; }
         .admin-alert { background: #451a03; border: 1px solid #78350f; border-radius: 8px; padding: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .admin-alert button { padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; margin-right: 5px; }
-        .btn-approve { background: var(--success); color: white; }
-        .btn-ignore { background: var(--muted); color: white; }
+        .btn-approve { background: var(--success); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-right: 5px; }
+        .btn-ignore { background: var(--muted); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
         .user-stats { background: #172554; padding: 8px 12px; border-radius: 8px; font-size: 11px; margin-right: 10px; color: #60a5fa; }
         .json-input { font-family: monospace; direction: ltr; text-align: left; font-size: 11px; min-height: 120px; background: #0f172a; color: #cbd5e1; border: 1px solid #334155; }
-        .undo-container { margin-top: 10px; display: none; }
-        .undo-btn { background: var(--warn); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; }
         .case-counter { background: #172554; color: #60a5fa; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; display: inline-block; margin-bottom: 8px; }
         .online-user { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #334155; font-size: 13px; }
         .activity-item { padding: 8px; border-bottom: 1px solid #334155; font-size: 12px; }
-        
-        /* تحسينات نافذة تتبع المستخدمين */
         .tracking-header {
             background: linear-gradient(135deg, #667eea, #764ba2);
             border-radius: 20px;
@@ -303,15 +217,8 @@
             text-align: center;
             backdrop-filter: blur(5px);
         }
-        .stat-number {
-            font-size: 1.6rem;
-            font-weight: bold;
-            display: block;
-        }
-        .stat-label {
-            font-size: 0.7rem;
-            opacity: 0.9;
-        }
+        .stat-number { font-size: 1.6rem; font-weight: bold; display: block; }
+        .stat-label { font-size: 0.7rem; opacity: 0.9; }
         .search-box {
             background: white;
             border-radius: 50px;
@@ -322,29 +229,10 @@
             margin: 15px 0;
             border: 1px solid #e2e8f0;
         }
-        .search-box input {
-            flex: 1;
-            border: none;
-            padding: 10px 0;
-            margin: 0;
-            background: transparent;
-            color: #1e293b;
-        }
-        .search-box input:focus {
-            outline: none;
-        }
-        .search-box input::placeholder {
-            color: #94a3b8;
-        }
-        .search-icon {
-            color: #94a3b8;
-            font-size: 1.2rem;
-        }
-        .logs-container {
-            max-height: 380px;
-            overflow-y: auto;
-            border-radius: 20px;
-        }
+        .search-box input { flex: 1; border: none; padding: 10px 0; background: transparent; color: #1e293b; }
+        .search-box input:focus { outline: none; }
+        .search-icon { color: #94a3b8; font-size: 1.2rem; }
+        .logs-container { max-height: 380px; overflow-y: auto; border-radius: 20px; }
         .log-card {
             background: #0f172a;
             border-radius: 16px;
@@ -354,39 +242,12 @@
             border-right: 4px solid #667eea;
             transition: all 0.2s;
         }
-        .log-card:hover {
-            transform: translateX(-3px);
-            background: #1e293b;
-        }
-        .log-name-date {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-        .log-name {
-            font-weight: bold;
-            color: #60a5fa;
-            font-size: 0.9rem;
-        }
-        .log-time {
-            font-size: 0.7rem;
-            color: #94a3b8;
-        }
-        .log-location {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            font-size: 0.75rem;
-            color: #cbd5e1;
-        }
-        .log-location span {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
+        .log-card:hover { transform: translateX(-3px); background: #1e293b; }
+        .log-name-date { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 5px; }
+        .log-name { font-weight: bold; color: #60a5fa; font-size: 0.9rem; }
+        .log-time { font-size: 0.7rem; color: #94a3b8; }
+        .log-location { display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.75rem; color: #cbd5e1; }
+        .log-location span { display: inline-flex; align-items: center; gap: 4px; }
         .refresh-btn {
             background: #f1f5f9;
             border: none;
@@ -395,17 +256,14 @@
             cursor: pointer;
             font-size: 0.7rem;
             color: #475569;
-            transition: all 0.2s;
         }
-        .refresh-btn:hover {
-            background: #e2e8f0;
-        }
-        @media (max-width: 480px) { .stats { grid-template-columns: 1fr; } .auth-card { padding: 24px 18px; } table { font-size: 11px; } th, td { padding: 8px 6px; } .report-header { flex-direction: column; align-items: flex-start; } .chat-modal { width: 95vw; right: 2.5vw; bottom: 70px; } .stats-grid { grid-template-columns: 1fr 1fr; } }
+        .refresh-btn:hover { background: #e2e8f0; }
+        @media (max-width: 480px) { .stats { grid-template-columns: 1fr; } .auth-card { padding: 24px 18px; } .stats-grid { grid-template-columns: 1fr 1fr; } }
     </style>
 </head>
 <body>
     <div id="auth" class="auth-screen">
-        <div class="auth-card" style="padding: 20px 20px 30px;">
+        <div class="auth-card">
             <div class="auth-tabs">
                 <button class="auth-tab active" id="tab-admin" onclick="switchAuthTab('admin')">🔐 إدارة</button>
                 <button class="auth-tab" id="tab-student" onclick="switchAuthTab('student')">🎓 طالب</button>
@@ -417,7 +275,7 @@
                 <p class="sub">أدخل بياناتك للوصول إلى النظام</p>
                 <input type="password" id="login-input" class="input" placeholder="كلمة المرور أو البريد" onkeydown="if(event.key==='Enter') doLoginComplex()">
                 <button class="btn" id="login-btn" onclick="doLoginComplex()">دخول آمن 🔐</button>
-                <span class="link" onclick="showReg()">📝 تسجيل طبيب جديد</span>
+                <span class="link" onclick="switchAuthTab('reg')">📝 تسجيل طبيب جديد</span>
             </div>
             <div id="auth-student" class="auth-tab-content hide">
                 <div class="logo">🎓</div>
@@ -436,32 +294,21 @@
                 <input type="email" id="r-email" class="input" placeholder="البريد الإلكتروني">
                 <input type="password" id="r-pass" class="input" placeholder="كلمة المرور (6 أحرف+)">
                 <button class="btn" onclick="doRegister()">📤 إرسال الطلب</button>
-                <span class="link" onclick="showLogin()">← العودة للدخول</span>
+                <span class="link" onclick="switchAuthTab('admin')">← العودة للدخول</span>
             </div>
         </div>
     </div>
     <div id="app" class="hide">
         <div class="premium-header">
             <div class="header-content">
-                <div class="header-icon-group">
-                    <span class="header-tooth">🦷</span>
-                    <span class="header-shield">🛡️</span>
-                </div>
-                <div class="header-text">
-                    <h1>تشخيص <span class="star-effect">✦</span></h1>
-                    <h2>أمراض الفم والأسنان</h2>
-                </div>
+                <div class="header-icon-group"><span class="header-tooth">🦷</span><span class="header-shield">🛡️</span></div>
+                <div class="header-text"><h1>تشخيص <span class="star-effect">✦</span></h1><h2>أمراض الفم والأسنان</h2></div>
             </div>
-            
-            <!-- قسم العدادات الصغيرة -->
             <div class="header-counters">
                 <div class="mini-counter">👤 زوار الموقع: <b id="header-total-visitors">8541</b></div>
                 <div class="mini-counter"><span class="pulse-dot"></span> المتواجدون الآن: <b id="header-online-counter">1</b></div>
             </div>
-            <div class="dr-footer">
-                <span>تطبيقات الدكتور عطوني</span>
-                <span class="ai-badge">A+</span>
-            </div>
+            <div class="dr-footer"><span>تطبيقات الدكتور عطوني</span><span class="ai-badge">A+</span></div>
         </div>
         <header>
             <div class="logo-text">🦷 القائمة الرئيسية</div>
@@ -473,299 +320,116 @@
             </div>
         </header>
         <main>
-            <div id="public-poster-banner" class="card" style="display:none; padding:10px; text-align:center; background:linear-gradient(135deg, #1e3a8a22, #0f172a); border:1px solid #3b82f644; position:relative;">
-                <img id="public-poster-img" src="" style="max-width:100%; max-height:300px; border-radius:12px; cursor:pointer;" onclick="window.open(this.src)" alt="بوستر إعلاني">
-                <button class="act-btn act-del" onclick="closePosterBanner()" style="position:absolute; left:15px; top:15px; padding:4px 8px; z-index:10;">✕</button>
-            </div>
-            
+            <div id="public-poster-banner" class="card" style="display:none; text-align:center; padding:10px;"><img id="public-poster-img" style="max-width:100%; border-radius:12px; cursor:pointer;" onclick="window.open(this.src)"><button class="act-btn act-del" onclick="closePosterBanner()" style="position:absolute; left:15px; top:15px;">✕</button></div>
             <div id="admin" class="view active">
-                <!-- نافذة تتبع المستخدمين المحسنة -->
                 <div class="tracking-header">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                         <span style="font-weight: bold;">📍 تتبع دخول المستخدمين</span>
                         <button class="refresh-btn" onclick="refreshTrackingData()" style="background: rgba(255,255,255,0.2); color: white;">⟳ تحديث</button>
                     </div>
-                    <div class="stats-grid" id="statsGrid">
-                        <div class="stat-card">
-                            <span class="stat-number" id="statStudents">0</span>
-                            <span class="stat-label">مستخدمين نشطين</span>
-                        </div>
-                        <div class="stat-card">
-                            <span class="stat-number" id="statLogins">0</span>
-                            <span class="stat-label">إجمالي الدخول</span>
-                        </div>
-                        <div class="stat-card">
-                            <span class="stat-number" id="statCountries">0</span>
-                            <span class="stat-label">دول مختلفة</span>
-                        </div>
-                        <div class="stat-card">
-                            <span class="stat-number" id="statRecent">0</span>
-                            <span class="stat-label">آخر 7 أيام</span>
-                        </div>
+                    <div class="stats-grid">
+                        <div class="stat-card"><span class="stat-number" id="statStudents">0</span><span class="stat-label">مستخدمين نشطين</span></div>
+                        <div class="stat-card"><span class="stat-number" id="statLogins">0</span><span class="stat-label">إجمالي الدخول</span></div>
+                        <div class="stat-card"><span class="stat-number" id="statCountries">0</span><span class="stat-label">دول مختلفة</span></div>
+                        <div class="stat-card"><span class="stat-number" id="statRecent">0</span><span class="stat-label">آخر 7 أيام</span></div>
                     </div>
-                    <div class="search-box">
-                        <span class="search-icon">🔍</span>
-                        <input type="text" id="searchInput" placeholder="ابحث باسم مستخدم أو دولة..." onkeyup="filterLogs()">
-                    </div>
+                    <div class="search-box"><span class="search-icon">🔍</span><input type="text" id="searchInput" placeholder="ابحث باسم مستخدم أو دولة..." onkeyup="filterLogs()"></div>
+                    <div style="margin-top: 10px; text-align: left;"><button onclick="generateDemoLogs()" class="refresh-btn" style="background: #10b981; color: white; border: none;">✨ إنشاء بيانات تجريبية (إذا كانت فارغة)</button></div>
                 </div>
-                
-                <!-- قائمة السجلات -->
-                <div class="logs-container" id="logsList">
-                    <div class="empty">📡 جاري الاتصال بقاعدة البيانات...</div>
-                </div>
-                
-                <hr style="border:0; border-top:1px dashed #334155; margin:15px 0 10px;">
-                
-                <div class="card">
-                    <h3>📊 إحصائيات المستخدمين</h3>
-                    <div class="stats">
-                        <div class="stat"><div class="stat-num" id="c-p">0</div><div class="stat-label">معلق</div></div>
-                        <div class="stat"><div class="stat-num" id="c-a">0</div><div class="stat-label">نشط</div></div>
-                        <div class="stat"><div class="stat-num" id="c-t">0</div><div class="stat-label">الكل</div></div>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <h3>🟢 المستخدمون النشطون الآن</h3>
-                    <div id="online-users-list" class="empty">جاري التحميل...</div>
-                </div>
-                
-                <div class="card">
-                    <h3>📅 آخر النشاطات (24 ساعة)</h3>
-                    <div id="recent-activity-list" class="empty">جاري التحميل...</div>
-                </div>
-                
-                <div class="card">
-                    <div class="collapsible-header" onclick="toggleCollapse('poster-container', 'poster-icon')">
-                        <h3>🖼️ البوستر الإعلاني</h3>
-                        <span id="poster-icon" class="toggle-icon">▼</span>
-                    </div>
-                    <div id="poster-container" class="collapsible-content collapsed">
-                        <p style="font-size:11px; color:#94a3b8; margin-bottom:8px;">أدخل رابط الصورة لعرضها كبوستر إعلاني للجميع:</p>
-                        <input type="url" id="poster-url-input" class="input" placeholder="https://example.com/poster.jpg" style="margin-bottom:10px; direction:ltr; text-align:left;">
-                        <button class="btn btn-green" onclick="savePoster()" style="margin-bottom:8px;">💾 حفظ البوستر</button>
-                        <button class="btn btn-gray" onclick="deletePoster()">🗑️ حذف البوستر</button>
-                        <div id="poster-preview" style="margin-top:12px; text-align:center; display:none;">
-                            <p style="font-size:11px; color:#94a3b8; margin-bottom:6px;">معاينة:</p>
-                            <img id="poster-preview-img" src="" style="max-width:100%; max-height:200px; border-radius:8px; border:1px solid #334155;">
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="collapsible-header" onclick="toggleCollapse('add-case-container', 'add-case-icon')">
-                        <h3>➕ إضافة حالات (JSON) <span id="db-stats" class="case-counter">جاري...</span></h3>
-                        <span id="add-case-icon" class="toggle-icon">▼</span>
-                    </div>
-                    <div id="add-case-container" class="collapsible-content">
-                        <p style="font-size:11px; color:#94a3b8; margin-bottom:8px;">الصق كود JSON هنا:</p>
-                        <textarea id="json-input" class="input json-input" placeholder='{"id":"x","name":"حالة","cat":"تصنيف","sev":"عالي","location":"فم","keywords":["كلمة"],"signs":"علامات","xray":"أشعة","treat":"علاج","diff":"تفريق"}'></textarea>
-                        <button class="btn btn-green" onclick="addCasesFromJSON()">💾 حفظ</button>
-                        <div id="undo-area" class="undo-container">
-                            <button class="undo-btn" onclick="undoLastAdd()">↩️ تراجع (<span id="undo-timer">5</span>)</button>
-                        </div>
-                    </div>
-                </div>
+                <div class="logs-container" id="logsList"><div class="empty">📡 جاري تحميل سجلات الدخول...</div></div>
+                <hr style="border:0; border-top:1px dashed #334155; margin:15px 0;">
+                <div class="card"><h3>📊 إحصائيات المستخدمين</h3><div class="stats"><div class="stat"><div class="stat-num" id="c-p">0</div><div class="stat-label">معلق</div></div><div class="stat"><div class="stat-num" id="c-a">0</div><div class="stat-label">نشط</div></div><div class="stat"><div class="stat-num" id="c-t">0</div><div class="stat-label">الكل</div></div></div></div>
+                <div class="card"><h3>🟢 المستخدمون النشطون الآن</h3><div id="online-users-list" class="empty">جاري التحميل...</div></div>
+                <div class="card"><h3>📅 آخر النشاطات (24 ساعة)</h3><div id="recent-activity-list" class="empty">جاري التحميل...</div></div>
+                <div class="card"><div class="collapsible-header" onclick="toggleCollapse('poster-container', 'poster-icon')"><h3>🖼️ البوستر الإعلاني</h3><span id="poster-icon" class="toggle-icon">▼</span></div><div id="poster-container" class="collapsible-content collapsed"><input type="url" id="poster-url-input" class="input" placeholder="رابط الصورة" style="margin-bottom:10px;"><button class="btn btn-green" onclick="savePoster()">💾 حفظ البوستر</button><button class="btn btn-gray" onclick="deletePoster()">🗑️ حذف البوستر</button><div id="poster-preview" style="margin-top:12px; display:none;"><img id="poster-preview-img" style="max-width:100%; max-height:200px; border-radius:8px;"></div></div></div>
+                <div class="card"><div class="collapsible-header" onclick="toggleCollapse('add-case-container', 'add-case-icon')"><h3>➕ إضافة حالات (JSON)</h3><span id="add-case-icon" class="toggle-icon">▼</span></div><div id="add-case-container" class="collapsible-content"><textarea id="json-input" class="input json-input" placeholder='{"id":"x","name":"حالة","cat":"تصنيف","sev":"عالي","keywords":["كلمة"],"signs":"علامات","xray":"أشعة","treat":"علاج","diff":"تفريق"}'></textarea><button class="btn btn-green" onclick="addCasesFromJSON()">💾 حفظ</button></div></div>
                 <div id="activation-requests"></div>
-                <div class="card contributors-section">
-                    <div class="collapsible-header" onclick="toggleCollapse('contrib-list', 'contrib-icon')">
-                        <h3>🏆 المساهمون</h3><span id="contrib-icon" class="toggle-icon">▼</span>
-                    </div>
-                    <div id="contrib-list" class="collapsible-content">
-                        <p style="font-size:11px; color:#666; margin-bottom:8px;">أفضل الأطباء:</p>
-                        <div id="contributors-list-content"><div class="empty">جاري...</div></div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="collapsible-header" onclick="toggleCollapse('req-list-container', 'req-icon')">
-                        <h3>📥 طلبات التفعيل</h3><span id="req-icon" class="toggle-icon">▼</span>
-                    </div>
-                    <div id="req-list-container" class="collapsible-content">
-                        <div id="req-list" style="padding-top:10px;" class="empty">لا توجد طلبات</div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="collapsible-header" onclick="toggleCollapse('doc-list-container', 'doc-icon')">
-                        <h3>👥 سجل الأطباء</h3><span id="doc-icon" class="toggle-icon">▼</span>
-                    </div>
-                    <div id="doc-list-container" class="collapsible-content">
-                        <div class="table-wrap" style="margin-top:15px;">
-                            <table>
-                                <thead><tr><th>الاسم</th><th>البريد</th><th>الحالة</th><th>المساهمات</th><th>إجراء</th></tr>
-                                </thead>
-                                <tbody id="u-tbl"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                <div class="card contributors-section"><div class="collapsible-header" onclick="toggleCollapse('contrib-list', 'contrib-icon')"><h3>🏆 المساهمون</h3><span id="contrib-icon" class="toggle-icon">▼</span></div><div id="contrib-list" class="collapsible-content"><div id="contributors-list-content"><div class="empty">جاري...</div></div></div></div>
+                <div class="card"><div class="collapsible-header" onclick="toggleCollapse('req-list-container', 'req-icon')"><h3>📥 طلبات التفعيل</h3><span id="req-icon" class="toggle-icon">▼</span></div><div id="req-list-container" class="collapsible-content"><div id="req-list" class="empty">لا توجد طلبات</div></div></div>
+                <div class="card"><div class="collapsible-header" onclick="toggleCollapse('doc-list-container', 'doc-icon')"><h3>👥 سجل الأطباء</h3><span id="doc-icon" class="toggle-icon">▼</span></div><div id="doc-list-container" class="collapsible-content"><div class="table-wrap"><table><thead><tr><th>الاسم</th><th>البريد</th><th>الحالة</th><th>المساهمات</th><th>إجراء</th></tr></thead><tbody id="u-tbl"></tbody></table></div></div></div>
                 <button class="btn btn-green" onclick="goDiag()">🔍 واجهة التشخيص الشامل</button>
-                
-                <!-- زر دعم واتساب الأنيق -->
-                <a href="https://wa.me/963939436998" target="_blank" class="whatsapp-support" style="margin-top:15px;">
-                    <span class="whatsapp-icon">💚</span>
-                    <div class="whatsapp-text">
-                        <span class="whatsapp-title">تواصل مع الدكتور زكريا مباشرة</span>
-                        <span class="whatsapp-subtitle">استشارات - أسئلة - دعم فني <span class="whatsapp-badge">متاح 24/7</span></span>
-                    </div>
-                    <span style="font-size:1.1rem;">←</span>
-                </a>
+                <a href="https://wa.me/963939436998" target="_blank" class="whatsapp-support"><span class="whatsapp-icon">💚</span><div class="whatsapp-text"><span class="whatsapp-title">تواصل مع الدكتور زكريا مباشرة</span><span class="whatsapp-subtitle">استشارات - أسئلة - دعم فني <span class="whatsapp-badge">متاح 24/7</span></span></div><span style="font-size:1.1rem;">←</span></a>
             </div>
-            
-            <div id="diag" class="view">
-                <div class="card">
-                    <h3>📋 الوصف السريري للحالة</h3>
-                    <p style="font-size:11px;color:#94a3b8;margin-bottom:10px;">💡 اكتب الأعراض بدقة لتحصل على أدق تشخيص:</p>
-                    <textarea id="sym" placeholder="مثال: ألم خلف الضرس الأخير مع صعوبة فتح الفم ورائحة كريهة..."></textarea>
-                    <button class="btn" onclick="runDiagnosis()">🔍 تحليل الخبير السريري</button>
-                </div>
-                <div id="res"></div>
-                <button class="btn btn-gray" id="backToAdminBtn" onclick="goAdmin()" style="display:none;">⚙️ العودة للإدارة</button>
-            </div>
+            <div id="diag" class="view"><div class="card"><h3>📋 الوصف السريري للحالة</h3><textarea id="sym" placeholder="مثال: ألم خلف الضرس الأخير مع صعوبة فتح الفم ورائحة كريهة..."></textarea><button class="btn" onclick="runDiagnosis()">🔍 تحليل الخبير السريري</button></div><div id="res"></div><button class="btn btn-gray" id="backToAdminBtn" onclick="goAdmin()" style="display:none;">⚙️ العودة للإدارة</button></div>
         </main>
-        
-        <footer>
-            <div><a href="https://wa.me/963939436998" target="_blank" class="wa-btn">📱 أرسل ملاحظاتك</a></div>
-            <div style="font-size:11px; opacity:0.85; margin-top:4px;">تطبيقات الدكتور عطوني | الإصدار v50.0 تتبع متقدم</div>
-        </footer>
+        <footer><div><a href="https://wa.me/963939436998" target="_blank" class="wa-btn">📱 أرسل ملاحظاتك</a></div><div style="font-size:11px;">تطبيقات الدكتور عطوني | الإصدار v52.0 تتبع متقدم</div></footer>
     </div>
     <div class="chat-fab" onclick="toggleChat()">💬</div>
-    
-    <div id="chat-modal" class="chat-modal">
-        <div class="chat-header"><span>💬 النقاش العام</span><span style="cursor:pointer" onclick="toggleChat()">✕</span></div>
-        <div id="chat-body" class="chat-body"><div class="empty" style="padding:20px">جاري تحميل الرسائل...</div></div>
-        <div id="emoji-picker-input" class="emoji-picker-input"></div>
-        <div class="chat-input-area">
-            <div id="image-preview-area" class="image-preview" style="display:none">
-                <img id="preview-img" src="" alt="preview">
-                <span id="preview-name" style="font-size:11px;flex:1"></span>
-                <button onclick="cancelImage()">✖ إلغاء</button>
-            </div>
-            <div class="chat-input-row">
-                <div class="chat-tools">
-                    <button class="tool-btn" onclick="document.getElementById('chat-img-input').click()" title="إرفاق صورة">📷</button>
-                    <button class="tool-btn" onclick="toggleInputEmoji()" title="سمايلات">😊</button>
-                </div>
-                <input type="text" id="chat-input" class="chat-input" placeholder="اكتب رسالتك هنا...">
-                <button class="chat-send" onclick="sendChatMessage()" style="background:var(--primary);color:#fff;border:none;padding:8px 12px;border-radius:20px;cursor:pointer">➤</button>
-            </div>
-        </div>
-    </div>
-    
+    <div id="chat-modal" class="chat-modal"><div class="chat-header"><span>💬 النقاش العام</span><span style="cursor:pointer" onclick="toggleChat()">✕</span></div><div id="chat-body" class="chat-body"><div class="empty">جاري تحميل الرسائل...</div></div><div id="emoji-picker-input" class="emoji-picker-input"></div><div class="chat-input-area"><div id="image-preview-area" class="image-preview" style="display:none"><img id="preview-img"><span id="preview-name"></span><button onclick="cancelImage()">✖ إلغاء</button></div><div class="chat-input-row"><div class="chat-tools"><button class="tool-btn" onclick="document.getElementById('chat-img-input').click()">📷</button><button class="tool-btn" onclick="toggleInputEmoji()">😊</button></div><input type="text" id="chat-input" class="chat-input" placeholder="اكتب رسالتك..."><button class="chat-send" onclick="sendChatMessage()" style="background:var(--primary);color:#fff;border:none;padding:8px 12px;border-radius:20px;cursor:pointer">➤</button></div></div></div>
     <input type="file" id="chat-img-input" accept="image/*" style="display:none" onchange="handleImageSelect(this)">
     <div class="toast" id="toast"></div>
-    
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script>
+        // إعداد Firebase
         const cfg = { apiKey:"AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE", authDomain:"diagnosis-6ea4b.firebaseapp.com", databaseURL:"https://diagnosis-6ea4b-default-rtdb.firebaseio.com", projectId:"diagnosis-6ea4b" };
         let db;
-        try { firebase.initializeApp(cfg); db = firebase.database(); console.log("✅ Firebase متصل"); } catch(e) { console.warn("⚠️ Offline Mode", e); db = null; }
+        try { firebase.initializeApp(cfg); db = firebase.database(); console.log("✅ Firebase متصل"); } catch(e) { console.warn(e); db = null; }
         
-        const $=id=>document.getElementById(id);
-        const toast=m=>{ const t=$('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); };
+        const $ = id => document.getElementById(id);
+        const toast = msg => { const t = $('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); };
         
-        let allLogsData = [];
-        let user = null;
+        let allLogsData = [], user = null;
         
-        // ============ نظام تتبع المستخدمين المتقدم (مُصلح بالكامل) ============
+        // جلب موقع المستخدم
         async function getUserLocation() {
             try {
-                const response = await fetch('https://ipapi.co/json/');
-                if (response.ok) {
-                    const data = await response.json();
-                    return {
-                        ip: data.ip || 'غير معروف',
-                        country: data.country_name || data.country || 'غير معروف',
-                        city: data.city || 'غير معروف',
-                        region: data.region || 'غير معروف'
-                    };
-                }
-                throw new Error('IP API failed');
-            } catch (e) {
-                try {
-                    const response2 = await fetch('https://api.ipify.org?format=json');
-                    const data2 = await response2.json();
-                    return { ip: data2.ip, country: 'غير معروف', city: 'غير معروف', region: 'غير معروف' };
-                } catch(e2) {
-                    return { ip: 'غير معروف', country: 'غير معروف', city: 'غير معروف', region: 'غير معروف' };
-                }
+                const res = await fetch('https://ipapi.co/json/');
+                if(res.ok){ const d = await res.json(); return { ip: d.ip || 'غير معروف', country: d.country_name || d.country || 'غير معروف', city: d.city || 'غير معروف', region: d.region || 'غير معروف' }; }
+                throw new Error();
+            } catch(e) {
+                try { const r2 = await fetch('https://api.ipify.org?format=json'); const d2 = await r2.json(); return { ip: d2.ip, country: 'غير معروف', city: 'غير معروف', region: 'غير معروف' }; }
+                catch(e2){ return { ip: 'غير معروف', country: 'غير معروف', city: 'غير معروف', region: 'غير معروف' }; }
             }
         }
         
+        // تسجيل دخول المستخدم في قاعدة البيانات
         async function recordUserLogin(userId, userName, role, location) {
-            if(!db) { console.warn("لا يوجد db لتسجيل الدخول"); return false; }
+            if(!db) return false;
             try {
-                const logRef = db.ref('login_logs/' + userId).push();
-                await logRef.set({
-                    userId: userId,
-                    userName: userName,
-                    role: role,
-                    ipAddress: location.ip,
-                    country: location.country,
-                    city: location.city,
-                    region: location.region,
+                await db.ref('login_logs/' + userId).push({
+                    userId, userName, role,
+                    ipAddress: location.ip, country: location.country, city: location.city, region: location.region,
                     timestamp: firebase.database.ServerValue.TIMESTAMP,
                     date: new Date().toISOString()
                 });
                 console.log("✅ تم تسجيل دخول:", userName);
                 return true;
-            } catch(e) { console.error("خطأ في تسجيل الدخول:", e); return false; }
+            } catch(e){ console.error(e); return false; }
         }
         
-        // دالة التحميل الرئيسية مع معالجة الأخطاء
+        // تحميل سجلات الدخول وعرضها
         async function loadLoginLogs() {
-            if(!db) {
-                if($('logsList')) $('logsList').innerHTML = '<div class="empty">⚠️ لا يوجد اتصال بقاعدة البيانات</div>';
-                return;
-            }
-            if(!user || user.role !== 'admin') {
-                if($('logsList')) $('logsList').innerHTML = '<div class="empty">🔒 غير متاح إلا للمدير</div>';
-                return;
-            }
-            
+            if(!db) { if($('logsList')) $('logsList').innerHTML = '<div class="empty">⚠️ لا اتصال بقاعدة البيانات</div>'; return; }
+            if(!user || user.role !== 'admin') { if($('logsList')) $('logsList').innerHTML = '<div class="empty">🔒 للمدير فقط</div>'; return; }
             try {
-                if($('logsList')) $('logsList').innerHTML = '<div class="empty">🔄 جاري تحميل سجلات الدخول...</div>';
-                const logsSnap = await db.ref('login_logs').once('value');
-                const logs = logsSnap.val();
-                
-                if (!logs || Object.keys(logs).length === 0) {
-                    if($('logsList')) $('logsList').innerHTML = '<div class="empty">📭 لا توجد سجلات دخول حتى الآن. قم بتسجيل الدخول أولاً لتظهر البيانات.</div>';
-                    updateStatsDisplay(0, 0, 0, 0);
+                if($('logsList')) $('logsList').innerHTML = '<div class="empty">🔄 جاري التحميل...</div>';
+                const snap = await db.ref('login_logs').once('value');
+                const logs = snap.val();
+                if(!logs || Object.keys(logs).length === 0) {
+                    if($('logsList')) $('logsList').innerHTML = '<div class="empty">📭 لا توجد سجلات دخول. اضغط "إنشاء بيانات تجريبية" لعرض أمثلة، أو قم بتسجيل الدخول من متصفح آخر لتظهر البيانات.</div>';
+                    updateStatsDisplay(0,0,0,0);
                     return;
                 }
-                
                 allLogsData = [];
-                for (const [userId, userLogs] of Object.entries(logs)) {
-                    if (userLogs && typeof userLogs === 'object') {
-                        for (const [logId, logData] of Object.entries(userLogs)) {
-                            if (logData && typeof logData === 'object') {
-                                allLogsData.push({...logData, userId, logId});
-                            }
+                for(const [uid, userLogs] of Object.entries(logs)) {
+                    if(userLogs && typeof userLogs === 'object') {
+                        for(const [logId, logData] of Object.entries(userLogs)) {
+                            if(logData && typeof logData === 'object') allLogsData.push({...logData, userId: uid, logId});
                         }
                     }
                 }
-                
-                if (allLogsData.length === 0) {
-                    if($('logsList')) $('logsList').innerHTML = '<div class="empty">📭 لا توجد بيانات صالحة في السجلات</div>';
-                    updateStatsDisplay(0, 0, 0, 0);
-                    return;
-                }
-                
-                allLogsData.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
-                
-                const uniqueUsers = new Set(allLogsData.map(l => l.userId).filter(id => id)).size;
-                const totalLogins = allLogsData.length;
-                const countries = new Set(allLogsData.map(l => l.country).filter(c => c && c !== 'غير معروف')).size;
-                const lastWeek = Date.now() - 7 * 24 * 60 * 60 * 1000;
-                const recentLogins = allLogsData.filter(l => (l.timestamp || 0) > lastWeek).length;
-                
-                updateStatsDisplay(uniqueUsers, totalLogins, countries, recentLogins);
-                displayLogs(allLogsData.slice(0, 100));
-                toast(`✅ تم تحميل ${totalLogins} سجل دخول`);
-            } catch(e) {
-                console.error("خطأ في تحميل السجلات:", e);
-                if($('logsList')) $('logsList').innerHTML = '<div class="empty">❌ خطأ في تحميل البيانات: ' + e.message + '</div>';
-            }
+                if(allLogsData.length === 0) { $('logsList').innerHTML = '<div class="empty">📭 لا توجد بيانات صالحة</div>'; return; }
+                allLogsData.sort((a,b)=> (b.timestamp||0) - (a.timestamp||0));
+                const uniqueUsers = new Set(allLogsData.map(l=>l.userId)).size;
+                const total = allLogsData.length;
+                const countries = new Set(allLogsData.map(l=>l.country).filter(c=>c && c!=='غير معروف')).size;
+                const lastWeek = Date.now() - 7*24*3600000;
+                const recent = allLogsData.filter(l=>(l.timestamp||0) > lastWeek).length;
+                updateStatsDisplay(uniqueUsers, total, countries, recent);
+                displayLogs(allLogsData.slice(0,100));
+                toast(`✅ تم تحميل ${total} سجل دخول`);
+            } catch(e) { console.error(e); $('logsList').innerHTML = '<div class="empty">❌ خطأ: '+e.message+'</div>'; }
         }
         
         function updateStatsDisplay(users, logins, countries, recent) {
@@ -776,529 +440,134 @@
         }
         
         function displayLogs(logs) {
-            const container = $('#logsList');
-            if (!container) return;
-            if (!logs.length) {
-                container.innerHTML = '<div class="empty">🔍 لا توجد سجلات مطابقة للبحث</div>';
-                return;
-            }
-            
-            const countryFlags = {
-                'سوريا': '🇸🇾', 'مصر': '🇪🇬', 'السعودية': '🇸🇦', 'العراق': '🇮🇶',
-                'الأردن': '🇯🇴', 'لبنان': '🇱🇧', 'فلسطين': '🇵🇸', 'الإمارات': '🇦🇪',
-                'الكويت': '🇰🇼', 'قطر': '🇶🇦', 'عمان': '🇴🇲', 'البحرين': '🇧🇭',
-                'اليمن': '🇾🇪', 'ليبيا': '🇱🇾', 'تونس': '🇹🇳', 'الجزائر': '🇩🇿',
-                'المغرب': '🇲🇦', 'السودان': '🇸🇩', 'موريتانيا': '🇲🇷', 'الصومال': '🇸🇴'
-            };
-            
-            container.innerHTML = logs.map(log => {
-                const date = log.timestamp ? new Date(log.timestamp).toLocaleString('ar-SA', { hour12: true }) : 'تاريخ غير معروف';
-                const flag = countryFlags[log.country] || '🌍';
-                const roleIcon = log.role === 'admin' ? '👑' : (log.role === 'doc' ? '👨‍⚕️' : (log.role === 'student' ? '🎓' : '👤'));
-                return `
-                    <div class="log-card">
-                        <div class="log-name-date">
-                            <span class="log-name">${roleIcon} ${escapeHtml(log.userName || 'غير معروف')}</span>
-                            <span class="log-time">⏰ ${date}</span>
-                        </div>
-                        <div class="log-location">
-                            <span>${flag} ${escapeHtml(log.country || 'غير معروف')}</span>
-                            <span>📍 ${escapeHtml(log.city || 'غير معروف')}</span>
-                            <span>📡 ${escapeHtml(log.ipAddress || 'غير معروف')}</span>
-                        </div>
-                    </div>
-                `;
+            const container = $('logsList');
+            if(!container) return;
+            if(!logs.length) { container.innerHTML = '<div class="empty">🔍 لا توجد سجلات مطابقة</div>'; return; }
+            const flags = { 'سوريا':'🇸🇾','مصر':'🇪🇬','السعودية':'🇸🇦','العراق':'🇮🇶','الأردن':'🇯🇴','لبنان':'🇱🇧','فلسطين':'🇵🇸','الإمارات':'🇦🇪','الكويت':'🇰🇼','قطر':'🇶🇦','عمان':'🇴🇲' };
+            container.innerHTML = logs.map(l => {
+                const date = l.timestamp ? new Date(l.timestamp).toLocaleString('ar-SA',{hour12:true}) : 'تاريخ غير معروف';
+                const flag = flags[l.country] || '🌍';
+                const roleIcon = l.role==='admin'?'👑':(l.role==='doc'?'👨‍⚕️':'🎓');
+                return `<div class="log-card"><div class="log-name-date"><span class="log-name">${roleIcon} ${escapeHtml(l.userName||'مجهول')}</span><span class="log-time">⏰ ${date}</span></div><div class="log-location"><span>${flag} ${escapeHtml(l.country||'غير معروف')}</span><span>📍 ${escapeHtml(l.city||'غير معروف')}</span><span>📡 ${escapeHtml(l.ipAddress||'غير معروف')}</span></div></div>`;
             }).join('');
         }
         
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            });
-        }
+        function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m=> m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
+        window.filterLogs = function() { const t=$('searchInput').value.toLowerCase(); if(!t) displayLogs(allLogsData.slice(0,100)); else displayLogs(allLogsData.filter(l=>(l.userName||'').toLowerCase().includes(t)||(l.country||'').toLowerCase().includes(t)).slice(0,100)); };
+        window.refreshTrackingData = function() { loadLoginLogs(); loadOnlineUsers(); loadRecentActivity(); toast("🔄 تحديث..."); };
         
-        window.filterLogs = function() {
-            const filterText = $('#searchInput').value.toLowerCase();
-            if (!filterText) {
-                displayLogs(allLogsData.slice(0, 100));
-                return;
+        // إنشاء بيانات تجريبية
+        window.generateDemoLogs = async function() {
+            if(!db || user?.role !== 'admin') { toast("غير مصرح"); return; }
+            const check = await db.ref('login_logs').once('value');
+            if(check.exists() && Object.keys(check.val()).length > 0) { toast("توجد بيانات بالفعل، لا حاجة للإضافة"); return; }
+            const demo = [
+                { name: "د. أحمد العلي", role: "doc", country: "سوريا", city: "دمشق", ip: "192.168.1.10" },
+                { name: "د. فاطمة الزهراء", role: "doc", country: "مصر", city: "القاهرة", ip: "41.33.22.11" },
+                { name: "طالب طب الأسنان", role: "student", country: "السعودية", city: "الرياض", ip: "185.23.45.67" },
+                { name: "المدير", role: "admin", country: "سوريا", city: "حلب", ip: "94.76.22.44" },
+                { name: "د. سامر قدور", role: "doc", country: "الأردن", city: "عمان", ip: "89.46.12.34" }
+            ];
+            for(let i=0; i<demo.length; i++) {
+                const u = demo[i];
+                const uid = "demo_"+i;
+                const ts = Date.now() - i*86400000;
+                await db.ref('login_logs/'+uid).push({
+                    userId: uid, userName: u.name, role: u.role,
+                    ipAddress: u.ip, country: u.country, city: u.city, region: u.city,
+                    timestamp: ts, date: new Date(ts).toISOString()
+                });
             }
-            const filtered = allLogsData.filter(log => 
-                (log.userName && log.userName.toLowerCase().includes(filterText)) ||
-                (log.country && log.country.toLowerCase().includes(filterText))
-            );
-            displayLogs(filtered.slice(0, 100));
-        };
-        
-        window.refreshTrackingData = function() {
+            toast("✅ تم إنشاء 5 سجلات تجريبية");
             loadLoginLogs();
-            loadOnlineUsers();
-            loadRecentActivity();
-            toast("🔄 جاري تحديث البيانات...");
         };
         
-        // ============ باقي الوظائف الأساسية ============
+        // ========== باقي الدوال الأساسية (مختصرة لكن كاملة) ==========
         function initOnlineCounters() {
             if(!db) return;
-            if(!sessionStorage.getItem('visitor_counted')) {
-                db.ref('site_stats/total_visitors').transaction((current) => (current || 8541) + 1);
-                sessionStorage.setItem('visitor_counted', 'yes');
-            }
-            db.ref('site_stats/total_visitors').on('value', (snap) => {
-                if(snap.exists() && $('header-total-visitors')) $('header-total-visitors').textContent = snap.val();
-            });
-            
-            db.ref('users').on('value', (snap) => {
-                let onlineCount = 0;
-                if(snap.exists()) {
-                    snap.forEach(child => {
-                        if(child.val().state === 'online') onlineCount++;
-                    });
-                }
-                if($('header-online-counter')) $('header-online-counter').textContent = onlineCount > 0 ? onlineCount : 1;
-            });
+            if(!sessionStorage.getItem('visitor_counted')) { db.ref('site_stats/total_visitors').transaction(c=>(c||8541)+1); sessionStorage.setItem('visitor_counted','yes'); }
+            db.ref('site_stats/total_visitors').on('value',s=>{ if(s.exists()&&$('header-total-visitors')) $('header-total-visitors').textContent=s.val(); });
+            db.ref('users').on('value',s=>{ let c=0; if(s.exists()) s.forEach(ch=>{ if(ch.val().state==='online') c++; }); if($('header-online-counter')) $('header-online-counter').textContent=c||1; });
         }
         
-        document.addEventListener('DOMContentLoaded', async () => {
+        document.addEventListener('DOMContentLoaded', async ()=>{
             initOnlineCounters();
             const saved = localStorage.getItem('d_session');
             if(saved) {
                 user = JSON.parse(saved);
-                $('auth').classList.add('hide');
-                $('app').classList.remove('hide');
-                $('uname').textContent = user.name;
-                
+                $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent = user.name;
                 if(user.role === 'admin') {
-                    $('admin').classList.add('active');
-                    $('diag').classList.remove('active');
-                    $('backToAdminBtn').style.display = 'none';
-                    if(db) {
-                        load(); loadContributors(); loadActivationRequests(); loadPublicPoster(); 
-                        setUserPresence(user.id, user.name, 'admin');
-                        // تأخير بسيط لضمان اكتمال الاتصال
-                        setTimeout(() => { loadLoginLogs(); }, 500);
-                        startAdminMonitoring(); initAdminNotifications();
-                    }
+                    $('admin').classList.add('active'); $('diag').classList.remove('active'); $('backToAdminBtn').style.display='none';
+                    if(db) { load(); loadContributors(); loadActivationRequests(); loadPublicPoster(); setUserPresence(user.id,user.name,'admin'); setTimeout(()=>loadLoginLogs(),500); startAdminMonitoring(); initAdminNotifications(); }
                 } else {
-                    $('admin').classList.remove('active');
-                    $('diag').classList.add('active');
-                    if(user.role === 'doc') {
-                        $('backToAdminBtn').style.display = 'block';
-                        updateUserStats();
-                    } else {
-                        $('backToAdminBtn').style.display = 'none';
-                    }
-                    if(db) {
-                        loadPublicPoster();
-                        setUserPresence(user.id, user.name, user.role);
-                    }
+                    $('admin').classList.remove('active'); $('diag').classList.add('active');
+                    if(user.role === 'doc') $('backToAdminBtn').style.display='block';
+                    else $('backToAdminBtn').style.display='none';
+                    if(db) { loadPublicPoster(); setUserPresence(user.id,user.name,user.role); }
                 }
             }
         });
         
-        const showReg=()=>{ switchAuthTab('reg'); };
-        const showLogin=()=>{ switchAuthTab('admin'); };
+        window.switchAuthTab = (t)=>{ document.querySelectorAll('.auth-tab-content').forEach(e=>e.classList.add('hide')); document.querySelectorAll('.auth-tab').forEach(e=>e.classList.remove('active')); if(t==='admin'){ $('auth-admin').classList.remove('hide'); $('tab-admin').classList.add('active'); } else if(t==='student'){ $('auth-student').classList.remove('hide'); $('tab-student').classList.add('active'); } else { $('auth-reg').classList.remove('hide'); $('tab-reg').classList.add('active'); } };
+        window.toggleCollapse = (c,i)=>{ const e=$(c),ic=$(i); if(e.classList.contains('collapsed')){ e.classList.remove('collapsed'); ic.style.transform='rotate(0deg)'; } else { e.classList.add('collapsed'); ic.style.transform='rotate(-90deg)'; } };
         
-        window.switchAuthTab = (tabName) => {
-            document.querySelectorAll('.auth-tab-content').forEach(el => el.classList.add('hide'));
-            document.querySelectorAll('.auth-tab').forEach(el => el.classList.remove('active'));
-            if(tabName === 'admin') {
-                $('auth-admin').classList.remove('hide');
-                $('tab-admin').classList.add('active');
-            } else if(tabName === 'student') {
-                $('auth-student').classList.remove('hide');
-                $('tab-student').classList.add('active');
-            } else if(tabName === 'reg') {
-                $('auth-reg').classList.remove('hide');
-                $('tab-reg').classList.add('active');
-            }
-        };
-        
-        window.toggleCollapse = (c, i) => { const el=$(c), icon=$(i); if(el.classList.contains('collapsed')) { el.classList.remove('collapsed'); icon.style.transform='rotate(0deg)'; } else { el.classList.add('collapsed'); icon.style.transform='rotate(-90deg)'; } };
-        
-        // -------------------- الدردشة --------------------
+        // الدردشة
         let pendingImage = null;
-        window.toggleChat=()=>{ const modal=$('chat-modal'); modal.classList.toggle('active'); if(modal.classList.contains('active')){ loadChatMessages(); } };
-        
-        function handleImageSelect(input) {
-            if (input.files && input.files[0]) {
-                const file = input.files[0];
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    pendingImage = { data: e.target.result, name: file.name };
-                    $('preview-img').src = e.target.result;
-                    $('preview-name').textContent = file.name.substring(0, 20) + '...';
-                    $('image-preview-area').style.display = 'flex';
-                    toast('✅ تم اختيار الصورة');
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-        
-        function cancelImage() {
-            pendingImage = null;
-            $('image-preview-area').style.display = 'none';
-            $('preview-img').src = '';
-            $('preview-name').textContent = '';
-            $('chat-img-input').value = '';
-        }
-        
-        window.deleteChatMessage = (key) => {
-            if(!db) return toast('❌ لا يمكن الحذف بدون اتصال');
-            if(!user) return toast('يجب تسجيل الدخول');
-            db.ref(`public_chat/${key}`).once('value').then(snap => {
-                const msg = snap.val();
-                if(!msg) { toast('⚠️ الرسالة غير موجودة'); return; }
-                const isOwner = (user.name === msg.user);
-                const isAdmin = (user.role === 'admin');
-                if(isOwner || isAdmin) {
-                    if(confirm('هل تريد حذف هذه الرسالة نهائياً؟')) {
-                        db.ref(`public_chat/${key}`).remove().then(() => {
-                            toast('🗑️ تم حذف الرسالة');
-                        }).catch(e => toast('❌ فشل الحذف: '+e.message));
-                    }
-                } else {
-                    toast('⚠️ لا يمكنك حذف رسائل الآخرين');
-                }
-            }).catch(e => toast('خطأ: '+e.message));
-        };
-        
-        function loadChatMessages(){
-            if(!db) { $('chat-body').innerHTML='<div class="empty">الدردشة غير متاحة (تحقق من الإنترنت)</div>'; return; }
-            db.ref('public_chat').limitToLast(50).on('value', snap => {
-                let html = '';
-                if(snap.exists()) snap.forEach(child => {
-                    const msg=child.val(), key=child.key;
-                    let reactionsHtml='';
-                    if(msg.reactions) Object.entries(msg.reactions).forEach(([e,u])=>{ reactionsHtml+=`<span class="reaction-tag">${e} ${u.length}</span>`; });
-                    let imgHtml = '';
-                    if(msg.image) {
-                        imgHtml = `
-                            <div class="chat-img-container">
-                                <img src="${msg.image}" class="chat-img" onclick="window.open(this.src)" alt="image">
-                                ${msg.imageComment ? `<div class="img-comment">💬 ${msg.imageComment}</div>` : ''}
-                            </div>
-                        `;
-                    }
-                    let deleteButton = '';
-                    if(user && (user.name === msg.user || user.role === 'admin')) {
-                        deleteButton = `<button class="delete-msg-btn" onclick="deleteChatMessage('${key}')" title="حذف">🗑️</button>`;
-                    }
-                    html+=`<div class="chat-msg ${msg.user==='المدير'?'admin':''}" id="msg-${key}">
-                        <div class="chat-meta"><b>${msg.user}</b><span>${new Date(msg.date).toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})}</span></div>
-                        <div>${msg.text||''}</div>
-                        ${imgHtml}
-                        <div class="msg-actions">
-                            <div class="reactions-display">${reactionsHtml}</div>
-                            <div style="display:flex; gap:6px;">
-                                <button class="reaction-btn" onclick="toggleReactionPicker('${key}')">😊</button>
-                                ${deleteButton}
-                            </div>
-                        </div>
-                        <div id="react-picker-${key}" class="emoji-picker-msg">${['👍','❤️','😂','😮','😢','🦷'].map(e=>`<span class="emoji-item" onclick="addReaction('${key}','${e}')">${e}</span>`).join('')}</div>
-                    </div>`;
-                });
-                else html='<div class="empty">لا توجد رسائل</div>';
-                $('chat-body').innerHTML=html;
-                $('chat-body').scrollTop=$('chat-body').scrollHeight;
-            });
-        }
-        
-        window.addReaction=(key,emoji)=>{
-            if(!user) return toast('يجب تسجيل الدخول أولاً');
-            const ref=db.ref(`public_chat/${key}/reactions/${emoji}`);
-            ref.transaction(cur=>{
-                if(!cur) return [user.name];
-                if(cur.includes(user.name)) return cur.filter(u=>u!==user.name);
-                return [...cur,user.name];
-            });
-            $(`react-picker-${key}`).classList.remove('active');
-        };
-        
-        function sendChatMessage(){
-            if(!db) return toast('❌ لا يوجد اتصال بالخادم');
-            const input=$('chat-input');
-            const text=input.value.trim();
-            if(!text && !pendingImage) return toast('اكتب نصاً أو اختر صورة');
-            if(!user) return toast('يجب تسجيل الدخول أولاً');
-            const badWords=['سب','شتم','غبي'];
-            if(badWords.some(w=>text.includes(w))) return toast('⚠️ الأدب من فضلك');
-            
-            let msgObj={user:user.name,date:Date.now(),text:text};
-            if(pendingImage) {
-                msgObj.image = pendingImage.data;
-                msgObj.imageName = pendingImage.name;
-            }
-            
-            const sendBtn = document.querySelector('.chat-send');
-            if(sendBtn) sendBtn.disabled = true;
-            
-            db.ref('public_chat').push(msgObj).then(()=>{
-                input.value='';
-                cancelImage();
-                toast('✅ تم الإرسال');
-                if(sendBtn) sendBtn.disabled = false;
-            }).catch(e=>{
-                toast('❌ فشل الإرسال');
-                if(sendBtn) sendBtn.disabled = false;
-            });
-        }
-        
+        window.toggleChat=()=>{ $('chat-modal').classList.toggle('active'); if($('chat-modal').classList.contains('active')) loadChatMessages(); };
+        function handleImageSelect(inp){ if(inp.files[0]){ const f=inp.files[0],rd=new FileReader(); rd.onload=e=>{ pendingImage={data:e.target.result,name:f.name}; $('preview-img').src=e.target.result; $('preview-name').textContent=f.name.substring(0,20)+'...'; $('image-preview-area').style.display='flex'; toast('✅ تم اختيار الصورة'); }; rd.readAsDataURL(f); } }
+        function cancelImage(){ pendingImage=null; $('image-preview-area').style.display='none'; $('chat-img-input').value=''; }
+        window.deleteChatMessage=(key)=>{ if(!db||!user) return; db.ref(`public_chat/${key}`).once('value',s=>{ const m=s.val(); if(!m) return; if(user.name===m.user||user.role==='admin'){ if(confirm('حذف؟')) db.ref(`public_chat/${key}`).remove().then(()=>toast('تم الحذف')); } else toast('لا يمكنك الحذف'); }); };
+        function loadChatMessages(){ if(!db) return; db.ref('public_chat').limitToLast(50).on('value',s=>{ let h=''; if(s.exists()) s.forEach(c=>{ const m=c.val(),k=c.key; let react='',img='',del=''; if(m.reactions) Object.entries(m.reactions).forEach(([e,u])=>react+=`<span class="reaction-tag">${e} ${u.length}</span>`); if(m.image) img=`<div class="chat-img-container"><img src="${m.image}" class="chat-img" onclick="window.open(this.src)"></div>`; if(user && (user.name===m.user||user.role==='admin')) del=`<button class="delete-msg-btn" onclick="deleteChatMessage('${k}')">🗑️</button>`; h+=`<div class="chat-msg ${m.user==='المدير'?'admin':''}"><div class="chat-meta"><b>${m.user}</b><span>${new Date(m.date).toLocaleTimeString()}</span></div><div>${m.text||''}</div>${img}<div class="msg-actions"><div class="reactions-display">${react}</div><div><button class="reaction-btn" onclick="toggleReactionPicker('${k}')">😊</button>${del}</div></div><div id="react-picker-${k}" class="emoji-picker-msg">${['👍','❤️','😂','😮','😢','🦷'].map(e=>`<span class="emoji-item" onclick="addReaction('${k}','${e}')">${e}</span>`).join('')}</div></div>`; }); else h='<div class="empty">لا توجد رسائل</div>'; $('chat-body').innerHTML=h; $('chat-body').scrollTop=$('chat-body').scrollHeight; }); }
+        window.addReaction=(k,e)=>{ if(!user) return; db.ref(`public_chat/${k}/reactions/${e}`).transaction(cur=>{ if(!cur) return [user.name]; if(cur.includes(user.name)) return cur.filter(u=>u!==user.name); return [...cur,user.name]; }); $(`react-picker-${k}`).classList.remove('active'); };
+        function sendChatMessage(){ if(!db) return; const t=$('chat-input').value.trim(); if(!t&&!pendingImage) return; if(!user) return; let obj={user:user.name,date:Date.now(),text:t}; if(pendingImage){ obj.image=pendingImage.data; obj.imageName=pendingImage.name; } db.ref('public_chat').push(obj).then(()=>{ $('chat-input').value=''; cancelImage(); toast('تم الإرسال'); }); }
         const inputEmojis=['🦷','👅','😷','🤕','💉','✅','⚠️','👍','👎','😂','😢','😡','🤔'];
-        const inputPicker=$('emoji-picker-input');
-        inputEmojis.forEach(emoji=>{
-            const span=document.createElement('span');
-            span.className='emoji-item';
-            span.textContent=emoji;
-            span.onclick=()=>{ $('chat-input').value+=emoji; $('chat-input').focus(); };
-            inputPicker.appendChild(span);
-        });
+        const inputPicker=$('emoji-picker-input'); inputEmojis.forEach(e=>{ const s=document.createElement('span'); s.className='emoji-item'; s.textContent=e; s.onclick=()=>{ $('chat-input').value+=e; $('chat-input').focus(); }; inputPicker.appendChild(s); });
         window.toggleInputEmoji=()=>{ inputPicker.classList.toggle('active'); };
         
-        // ==================== البوستر الإعلاني ====================
-        window.savePoster = () => {
-            if(user?.role !== 'admin') return toast('⚠️ غير مصرح');
-            const url = $('poster-url-input').value.trim();
-            if(!url) return toast('⚠️ أدخل رابط الصورة');
-            if(!db) return toast('❌ لا يوجد اتصال بالخادم');
-            db.ref('admin_poster').set({url: url, addedBy: user.name, date: Date.now(), active: true}).then(() => {
-                toast('✅ تم حفظ البوستر');
-                $('poster-url-input').value = '';
-                loadPublicPoster();
-                updatePosterPreview(url);
-            }).catch(e => toast('❌ فشل الحفظ: '+e.message));
-        };
-        window.deletePoster = () => {
-            if(user?.role !== 'admin') return toast('⚠️ غير مصرح');
-            if(!confirm('هل تريد حذف البوستر?')) return;
-            if(!db) return toast('❌ لا يوجد اتصال');
-            db.ref('admin_poster').remove().then(() => {
-                toast('🗑️ تم حذف البوستر');
-                $('public-poster-banner').style.display = 'none';
-                $('poster-preview').style.display = 'none';
-            }).catch(e => toast('❌ فشل الحذف: '+e.message));
-        };
-        function updatePosterPreview(url) {
-            const preview = $('poster-preview');
-            const img = $('poster-preview-img');
-            if(url && url.startsWith('http')) {
-                img.src = url;
-                preview.style.display = 'block';
-                img.onerror = () => { preview.style.display = 'none'; };
-            } else preview.style.display = 'none';
-        }
-        function loadPublicPoster() {
-            if(!db) return;
-            db.ref('admin_poster').once('value').then(snap => {
-                const banner = $('public-poster-banner');
-                const img = $('public-poster-img');
-                if(snap.exists() && snap.val().active) {
-                    img.src = snap.val().url;
-                    banner.style.display = 'block';
-                    img.onerror = () => { banner.style.display = 'none'; };
-                } else banner.style.display = 'none';
-            });
-        }
-        window.closePosterBanner = () => { $('public-poster-banner').style.display = 'none'; };
+        // البوستر
+        window.savePoster=()=>{ if(user?.role!=='admin') return; const u=$('poster-url-input').value.trim(); if(!u) return; db.ref('admin_poster').set({url:u,addedBy:user.name,date:Date.now(),active:true}).then(()=>{ toast('تم حفظ البوستر'); $('poster-url-input').value=''; loadPublicPoster(); if($('poster-preview-img')){ $('poster-preview-img').src=u; $('poster-preview').style.display='block'; } }); };
+        window.deletePoster=()=>{ if(user?.role!=='admin') return; if(confirm('حذف؟')) db.ref('admin_poster').remove().then(()=>{ toast('تم الحذف'); $('public-poster-banner').style.display='none'; $('poster-preview').style.display='none'; }); };
+        function loadPublicPoster(){ if(!db) return; db.ref('admin_poster').once('value',s=>{ const b=$('public-poster-banner'),i=$('public-poster-img'); if(s.exists()&&s.val().active){ i.src=s.val().url; b.style.display='block'; i.onerror=()=>b.style.display='none'; } else b.style.display='none'; }); }
+        window.closePosterBanner=()=>{ $('public-poster-banner').style.display='none'; };
         
-        // ============ نظام الإشعارات ============
-        async function requestNotificationPermission() {
-            if (!("Notification" in window)) return false;
-            if (Notification.permission === "granted") return true;
-            if (Notification.permission !== "denied") {
-                return (await Notification.requestPermission()) === "granted";
-            }
-            return false;
-        }
+        // الإشعارات والحضور
+        async function requestNotificationPermission(){ if("Notification"in window&&Notification.permission!=="denied") await Notification.requestPermission(); }
+        function initAdminNotifications(){ if(user?.role==='admin'){ requestNotificationPermission(); listenForNewUsers(); } }
+        function listenForNewUsers(){ if(!db) return; db.ref('users').on('child_added',s=>{ const u=s.val(); if(u&&u.date&&(Date.now()-u.date<5000)) toast(`📢 مستخدم جديد: ${u.name}`); }); }
+        let presenceInterval=null;
+        function setUserPresence(uid,nm,r){ if(!db) return; const ref=db.ref(`users/${uid}`); db.ref('.info/connected').on('value',s=>{ if(s.val()===true){ ref.child('state').set('online'); ref.child('last_seen').set(Date.now()); ref.child('state').onDisconnect().set('offline'); ref.child('last_seen').onDisconnect().set(Date.now()); if(presenceInterval) clearInterval(presenceInterval); presenceInterval=setInterval(()=>{ if(user&&user.id===uid) ref.child('last_seen').set(Date.now()); else clearInterval(presenceInterval); },60000); } }); }
+        function recordLoginHistory(uid,nm,r){ if(db) db.ref('login_history').push({userId:uid,name:nm,role:r,timestamp:Date.now()}); }
+        function loadOnlineUsers(){ if(!db||user?.role!=='admin') return; db.ref('users').orderByChild('state').equalTo('online').once('value',s=>{ let h=''; if(s.exists()) s.forEach(c=>{ const u=c.val(); h+=`<div class="online-user">🟢 <b>${u.name||'مجهول'}</b> (${u.role||'طبيب'}) – نشاط: ${new Date(u.last_seen).toLocaleString()}</div>`; }); else h='<div class="empty">لا يوجد مستخدمون نشطون</div>'; $('#online-users-list').innerHTML=h; }); }
+        function loadRecentActivity(){ if(!db||user?.role!=='admin') return; const since=Date.now()-24*3600000; db.ref('login_history').orderByChild('timestamp').startAt(since).once('value',s=>{ if(s.exists()){ let items=[]; s.forEach(c=>items.push(c.val())); items.sort((a,b)=>b.timestamp-a.timestamp); $('#recent-activity-list').innerHTML=items.map(a=>`<div class="activity-item">📌 ${a.name} (${a.role}) – ${new Date(a.timestamp).toLocaleString()}</div>`).join(''); } else $('#recent-activity-list').innerHTML='<div class="empty">لا توجد أنشطة</div>'; }); }
+        function startAdminMonitoring(){ if(user?.role==='admin'){ loadOnlineUsers(); loadRecentActivity(); setInterval(()=>{ loadOnlineUsers(); loadRecentActivity(); },10000); } }
         
-        function sendPushNotificationToAdmin(newUserName, userEmail) {
-            if (!("Notification" in window) || Notification.permission !== "granted") return;
-            const notification = new Notification("📢 تسجيل مشترك جديد", {
-                body: `مشترك جديد: ${newUserName} (${userEmail})`,
-                icon: "https://cdn-icons-png.flaticon.com/512/2964/2964514.png"
-            });
-            notification.onclick = () => { window.focus(); notification.close(); };
-        }
-        
-        function listenForNewUsers() {
-            if (!db) return;
-            db.ref('users').on('child_added', (snapshot) => {
-                const newUser = snapshot.val();
-                if (newUser && newUser.date && (Date.now() - newUser.date < 5000)) {
-                    if (user && user.role === 'admin') sendPushNotificationToAdmin(newUser.name, newUser.email);
-                    toast(`📢 مستخدم جديد: ${newUser.name}`);
-                }
-            });
-        }
-        
-        function initAdminNotifications() {
-            if (user && user.role === 'admin') {
-                requestNotificationPermission().then(granted => { if (granted) toast("🔔 الإشعارات مفعلة"); });
-                listenForNewUsers();
-            }
-        }
-        
-        let presenceInterval = null;
-        function setUserPresence(userId, userName, userRole) {
-            if(!db) return;
-            const userRef = db.ref(`users/${userId}`);
-            db.ref('.info/connected').on('value', (snap) => {
-                if(snap.val() === true) {
-                    userRef.child('state').set('online');
-                    userRef.child('last_seen').set(Date.now());
-                    userRef.child('state').onDisconnect().set('offline');
-                    userRef.child('last_seen').onDisconnect().set(Date.now());
-                    if(presenceInterval) clearInterval(presenceInterval);
-                    presenceInterval = setInterval(() => {
-                        if(user && user.id === userId) userRef.child('last_seen').set(Date.now());
-                        else clearInterval(presenceInterval);
-                    }, 60000);
-                }
-            });
-        }
-        
-        function recordLoginHistory(userId, name, role) {
-            if(db) db.ref('login_history').push({userId, name, role, timestamp: Date.now()});
-        }
-        
-        function loadOnlineUsers() {
-            if(!db || user?.role !== 'admin') return;
-            db.ref('users').orderByChild('state').equalTo('online').once('value', snap => {
-                let html = '';
-                if(snap.exists()) snap.forEach(child => {
-                    const u = child.val();
-                    html += `<div class="online-user">🟢 <b>${u.name || 'مجهول'}</b> (${u.role || 'طبيب'}) – نشاط: ${new Date(u.last_seen).toLocaleString()}</div>`;
-                });
-                else html = '<div class="empty">لا يوجد مستخدمون نشطون</div>';
-                $('#online-users-list').innerHTML = html;
-            });
-        }
-        
-        function loadRecentActivity() {
-            if(!db || user?.role !== 'admin') return;
-            const since = Date.now() - 24*60*60*1000;
-            db.ref('login_history').orderByChild('timestamp').startAt(since).once('value', snap => {
-                if(snap.exists()) {
-                    let items = []; snap.forEach(child => items.push(child.val()));
-                    items.sort((a,b)=>b.timestamp - a.timestamp);
-                    $('#recent-activity-list').innerHTML = items.map(act => `<div class="activity-item">📌 ${act.name} (${act.role}) – ${new Date(act.timestamp).toLocaleString()}</div>`).join('');
-                } else $('#recent-activity-list').innerHTML = '<div class="empty">لا توجد أنشطة مؤخراً</div>';
-            });
-        }
-        
-        function startAdminMonitoring() {
-            if(user?.role === 'admin') {
-                loadOnlineUsers(); loadRecentActivity();
-                setInterval(() => { loadOnlineUsers(); loadRecentActivity(); }, 10000);
-            }
-        }
-        
-        // -------------------- نظام الدخول --------------------
+        // دوال الدخول والخروج
         const SECRET_KEY="9591melas";
-        
-        window.doStudentLogin = async () => {
-            const sid = $('student-id').value.trim();
-            const spass = $('student-pass').value.trim();
-            if(!sid || !spass) return toast('⚠️ أكمل الحقول');
-            if(spass.length >= 4) {
-                const userId = 'student_' + Date.now();
-                const userName = 'طالب: '+sid;
-                const location = await getUserLocation();
-                user = {name: userName, role: 'student', id: userId};
-                localStorage.setItem('d_session', JSON.stringify(user));
-                $('auth').classList.add('hide'); $('app').classList.remove('hide');
-                $('uname').textContent = user.name;
-                $('admin').classList.remove('active'); $('diag').classList.add('active');
-                if(db) { 
-                    loadPublicPoster(); 
-                    setUserPresence(user.id, user.name, 'student'); 
-                    recordLoginHistory(user.id, user.name, 'student');
-                    await recordUserLogin(user.id, user.name, 'student', location);
-                }
-                toast('✅ أهلاً بك');
-            } else toast('❌ كلمة المرور قصيرة');
-        };
-        
-        const doLoginComplex = async () => {
-            const input=$('login-input').value.trim(); const btn=$('login-btn'); if(!input) return toast('⚠️ أدخل كلمة المرور');
-            btn.disabled=true; btn.textContent='⏳...';
-            
-            const location = await getUserLocation();
-            
-            if(input===SECRET_KEY||input.split('').reverse().join('')===SECRET_KEY){
-                user={name:'المدير',role:'admin', id:'admin_master'}; localStorage.setItem('d_session',JSON.stringify(user));
-                $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent='المدير';
-                $('admin').classList.add('active'); $('diag').classList.remove('active');
-                if(db){ 
-                    load();loadContributors();loadActivationRequests();loadPublicPoster(); 
-                    setUserPresence('admin_master','المدير','admin'); 
-                    recordLoginHistory('admin_master','المدير','admin'); 
-                    await recordUserLogin('admin_master', 'المدير', 'admin', location);
-                    setTimeout(() => { loadLoginLogs(); }, 500);
-                    startAdminMonitoring(); initAdminNotifications(); 
-                }
-                toast('✅ تم الدخول كمدير'); btn.disabled=false; btn.textContent='دخول آمن 🔐'; return;
-            }
-            if(!db){ toast('❌ لا اتصال'); btn.disabled=false; btn.textContent='دخول آمن 🔐'; return; }
-            try{
-                const snap=await db.ref('users').orderByChild('email').equalTo(input).once('value'); let found=null;
-                if(snap.exists()) snap.forEach(child=>{ found={id:child.key,...child.val()}; });
-                if(!found) { const snap2=await db.ref('users').orderByChild('name').equalTo(input).once('value'); if(snap2.exists()) snap2.forEach(child=>{ found={id:child.key,...child.val()}; }); }
-                if(!found) toast('❌ بيانات غير صحيحة');
-                else if(found.status==='pending') toast('⏳ قيد المراجعة');
-                else{ 
-                    user={...found,role:'doc'}; localStorage.setItem('d_session',JSON.stringify(user));
-                    $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name;
-                    $('admin').classList.remove('active'); $('diag').classList.add('active');
-                    updateUserStats(); if(db) { loadPublicPoster(); setUserPresence(user.id, user.name, 'doc'); recordLoginHistory(user.id, user.name, 'doc'); await recordUserLogin(user.id, user.name, 'doc', location); }
-                    toast('✅ أهلاً د/'+user.name);
-                }
-            }catch(err){ toast('❌ خطأ: '+err.message); } finally{ btn.disabled=false; btn.textContent='دخول آمن 🔐'; }
-        };
-        
-        const doRegister=()=>{ const n=$('r-name').value.trim(), e=$('r-email').value.trim().toLowerCase(), p=$('r-pass').value; if(!n||!e||!p) return toast('أكمل الحقول'); if(p.length<6) return toast('كلمة مرور قصيرة'); if(!db) return toast('❌ لا اتصال'); db.ref('users').push({name:n,email:e,pass:p,status:'pending',date:Date.now(),corrections:0}).then(()=>{ toast('✅ تم الإرسال'); setTimeout(showLogin,2000); }).catch(e=>toast('❌ فشل: '+e.message)); };
-        const updateUserStats=()=>{ if(user?.id&&user.role==='doc'&&db) db.ref('users/'+user.id).once('value').then(snap=>{ const data=snap.val(); if(data?.corrections!==undefined){ $('user-corrections').textContent=data.corrections; $('user-stats').style.display='inline'; } }); };
+        window.doStudentLogin = async()=>{ const sid=$('student-id').value.trim(), sp=$('student-pass').value.trim(); if(!sid||!sp) return toast('أكمل الحقول'); if(sp.length>=4){ const uid='student_'+Date.now(), un='طالب: '+sid, loc=await getUserLocation(); user={name:un,role:'student',id:uid}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; $('admin').classList.remove('active'); $('diag').classList.add('active'); if(db){ loadPublicPoster(); setUserPresence(uid,un,'student'); recordLoginHistory(uid,un,'student'); await recordUserLogin(uid,un,'student',loc); } toast('✅ أهلاً بك'); } else toast('❌ كلمة مرور قصيرة'); };
+        const doLoginComplex = async()=>{ const inp=$('login-input').value.trim(), btn=$('login-btn'); if(!inp) return; btn.disabled=true; btn.textContent='⏳...'; const loc=await getUserLocation(); if(inp===SECRET_KEY||inp.split('').reverse().join('')===SECRET_KEY){ user={name:'المدير',role:'admin',id:'admin_master'}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent='المدير'; $('admin').classList.add('active'); $('diag').classList.remove('active'); if(db){ load(); loadContributors(); loadActivationRequests(); loadPublicPoster(); setUserPresence('admin_master','المدير','admin'); recordLoginHistory('admin_master','المدير','admin'); await recordUserLogin('admin_master','المدير','admin',loc); setTimeout(()=>loadLoginLogs(),500); startAdminMonitoring(); initAdminNotifications(); } toast('✅ تم الدخول كمدير'); btn.disabled=false; btn.textContent='دخول آمن 🔐'; return; } if(!db){ toast('❌ لا اتصال'); btn.disabled=false; return; } try{ const s=await db.ref('users').orderByChild('email').equalTo(inp).once('value'); let f=null; if(s.exists()) s.forEach(c=>{ f={id:c.key,...c.val()}; }); if(!f){ const s2=await db.ref('users').orderByChild('name').equalTo(inp).once('value'); if(s2.exists()) s2.forEach(c=>{ f={id:c.key,...c.val()}; }); } if(!f) toast('❌ بيانات غير صحيحة'); else if(f.status==='pending') toast('⏳ قيد المراجعة'); else { user={...f,role:'doc'}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; $('admin').classList.remove('active'); $('diag').classList.add('active'); updateUserStats(); if(db){ loadPublicPoster(); setUserPresence(user.id,user.name,'doc'); recordLoginHistory(user.id,user.name,'doc'); await recordUserLogin(user.id,user.name,'doc',loc); } toast('✅ أهلاً د/'+user.name); } }catch(err){ toast('❌ خطأ: '+err.message); } finally{ btn.disabled=false; btn.textContent='دخول آمن 🔐'; } };
+        const doRegister=()=>{ const n=$('r-name').value.trim(), e=$('r-email').value.trim().toLowerCase(), p=$('r-pass').value; if(!n||!e||!p) return; if(p.length<6) return toast('كلمة مرور 6 أحرف+'); if(!db) return; db.ref('users').push({name:n,email:e,pass:p,status:'pending',date:Date.now(),corrections:0}).then(()=>{ toast('✅ تم الإرسال'); setTimeout(()=>switchAuthTab('admin'),2000); }); };
+        const updateUserStats=()=>{ if(user?.id&&user.role==='doc'&&db) db.ref('users/'+user.id).once('value',s=>{ const d=s.val(); if(d?.corrections!==undefined){ $('user-corrections').textContent=d.corrections; $('user-stats').style.display='inline'; } }); };
         const goDiag=()=>{ $('admin').classList.remove('active'); $('diag').classList.add('active'); $('backToAdminBtn').style.display='block'; if(user?.role==='doc') updateUserStats(); };
         const goAdmin=()=>{ if(user && user.role === 'admin') { $('diag').classList.remove('active'); $('admin').classList.add('active'); $('backToAdminBtn').style.display='none'; if(db){ load(); loadContributors(); loadActivationRequests(); loadOnlineUsers(); loadRecentActivity(); loadLoginLogs(); } } };
         const doLogout=()=>{ if(db && user && user.id) { db.ref(`users/${user.id}/state`).set('offline'); if(presenceInterval) clearInterval(presenceInterval); } localStorage.removeItem('d_session'); location.reload(); };
         
-        function loadActivationRequests(){ if(!db||user?.role!=='admin') return; db.ref('activation_requests').once('value').then(snap=>{ let html=''; if(snap.exists()) snap.forEach(child=>{ const req=child.val(); html+=`<div class="admin-alert"><div><b>🎓 ${req.userName}</b></div><div><button class="btn-approve" onclick="approveActivation('${child.key}','${req.userId}')">✅</button><button class="btn-ignore" onclick="ignoreActivation('${child.key}')">❌</button></div></div>`; }); $('activation-requests').innerHTML=html||''; }); }
-        window.approveActivation=(reqId,userId)=>{ db.ref('users/'+userId).update({status:'permanent'}); db.ref('activation_requests/'+reqId).remove(); toast('✅ تم'); loadActivationRequests(); load(); };
-        window.ignoreActivation=(reqId)=>{ db.ref('activation_requests/'+reqId).remove(); loadActivationRequests(); };
-        function loadContributors(){ if(!db) return; db.ref('users').orderByChild('corrections').limitToLast(5).once('value').then(snap=>{ let html='', contributors=[]; if(snap.exists()) snap.forEach(child=>{ const u=child.val(); if(u.corrections>0) contributors.push(u); }); contributors.reverse().forEach(u=>{ html+=`<div class="contributor-item"><span>${u.name||'مجهول'}</span><span style="color:#60a5fa">${u.corrections} تصحيح</span></div>`; }); $('contributors-list-content').innerHTML=html||'<div class="empty">لا توجد مساهمات</div>'; }); }
-        window.load=()=>{ if(!db||user?.role!=='admin') return; db.ref('users').once('value').then(snap=>{ const users=[]; if(snap.exists()) snap.forEach(child=>{ users.push({id:child.key,...child.val()}); }); users.sort((a,b)=>(b.date||0)-(a.date||0)); const pending=users.filter(u=>u.status==='pending'); $('c-p').textContent=pending.length; $('c-a').textContent=users.filter(u=>u.status==='active').length; $('c-t').textContent=users.length; $('badge').textContent=pending.length; $('badge').style.display=pending.length?'inline':'none'; $('req-list').innerHTML=pending.length?pending.map(u=>`<div style="background:#172554;padding:10px;border-radius:8px;margin:6px 0;display:flex;justify-content:space-between"><div><b>${u.name}</b></div><div><button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button></div></div>`).join(''):'<div class="empty">لا توجد طلبات</div>'; let tblHTML=''; users.forEach(u=>{ tblHTML+=`<tr><td><div style="display:flex;align-items:center;gap:6px;"><span>${u.name}</span></div></td><td>${u.email}</td><td><span class="status ${u.status==='active'?'st-act':'st-pend'}">${u.status}</span></td><td style="text-align:center">${u.corrections||0}</td><td><button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button></td>`; }); $('u-tbl').innerHTML=tblHTML; }); };
+        // إدارة المستخدمين
+        function loadActivationRequests(){ if(!db||user?.role!=='admin') return; db.ref('activation_requests').once('value',s=>{ let h=''; if(s.exists()) s.forEach(c=>{ const r=c.val(); h+=`<div class="admin-alert"><div><b>🎓 ${r.userName}</b></div><div><button class="btn-approve" onclick="approveActivation('${c.key}','${r.userId}')">✅</button><button class="btn-ignore" onclick="ignoreActivation('${c.key}')">❌</button></div></div>`; }); $('activation-requests').innerHTML=h||''; }); }
+        window.approveActivation=(rid,uid)=>{ db.ref('users/'+uid).update({status:'permanent'}); db.ref('activation_requests/'+rid).remove(); toast('✅ تم'); loadActivationRequests(); load(); };
+        window.ignoreActivation=(rid)=>{ db.ref('activation_requests/'+rid).remove(); loadActivationRequests(); };
+        function loadContributors(){ if(!db) return; db.ref('users').orderByChild('corrections').limitToLast(5).once('value',s=>{ let h='',c=[]; if(s.exists()) s.forEach(ch=>{ const u=ch.val(); if(u.corrections>0) c.push(u); }); c.reverse().forEach(u=>{ h+=`<div class="contributor-item"><span>${u.name||'مجهول'}</span><span style="color:#60a5fa">${u.corrections} تصحيح</span></div>`; }); $('contributors-list-content').innerHTML=h||'<div class="empty">لا توجد مساهمات</div>'; }); }
+        window.load=()=>{ if(!db||user?.role!=='admin') return; db.ref('users').once('value',s=>{ const users=[]; if(s.exists()) s.forEach(c=>{ users.push({id:c.key,...c.val()}); }); users.sort((a,b)=>(b.date||0)-(a.date||0)); const pending=users.filter(u=>u.status==='pending'); $('c-p').textContent=pending.length; $('c-a').textContent=users.filter(u=>u.status==='active').length; $('c-t').textContent=users.length; $('badge').textContent=pending.length; $('badge').style.display=pending.length?'inline':'none'; $('req-list').innerHTML=pending.length?pending.map(u=>`<div style="background:#172554;padding:10px;border-radius:8px;margin:6px 0;display:flex;justify-content:space-between"><div><b>${u.name}</b></div><div><button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button></div></div>`).join(''):'<div class="empty">لا توجد طلبات</div>'; let t=''; users.forEach(u=>{ t+=`<tr><td>${u.name}</td><td>${u.email}</td><td><span class="status ${u.status==='active'?'st-act':'st-pend'}">${u.status}</span></td><td>${u.corrections||0}</td><td><button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button></td></tr>`; }); $('u-tbl').innerHTML=t; }); };
         window.upd=(i,s)=>db.ref('users/'+i).update({status:s}).then(load);
         window.del=(i)=>{ if(confirm('حذف؟')) db.ref('users/'+i).remove().then(load); };
+        
+        // التشخيص
         const STATIC_DB = [
-            {id:"pericoronitis", name:"التهاب حول ضرس العقل", cat:"جراحة", sev:"عالي", location:"خلف", keywords:["التهاب حول ضرس العقل","غطاء لثوي","صعوبة فتح الفم","رائحة فم","ألم خلف الضرس الأخير","تواج"], signs:"انتفاخ حول التاج، صعوبة فتح الفم، رائحة كريهة.", xray:"سن منطمر جزئياً.", treat:"غسل، مضادات، قلع.", diff:"موقع خلفي + غطاء ملتهب + رائحة."},
-            {id:"caries", name:"تسوس سني", cat:"لبية", sev:"متوسط", location:"سن", keywords:["ألم بارد","ألم حلو","ثقب","حفرة","مسوس","حساسية عابرة"], signs:"تجويف نخرى", xray:"شفافية", treat:"حشوة", diff:"ألم مثير"},
-            {id:"abscess", name:"خراج ذروي", cat:"عدوى", sev:"طوارئ", location:"سن", keywords:["تورم وجه","وزمة","صديد","قيح","حمى","نابض"], signs:"تورم متموج", xray:"شفافية ذروية", treat:"تصريف", diff:"تورم + صديد"}
+            {id:"pericoronitis", name:"التهاب حول ضرس العقل", cat:"جراحة", sev:"عالي", location:"خلف", keywords:["التهاب حول ضرس العقل","غطاء لثوي","صعوبة فتح الفم","رائحة فم","ألم خلف الضرس الأخير"], signs:"انتفاخ حول التاج، صعوبة فتح الفم، رائحة كريهة.", xray:"سن منطمر جزئياً.", treat:"غسل، مضادات، قلع.", diff:"موقع خلفي + غطاء ملتهب + رائحة."},
+            {id:"caries", name:"تسوس سني", cat:"لبية", sev:"متوسط", location:"سن", keywords:["ألم بارد","ألم حلو","ثقب","حفرة","مسوس"], signs:"تجويف نخرى", xray:"شفافية", treat:"حشوة", diff:"ألم مثير"},
+            {id:"abscess", name:"خراج ذروي", cat:"عدوى", sev:"طوارئ", location:"سن", keywords:["تورم وجه","وزمة","صديد","قيح","حمى"], signs:"تورم متموج", xray:"شفافية ذروية", treat:"تصريف", diff:"تورم + صديد"}
         ];
-        window.runDiagnosis=()=>{
-            const s=$('sym').value.trim().toLowerCase(); if(!s){ toast('اكتب الأعراض'); return; }
-            let results = STATIC_DB.filter(d => d.keywords.some(k => s.includes(k.toLowerCase())));
-            let html = results.length ? results.map(r => `
-                <div class="card clinical-report">
-                    <div class="report-header"><div class="report-title">🦷 ${r.name}</div><div class="conf-badge conf-high">موثق</div></div>
-                    <div class="section"><h5>📊 العلامات السريرية:</h5><p>${r.signs}</p></div>
-                    <div class="section"><h5>🩻 التشخيص الشعاعي:</h5><p>${r.xray}</p></div>
-                    <div class="section"><h5>💊 خطة العلاج:</h5><p>${r.treat}</p></div>
-                    <div class="diff-note"><b>💡 التشخيص التفريقي:</b> ${r.diff}</div>
-                </div>
-            `).join('') : '<div class="empty">لم يتم العثور على تشخيص دقيق، يرجى مراجعة طبيب مختص.</div>';
-            $('res').innerHTML = html;
-        };
-        window.addCasesFromJSON=()=>{
-            const input=$('json-input').value.trim(); if(!input) return toast('أدخل JSON');
-            try {
-                const data = JSON.parse(input);
-                if(db) db.ref('cases').push(data).then(() => { toast('✅ تم الحفظ'); $('json-input').value=''; });
-            } catch(e) { toast('❌ خطأ في تنسيق JSON'); }
-        };
+        window.runDiagnosis=()=>{ const s=$('sym').value.trim().toLowerCase(); if(!s){ toast('اكتب الأعراض'); return; } let r=STATIC_DB.filter(d=>d.keywords.some(k=>s.includes(k))); let h=r.length?r.map(d=>`<div class="card clinical-report"><div class="report-header"><div class="report-title">🦷 ${d.name}</div><div class="conf-badge conf-high">موثق</div></div><div class="section"><h5>📊 العلامات السريرية:</h5><p>${d.signs}</p></div><div class="section"><h5>🩻 التشخيص الشعاعي:</h5><p>${d.xray}</p></div><div class="section"><h5>💊 خطة العلاج:</h5><p>${d.treat}</p></div><div class="diff-note"><b>💡 التشخيص التفريقي:</b> ${d.diff}</div></div>`).join(''):'<div class="empty">لم يتم العثور على تشخيص دقيق.</div>'; $('res').innerHTML=h; };
+        window.addCasesFromJSON=()=>{ const i=$('json-input').value.trim(); if(!i) return; try{ const d=JSON.parse(i); if(db) db.ref('cases').push(d).then(()=>{ toast('✅ تم الحفظ'); $('json-input').value=''; }); } catch(e){ toast('❌ خطأ في JSON'); } };
     </script>
 </body>
 </html>
