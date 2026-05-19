@@ -119,7 +119,6 @@
         .act-ok { background: var(--success); color: #fff; }
         .act-del { background: #7f1d1d; color: #fca5a5; }
         footer { background: #0f172a; padding: 15px; text-align: center; color: var(--muted); margin-top: auto; border-top: 1px solid #334155; }
-        /* زر دعم الواتساب - يظهر فقط في واجهة الطالب */
         .whatsapp-support {
             background: linear-gradient(135deg, #075E54, #128C7E, #25D366);
             color: white;
@@ -378,6 +377,7 @@
                             <input type="url" id="slide-url-input" class="input" placeholder="رابط الصورة (https://...)" style="margin-bottom:8px;">
                             <input type="number" id="slide-duration-input" class="input" placeholder="مدة العرض بالثواني (مثال: 5)" value="5" min="2" step="1" style="margin-bottom:8px;">
                             <button class="btn btn-green" onclick="addSlide()">➕ إضافة شريحة</button>
+                            <button class="btn btn-gray" onclick="loadSlides()" style="margin-top:8px;">🔄 تحديث الشرائح</button>
                         </div>
                         <div id="slides-list" class="slides-list">
                             <div class="empty">لا توجد شرائح. أضف شرائح لعرضها.</div>
@@ -392,13 +392,12 @@
                 <div class="card"><div class="collapsible-header" onclick="toggleCollapse('req-list-container', 'req-icon')"><h3>📥 طلبات التفعيل</h3><span id="req-icon" class="toggle-icon">▼</span></div><div id="req-list-container" class="collapsible-content"><div id="req-list" class="empty">لا توجد طلبات</div></div></div>
                 <div class="card"><div class="collapsible-header" onclick="toggleCollapse('doc-list-container', 'doc-icon')"><h3>👥 سجل الأطباء</h3><span id="doc-icon" class="toggle-icon">▼</span></div><div id="doc-list-container" class="collapsible-content"><div class="table-wrap"><table><thead><tr><th>الاسم</th><th>البريد</th><th>الحالة</th><th>المساهمات</th><th>إجراء</th></tr></thead><tbody id="u-tbl"></tbody></table></div></div></div>
                 <button class="btn btn-green" onclick="goDiag()">🔍 واجهة التشخيص الشامل</button>
-                <!-- تم إزالة زر الواتساب من هنا -->
             </div>
             
             <div id="diag" class="view">
                 <div class="card"><h3>📋 الوصف السريري للحالة</h3><textarea id="sym" placeholder="مثال: ألم خلف الضرس الأخير مع صعوبة فتح الفم ورائحة كريهة..."></textarea><button class="btn" onclick="runDiagnosis()">🔍 تحليل الخبير السريري</button></div>
                 <div id="res"></div>
-                <!-- زر دعم الواتساب الخاص بالطلاب (موجود فقط هنا) -->
+                <!-- زر دعم الواتساب الخاص بالطلاب -->
                 <a href="https://wa.me/963939436998" target="_blank" class="whatsapp-support" style="display: inline-flex; width: auto; margin: 15px auto 0;">
                     <span class="whatsapp-icon">💚</span>
                     <div class="whatsapp-text">
@@ -419,7 +418,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script>
-        // إعداد Firebase (نفس الكود السابق مع تعديل بسيط)
+        // إعداد Firebase
         const cfg = { apiKey:"AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE", authDomain:"diagnosis-6ea4b.firebaseapp.com", databaseURL:"https://diagnosis-6ea4b-default-rtdb.firebaseio.com", projectId:"diagnosis-6ea4b" };
         let db;
         try { firebase.initializeApp(cfg); db = firebase.database(); console.log("✅ Firebase متصل"); } catch(e) { console.warn(e); db = null; }
@@ -432,14 +431,20 @@
         let currentSlideIndex = 0;
         let slidesArray = [];
         
-        // ========== إدارة الشرائح ==========
+        // ========== إدارة الشرائح (محسّنة) ==========
         async function loadSlides() {
-            if(!db) return;
-            const snap = await db.ref('poster_slides').once('value');
-            const slides = snap.val();
-            slidesArray = (slides && Array.isArray(slides)) ? slides : [];
-            renderSlidesList();
-            startSlideshow();
+            if (!db) return;
+            try {
+                const snap = await db.ref('poster_slides').once('value');
+                const slides = snap.val();
+                slidesArray = (slides && Array.isArray(slides)) ? slides : [];
+                renderSlidesList();
+                startSlideshow();
+                console.log(`تم تحميل ${slidesArray.length} شريحة/شرائح`);
+            } catch (e) {
+                console.error("خطأ في تحميل الشرائح", e);
+                toast("⚠️ فشل تحميل الشرائح");
+            }
         }
         
         function renderSlidesList() {
@@ -459,20 +464,46 @@
         }
         
         window.addSlide = async function() {
-            if(user?.role !== 'admin') { toast("⚠️ غير مصرح"); return; }
+            if (!user || user.role !== 'admin') {
+                toast("⚠️ غير مصرح - تحتاج صلاحيات مدير");
+                return;
+            }
+            if (!db) {
+                toast("⚠️ لا يوجد اتصال بقاعدة البيانات");
+                return;
+            }
             const url = $('#slide-url-input').value.trim();
             const duration = parseInt($('#slide-duration-input').value, 10);
-            if(!url) { toast("⚠️ أدخل رابط الصورة"); return; }
-            if(isNaN(duration) || duration < 2) { toast("⚠️ المدة يجب أن تكون 2 ثانية على الأقل"); return; }
-            const newSlide = { url, duration, addedBy: user.name, date: Date.now() };
-            const newArray = [...slidesArray, newSlide];
-            await db.ref('poster_slides').set(newArray);
-            slidesArray = newArray;
-            renderSlidesList();
-            startSlideshow();
-            $('#slide-url-input').value = '';
-            $('#slide-duration-input').value = '5';
-            toast("✅ تم إضافة الشريحة");
+            if (!url) {
+                toast("⚠️ أدخل رابط الصورة");
+                return;
+            }
+            if (isNaN(duration) || duration < 2) {
+                toast("⚠️ المدة يجب أن تكون 2 ثانية على الأقل");
+                return;
+            }
+            // اختبار صلاحية الرابط
+            try {
+                const testImg = new Image();
+                testImg.onload = async () => {
+                    const newSlide = { url, duration, addedBy: user.name, date: Date.now() };
+                    const newArray = [...slidesArray, newSlide];
+                    await db.ref('poster_slides').set(newArray);
+                    slidesArray = newArray;
+                    renderSlidesList();
+                    startSlideshow();
+                    $('#slide-url-input').value = '';
+                    $('#slide-duration-input').value = '5';
+                    toast("✅ تم إضافة الشريحة بنجاح");
+                };
+                testImg.onerror = () => {
+                    toast("❌ رابط الصورة غير صالح أو لا يمكن الوصول إليه");
+                };
+                testImg.src = url;
+            } catch (err) {
+                console.error(err);
+                toast("❌ حدث خطأ أثناء الحفظ");
+            }
         };
         
         window.deleteSlide = async function(idx) {
@@ -498,26 +529,33 @@
         };
         
         function startSlideshow() {
-            if(slideshowInterval) clearInterval(slideshowInterval);
+            if (slideshowInterval) clearInterval(slideshowInterval);
             const banner = $('#slideshow-banner');
             const img = $('#slideshow-img');
             const counterSpan = $('#slide-counter');
-            if(!slidesArray.length) {
-                banner.style.display = 'none';
+            
+            if (!slidesArray.length) {
+                if (banner) banner.style.display = 'none';
                 return;
             }
+            
             banner.style.display = 'block';
             currentSlideIndex = 0;
+            
             function showSlide(index) {
-                if(!slidesArray[index]) return;
-                img.src = slidesArray[index].url;
-                if(counterSpan) counterSpan.innerText = (index+1) + '/' + slidesArray.length;
-                img.onerror = () => { img.src = 'https://placehold.co/600x400?text=خطأ+في+الصورة'; };
-                if(slideshowInterval) clearInterval(slideshowInterval);
+                if (!slidesArray[index] || !slidesArray[index].url) return;
+                const slide = slidesArray[index];
+                img.src = slide.url;
+                if (counterSpan) counterSpan.innerText = `${index+1}/${slidesArray.length}`;
+                img.onerror = () => {
+                    img.src = 'https://placehold.co/600x400?text=خطأ+في+الصورة';
+                    toast(`⚠️ فشل تحميل الصورة رقم ${index+1}`);
+                };
+                if (slideshowInterval) clearInterval(slideshowInterval);
                 slideshowInterval = setInterval(() => {
                     currentSlideIndex = (currentSlideIndex + 1) % slidesArray.length;
                     showSlide(currentSlideIndex);
-                }, slidesArray[index].duration * 1000);
+                }, slide.duration * 1000);
             }
             showSlide(0);
         }
@@ -638,7 +676,7 @@
             loadLoginLogs();
         };
         
-        // باقي الدوال الأساسية (محفوظة كاملة)
+        // باقي الدوال الأساسية
         function initOnlineCounters() {
             if(!db) return;
             if(!sessionStorage.getItem('visitor_counted')) { db.ref('site_stats/total_visitors').transaction(c=>(c||8541)+1); sessionStorage.setItem('visitor_counted','yes'); }
@@ -669,7 +707,7 @@
         window.switchAuthTab = (t)=>{ document.querySelectorAll('.auth-tab-content').forEach(e=>e.classList.add('hide')); document.querySelectorAll('.auth-tab').forEach(e=>e.classList.remove('active')); if(t==='admin'){ $('auth-admin').classList.remove('hide'); $('tab-admin').classList.add('active'); } else if(t==='student'){ $('auth-student').classList.remove('hide'); $('tab-student').classList.add('active'); } else { $('auth-reg').classList.remove('hide'); $('tab-reg').classList.add('active'); } };
         window.toggleCollapse = (c,i)=>{ const e=$(c),ic=$(i); if(e.classList.contains('collapsed')){ e.classList.remove('collapsed'); ic.style.transform='rotate(0deg)'; } else { e.classList.add('collapsed'); ic.style.transform='rotate(-90deg)'; } };
         
-        // الدردشة (نفس الكود السابق)
+        // الدردشة
         let pendingImage = null;
         window.toggleChat=()=>{ $('chat-modal').classList.toggle('active'); if($('chat-modal').classList.contains('active')) loadChatMessages(); };
         function handleImageSelect(inp){ if(inp.files[0]){ const f=inp.files[0],rd=new FileReader(); rd.onload=e=>{ pendingImage={data:e.target.result,name:f.name}; $('preview-img').src=e.target.result; $('preview-name').textContent=f.name.substring(0,20)+'...'; $('image-preview-area').style.display='flex'; toast('✅ تم اختيار الصورة'); }; rd.readAsDataURL(f); } }
