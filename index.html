@@ -409,7 +409,7 @@
                 <button class="btn btn-gray" id="backToAdminBtn" onclick="goAdmin()" style="display:none;">⚙️ العودة للإدارة</button>
             </div>
         </main>
-        <footer><div><a href="https://wa.me/963939436998" target="_blank" class="wa-btn">📱 أرسل ملاحظاتك</a></div><div style="font-size:11px;">تطبيقات الدكتور عطوني | الإصدار v54.0 تيكر + دعم الطالب</div></footer>
+        <footer><div><a href="https://wa.me/963939436998" target="_blank" class="wa-btn">📱 أرسل ملاحظاتك</a></div><div style="font-size:11px;">تطبيقات الدكتور عطوني | الإصدار v55.0 تيكر محسّن</div></footer>
     </div>
     <div class="chat-fab" onclick="toggleChat()">💬</div>
     <div id="chat-modal" class="chat-modal"><div class="chat-header"><span>💬 النقاش العام</span><span style="cursor:pointer" onclick="toggleChat()">✕</span></div><div id="chat-body" class="chat-body"><div class="empty">جاري تحميل الرسائل...</div></div><div id="emoji-picker-input" class="emoji-picker-input"></div><div class="chat-input-area"><div id="image-preview-area" class="image-preview" style="display:none"><img id="preview-img"><span id="preview-name"></span><button onclick="cancelImage()">✖ إلغاء</button></div><div class="chat-input-row"><div class="chat-tools"><button class="tool-btn" onclick="document.getElementById('chat-img-input').click()">📷</button><button class="tool-btn" onclick="toggleInputEmoji()">😊</button></div><input type="text" id="chat-input" class="chat-input" placeholder="اكتب رسالتك..."><button class="chat-send" onclick="sendChatMessage()" style="background:var(--primary);color:#fff;border:none;padding:8px 12px;border-radius:20px;cursor:pointer">➤</button></div></div></div>
@@ -431,103 +431,130 @@
         let currentSlideIndex = 0;
         let slidesArray = [];
         
-        // ========== إدارة الشرائح (محسّنة) ==========
-        async function loadSlides() {
-            if (!db) return;
+        // ========== إدارة الشرائح (نسخة محسّنة للهواتف) ==========
+        
+        // حفظ الشرائح في التخزين المحلي و Firebase
+        async function saveSlidesToFirebase(slides) {
+            if (!db) return false;
             try {
-                const snap = await db.ref('poster_slides').once('value');
-                const slides = snap.val();
-                slidesArray = (slides && Array.isArray(slides)) ? slides : [];
-                renderSlidesList();
-                startSlideshow();
-                console.log(`تم تحميل ${slidesArray.length} شريحة/شرائح`);
-            } catch (e) {
-                console.error("خطأ في تحميل الشرائح", e);
-                toast("⚠️ فشل تحميل الشرائح");
-            }
+                await db.ref('poster_slides').set(slides);
+                return true;
+            } catch(e) { console.warn(e); return false; }
         }
         
+        function saveSlidesToLocal(slides) {
+            localStorage.setItem('poster_slides', JSON.stringify(slides));
+        }
+        
+        // تحميل الشرائح (من Firebase أو localStorage)
+        async function loadSlides() {
+            let loaded = false;
+            // محاولة من Firebase أولاً
+            if (db) {
+                try {
+                    const snap = await db.ref('poster_slides').once('value');
+                    const val = snap.val();
+                    if (val && Array.isArray(val) && val.length) {
+                        slidesArray = val;
+                        saveSlidesToLocal(slidesArray);
+                        loaded = true;
+                        console.log("تم تحميل الشرائح من Firebase");
+                    }
+                } catch(e) { console.warn("Firebase error", e); }
+            }
+            // إذا لم تنجح Firebase، جلب من localStorage
+            if (!loaded) {
+                const local = localStorage.getItem('poster_slides');
+                if (local) {
+                    try {
+                        slidesArray = JSON.parse(local);
+                        if (!Array.isArray(slidesArray)) slidesArray = [];
+                        console.log("تم تحميل الشرائح من LocalStorage");
+                    } catch(e) { slidesArray = []; }
+                } else {
+                    slidesArray = [];
+                }
+            }
+            renderSlidesList();
+            startSlideshow();
+            console.log(`تم تحميل ${slidesArray.length} شريحة`);
+        }
+        
+        // عرض قائمة الشرائح في لوحة الإدارة
         function renderSlidesList() {
             const container = $('#slides-list');
-            if(!container) return;
-            if(!slidesArray.length) {
-                container.innerHTML = '<div class="empty">لا توجد شرائح. أضف شرائح لعرضها.</div>';
+            if (!container) return;
+            if (!slidesArray.length) {
+                container.innerHTML = '<div class="empty">📭 لا توجد شرائح. أضف شريحة الآن.</div>';
                 return;
             }
             container.innerHTML = slidesArray.map((slide, idx) => `
                 <div class="slide-item">
-                    <span class="slide-url">${escapeHtml(slide.url.substring(0, 50))}...</span>
+                    <span class="slide-url">${escapeHtml(slide.url.substring(0, 45))}...</span>
                     <span class="slide-duration">⏱️ ${slide.duration} ث</span>
                     <button class="delete-slide-btn" onclick="deleteSlide(${idx})">🗑️ حذف</button>
                 </div>
             `).join('');
         }
         
+        // إضافة شريحة جديدة (بدون اختبار صورة معقد)
         window.addSlide = async function() {
             if (!user || user.role !== 'admin') {
-                toast("⚠️ غير مصرح - تحتاج صلاحيات مدير");
-                return;
-            }
-            if (!db) {
-                toast("⚠️ لا يوجد اتصال بقاعدة البيانات");
+                toast("⚠️ صلاحيات مدير فقط");
                 return;
             }
             const url = $('#slide-url-input').value.trim();
             const duration = parseInt($('#slide-duration-input').value, 10);
-            if (!url) {
-                toast("⚠️ أدخل رابط الصورة");
-                return;
+            if (!url) { toast("⚠️ أدخل رابط الصورة"); return; }
+            if (isNaN(duration) || duration < 2) { toast("⚠️ المدة 2 ثانية على الأقل"); return; }
+            
+            // إضافة الشريحة محلياً أولاً
+            const newSlide = { url, duration, addedBy: user.name, date: Date.now() };
+            slidesArray.push(newSlide);
+            renderSlidesList();
+            startSlideshow();  // إعادة تشغيل التيكر فوراً
+            
+            // حفظ في localStorage
+            saveSlidesToLocal(slidesArray);
+            
+            // حفظ في Firebase إذا كان متصلاً
+            if (db) {
+                await saveSlidesToFirebase(slidesArray);
+                toast("✅ تمت الإضافة وحفظها سحابياً");
+            } else {
+                toast("✅ تمت الإضافة وحفظها محلياً (بدون سحاب)");
             }
-            if (isNaN(duration) || duration < 2) {
-                toast("⚠️ المدة يجب أن تكون 2 ثانية على الأقل");
-                return;
-            }
-            // اختبار صلاحية الرابط
-            try {
-                const testImg = new Image();
-                testImg.onload = async () => {
-                    const newSlide = { url, duration, addedBy: user.name, date: Date.now() };
-                    const newArray = [...slidesArray, newSlide];
-                    await db.ref('poster_slides').set(newArray);
-                    slidesArray = newArray;
-                    renderSlidesList();
-                    startSlideshow();
-                    $('#slide-url-input').value = '';
-                    $('#slide-duration-input').value = '5';
-                    toast("✅ تم إضافة الشريحة بنجاح");
-                };
-                testImg.onerror = () => {
-                    toast("❌ رابط الصورة غير صالح أو لا يمكن الوصول إليه");
-                };
-                testImg.src = url;
-            } catch (err) {
-                console.error(err);
-                toast("❌ حدث خطأ أثناء الحفظ");
-            }
+            
+            // تفريغ الحقول
+            $('#slide-url-input').value = '';
+            $('#slide-duration-input').value = '5';
         };
         
+        // حذف شريحة
         window.deleteSlide = async function(idx) {
-            if(user?.role !== 'admin') { toast("⚠️ غير مصرح"); return; }
-            if(idx < 0 || idx >= slidesArray.length) return;
-            const newArray = slidesArray.filter((_, i) => i !== idx);
-            await db.ref('poster_slides').set(newArray);
-            slidesArray = newArray;
+            if (user?.role !== 'admin') { toast("⚠️ غير مصرح"); return; }
+            if (idx < 0 || idx >= slidesArray.length) return;
+            slidesArray.splice(idx, 1);
             renderSlidesList();
             startSlideshow();
+            saveSlidesToLocal(slidesArray);
+            if (db) await saveSlidesToFirebase(slidesArray);
             toast("🗑️ تم حذف الشريحة");
         };
         
+        // حذف جميع الشرائح
         window.clearAllSlides = async function() {
-            if(user?.role !== 'admin') { toast("⚠️ غير مصرح"); return; }
-            if(confirm("هل تريد حذف جميع الشرائح نهائياً؟")) {
-                await db.ref('poster_slides').set([]);
-                slidesArray = [];
-                renderSlidesList();
-                startSlideshow();
-                toast("✅ تم حذف جميع الشرائح");
-            }
+            if (user?.role !== 'admin') { toast("⚠️ غير مصرح"); return; }
+            if (!confirm("هل تريد حذف جميع الشرائح نهائياً؟")) return;
+            slidesArray = [];
+            renderSlidesList();
+            startSlideshow();
+            saveSlidesToLocal(slidesArray);
+            if (db) await saveSlidesToFirebase(slidesArray);
+            toast("✅ تم حذف جميع الشرائح");
         };
         
+        // تشغيل عرض الشرائح
         function startSlideshow() {
             if (slideshowInterval) clearInterval(slideshowInterval);
             const banner = $('#slideshow-banner');
@@ -560,6 +587,7 @@
             showSlide(0);
         }
         
+        // إغلاق التيكر يدوياً
         window.closeSlideshowBanner = function() {
             $('#slideshow-banner').style.display = 'none';
             if(slideshowInterval) clearInterval(slideshowInterval);
@@ -693,21 +721,23 @@
                 if(user.role === 'admin') {
                     $('admin').classList.add('active'); $('diag').classList.remove('active'); $('backToAdminBtn').style.display='none';
                     if(db) { load(); loadContributors(); loadActivationRequests(); loadSlides(); setUserPresence(user.id,user.name,'admin'); setTimeout(()=>loadLoginLogs(),500); startAdminMonitoring(); initAdminNotifications(); }
+                    else { loadSlides(); } // حتى لو لم يكن Firebase متصلاً، نستخدم localStorage
                 } else {
                     $('admin').classList.remove('active'); $('diag').classList.add('active');
                     if(user.role === 'doc') $('backToAdminBtn').style.display='block';
                     else $('backToAdminBtn').style.display='none';
                     if(db) { loadSlides(); setUserPresence(user.id,user.name,user.role); }
+                    else { loadSlides(); }
                 }
             } else {
-                if(db) loadSlides(); // للزوار غير المسجلين
+                loadSlides(); // للزوار غير المسجلين (عرض الشرائح فقط)
             }
         });
         
         window.switchAuthTab = (t)=>{ document.querySelectorAll('.auth-tab-content').forEach(e=>e.classList.add('hide')); document.querySelectorAll('.auth-tab').forEach(e=>e.classList.remove('active')); if(t==='admin'){ $('auth-admin').classList.remove('hide'); $('tab-admin').classList.add('active'); } else if(t==='student'){ $('auth-student').classList.remove('hide'); $('tab-student').classList.add('active'); } else { $('auth-reg').classList.remove('hide'); $('tab-reg').classList.add('active'); } };
         window.toggleCollapse = (c,i)=>{ const e=$(c),ic=$(i); if(e.classList.contains('collapsed')){ e.classList.remove('collapsed'); ic.style.transform='rotate(0deg)'; } else { e.classList.add('collapsed'); ic.style.transform='rotate(-90deg)'; } };
         
-        // الدردشة
+        // الدردشة (نسخة مختصرة ولكنها تعمل)
         let pendingImage = null;
         window.toggleChat=()=>{ $('chat-modal').classList.toggle('active'); if($('chat-modal').classList.contains('active')) loadChatMessages(); };
         function handleImageSelect(inp){ if(inp.files[0]){ const f=inp.files[0],rd=new FileReader(); rd.onload=e=>{ pendingImage={data:e.target.result,name:f.name}; $('preview-img').src=e.target.result; $('preview-name').textContent=f.name.substring(0,20)+'...'; $('image-preview-area').style.display='flex'; toast('✅ تم اختيار الصورة'); }; rd.readAsDataURL(f); } }
@@ -733,8 +763,8 @@
         
         // دوال الدخول والخروج
         const SECRET_KEY="9591melas";
-        window.doStudentLogin = async()=>{ const sid=$('student-id').value.trim(), sp=$('student-pass').value.trim(); if(!sid||!sp) return toast('أكمل الحقول'); if(sp.length>=4){ const uid='student_'+Date.now(), un='طالب: '+sid, loc=await getUserLocation(); user={name:un,role:'student',id:uid}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; $('admin').classList.remove('active'); $('diag').classList.add('active'); if(db){ loadSlides(); setUserPresence(uid,un,'student'); recordLoginHistory(uid,un,'student'); await recordUserLogin(uid,un,'student',loc); } toast('✅ أهلاً بك'); } else toast('❌ كلمة مرور قصيرة'); };
-        const doLoginComplex = async()=>{ const inp=$('login-input').value.trim(), btn=$('login-btn'); if(!inp) return; btn.disabled=true; btn.textContent='⏳...'; const loc=await getUserLocation(); if(inp===SECRET_KEY||inp.split('').reverse().join('')===SECRET_KEY){ user={name:'المدير',role:'admin',id:'admin_master'}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent='المدير'; $('admin').classList.add('active'); $('diag').classList.remove('active'); if(db){ load(); loadContributors(); loadActivationRequests(); loadSlides(); setUserPresence('admin_master','المدير','admin'); recordLoginHistory('admin_master','المدير','admin'); await recordUserLogin('admin_master','المدير','admin',loc); setTimeout(()=>loadLoginLogs(),500); startAdminMonitoring(); initAdminNotifications(); } toast('✅ تم الدخول كمدير'); btn.disabled=false; btn.textContent='دخول آمن 🔐'; return; } if(!db){ toast('❌ لا اتصال'); btn.disabled=false; return; } try{ const s=await db.ref('users').orderByChild('email').equalTo(inp).once('value'); let f=null; if(s.exists()) s.forEach(c=>{ f={id:c.key,...c.val()}; }); if(!f){ const s2=await db.ref('users').orderByChild('name').equalTo(inp).once('value'); if(s2.exists()) s2.forEach(c=>{ f={id:c.key,...c.val()}; }); } if(!f) toast('❌ بيانات غير صحيحة'); else if(f.status==='pending') toast('⏳ قيد المراجعة'); else { user={...f,role:'doc'}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; $('admin').classList.remove('active'); $('diag').classList.add('active'); updateUserStats(); if(db){ loadSlides(); setUserPresence(user.id,user.name,'doc'); recordLoginHistory(user.id,user.name,'doc'); await recordUserLogin(user.id,user.name,'doc',loc); } toast('✅ أهلاً د/'+user.name); } }catch(err){ toast('❌ خطأ: '+err.message); } finally{ btn.disabled=false; btn.textContent='دخول آمن 🔐'; } };
+        window.doStudentLogin = async()=>{ const sid=$('student-id').value.trim(), sp=$('student-pass').value.trim(); if(!sid||!sp) return toast('أكمل الحقول'); if(sp.length>=4){ const uid='student_'+Date.now(), un='طالب: '+sid, loc=await getUserLocation(); user={name:un,role:'student',id:uid}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; $('admin').classList.remove('active'); $('diag').classList.add('active'); if(db){ loadSlides(); setUserPresence(uid,un,'student'); recordLoginHistory(uid,un,'student'); await recordUserLogin(uid,un,'student',loc); } else { loadSlides(); } toast('✅ أهلاً بك'); } else toast('❌ كلمة مرور قصيرة'); };
+        const doLoginComplex = async()=>{ const inp=$('login-input').value.trim(), btn=$('login-btn'); if(!inp) return; btn.disabled=true; btn.textContent='⏳...'; const loc=await getUserLocation(); if(inp===SECRET_KEY||inp.split('').reverse().join('')===SECRET_KEY){ user={name:'المدير',role:'admin',id:'admin_master'}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent='المدير'; $('admin').classList.add('active'); $('diag').classList.remove('active'); if(db){ load(); loadContributors(); loadActivationRequests(); loadSlides(); setUserPresence('admin_master','المدير','admin'); recordLoginHistory('admin_master','المدير','admin'); await recordUserLogin('admin_master','المدير','admin',loc); setTimeout(()=>loadLoginLogs(),500); startAdminMonitoring(); initAdminNotifications(); } else { loadSlides(); } toast('✅ تم الدخول كمدير'); btn.disabled=false; btn.textContent='دخول آمن 🔐'; return; } if(!db){ toast('❌ لا اتصال'); btn.disabled=false; return; } try{ const s=await db.ref('users').orderByChild('email').equalTo(inp).once('value'); let f=null; if(s.exists()) s.forEach(c=>{ f={id:c.key,...c.val()}; }); if(!f){ const s2=await db.ref('users').orderByChild('name').equalTo(inp).once('value'); if(s2.exists()) s2.forEach(c=>{ f={id:c.key,...c.val()}; }); } if(!f) toast('❌ بيانات غير صحيحة'); else if(f.status==='pending') toast('⏳ قيد المراجعة'); else { user={...f,role:'doc'}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; $('admin').classList.remove('active'); $('diag').classList.add('active'); updateUserStats(); if(db){ loadSlides(); setUserPresence(user.id,user.name,'doc'); recordLoginHistory(user.id,user.name,'doc'); await recordUserLogin(user.id,user.name,'doc',loc); } else { loadSlides(); } toast('✅ أهلاً د/'+user.name); } }catch(err){ toast('❌ خطأ: '+err.message); } finally{ btn.disabled=false; btn.textContent='دخول آمن 🔐'; } };
         const doRegister=()=>{ const n=$('r-name').value.trim(), e=$('r-email').value.trim().toLowerCase(), p=$('r-pass').value; if(!n||!e||!p) return; if(p.length<6) return toast('كلمة مرور 6 أحرف+'); if(!db) return; db.ref('users').push({name:n,email:e,pass:p,status:'pending',date:Date.now(),corrections:0}).then(()=>{ toast('✅ تم الإرسال'); setTimeout(()=>switchAuthTab('admin'),2000); }); };
         const updateUserStats=()=>{ if(user?.id&&user.role==='doc'&&db) db.ref('users/'+user.id).once('value',s=>{ const d=s.val(); if(d?.corrections!==undefined){ $('user-corrections').textContent=d.corrections; $('user-stats').style.display='inline'; } }); };
         const goDiag=()=>{ $('admin').classList.remove('active'); $('diag').classList.add('active'); $('backToAdminBtn').style.display='block'; if(user?.role==='doc') updateUserStats(); };
