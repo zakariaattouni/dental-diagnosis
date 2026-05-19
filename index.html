@@ -32,24 +32,11 @@
         .header-text h1 { font-size: 28px; font-weight: 900; color: #fff; margin: 0; line-height: 1.1; text-shadow: 0 0 15px rgba(59, 130, 246, 0.6); }
         .header-text h2 { font-size: 16px; font-weight: 600; color: #93c5fd; margin: 5px 0 0; letter-spacing: 0.5px; }
         .header-counters {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 12px;
-            position: relative;
-            z-index: 2;
-            flex-wrap: wrap;
+            display: flex; justify-content: center; gap: 15px; margin-top: 12px; position: relative; z-index: 2; flex-wrap: wrap;
         }
         .mini-counter {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            color: #cbd5e1;
-            display: flex;            align-items: center;
-            gap: 5px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(59, 130, 246, 0.3); padding: 4px 10px; border-radius: 20px;
+            font-size: 11px; color: #cbd5e1; display: flex; align-items: center; gap: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
         .mini-counter b { color: #3b82f6; font-family: monospace; font-size: 12px; }
         .mini-counter .pulse-dot { width: 6px; height: 6px; background-color: #10b981; border-radius: 50%; display: inline-block; animation: pulseActive 1.5s infinite; }
@@ -60,8 +47,7 @@
         @keyframes twinkle { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
         .auth-screen { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .auth-card { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 30px; width: 100%; max-width: 360px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; }
-        .logo { font-size: 60px; margin-bottom: 15px; }
-        h1 { font-size: 22px; margin-bottom: 8px; color: #fff; }
+        .logo { font-size: 60px; margin-bottom: 15px; }        h1 { font-size: 22px; margin-bottom: 8px; color: #fff; }
         .sub { font-size: 13px; color: var(--muted); margin-bottom: 25px; }
         .input { width: 100%; padding: 14px; border: 1px solid #334155; border-radius: 12px; font-size: 15px; text-align: center; margin-bottom: 15px; background: #0f172a; color: #fff; transition: 0.3s; }
         .input:focus { border-color: var(--primary); background: #1e293b; outline: none; box-shadow: 0 0 15px rgba(59,130,246,0.3); }
@@ -96,7 +82,8 @@
         .stat-num { font-size: 22px; font-weight: 800; color: var(--primary); }
         .stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
         textarea { width: 100%; padding: 16px; border: 1px solid #334155; border-radius: 12px; min-height: 120px; font-size: 14px; margin-bottom: 16px; background: #0f172a; color: #fff; resize: vertical; line-height: 1.6; transition: 0.3s; }
-        textarea:focus { border-color: var(--primary); background: #1e293b; outline: none; }        .clinical-report { background: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 16px; margin-top: 16px; }
+        textarea:focus { border-color: var(--primary); background: #1e293b; outline: none; }
+        .clinical-report { background: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 16px; margin-top: 16px; }
         .report-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #334155; flex-wrap: wrap; gap: 8px; }
         .report-title { font-size: 16px; font-weight: 700; color: #60a5fa; display: flex; align-items: center; gap: 8px; }
         .conf-badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
@@ -109,8 +96,7 @@
         table { width: 100%; border-collapse: collapse; font-size: 12px; }
         th { background: #0f172a; padding: 12px; text-align: right; color: var(--muted); font-weight: 600; border-bottom: 1px solid #334155; }
         td { padding: 10px 12px; border-bottom: 1px solid #334155; }
-        tr:hover { background: #334155; }
-        .status { padding: 4px 8px; border-radius: 20px; font-size: 10px; font-weight: 600; }
+        tr:hover { background: #334155; }        .status { padding: 4px 8px; border-radius: 20px; font-size: 10px; font-weight: 600; }
         .st-act { background: #064e3b; color: #34d399; }
         .st-pend { background: #451a03; color: #fbbf24; }
         .act-btn { padding: 4px 8px; border: none; border-radius: 6px; font-size: 10px; cursor: pointer; margin-left: 4px; font-weight: 600; }
@@ -119,33 +105,19 @@
         footer { background: #0f172a; padding: 15px; text-align: center; color: var(--muted); margin-top: auto; border-top: 1px solid #334155; }
         .whatsapp-support {
             background: linear-gradient(135deg, #075E54, #128C7E, #25D366);
-            color: white;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            padding: 10px 20px;
-            border-radius: 60px;
-            font-weight: 700;
-            text-align: center;
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
-            transition: all 0.3s ease;
-            font-size: 13px;
-            position: relative;
-            overflow: hidden;
-            margin-top: 8px;
-            margin-bottom: 8px;
-            border: 1px solid rgba(255,255,255,0.2);
+            color: white; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+            padding: 10px 20px; border-radius: 60px; font-weight: 700; text-align: center;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3); transition: all 0.3s ease; font-size: 13px;
+            position: relative; overflow: hidden; margin-top: 8px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.2);
         }
         .whatsapp-support::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s; }
         .whatsapp-support:hover::before { left: 100%; }
         .whatsapp-support:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5); }
-        .whatsapp-support:active { transform: translateY(0); }
         .whatsapp-icon { font-size: 1.4rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); animation: whatsappPulse 1.5s infinite; }
         @keyframes whatsappPulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         .whatsapp-text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.3; }
-        .whatsapp-title { font-size: 0.85rem; font-weight: bold; letter-spacing: 0.5px; }        .whatsapp-subtitle { font-size: 0.65rem; opacity: 0.9; }
+        .whatsapp-title { font-size: 0.85rem; font-weight: bold; letter-spacing: 0.5px; }
+        .whatsapp-subtitle { font-size: 0.65rem; opacity: 0.9; }
         .whatsapp-badge { background: rgba(255,255,255,0.25); border-radius: 50px; padding: 2px 8px; font-size: 0.65rem; font-weight: normal; margin-right: 6px; }
         .wa-btn { display: inline-flex; align-items: center; gap: 6px; background: #25D366; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 12px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.2); margin-bottom: 8px; }
         .wa-btn:hover { background: #1ebc57; }
@@ -173,8 +145,7 @@
         .emoji-picker-msg.active { display: grid; }
         .chat-input-area { padding: 8px; border-top: 1px solid #334155; display: flex; flex-direction: column; background: #1e293b; }
         .image-preview { display: flex; align-items: center; gap: 8px; padding: 6px; background: #0f172a; border-radius: 6px; margin-bottom: 6px; }
-        .image-preview img { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; }
-        .image-preview button { background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+        .image-preview img { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; }        .image-preview button { background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; }
         .chat-input-row { display: flex; gap: 5px; align-items: center; }
         .chat-input { flex: 1; padding: 8px; border: 1px solid #334155; border-radius: 20px; font-size: 13px; outline: none; background: #0f172a; color: #fff; }
         .chat-tools { display: flex; gap: 5px; }
@@ -194,7 +165,8 @@
         .case-counter { background: #172554; color: #60a5fa; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; display: inline-block; margin-bottom: 8px; }
         .online-user { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #334155; font-size: 13px; }
         .activity-item { padding: 8px; border-bottom: 1px solid #334155; font-size: 12px; }
-        .tracking-header {            background: linear-gradient(135deg, #667eea, #764ba2);
+        .tracking-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
             border-radius: 20px;
             padding: 15px;
             margin-bottom: 15px;
@@ -222,8 +194,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin: 15px 0;
-            border: 1px solid #e2e8f0;
+            margin: 15px 0;            border: 1px solid #e2e8f0;
         }
         .search-box input { flex: 1; border: none; padding: 10px 0; background: transparent; color: #1e293b; }
         .search-box input:focus { outline: none; }
@@ -243,7 +214,8 @@
         .log-name { font-weight: bold; color: #60a5fa; font-size: 0.9rem; }
         .log-time { font-size: 0.7rem; color: #94a3b8; }
         .log-location { display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.75rem; color: #cbd5e1; }
-        .log-location span { display: inline-flex; align-items: center; gap: 4px; }        .refresh-btn {
+        .log-location span { display: inline-flex; align-items: center; gap: 4px; }
+        .refresh-btn {
             background: #f1f5f9;
             border: none;
             padding: 6px 10px;
@@ -254,513 +226,59 @@
         }
         .refresh-btn:hover { background: #e2e8f0; }
 
-        /* === 🪟 نظام الإعلانات الموقوتة === */
-        .announcement-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.9);
-            width: 90%;
-            max-width: 450px;
-            max-height: 85vh;
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 2px solid #3b82f6;
-            border-radius: 20px;
-            padding: 20px;
-            z-index: 2000;
-            box-shadow: 0 25px 80px rgba(59, 130, 246, 0.4), 0 0 0 4px rgba(59, 130, 246, 0.1);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+        /* === 📢 كتلة البوستر/الإعلان الموحدة === */
+        #public-banner {
+            position: relative; background: #0f172a; border: 1px solid #3b82f6; border-radius: 16px;
+            padding: 0; margin-bottom: 16px; box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2);
+            overflow: hidden; display: none; animation: bannerIn 0.3s ease;
         }
-        .announcement-modal.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, -50%) scale(1);
+        @keyframes bannerIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        #public-banner .banner-controls { position: absolute; top: 8px; left: 8px; z-index: 10; display: flex; gap: 6px; }
+        #public-banner .banner-btn {
+            width: 26px; height: 26px; border-radius: 50%; border: none; cursor: pointer;
+            font-size: 13px; display: flex; align-items: center; justify-content: center;
+            background: rgba(15, 23, 42, 0.8); color: #f8fafc; transition: 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.4);
         }
-        .announcement-modal::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #3b82f6, #06b6d4, #3b82f6);
-            background-size: 200% 100%;
-            animation: shimmer 2s linear infinite;
+        #public-banner .banner-btn:hover { transform: scale(1.1); }
+        #public-banner .btn-close { background: rgba(239, 68, 68, 0.9); }
+        #public-banner .btn-full { background: rgba(59, 130, 246, 0.9); }
+        #public-banner .banner-body {
+            display: flex; flex-direction: column; align-items: center; padding: 16px;            max-height: 400px; overflow-y: auto;
         }
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }        }
-        .announcement-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #334155;
-            margin-bottom: 15px;
-        }
-        .announcement-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #60a5fa;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .announcement-close {
-            background: #334155;
-            border: none;
-            color: #f87171;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.2s;
-        }
-        .announcement-close:hover {
-            background: #ef4444;
-            color: white;
-            transform: rotate(90deg);
-        }
-        .announcement-content {
-            flex: 1;
-            overflow-y: auto;
-            font-size: 14px;
-            color: #cbd5e1;
-            line-height: 1.7;
-            text-align: center;
-        }
-        .announcement-content img {
-            max-width: 100%;
-            max-height: 300px;
-            border-radius: 12px;
-            border: 1px solid #334155;
-            object-fit: contain;        }
-        .announcement-timer {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 15px;
-            padding-top: 12px;
-            border-top: 1px dashed #334155;
-            font-size: 12px;
-            color: #94a3b8;
-        }
-        .timer-bar {
-            flex: 1;
-            height: 4px;
-            background: #334155;
-            border-radius: 2px;
-            overflow: hidden;
-            position: relative;
-        }
-        .timer-progress {
-            height: 100%;
-            background: linear-gradient(90deg, #3b82f6, #06b6d4);
-            border-radius: 2px;
-            transition: width 0.1s linear;
-            width: 100%;
-        }
-        .announcement-footer {
-            text-align: center;
-            font-size: 11px;
-            color: #64748b;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid #334155;
-        }
-        .announcement-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(2, 6, 23, 0.85);
-            backdrop-filter: blur(4px);
-            z-index: 1999;
-            opacity: 0;
-            visibility: hidden;
-            transition: 0.3s;
-        }
-        .announcement-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        /* === لوحة تحكم الإدارة للإعلانات === */
-        .ann-admin-card {
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-        .ann-form-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-        .ann-form-row input,
-        .ann-form-row select,
-        .ann-form-row textarea {
-            flex: 1;
-            min-width: 120px;
-        }
-        .ann-preview {
-            background: #0f172a;
-            border-radius: 12px;
-            padding: 12px;
-            margin: 12px 0;
-            border: 1px dashed #334155;
-            min-height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-            font-size: 13px;
-        }
-        .ann-preview img {
-            max-width: 100%;
-            max-height: 150px;
-            border-radius: 8px;
-        }
-        .ann-list-item {
-            background: #0f172a;
-            border-radius: 10px;
-            padding: 10px 12px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
-            border-left: 3px solid #3b82f6;
-        }
-        .ann-list-item.inactive {            border-left-color: #64748b;
-            opacity: 0.7;
-        }
-        .ann-badge {
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 10px;
-            font-weight: 600;
-        }
-        .ann-badge.text { background: #1e40af; color: #93c5fd; }
-        .ann-badge.image { background: #065f46; color: #6ee7b7; }
-        .ann-badge.active { background: #064e3b; color: #34d399; }
-        .ann-badge.inactive { background: #451a03; color: #fbbf24; }
-
-        /* === 🖼️ نظام البوستر المتقدم === */
-        #public-poster-banner {
-            position: relative;
-            animation: posterSlideIn 0.4s ease-out;
-            border: 2px solid #3b82f6;
-            box-shadow: 0 10px 40px rgba(59, 130, 246, 0.25);
-        }
-        @keyframes posterSlideIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        #public-poster-banner .poster-content {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            align-items: center;
-        }
-        #public-poster-banner .poster-image {
-            position: relative;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
-        #public-poster-banner .poster-image img {
-            max-width: 100%;
-            max-height: 400px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
+        #public-banner .banner-img {
+            max-width: 100%; max-height: 250px; border-radius: 12px; cursor: pointer;
+            transition: transform 0.2s; object-fit: contain;
             image-rendering: -webkit-optimize-contrast;
-            image-rendering: crisp-edges;
-            loading: eager;
-            fetchpriority: high;
         }
-        #public-poster-banner .poster-image img:hover {
-            transform: scale(1.02);        }
-        #public-poster-banner .poster-text {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            padding: 15px 20px;
-            border-radius: 12px;
-            border: 1px solid #334155;
-            text-align: center;
-            font-size: 14px;
-            color: #cbd5e1;
-            line-height: 1.7;
-            width: 100%;
+        #public-banner .banner-img:hover { transform: scale(1.02); }
+        #public-banner .banner-text {
+            font-size: 15px; color: #cbd5e1; line-height: 1.6; text-align: center; padding: 0 10px;
         }
-        #public-poster-banner .poster-text h4 {
-            color: #60a5fa;
-            margin-bottom: 8px;
-            font-size: 16px;
+        #public-banner .banner-text h4 { color: #60a5fa; margin-bottom: 8px; font-size: 17px; }
+        #public-banner .banner-timer {
+            display: flex; align-items: center; gap: 8px; padding: 10px 16px;
+            background: rgba(15, 23, 42, 0.95); border-top: 1px solid #334155;
+            font-size: 12px; color: #94a3b8; justify-content: center;
         }
-        #public-poster-banner .poster-timer {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px dashed #334155;
-            font-size: 12px;
-            color: #94a3b8;
-        }
-        #public-poster-banner .poster-timer .timer-bar {
-            flex: 1;
-            height: 3px;
-            background: #334155;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-        #public-poster-banner .poster-timer .timer-progress {
-            height: 100%;
-            background: linear-gradient(90deg, #3b82f6, #06b6d4);
-            transition: width 0.1s linear;
-            width: 100%;
-        }
-        #public-poster-banner .poster-controls {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            display: flex;
-            gap: 6px;
-            z-index: 10;
-        }
-        #public-poster-banner .poster-controls button {            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.2s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-        #public-poster-banner .poster-controls .btn-close {
-            background: #ef4444;
-            color: white;
-        }
-        #public-poster-banner .poster-controls .btn-close:hover {
-            background: #dc2626;
-            transform: rotate(90deg);
-        }
-        #public-poster-banner .poster-controls .btn-del-img {
-            background: #f59e0b;
-            color: white;
-        }
-        #public-poster-banner .poster-controls .btn-del-img:hover {
-            background: #d97706;
-        }
-        #public-poster-banner .poster-controls .btn-del-txt {
-            background: #8b5cf6;
-            color: white;
-        }
-        #public-poster-banner .poster-controls .btn-del-txt:hover {
-            background: #7c3aed;
-        }
-        #public-poster-banner .component-badge {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: rgba(15, 23, 42, 0.9);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 10px;
-            color: #94a3b8;
-            border: 1px solid #334155;
-        }
+        #public-banner .timer-track { flex: 1; height: 3px; background: #334155; border-radius: 2px; max-width: 200px; overflow: hidden; }
+        #public-banner .timer-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #06b6d4); transition: width 0.1s linear; width: 100%; }
 
-        /* لوحة تحكم البوستر في الإدارة */
-        .poster-admin-card {
-            background: #1e293b;
-            border: 1px solid #334155;            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 16px;
+        /* لوحة تحكم البوستر للإدارة */
+        .banner-admin-card { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+        .banner-tabs { display: flex; gap: 6px; margin-bottom: 12px; background: #0f172a; padding: 4px; border-radius: 10px; border: 1px solid #334155; }
+        .banner-tab { flex: 1; padding: 8px; border: none; background: transparent; color: var(--muted); font-size: 12px; font-weight: 600; cursor: pointer; border-radius: 6px; transition: 0.2s; }
+        .banner-tab.active { background: var(--primary); color: #fff; }
+        .banner-tab:hover:not(.active) { background: #1e293b; color: #cbd5e1; }
+        .banner-preview {
+            background: #0f172a; border: 1px dashed #334155; border-radius: 10px; padding: 15px;
+            margin: 12px 0; min-height: 80px; display: flex; align-items: center; justify-content: center;
+            color: #64748b; font-size: 12px; flex-direction: column; gap: 8px; text-align: center;
         }
-        .poster-mode-tabs {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 15px;
-            background: #0f172a;
-            padding: 4px;
-            border-radius: 12px;
-            border: 1px solid #334155;
-        }
-        .poster-mode-tab {
-            flex: 1;
-            padding: 10px 8px;
-            border: none;
-            background: transparent;
-            color: var(--muted);
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-        }
-        .poster-mode-tab.active {
-            background: var(--primary);
-            color: #fff;
-            box-shadow: 0 2px 8px rgba(59,130,246,0.4);
-        }
-        .poster-mode-tab:hover:not(.active) {
-            background: #1e293b;
-            color: #cbd5e1;
-        }
-        .poster-form-section {
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px dashed #334155;
-        }
-        .poster-form-section:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-        .poster-form-section h5 {
-            color: #60a5fa;            font-size: 13px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .poster-duration-control {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 10px 0;
-        }
-        .poster-duration-control input[type="range"] {
-            flex: 1;
-            accent-color: var(--primary);
-        }
-        .poster-duration-control span {
-            font-size: 12px;
-            color: #94a3b8;
-            min-width: 50px;
-            text-align: center;
-            background: #0f172a;
-            padding: 4px 8px;
-            border-radius: 6px;
-        }
-        .poster-preview-box {
-            background: #0f172a;
-            border-radius: 12px;
-            padding: 15px;
-            margin: 12px 0;
-            border: 1px dashed #334155;
-            min-height: 120px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .poster-preview-box img {
-            max-width: 100%;
-            max-height: 200px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-        }
-        .poster-preview-box .preview-text {
-            font-size: 13px;
-            color: #cbd5e1;
-            text-align: center;
-            line-height: 1.6;
-        }        .poster-preview-box .preview-empty {
-            color: #64748b;
-            font-size: 12px;
-            font-style: italic;
-        }
-        .poster-components-list {
-            margin-top: 10px;
-        }
-        .poster-component-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 12px;
-            background: #0f172a;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            font-size: 12px;
-            border-right: 3px solid #3b82f6;
-        }
-        .poster-component-item.text-mode { border-right-color: #8b5cf6; }
-        .poster-component-item.image-mode { border-right-color: #10b981; }
-        .poster-component-item .comp-info {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .poster-component-item .comp-type {
-            font-weight: 600;
-            color: #60a5fa;
-        }
-        .poster-component-item .comp-meta {
-            font-size: 10px;
-            color: #94a3b8;
-        }
-        .poster-component-item .comp-actions {
-            display: flex;
-            gap: 4px;
-        }
-        .poster-component-item .comp-actions button {
-            padding: 4px 8px;
-            border: none;
-            border-radius: 6px;
-            font-size: 10px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .poster-component-item .comp-actions .btn-toggle {
-            background: #334155;
-            color: #cbd5e1;
-        }        .poster-component-item .comp-actions .btn-delete {
-            background: #7f1d1d;
-            color: #fca5a5;
-        }
-        .poster-component-item .comp-actions .btn-delete:hover {
-            background: #ef4444;
-            color: white;
-        }
-        .poster-speed-hint {
-            background: #172554;
-            border-right: 3px solid #60a5fa;
-            padding: 10px;
-            border-radius: 6px;
-            margin: 10px 0;
-            font-size: 11px;
-            color: #93c5fd;
-            line-height: 1.6;
-        }
-        .poster-speed-hint b { color: #60a5fa; }
+        .banner-preview img { max-width: 100%; max-height: 150px; border-radius: 8px; }
+        .speed-hint { background: #172554; border-right: 3px solid #60a5fa; padding: 8px; border-radius: 6px; margin: 8px 0; font-size: 11px; color: #93c5fd; }
+        .speed-hint b { color: #60a5fa; }
 
-        @media (max-width: 480px) { 
-            .stats { grid-template-columns: 1fr; } 
-            .auth-card { padding: 24px 18px; } 
-            .stats-grid { grid-template-columns: 1fr 1fr; }
-            #public-poster-banner .poster-image img { max-height: 250px; }
-            #public-poster-banner .poster-controls { top: 8px; left: 8px; }
-            #public-poster-banner .poster-controls button { width: 24px; height: 24px; font-size: 12px; }
-        }
+        @media (max-width: 480px) { .stats { grid-template-columns: 1fr; } .auth-card { padding: 24px 18px; } .stats-grid { grid-template-columns: 1fr 1fr; } }
     </style>
 </head>
 <body>
@@ -774,15 +292,15 @@
             <div id="auth-admin" class="auth-tab-content">
                 <div class="logo">🦷</div>
                 <h1>مرحباً بك</h1>
-                <p class="sub">أدخل بياناتك للوصول إلى النظام</p>
-                <input type="password" id="login-input" class="input" placeholder="كلمة المرور أو البريد" onkeydown="if(event.key==='Enter') doLoginComplex()">
+                <p class="sub">أدخل بياناتك للوصول إلى النظام</p>                <input type="password" id="login-input" class="input" placeholder="كلمة المرور أو البريد" onkeydown="if(event.key==='Enter') doLoginComplex()">
                 <button class="btn" id="login-btn" onclick="doLoginComplex()">دخول آمن 🔐</button>
                 <span class="link" onclick="switchAuthTab('reg')">📝 تسجيل طبيب جديد</span>
             </div>
             <div id="auth-student" class="auth-tab-content hide">
                 <div class="logo">🎓</div>
                 <h1>دخول الطالب</h1>
-                <p class="sub">أدخل بياناتك كطالب للوصول للمحتوى التعليمي</p>                <input type="text" id="student-id" class="input" placeholder="الرقم الجامعي أو البريد">
+                <p class="sub">أدخل بياناتك كطالب للوصول للمحتوى التعليمي</p>
+                <input type="text" id="student-id" class="input" placeholder="الرقم الجامعي أو البريد">
                 <input type="password" id="student-pass" class="input" placeholder="كلمة المرور" onkeydown="if(event.key==='Enter') doStudentLogin()">
                 <button class="btn btn-green" onclick="doStudentLogin()">دخول الطالب 🎓</button>
                 <span class="link" onclick="switchAuthTab('admin')">← العودة لدخول الإدارة</span>
@@ -822,28 +340,17 @@
             </div>
         </header>
         <main>
-            <!-- 🖼️ بوستر متقدم مع تحكم كامل -->
-            <div id="public-poster-banner" class="card" style="display:none;">
-                <div class="poster-controls">
-                    <button class="btn-close" onclick="closePosterBanner()" title="إغلاق">✕</button>
-                    <button class="btn-del-img hide" id="poster-del-img-btn" onclick="deletePosterComponent('image')" title="حذف الصورة">🖼️</button>
-                    <button class="btn-del-txt hide" id="poster-del-txt-btn" onclick="deletePosterComponent('text')" title="حذف النص">📝</button>
+            <!-- 📢 كتلة البوستر/الإعلان الموحدة -->
+            <div id="public-banner">                <div class="banner-controls">
+                    <button class="banner-btn btn-full" onclick="openBannerImage()" title="عرض بملء الشاشة" id="btn-fullscreen">⛶</button>
+                    <button class="banner-btn btn-close" onclick="closePublicBanner()" title="إغلاق">✕</button>
                 </div>
-                <div class="poster-content">
-                    <div class="poster-image hide" id="poster-image-container">
-                        <img id="public-poster-img" src="" alt="بوستر" onclick="openPosterImage()"                              loading="eager" fetchpriority="high" decoding="async">
-                    </div>
-                    <div class="poster-text hide" id="poster-text-container">
-                        <h4 id="poster-text-title"></h4>
-                        <p id="poster-text-content"></p>
-                    </div>
-                </div>
-                <div class="poster-timer" id="poster-timer-container" style="display:none;">
+                <div class="banner-body" id="banner-body"></div>
+                <div class="banner-timer">
                     <span>يغلق خلال:</span>
-                    <b id="poster-timer-text">10</b> ثوانٍ
-                    <div class="timer-bar"><div class="timer-progress" id="poster-timer-bar"></div></div>
+                    <b id="banner-timer-text">10</b> ثوانٍ
+                    <div class="timer-track"><div class="timer-fill" id="banner-timer-fill"></div></div>
                 </div>
-                <div class="component-badge" id="poster-component-badge"></div>
             </div>
             
             <div id="admin" class="view active">
@@ -864,129 +371,52 @@
                 <div class="logs-container" id="logsList"><div class="empty">📡 جاري تحميل سجلات الدخول...</div></div>
                 <hr style="border:0; border-top:1px dashed #334155; margin:15px 0;">
                 
-                <!-- 🖼️ لوحة تحكم البوستر المتقدم -->
+                <!-- 📢 لوحة تحكم البوستر الموحدة -->
                 <div class="card">
-                    <div class="collapsible-header" onclick="toggleCollapse('poster-admin-container', 'poster-admin-icon')">
-                        <h3>🖼️ البوستر المتقدم - تحكم كامل</h3>
-                        <span id="poster-admin-icon" class="toggle-icon">▼</span>
+                    <div class="collapsible-header" onclick="toggleCollapse('banner-admin-container', 'banner-admin-icon')">
+                        <h3>📢 إدارة البوستر/الإعلان الموحد</h3>
+                        <span id="banner-admin-icon" class="toggle-icon">▼</span>
                     </div>
-                    <div id="poster-admin-container" class="collapsible-content collapsed">
-                        
-                        <div class="poster-admin-card">
-                            <h4 style="color:#60a5fa; margin-bottom:12px; font-size:14px;">⚙️ إعدادات البوستر</h4>
-                            
-                            <!-- تبديل وضع الإضافة -->
-                            <div class="poster-mode-tabs">
-                                <button class="poster-mode-tab active" id="mode-both" onclick="setPosterMode('both')">🎨 صورة + نص</button>
-                                <button class="poster-mode-tab" id="mode-image" onclick="setPosterMode('image')">🖼️ صورة فقط</button>
-                                <button class="poster-mode-tab" id="mode-text" onclick="setPosterMode('text')">📝 نص فقط</button>
-                            </div>                            
-                            <!-- قسم الصورة -->
-                            <div class="poster-form-section" id="poster-image-section">
-                                <h5>🖼️ إعدادات الصورة</h5>
-                                <input type="url" id="poster-url-input" class="input" placeholder="رابط الصورة المباشر (يفضل WebP/JPG مضغوط)" style="margin-bottom:8px;">
-                                <div class="poster-speed-hint">
-                                    💡 <b>نصيحة لتسريع التحميل:</b> استخدم صور بصيغة WebP بحجم أقل من 200KB، أو استخدم روابط CDN مثل Imgix أو Cloudinary للضغط التلقائي.
-                                </div>
-                                <div style="display:flex; gap:8px; margin-top:8px;">
-                                    <button class="btn btn-gray" onclick="optimizeImageLink()" style="flex:1; font-size:11px; padding:10px;">🔧 تحسين الرابط تلقائياً</button>
-                                    <button class="btn btn-gray" onclick="previewPosterImage()" style="flex:1; font-size:11px; padding:10px;">👁️ معاينة الصورة</button>
-                                </div>
+                    <div id="banner-admin-container" class="collapsible-content collapsed">
+                        <div class="banner-admin-card">
+                            <div class="banner-tabs">
+                                <button class="banner-tab active" onclick="setBannerMode('image')">🖼️ صورة</button>
+                                <button class="banner-tab" onclick="setBannerMode('text')">📝 نص</button>
                             </div>
                             
-                            <!-- قسم النص -->
-                            <div class="poster-form-section" id="poster-text-section">
-                                <h5>📝 إعدادات النص</h5>
-                                <input type="text" id="poster-text-title-input" class="input" placeholder="عنوان النص (اختياري)" style="margin-bottom:8px;">
-                                <textarea id="poster-text-input" class="input" placeholder="اكتب نص البوستر هنا..." style="min-height:80px;"></textarea>
+                            <input type="text" id="b-title" class="input" placeholder="عنوان البوستر" style="margin-bottom:10px;">
+                            
+                            <div id="b-img-section">
+                                <input type="url" id="b-img-url" class="input" placeholder="رابط الصورة المباشر (يفضل WebP/JPG < 200KB)">
+                                <div class="speed-hint">💡 <b>لتسريع التحميل:</b> استخدم روابط صور مضغوطة أو حول الصيغة إلى WebP. تجنب الصور الضخمة (>1MB).</div>
+                            </div>
+                                                        <div id="b-text-section" class="hide">
+                                <textarea id="b-text-content" class="input" placeholder="اكتب نص الإعلان هنا..." style="min-height:80px;"></textarea>
                             </div>
                             
-                            <!-- مدة العرض -->
-                            <div class="poster-form-section">
-                                <h5>⏱️ مدة عرض البوستر</h5>
-                                <div class="poster-duration-control">
-                                    <span>ثواني:</span>
-                                    <input type="range" id="poster-duration" min="3" max="120" value="15" oninput="updateDurationDisplay(this.value)">
-                                    <span id="poster-duration-value">15</span>
-                                </div>
-                                <div style="font-size:11px; color:#94a3b8; margin-top:6px;">
-                                    ⚡ ملاحظة: المدة القصيرة (3-10ث) مناسبة للإعلانات السريعة، الطويلة (30-120ث) للمحتوى التعليمي
-                                </div>
+                            <div style="display:flex; gap:10px; align-items:center; margin:12px 0;">
+                                <span style="font-size:12px; color:#94a3b8;">المدة:</span>
+                                <input type="number" id="b-duration" class="input" style="flex:0.5; margin:0;" value="15" min="3" max="120">
+                                <span style="font-size:12px; color:#94a3b8;">ثوانٍ</span>
                             </div>
                             
-                            <!-- خيارات إضافية -->
-                            <div class="poster-form-section">
-                                <h5>🔧 خيارات متقدمة</h5>
-                                <div style="display:flex; flex-wrap:wrap; gap:10px; font-size:12px; color:#cbd5e1;">
-                                    <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
-                                        <input type="checkbox" id="poster-dismissible" checked> قابل للإغلاق يدوياً
-                                    </label>
-                                    <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
-                                        <input type="checkbox" id="poster-auto-close" checked> إغلاق تلقائي بعد المدة
-                                    </label>
-                                    <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
-                                        <input type="checkbox" id="poster-clickable"> فتح الصورة في نافذة جديدة عند النقر
-                                    </label>
-                                </div>
-                            </div>
-                                                        <!-- معاينة حية -->
-                            <div style="margin:15px 0;">
-                                <h5 style="color:#60a5fa; font-size:13px; margin-bottom:8px;">👁️ المعاينة الحية</h5>
-                                <div class="poster-preview-box" id="poster-preview">
-                                    <div class="preview-empty">أضف صورة أو نصاً لمعاينة البوستر...</div>
-                                </div>
+                            <div class="banner-preview" id="b-preview">
+                                <div class="preview-empty">أدخل البيانات للمعاينة...</div>
                             </div>
                             
-                            <!-- أزرار الحفظ -->
                             <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                                <button class="btn btn-green" onclick="saveAdvancedPoster()" style="flex:1; min-width:120px;">💾 نشر البوستر</button>
-                                <button class="btn btn-gray" onclick="previewAdvancedPoster()" style="flex:1; min-width:120px;">👁️ معاينة كاملة</button>
-                                <button class="btn btn-gray" onclick="clearPosterForm()" style="flex:1; min-width:120px;">🔄 تفريغ الحقول</button>
+                                <button class="btn btn-green" onclick="saveBanner()" style="flex:1; min-width:100px;">💾 نشر/تحديث</button>
+                                <button class="btn btn-gray" onclick="previewBanner()" style="flex:1; min-width:100px;">👁️ معاينة</button>
+                                <button class="btn btn-gray" onclick="deleteBanner()" style="flex:1; min-width:100px; background:#7f1d1d;">🗑️ حذف</button>
                             </div>
                         </div>
-                        
-                        <!-- قائمة المكونات النشطة -->
-                        <div class="poster-admin-card">
-                            <h4 style="color:#60a5fa; margin-bottom:12px; font-size:14px;">📋 المكونات النشطة</h4>
-                            <div id="poster-components-list" class="poster-components-list">
-                                <div class="empty">لا توجد مكونات مضافة</div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-
-                <!-- 🪟 كارد الإعلانات الموقوتة (مختصر) -->
-                <div class="card">
-                    <div class="collapsible-header" onclick="toggleCollapse('ann-admin-container', 'ann-admin-icon')">
-                        <h3>📢 الإعلانات الموقوتة للطلاب</h3>
-                        <span id="ann-admin-icon" class="toggle-icon">▼</span>
-                    </div>
-                    <div id="ann-admin-container" class="collapsible-content collapsed">
-                        <div class="ann-admin-card">
-                            <input type="text" id="ann-input-title" class="input" placeholder="عنوان الإعلان *" style="margin-bottom:10px;">
-                            <div class="ann-form-row">
-                                <select id="ann-input-type" class="input" style="flex:1;" onchange="toggleAnnInputMode()">
-                                    <option value="text">📝 نص</option>
-                                    <option value="image">🖼️ صورة (رابط)</option>
-                                </select>
-                                <input type="number" id="ann-input-duration" class="input" placeholder="المدة (ثواني)" value="10" min="3" max="60" style="flex:0 0 120px;">
-                            </div>
-                            <textarea id="ann-input-content" class="input" placeholder="اكتب نص الإعلان هنا..." style="min-height:80px;"></textarea>
-                            <div id="ann-image-url-container" class="hide" style="margin-top:10px;">
-                                <input type="url" id="ann-input-image-url" class="input" placeholder="https://example.com/image.jpg">
-                            </div>
-                            <div style="display:flex; gap:8px; margin-top:12px;">
-                                <button class="btn btn-green" onclick="addAnnouncement()" style="flex:1;">💾 نشر الإعلان</button>
-                                <button class="btn btn-gray" onclick="previewAnnouncement()" style="flex:1;">👁️ معاينة</button>                            </div>
-                        </div>
-                        <div id="admin-announcements-list" class="empty" style="margin-top:10px;">جاري التحميل...</div>
                     </div>
                 </div>
 
                 <div class="card"><h3>📊 إحصائيات المستخدمين</h3><div class="stats"><div class="stat"><div class="stat-num" id="c-p">0</div><div class="stat-label">معلق</div></div><div class="stat"><div class="stat-num" id="c-a">0</div><div class="stat-label">نشط</div></div><div class="stat"><div class="stat-num" id="c-t">0</div><div class="stat-label">الكل</div></div></div></div>
                 <div class="card"><h3>🟢 المستخدمون النشطون الآن</h3><div id="online-users-list" class="empty">جاري التحميل...</div></div>
                 <div class="card"><h3>📅 آخر النشاطات (24 ساعة)</h3><div id="recent-activity-list" class="empty">جاري التحميل...</div></div>
+                <div class="card"><div class="collapsible-header" onclick="toggleCollapse('poster-container', 'poster-icon')"><h3>🖼️ البوستر الإعلاني (قديم)</h3><span id="poster-icon" class="toggle-icon">▼</span></div><div id="poster-container" class="collapsible-content collapsed"><input type="url" id="poster-url-input" class="input" placeholder="رابط الصورة" style="margin-bottom:10px;"><button class="btn btn-green" onclick="savePoster()">💾 حفظ البوستر</button><button class="btn btn-gray" onclick="deletePoster()">🗑️ حذف البوستر</button><div id="poster-preview" style="margin-top:12px; display:none;"><img id="poster-preview-img" style="max-width:100%; max-height:200px; border-radius:8px;"></div></div></div>
                 <div class="card"><div class="collapsible-header" onclick="toggleCollapse('add-case-container', 'add-case-icon')"><h3>➕ إضافة حالات (JSON)</h3><span id="add-case-icon" class="toggle-icon">▼</span></div><div id="add-case-container" class="collapsible-content"><textarea id="json-input" class="input json-input" placeholder='{"id":"x","name":"حالة","cat":"تصنيف","sev":"عالي","keywords":["كلمة"],"signs":"علامات","xray":"أشعة","treat":"علاج","diff":"تفريق"}'></textarea><button class="btn btn-green" onclick="addCasesFromJSON()">💾 حفظ</button></div></div>
                 <div id="activation-requests"></div>
                 <div class="card contributors-section"><div class="collapsible-header" onclick="toggleCollapse('contrib-list', 'contrib-icon')"><h3>🏆 المساهمون</h3><span id="contrib-icon" class="toggle-icon">▼</span></div><div id="contrib-list" class="collapsible-content"><div id="contributors-list-content"><div class="empty">جاري...</div></div></div></div>
@@ -998,10 +428,10 @@
 
             <div id="diag" class="view"><div class="card"><h3>📋 الوصف السريري للحالة</h3><textarea id="sym" placeholder="مثال: ألم خلف الضرس الأخير مع صعوبة فتح الفم ورائحة كريهة..."></textarea><button class="btn" onclick="runDiagnosis()">🔍 تحليل الخبير السريري</button></div><div id="res"></div><button class="btn btn-gray" id="backToAdminBtn" onclick="goAdmin()" style="display:none;">⚙️ العودة للإدارة</button></div>
         </main>
-        <footer><div><a href="https://wa.me/963939436998" target="_blank" class="wa-btn">📱 أرسل ملاحظاتك</a></div><div style="font-size:11px;">تطبيقات الدكتور عطوني | الإصدار v53.0 بوستر متقدم</div></footer>
+        <footer><div><a href="https://wa.me/963939436998" target="_blank" class="wa-btn">📱 أرسل ملاحظاتك</a></div><div style="font-size:11px;">تطبيقات الدكتور عطوني | الإصدار v54.0 كتلة موحدة</div></footer>
     </div>
 
-    <!-- عناصر الإعلانات الموقوتة -->
+    <!-- عناصر الإعلانات الموقوتة (احتفظت بها للتوافق) -->
     <div id="announcement-overlay" class="announcement-overlay"></div>
     <div id="announcement-modal" class="announcement-modal">
         <div class="announcement-header">
@@ -1009,8 +439,7 @@
             <button class="announcement-close" id="ann-close-btn" title="إغلاق">✕</button>
         </div>
         <div class="announcement-content" id="ann-content"></div>
-        <div class="announcement-timer">
-            <span>يغلق تلقائياً خلال:</span>
+        <div class="announcement-timer">            <span>يغلق تلقائياً خلال:</span>
             <b id="ann-timer-text">10</b> ثوانٍ
             <div class="timer-bar"><div class="timer-progress" id="ann-timer-bar"></div></div>
         </div>
@@ -1027,546 +456,93 @@
     <script>
         // إعداد Firebase
         const cfg = { apiKey:"AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE", authDomain:"diagnosis-6ea4b.firebaseapp.com", databaseURL:"https://diagnosis-6ea4b-default-rtdb.firebaseio.com", projectId:"diagnosis-6ea4b" };
-        let db;        try { firebase.initializeApp(cfg); db = firebase.database(); console.log("✅ Firebase متصل"); } catch(e) { console.warn(e); db = null; }
+        let db;
+        try { firebase.initializeApp(cfg); db = firebase.database(); console.log("✅ Firebase متصل"); } catch(e) { console.warn(e); db = null; }
         
         const $ = id => document.getElementById(id);
         const toast = msg => { const t = $('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); };
+        const escapeHtml = s => s ? s.replace(/[&<>]/g, m => m==='&'?'&':m==='<'?'<':'>') : '';
         
-        let allLogsData = [], user = null;
+        let allLogsData = [], user = null, bannerTimer = null, bannerMode = 'image';
+
+        // ========== 📢 نظام البوستر الموحد ==========
+        window.setBannerMode = (m) => {
+            bannerMode = m;
+            document.querySelectorAll('.banner-tab').forEach(b => b.classList.toggle('active', b.textContent.includes(m==='image'?'صورة':'نص')));
+            $('b-img-section')?.classList.toggle('hide', m !== 'image');
+            $('b-text-section')?.classList.toggle('hide', m !== 'text');
+            previewBanner();
+        };
         
-        // ========== 🖼️ نظام البوستر المتقدم ==========
-        
-        let currentPosterMode = 'both'; // both, image, text
-        let posterTimerInterval = null;
-        
-        // تبديل وضع البوستر
-        window.setPosterMode = (mode) => {
-            currentPosterMode = mode;
-            document.querySelectorAll('.poster-mode-tab').forEach(t => t.classList.remove('active'));
-            $(`mode-${mode}`).classList.add('active');
-            
-            // إظهار/إخفاء الأقسام
-            if (mode === 'text') {
-                $('poster-image-section')?.classList.add('hide');
-                $('poster-text-section')?.classList.remove('hide');
-            } else if (mode === 'image') {
-                $('poster-image-section')?.classList.remove('hide');
-                $('poster-text-section')?.classList.add('hide');
+        window.previewBanner = () => {
+            const p = $('b-preview'); if(!p) return;
+            const title = $('b-title')?.value.trim();
+            if(bannerMode === 'image') {
+                const url = $('b-img-url')?.value.trim();
+                p.innerHTML = url ? `<div style="font-weight:600;color:#60a5fa;margin-bottom:6px;">${escapeHtml(title||'')}</div><img src="${url}" loading="lazy" onerror="this.style.display='none'">` : '<div class="preview-empty">أدخل رابط الصورة للمعاينة</div>';
             } else {
-                $('poster-image-section')?.classList.remove('hide');
-                $('poster-text-section')?.classList.remove('hide');
+                const txt = $('b-text-content')?.value.trim();
+                p.innerHTML = txt ? `<div style="font-weight:600;color:#60a5fa;margin-bottom:6px;">${escapeHtml(title||'')}</div><div style="color:#cbd5e1;font-size:13px;">${escapeHtml(txt)}</div>` : '<div class="preview-empty">اكتب النص للمعاينة</div>';
             }
-            previewAdvancedPoster();
         };
-        
-        // تحديث عرض المدة
-        window.updateDurationDisplay = (val) => {
-            if ($('poster-duration-value')) $('poster-duration-value').textContent = val;
-        };
-        
-        // تحسين رابط الصورة تلقائياً
-        window.optimizeImageLink = () => {
-            const input = $('poster-url-input');
-            if (!input || !input.value) return toast('❌ أدخل رابط الصورة أولاً');
-            
-            let url = input.value.trim();
-            
-            // تحسينات تلقائية للروابط الشائعة
-            if (url.includes('googleusercontent.com') || url.includes('blogspot.com')) {
-                url = url.replace(/=s[0-9]+-c/, '=s800'); // زيادة جودة صور بلوجر
-            }
-            if (url.includes('imgur.com')) {
-                url = url.replace('/gallery/', '/').replace('imgur.com', 'i.imgur.com');            }
-            // إضافة معلمات للضغط إذا كان من CDN يدعم ذلك
-            if (!url.includes('?') && (url.includes('.jpg') || url.includes('.png') || url.includes('.webp'))) {
-                // لا نضيف تلقائياً لتجنب كسر الروابط
-            }
-            
-            input.value = url;
-            toast('✅ تم تحسين رابط الصورة');
-            previewPosterImage();
-        };
-        
-        // معاينة صورة البوستر
-        window.previewPosterImage = () => {
-            const url = $('poster-url-input')?.value?.trim();
-            const preview = $('poster-preview');
-            if (!preview) return;
-            
-            if (url && (url.startsWith('http') || url.startsWith('data:'))) {
-                preview.innerHTML = `<img src="${url}" alt="معاينة" loading="lazy" onerror="this.parentElement.innerHTML='<span style=\\'color:#f87171\\'>❌ فشل تحميل الصورة</span>'">`;
+
+        window.saveBanner = () => {
+            if(user?.role !== 'admin') return;
+            const data = { active: true, mode: bannerMode, duration: parseInt($('b-duration').value) || 15, updatedAt: Date.now(), updatedBy: user.name };            if(bannerMode === 'image') {
+                const url = $('b-img-url')?.value.trim();
+                if(!url) return toast('❌ أدخل رابط الصورة');
+                data.imageUrl = url;
             } else {
-                preview.innerHTML = '<div class="preview-empty">أدخل رابط صورة صالح للمعاينة</div>';
+                const txt = $('b-text-content')?.value.trim();
+                if(!txt) return toast('❌ أدخل النص');
+                data.textContent = txt;
             }
+            const title = $('b-title')?.value.trim(); if(title) data.title = title;
+            
+            db.ref('public_banner').set(data).then(()=>{ toast('✅ تم نشر البوستر'); loadPublicBanner(); });
         };
-        
-        // معاينة البوستر المتقدم
-        window.previewAdvancedPoster = () => {
-            const preview = $('poster-preview');
-            if (!preview) return;
-            
-            let html = '';
-            const mode = currentPosterMode;
-            const imgUrl = $('poster-url-input')?.value?.trim();
-            const txtTitle = $('poster-text-title-input')?.value?.trim();
-            const txtContent = $('poster-text-input')?.value?.trim();
-            
-            if ((mode === 'both' || mode === 'image') && imgUrl) {
-                html += `<img src="${imgUrl}" alt="معاينة" loading="lazy" style="max-width:100%;max-height:150px;border-radius:8px;" onerror="this.style.display='none';this.parentElement.innerHTML+='<div style=\\'color:#f87171;font-size:11px\\'>⚠️ لم يتم تحميل الصورة</div>'">`;
-            }
-            if ((mode === 'both' || mode === 'text') && txtContent) {
-                html += `<div class="preview-text">${txtTitle ? `<strong style="color:#60a5fa;display:block;margin-bottom:6px;">${escapeHtml(txtTitle)}</strong>` : ''}${escapeHtml(txtContent)}</div>`;
-            }
-            if (!html) {
-                html = '<div class="preview-empty">أضف صورة أو نصاً لمعاينة البوستر...</div>';
-            }
-            preview.innerHTML = html;
+
+        window.deleteBanner = () => {
+            if(user?.role !== 'admin') return;
+            if(!confirm('حذف البوستر/الإعلان؟')) return;
+            db.ref('public_banner').remove().then(()=>{ toast('🗑️ تم الحذف'); $('public-banner').style.display='none'; });
         };
-        
-        // حفظ البوستر المتقدم
-        window.saveAdvancedPoster = () => {
-            if (user?.role !== 'admin') return;            
-            const duration = parseInt($('poster-duration')?.value) || 15;
-            const dismissible = $('poster-dismissible')?.checked !== false;
-            const autoClose = $('poster-auto-close')?.checked !== false;
-            const clickable = $('poster-clickable')?.checked || false;
+
+        function showPublicBanner(data) {
+            if(!data?.active) { $('public-banner').style.display = 'none'; return; }
+            const banner = $('public-banner'), body = $('banner-body'), timer = $('banner-timer-text'), fill = $('banner-timer-fill');
+            if(!banner) return;
             
-            const posterData = {
-                active: true,
-                duration: duration,
-                dismissible: dismissible,
-                autoClose: autoClose,
-                clickable: clickable,
-                updatedAt: Date.now(),
-                updatedBy: user.name,
-                components: {}
-            };
-            
-            const mode = currentPosterMode;
-            
-            // إضافة مكون الصورة
-            if (mode === 'both' || mode === 'image') {
-                const imgUrl = $('poster-url-input')?.value?.trim();
-                if (imgUrl) {
-                    posterData.components.image = {
-                        type: 'image',
-                        url: imgUrl,
-                        active: true,
-                        addedAt: Date.now()
-                    };
-                }
-            }
-            
-            // إضافة مكون النص
-            if (mode === 'both' || mode === 'text') {
-                const txtTitle = $('poster-text-title-input')?.value?.trim();
-                const txtContent = $('poster-text-input')?.value?.trim();
-                if (txtContent) {
-                    posterData.components.text = {
-                        type: 'text',
-                        title: txtTitle || '',
-                        content: txtContent,
-                        active: true,
-                        addedAt: Date.now()
-                    };
-                }
-            }
-            
-            // التحقق من وجود محتوى على الأقل
-            if (!posterData.components.image && !posterData.components.text) {
-                return toast('❌ يجب إضافة صورة أو نص على الأقل');            }
-            
-            db.ref('advanced_poster').set(posterData).then(() => {
-                toast('✅ تم نشر البوستر المتقدم');
-                loadPublicPoster();
-                loadPosterComponentsList();
-                clearPosterForm();
-            }).catch(e => toast('❌ خطأ: ' + e.message));
-        };
-        
-        // تحميل قائمة مكونات البوستر في الإدارة
-        function loadPosterComponentsList() {
-            if (!db || user?.role !== 'admin') return;
-            const container = $('poster-components-list');
-            if (!container) return;
-            
-            db.ref('advanced_poster').once('value', snap => {
-                if (!snap.exists()) {
-                    container.innerHTML = '<div class="empty">لا توجد مكونات مضافة</div>';
-                    return;
-                }
-                const data = snap.val();
-                if (!data.components || Object.keys(data.components).length === 0) {
-                    container.innerHTML = '<div class="empty">لا توجد مكونات مضافة</div>';
-                    return;
-                }
-                
-                let html = '';
-                Object.entries(data.components).forEach(([key, comp]) => {
-                    if (!comp.active) return;
-                    const isImg = comp.type === 'image';
-                    html += `<div class="poster-component-item ${isImg?'image-mode':'text-mode'}">
-                        <div class="comp-info">
-                            <span class="comp-type">${isImg?'🖼️ صورة':'📝 نص'}</span>
-                            <span class="comp-meta">${isImg ? (comp.url?.substring(0,40)+'...') : (comp.title||comp.content?.substring(0,30)+'...')}</span>
-                        </div>
-                        <div class="comp-actions">
-                            <button class="btn-toggle" onclick="togglePosterComponent('${key}')">${comp.active?'🟢':'🔴'}</button>
-                            <button class="btn-delete" onclick="deletePosterComponent('${key}')">🗑️</button>
-                        </div>
-                    </div>`;
-                });
-                container.innerHTML = html || '<div class="empty">لا توجد مكونات نشطة</div>';
-            });
-        }
-        
-        // تبديل حالة مكون البوستر
-        window.togglePosterComponent = (key) => {
-            if (user?.role !== 'admin') return;
-            db.ref(`advanced_poster/components/${key}`).once('value', snap => {                const comp = snap.val();
-                if (comp) {
-                    db.ref(`advanced_poster/components/${key}`).update({ active: !comp.active })
-                        .then(() => { toast(comp.active ? '⏸️ تم إيقاف المكون' : '✅ تم تفعيل المكون'); loadPosterComponentsList(); loadPublicPoster(); });
-                }
-            });
-        };
-        
-        // حذف مكون فردي من البوستر
-        window.deletePosterComponent = (key) => {
-            if (!confirm(`هل أنت متأكد من حذف هذا ${key==='image'?'الصورة':'النص'} من البوستر؟`)) return;
-            
-            // إذا كان المستخدم من الواجهة العامة
-            if (!user || user.role !== 'admin') {
-                // حذف مؤقت من الواجهة فقط
-                if (key === 'image' && $('poster-image-container')) {
-                    $('poster-image-container').classList.add('hide');
-                    $('public-poster-img').src = '';
-                    updatePosterControls();
-                    toast('🗑️ تم إخفاء الصورة');
-                } else if (key === 'text' && $('poster-text-container')) {
-                    $('poster-text-container').classList.add('hide');
-                    $('poster-text-title').textContent = '';
-                    $('poster-text-content').textContent = '';
-                    updatePosterControls();
-                    toast('🗑️ تم إخفاء النص');
-                }
-                return;
-            }
-            
-            // حذف من قاعدة البيانات (للمدير)
-            db.ref(`advanced_poster/components/${key}`).remove().then(() => {
-                toast('🗑️ تم حذف المكون');
-                loadPosterComponentsList();
-                loadPublicPoster();
-            });
-        };
-        
-        // تحديث أزرار التحكم في البوستر
-        function updatePosterControls() {
-            const banner = $('public-poster-banner');
-            const hasImg = $('poster-image-container')?.classList.contains('hide') === false && $('public-poster-img')?.src;
-            const hasTxt = $('poster-text-container')?.classList.contains('hide') === false && $('poster-text-content')?.textContent;
-            
-            $('poster-del-img-btn')?.classList.toggle('hide', !hasImg);
-            $('poster-del-txt-btn')?.classList.toggle('hide', !hasTxt);
-            
-            // تحديث الشارة
-            const badge = $('poster-component-badge');
-            if (badge) {                if (hasImg && hasTxt) badge.textContent = '🖼️📝 صورة + نص';
-                else if (hasImg) badge.textContent = '🖼️ صورة فقط';
-                else if (hasTxt) badge.textContent = '📝 نص فقط';
-                else badge.textContent = '';
-            }
-        }
-        
-        // تفريغ نموذج البوستر
-        window.clearPosterForm = () => {
-            if ($('poster-url-input')) $('poster-url-input').value = '';
-            if ($('poster-text-title-input')) $('poster-text-title-input').value = '';
-            if ($('poster-text-input')) $('poster-text-input').value = '';
-            if ($('poster-duration')) $('poster-duration').value = 15;
-            if ($('poster-duration-value')) $('poster-duration-value').textContent = '15';
-            if ($('poster-preview')) $('poster-preview').innerHTML = '<div class="preview-empty">أضف صورة أو نصاً لمعاينة البوستر...</div>';
-            setPosterMode('both');
-        };
-        
-        // عرض البوستر المتقدم للطلاب
-        function showAdvancedPoster(data) {
-            const banner = $('public-poster-banner');
-            if (!banner) return;
-            
-            // إعادة تعيين
-            $('poster-image-container')?.classList.add('hide');
-            $('poster-text-container')?.classList.add('hide');
-            $('poster-timer-container').style.display = 'none';
-            $('public-poster-img').src = '';
-            $('poster-text-title').textContent = '';
-            $('poster-text-content').textContent = '';
-            
-            const comps = data.components || {};
-            const duration = parseInt(data.duration) || 15;
-            const dismissible = data.dismissible !== false;
-            const autoClose = data.autoClose !== false;
-            const clickable = data.clickable || false;
-            
-            // عرض الصورة إذا موجودة ونشطة
-            if (comps.image?.active && comps.image.url) {
-                const img = $('public-poster-img');
-                img.src = comps.image.url;
-                img.onclick = clickable ? () => window.open(comps.image.url, '_blank') : null;
-                $('poster-image-container').classList.remove('hide');
-            }
-            
-            // عرض النص إذا موجود ونشط
-            if (comps.text?.active && comps.text.content) {
-                $('poster-text-title').textContent = comps.text.title || '';
-                $('poster-text-content').textContent = comps.text.content;
-                $('poster-text-container').classList.remove('hide');            }
-            
-            // إذا لا يوجد أي مكون، إخفاء البوستر
-            if (!$('poster-image-container').classList.contains('hide') || !$('poster-text-container').classList.contains('hide')) {
-                banner.style.display = 'block';
-                updatePosterControls();
-                
-                // بدء التايمر إذا مطلوب
-                if (autoClose && duration > 0) {
-                    startPosterTimer(duration);
-                }
-                
-                // إعداد زر الإغلاق
-                const closeBtn = banner.querySelector('.btn-close');
-                if (closeBtn) closeBtn.style.display = dismissible ? 'flex' : 'none';
+            body.innerHTML = '';
+            if(data.mode === 'image' && data.imageUrl) {
+                body.innerHTML = `<h4 style="color:#60a5fa;margin-bottom:8px;text-align:center;">${escapeHtml(data.title||'')}</h4><img id="banner-img" class="banner-img" src="${data.imageUrl}" loading="eager" fetchpriority="high" decoding="async" onclick="openBannerImage()">`;
+            } else if(data.mode === 'text' && data.textContent) {
+                body.innerHTML = `<h4 style="color:#60a5fa;margin-bottom:8px;text-align:center;">${escapeHtml(data.title||'')}</h4><div class="banner-text">${escapeHtml(data.textContent)}</div>`;
+                $('btn-fullscreen').style.display = 'none';
             } else {
-                banner.style.display = 'none';
+                banner.style.display = 'none'; return;
             }
-        }
-        
-        // بدء عداد البوستر
-        function startPosterTimer(duration) {
-            $('poster-timer-container').style.display = 'flex';
-            let remaining = duration;
-            $('poster-timer-text').textContent = remaining;
-            $('poster-timer-bar').style.width = '100%';
+            $('btn-fullscreen').style.display = data.mode==='image' ? 'flex' : 'none';
             
-            if (posterTimerInterval) clearInterval(posterTimerInterval);
+            const dur = data.duration || 10; let rem = dur;
+            timer.textContent = rem; fill.style.width = '100%';
+            banner.style.display = 'block';
             
-            posterTimerInterval = setInterval(() => {
-                remaining--;
-                $('poster-timer-text').textContent = remaining;
-                $('poster-timer-bar').style.width = `${(remaining/duration)*100}%`;
-                if (remaining <= 0) {
-                    clearInterval(posterTimerInterval);
-                    closePosterBanner();
-                }
+            if(bannerTimer) clearInterval(bannerTimer);
+            bannerTimer = setInterval(()=>{
+                rem--; timer.textContent = rem; fill.style.width = `${(rem/dur)*100}%`;
+                if(rem<=0) { clearInterval(bannerTimer); banner.style.display='none'; }
             }, 1000);
         }
-        
-        // إغلاق البوستر
-        window.closePosterBanner = () => {
-            if (posterTimerInterval) clearInterval(posterTimerInterval);
-            $('public-poster-banner').style.display = 'none';
-        };
-        
-        // فتح الصورة في نافذة جديدة
-        window.openPosterImage = () => {
-            const src = $('public-poster-img')?.src;
-            if (src) window.open(src, '_blank');        };
-        
-        // تحميل البوستر المتقدم من قاعدة البيانات
-        function loadPublicPoster() {
-            if (!db) return;
-            
-            // أولاً تحميل البوستر القديم (للتوافق)
-            db.ref('admin_poster').once('value', snap => {
-                if (snap.exists() && snap.val().active) {
-                    const oldPoster = snap.val();
-                    const banner = $('public-poster-banner');
-                    const img = $('public-poster-img');
-                    img.src = oldPoster.url;
-                    banner.style.display = 'block';
-                    img.onerror = () => banner.style.display = 'none';
-                    return; // لا نعرض البوستر المتقدم إذا كان القديم موجوداً
-                }
-            });
-            
-            // ثم تحميل البوستر المتقدم
-            db.ref('advanced_poster').once('value', snap => {
-                if (snap.exists() && snap.val().active) {
-                    showAdvancedPoster(snap.val());
-                } else if (!$('public-poster-banner')?.style?.display || $('public-poster-banner').style.display === 'none') {
-                    // إذا لم يكن هناك بوستر نشط، نضمن إخفاءه
-                    $('public-poster-banner').style.display = 'none';
-                }
-            });
-        }
-        
-        // ========== 🪟 نظام الإعلانات الموقوتة ==========
-        
-        function showAnnouncementModal(ann) {
-            const modal = $('announcement-modal');
-            const overlay = $('announcement-overlay');
-            if (!modal || !overlay) return;
-            
-            $('ann-title').textContent = ann.title || 'إعلان';
-            
-            if (ann.type === 'image' && ann.content?.startsWith('http')) {
-                $('ann-content').innerHTML = `<img src="${ann.content}" alt="إعلان" onerror="this.parentElement.innerHTML='<div style=\\'color:#f87171\\'>❌ فشل تحميل الصورة</div>'">`;
-            } else {
-                $('ann-content').textContent = ann.content || '';
-            }
-            
-            let duration = parseInt(ann.duration) || 10;
-            let remaining = duration;
-            $('ann-timer-text').textContent = remaining;
-            $('ann-timer-bar').style.width = '100%';
-                        const timerInterval = setInterval(() => {
-                remaining--;
-                $('ann-timer-text').textContent = remaining;
-                $('ann-timer-bar').style.width = `${(remaining/duration)*100}%`;
-                if (remaining <= 0) {
-                    clearInterval(timerInterval);
-                    hideAnnouncementModal();
-                }
-            }, 1000);
-            
-            $('ann-footer').innerHTML = ann.dismissible !== false 
-                ? '💡 يمكنك إغلاق هذا الإعلان في أي وقت' 
-                : '⏱️ سيتم الإغلاق تلقائياً';
-            
-            $('ann-close-btn').style.display = ann.dismissible !== false ? 'flex' : 'none';
-            
-            overlay.classList.add('active');
-            modal.classList.add('active');
-            
-            if (!ann.repeatable && user?.id) {
-                const viewed = JSON.parse(localStorage.getItem('viewed_announcements') || '{}');
-                viewed[ann.id] = Date.now();
-                localStorage.setItem('viewed_announcements', JSON.stringify(viewed));
-            }
-        }
 
-        function hideAnnouncementModal() {
-            const modal = $('announcement-modal');
-            const overlay = $('announcement-overlay');
-            if (modal) modal.classList.remove('active');
-            if (overlay) overlay.classList.remove('active');
-        }
-
-        async function checkAndShowAnnouncements() {
-            if (!db || !user || user.role === 'admin') return;
-            try {
-                const viewed = JSON.parse(localStorage.getItem('viewed_announcements') || '{}');
-                const now = Date.now();
-                const snap = await db.ref('admin_announcements').once('value');
-                if (!snap.exists()) return;
-                
-                const announcements = [];
-                snap.forEach(child => {
-                    const ann = { id: child.key, ...child.val() };
-                    if (!ann.active) return;
-                    if (ann.startTime && now < ann.startTime) return;
-                    if (ann.endTime && now > ann.endTime) return;
-                    if (ann.targetRole && ann.targetRole !== 'all' && ann.targetRole !== user.role) return;
-                    if (!ann.repeatable && viewed[ann.id]) return;
-                    announcements.push(ann);                });
-                
-                if (announcements.length > 0) {
-                    announcements.sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
-                    showAnnouncementModal(announcements[0]);
-                }
-            } catch (e) { console.error('خطأ في جلب الإعلانات:', e); }
-        }
-
-        function loadAnnouncementsAdmin() {
-            if (!db || user?.role !== 'admin') return;
-            db.ref('admin_announcements').orderByChild('createdAt').once('value', snap => {
-                const container = $('admin-announcements-list');
-                if (!container) return;
-                if (!snap.exists()) { container.innerHTML = '<div class="empty">📭 لا توجد إعلانات مضافة</div>'; return; }
-                
-                let html = '';
-                snap.forEach(child => {
-                    const ann = { id: child.key, ...child.val() };
-                    const statusBadge = ann.active ? '<span class="ann-badge active">نشط</span>' : '<span class="ann-badge inactive">غير نشط</span>';
-                    const typeBadge = ann.type === 'image' ? '<span class="ann-badge image">🖼️ صورة</span>' : '<span class="ann-badge text">📝 نص</span>';
-                    html += `<div class="ann-list-item ${ann.active ? '' : 'inactive'}">
-                        <div style="flex:1; min-width:0;">
-                            <div style="font-weight:600; color:#60a5fa; margin-bottom:4px;">${escapeHtml(ann.title || 'بدون عنوان')}</div>
-                            <div style="font-size:11px; color:#94a3b8; display:flex; gap:8px; flex-wrap:wrap;">
-                                ${typeBadge} <span>⏱️ ${ann.duration||10}s</span> <span>🎯 ${ann.targetRole==='all'?'الكل':ann.targetRole}</span>
-                            </div>
-                        </div>
-                        <div style="display:flex; gap:4px; align-items:center;">
-                            <button class="act-btn ${ann.active?'act-del':'act-ok'}" onclick="toggleAnnouncementActive('${ann.id}', ${!ann.active})">${ann.active ? '🔴' : '🟢'}</button>
-                            <button class="act-btn act-del" onclick="deleteAnnouncement('${ann.id}')">🗑️</button>
-                        </div>
-                    </div>`;
-                });
-                container.innerHTML = html;
-            });
-        }
-
-        window.toggleAnnInputMode = () => {
-            const type = $('ann-input-type')?.value;
-            const textContainer = $('ann-input-content')?.parentElement;
-            const imgContainer = $('ann-image-url-container');
-            if (type === 'image') {
-                if (textContainer) textContainer.classList.add('hide');
-                if (imgContainer) imgContainer.classList.remove('hide');
-            } else {
-                if (textContainer) textContainer.classList.remove('hide');
-                if (imgContainer) imgContainer.classList.add('hide');
-            }
-            previewAnnouncement();        };
-
-        window.addAnnouncement = () => {
-            if (user?.role !== 'admin') return;
-            const title = $('ann-input-title')?.value.trim();
-            const type = $('ann-input-type')?.value || 'text';
-            const content = type === 'image' ? $('ann-input-image-url')?.value.trim() : $('ann-input-content')?.value.trim();
-            const duration = parseInt($('ann-input-duration')?.value) || 10;
-            
-            if (!title || !content) { toast('❌ العنوان والمحتوى مطلوبان'); return; }
-            
-            const newAnn = { title, content, type, duration, active: true, createdAt: Date.now(), createdBy: user.name };
-            db.ref('admin_announcements').push(newAnn).then(() => {
-                toast('✅ تم إضافة الإعلان'); loadAnnouncementsAdmin();
-                if ($('ann-input-title')) $('ann-input-title').value = '';
-                if ($('ann-input-content')) $('ann-input-content').value = '';
-                if ($('ann-input-image-url')) $('ann-input-image-url').value = '';
-            }).catch(e => toast('❌ خطأ: ' + e.message));
-        };
-
-        window.toggleAnnouncementActive = (id, newState) => {
-            if (user?.role !== 'admin') return;
-            db.ref(`admin_announcements/${id}`).update({ active: newState }).then(() => {
-                toast(newState ? '✅ تم تفعيل الإعلان' : '⏸️ تم إيقاف الإعلان'); loadAnnouncementsAdmin();
-            });
-        };
-
-        window.deleteAnnouncement = (id) => {
-            if (user?.role !== 'admin') return;
-            if (!confirm('هل أنت متأكد من حذف هذا الإعلان؟')) return;
-            db.ref(`admin_announcements/${id}`).remove().then(() => { toast('🗑️ تم حذف الإعلان'); loadAnnouncementsAdmin(); });
-        };
-
-        window.previewAnnouncement = () => {
-            const title = $('ann-input-title')?.value || 'عنوان الإعلان';
-            const content = $('ann-input-type')?.value === 'image' ? $('ann-input-image-url')?.value : $('ann-input-content')?.value;
-            const type = $('ann-input-type')?.value || 'text';
-            const preview = $('ann-preview');
-            if (!preview) return;
-            if (type === 'image' && content?.startsWith('http')) {
-                preview.innerHTML = `<img src="${content}" alt="معاينة" onerror="this.parentElement.innerHTML='<span style=\\'color:#f87171\\'>❌ رابط غير صالح</span>'">`;
-            } else {
-                preview.innerHTML = `<div style="text-align:center; line-height:1.6;">${escapeHtml(content || 'اكتب المحتوى لمعاينته هنا...')}</div>`;
-            }
-        };
-
-        // ========== باقي الدوال الأساسية ==========
+        window.openBannerImage = () => { const img=$('banner-img'); if(img?.src) window.open(img.src, '_blank'); };
+        window.closePublicBanner = () => { if(bannerTimer) clearInterval(bannerTimer); $('public-banner').style.display='none'; };
+        window.loadPublicBanner = () => { if(!db) return; db.ref('public_banner').on('value', s=> showPublicBanner(s.val())); };
+        // ========== الدوال الأساسية (كاملة بدون اختصار) ==========
         async function getUserLocation() {
             try {
-                const res = await fetch('https://ipapi.co/json/');                if(res.ok){ const d = await res.json(); return { ip: d.ip || 'غير معروف', country: d.country_name || d.country || 'غير معروف', city: d.city || 'غير معروف', region: d.region || 'غير معروف' }; }
+                const res = await fetch('https://ipapi.co/json/');
+                if(res.ok){ const d = await res.json(); return { ip: d.ip || 'غير معروف', country: d.country_name || d.country || 'غير معروف', city: d.city || 'غير معروف', region: d.region || 'غير معروف' }; }
                 throw new Error();
             } catch(e) {
                 try { const r2 = await fetch('https://api.ipify.org?format=json'); const d2 = await r2.json(); return { ip: d2.ip, country: 'غير معروف', city: 'غير معروف', region: 'غير معروف' }; }
@@ -1577,8 +553,14 @@
         async function recordUserLogin(userId, userName, role, location) {
             if(!db) return false;
             try {
-                await db.ref('login_logs/' + userId).push({ userId, userName, role, ipAddress: location.ip, country: location.country, city: location.city, region: location.region, timestamp: firebase.database.ServerValue.TIMESTAMP, date: new Date().toISOString() });
-                console.log("✅ تم تسجيل دخول:", userName); return true;
+                await db.ref('login_logs/' + userId).push({
+                    userId, userName, role,
+                    ipAddress: location.ip, country: location.country, city: location.city, region: location.region,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP,
+                    date: new Date().toISOString()
+                });
+                console.log("✅ تم تسجيل دخول:", userName);
+                return true;
             } catch(e){ console.error(e); return false; }
         }
         
@@ -1589,91 +571,167 @@
                 if($('logsList')) $('logsList').innerHTML = '<div class="empty">🔄 جاري التحميل...</div>';
                 const snap = await db.ref('login_logs').once('value');
                 const logs = snap.val();
-                if(!logs || Object.keys(logs).length === 0) { if($('logsList')) $('logsList').innerHTML = '<div class="empty">📭 لا توجد سجلات دخول</div>'; updateStatsDisplay(0,0,0,0); return; }
+                if(!logs || Object.keys(logs).length === 0) {
+                    if($('logsList')) $('logsList').innerHTML = '<div class="empty">📭 لا توجد سجلات دخول. اضغط "إنشاء بيانات تجريبية" لعرض أمثلة، أو قم بتسجيل الدخول من متصفح آخر لتظهر البيانات.</div>';
+                    updateStatsDisplay(0,0,0,0);
+                    return;
+                }
                 allLogsData = [];
-                for(const [uid, userLogs] of Object.entries(logs)) { if(userLogs && typeof userLogs === 'object') { for(const [logId, logData] of Object.entries(userLogs)) { if(logData && typeof logData === 'object') allLogsData.push({...logData, userId: uid, logId}); } } }
+                for(const [uid, userLogs] of Object.entries(logs)) {
+                    if(userLogs && typeof userLogs === 'object') {
+                        for(const [logId, logData] of Object.entries(userLogs)) {
+                            if(logData && typeof logData === 'object') allLogsData.push({...logData, userId: uid, logId});
+                        }
+                    }
+                }
                 if(allLogsData.length === 0) { $('logsList').innerHTML = '<div class="empty">📭 لا توجد بيانات صالحة</div>'; return; }
                 allLogsData.sort((a,b)=> (b.timestamp||0) - (a.timestamp||0));
-                const uniqueUsers = new Set(allLogsData.map(l=>l.userId)).size; const total = allLogsData.length; const countries = new Set(allLogsData.map(l=>l.country).filter(c=>c && c!=='غير معروف')).size; const lastWeek = Date.now() - 7*24*3600000; const recent = allLogsData.filter(l=>(l.timestamp||0) > lastWeek).length;
-                updateStatsDisplay(uniqueUsers, total, countries, recent); displayLogs(allLogsData.slice(0,100)); toast(`✅ تم تحميل ${total} سجل دخول`);
+                const uniqueUsers = new Set(allLogsData.map(l=>l.userId)).size;                const total = allLogsData.length;
+                const countries = new Set(allLogsData.map(l=>l.country).filter(c=>c && c!=='غير معروف')).size;
+                const lastWeek = Date.now() - 7*24*3600000;
+                const recent = allLogsData.filter(l=>(l.timestamp||0) > lastWeek).length;
+                updateStatsDisplay(uniqueUsers, total, countries, recent);
+                displayLogs(allLogsData.slice(0,100));
+                toast(`✅ تم تحميل ${total} سجل دخول`);
             } catch(e) { console.error(e); $('logsList').innerHTML = '<div class="empty">❌ خطأ: '+e.message+'</div>'; }
         }
         
-        function updateStatsDisplay(users, logins, countries, recent) { if($('statStudents')) $('statStudents').innerText = users; if($('statLogins')) $('statLogins').innerText = logins; if($('statCountries')) $('statCountries').innerText = countries; if($('statRecent')) $('statRecent').innerText = recent; }
-        function displayLogs(logs) { const container = $('logsList'); if(!container) return; if(!logs.length) { container.innerHTML = '<div class="empty">🔍 لا توجد سجلات مطابقة</div>'; return; } const flags = { 'سوريا':'🇸🇾','مصر':'🇪🇬','السعودية':'🇸🇦','العراق':'🇮🇶','الأردن':'🇯🇴','لبنان':'🇱🇧','فلسطين':'🇵🇸','الإمارات':'🇦🇪','الكويت':'🇰🇼','قطر':'🇶🇦','عمان':'🇴🇲' }; container.innerHTML = logs.map(l => { const date = l.timestamp ? new Date(l.timestamp).toLocaleString('ar-SA',{hour12:true}) : 'تاريخ غير معروف'; const flag = flags[l.country] || '🌍'; const roleIcon = l.role==='admin'?'👑':(l.role==='doc'?'👨‍⚕️':'🎓'); return `<div class="log-card"><div class="log-name-date"><span class="log-name">${roleIcon} ${escapeHtml(l.userName||'مجهول')}</span><span class="log-time">⏰ ${date}</span></div><div class="log-location"><span>${flag} ${escapeHtml(l.country||'غير معروف')}</span><span>📍 ${escapeHtml(l.city||'غير معروف')}</span><span>📡 ${escapeHtml(l.ipAddress||'غير معروف')}</span></div></div>`; }).join(''); }
-        function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m=> m==='&'?'&':m==='<'?'<':'>'); }
+        function updateStatsDisplay(users, logins, countries, recent) {
+            if($('statStudents')) $('statStudents').innerText = users;
+            if($('statLogins')) $('statLogins').innerText = logins;
+            if($('statCountries')) $('statCountries').innerText = countries;
+            if($('statRecent')) $('statRecent').innerText = recent;
+        }
+        
+        function displayLogs(logs) {
+            const container = $('logsList');
+            if(!container) return;
+            if(!logs.length) { container.innerHTML = '<div class="empty">🔍 لا توجد سجلات مطابقة</div>'; return; }
+            const flags = { 'سوريا':'🇸🇾','مصر':'🇪🇬','السعودية':'🇸🇦','العراق':'🇮🇶','الأردن':'🇯🇴','لبنان':'🇱🇧','فلسطين':'🇵🇸','الإمارات':'🇦🇪','الكويت':'🇰🇼','قطر':'🇶🇦','عمان':'🇴🇲' };
+            container.innerHTML = logs.map(l => {
+                const date = l.timestamp ? new Date(l.timestamp).toLocaleString('ar-SA',{hour12:true}) : 'تاريخ غير معروف';
+                const flag = flags[l.country] || '🌍';
+                const roleIcon = l.role==='admin'?'👑':(l.role==='doc'?'👨‍⚕️':'🎓');
+                return `<div class="log-card"><div class="log-name-date"><span class="log-name">${roleIcon} ${escapeHtml(l.userName||'مجهول')}</span><span class="log-time">⏰ ${date}</span></div><div class="log-location"><span>${flag} ${escapeHtml(l.country||'غير معروف')}</span><span>📍 ${escapeHtml(l.city||'غير معروف')}</span><span>📡 ${escapeHtml(l.ipAddress||'غير معروف')}</span></div></div>`;
+            }).join('');
+        }
+        
         window.filterLogs = function() { const t=$('searchInput').value.toLowerCase(); if(!t) displayLogs(allLogsData.slice(0,100)); else displayLogs(allLogsData.filter(l=>(l.userName||'').toLowerCase().includes(t)||(l.country||'').toLowerCase().includes(t)).slice(0,100)); };
         window.refreshTrackingData = function() { loadLoginLogs(); loadOnlineUsers(); loadRecentActivity(); toast("🔄 تحديث..."); };
-        window.generateDemoLogs = async function() { if(!db || user?.role !== 'admin') { toast("غير مصرح"); return; } const check = await db.ref('login_logs').once('value'); if(check.exists() && Object.keys(check.val()).length > 0) { toast("توجد بيانات بالفعل"); return; } const demo = [{ name: "د. أحمد العلي", role: "doc", country: "سوريا", city: "دمشق", ip: "192.168.1.10" }, { name: "د. فاطمة الزهراء", role: "doc", country: "مصر", city: "القاهرة", ip: "41.33.22.11" }, { name: "طالب طب الأسنان", role: "student", country: "السعودية", city: "الرياض", ip: "185.23.45.67" }, { name: "المدير", role: "admin", country: "سوريا", city: "حلب", ip: "94.76.22.44" }, { name: "د. سامر قدور", role: "doc", country: "الأردن", city: "عمان", ip: "89.46.12.34" }]; for(let i=0; i<demo.length; i++) { const u = demo[i]; const uid = "demo_"+i; const ts = Date.now() - i*86400000; await db.ref('login_logs/'+uid).push({ userId: uid, userName: u.name, role: u.role, ipAddress: u.ip, country: u.country, city: u.city, region: u.city, timestamp: ts, date: new Date(ts).toISOString() }); } toast("✅ تم إنشاء 5 سجلات تجريبية"); loadLoginLogs(); };
         
-        function initOnlineCounters() { if(!db) return; if(!sessionStorage.getItem('visitor_counted')) { db.ref('site_stats/total_visitors').transaction(c=>(c||8541)+1); sessionStorage.setItem('visitor_counted','yes'); } db.ref('site_stats/total_visitors').on('value',s=>{ if(s.exists()&&$('header-total-visitors')) $('header-total-visitors').textContent=s.val(); }); db.ref('users').on('value',s=>{ let c=0; if(s.exists()) s.forEach(ch=>{ if(ch.val().state==='online') c++; }); if($('header-online-counter')) $('header-online-counter').textContent=c||1; }); }
+        window.generateDemoLogs = async function() {
+            if(!db || user?.role !== 'admin') { toast("غير مصرح"); return; }
+            const check = await db.ref('login_logs').once('value');
+            if(check.exists() && Object.keys(check.val()).length > 0) { toast("توجد بيانات بالفعل، لا حاجة للإضافة"); return; }
+            const demo = [
+                { name: "د. أحمد العلي", role: "doc", country: "سوريا", city: "دمشق", ip: "192.168.1.10" },
+                { name: "د. فاطمة الزهراء", role: "doc", country: "مصر", city: "القاهرة", ip: "41.33.22.11" },
+                { name: "طالب طب الأسنان", role: "student", country: "السعودية", city: "الرياض", ip: "185.23.45.67" },
+                { name: "المدير", role: "admin", country: "سوريا", city: "حلب", ip: "94.76.22.44" },
+                { name: "د. سامر قدور", role: "doc", country: "الأردن", city: "عمان", ip: "89.46.12.34" }
+            ];
+            for(let i=0; i<demo.length; i++) {
+                const u = demo[i];
+                const uid = "demo_"+i;
+                const ts = Date.now() - i*86400000;
+                await db.ref('login_logs/'+uid).push({
+                    userId: uid, userName: u.name, role: u.role,                    ipAddress: u.ip, country: u.country, city: u.city, region: u.city,
+                    timestamp: ts, date: new Date(ts).toISOString()
+                });
+            }
+            toast("✅ تم إنشاء 5 سجلات تجريبية");
+            loadLoginLogs();
+        };
         
-        document.addEventListener('DOMContentLoaded', async ()=>{ 
-            initOnlineCounters(); 
-            const saved = localStorage.getItem('d_session'); 
-            if(saved) { 
-                user = JSON.parse(saved); 
-                $('auth').classList.add('hide'); 
-                $('app').classList.remove('hide'); 
-                $('uname').textContent = user.name;                 if(user.role === 'admin') { 
-                    $('admin').classList.add('active'); 
-                    $('diag').classList.remove('active'); 
-                    $('backToAdminBtn').style.display='none'; 
-                    if(db) { 
-                        load(); loadContributors(); loadActivationRequests(); 
-                        loadPublicPoster(); loadPosterComponentsList();
-                        loadAnnouncementsAdmin(); 
-                        setUserPresence(user.id,user.name,'admin'); 
-                        setTimeout(()=>loadLoginLogs(),500); 
-                        startAdminMonitoring(); initAdminNotifications(); 
-                    } 
-                } else { 
-                    $('admin').classList.remove('active'); 
-                    $('diag').classList.add('active'); 
-                    if(user.role === 'doc') $('backToAdminBtn').style.display='block'; 
-                    else $('backToAdminBtn').style.display='none'; 
-                    if(db) { 
-                        loadPublicPoster(); 
-                        checkAndShowAnnouncements(); 
-                        setUserPresence(user.id,user.name,user.role); 
-                    } 
-                } 
-            } 
+        function initOnlineCounters() {
+            if(!db) return;
+            if(!sessionStorage.getItem('visitor_counted')) { db.ref('site_stats/total_visitors').transaction(c=>(c||8541)+1); sessionStorage.setItem('visitor_counted','yes'); }
+            db.ref('site_stats/total_visitors').on('value',s=>{ if(s.exists()&&$('header-total-visitors')) $('header-total-visitors').textContent=s.val(); });
+            db.ref('users').on('value',s=>{ let c=0; if(s.exists()) s.forEach(ch=>{ if(ch.val().state==='online') c++; }); if($('header-online-counter')) $('header-online-counter').textContent=c||1; });
+        }
+        
+        document.addEventListener('DOMContentLoaded', async ()=>{
+            initOnlineCounters();
+            const saved = localStorage.getItem('d_session');
+            if(saved) {
+                user = JSON.parse(saved);
+                $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent = user.name;
+                if(user.role === 'admin') {
+                    $('admin').classList.add('active'); $('diag').classList.remove('active'); $('backToAdminBtn').style.display='none';
+                    if(db) { load(); loadContributors(); loadActivationRequests(); loadPublicPoster(); loadPublicBanner(); setUserPresence(user.id,user.name,'admin'); setTimeout(()=>loadLoginLogs(),500); startAdminMonitoring(); initAdminNotifications(); }
+                } else {
+                    $('admin').classList.remove('active'); $('diag').classList.add('active');
+                    if(user.role === 'doc') $('backToAdminBtn').style.display='block';
+                    else $('backToAdminBtn').style.display='none';
+                    if(db) { loadPublicPoster(); loadPublicBanner(); setUserPresence(user.id,user.name,user.role); recordLoginHistory(user.id,user.name,user.role); }
+                }
+            }
         });
         
         window.switchAuthTab = (t)=>{ document.querySelectorAll('.auth-tab-content').forEach(e=>e.classList.add('hide')); document.querySelectorAll('.auth-tab').forEach(e=>e.classList.remove('active')); if(t==='admin'){ $('auth-admin').classList.remove('hide'); $('tab-admin').classList.add('active'); } else if(t==='student'){ $('auth-student').classList.remove('hide'); $('tab-student').classList.add('active'); } else { $('auth-reg').classList.remove('hide'); $('tab-reg').classList.add('active'); } };
         window.toggleCollapse = (c,i)=>{ const e=$(c),ic=$(i); if(e.classList.contains('collapsed')){ e.classList.remove('collapsed'); ic.style.transform='rotate(0deg)'; } else { e.classList.add('collapsed'); ic.style.transform='rotate(-90deg)'; } };
         
         // الدردشة
-        let pendingImage = null; window.toggleChat=()=>{ $('chat-modal').classList.toggle('active'); if($('chat-modal').classList.contains('active')) loadChatMessages(); }; function handleImageSelect(inp){ if(inp.files[0]){ const f=inp.files[0],rd=new FileReader(); rd.onload=e=>{ pendingImage={data:e.target.result,name:f.name}; $('preview-img').src=e.target.result; $('preview-name').textContent=f.name.substring(0,20)+'...'; $('image-preview-area').style.display='flex'; toast('✅ تم اختيار الصورة'); }; rd.readAsDataURL(f); } } function cancelImage(){ pendingImage=null; $('image-preview-area').style.display='none'; $('chat-img-input').value=''; } window.deleteChatMessage=(key)=>{ if(!db||!user) return; db.ref(`public_chat/${key}`).once('value',s=>{ const m=s.val(); if(!m) return; if(user.name===m.user||user.role==='admin'){ if(confirm('حذف؟')) db.ref(`public_chat/${key}`).remove().then(()=>toast('تم الحذف')); } else toast('لا يمكنك الحذف'); }); }; function loadChatMessages(){ if(!db) return; db.ref('public_chat').limitToLast(50).on('value',s=>{ let h=''; if(s.exists()) s.forEach(c=>{ const m=c.val(),k=c.key; let react='',img='',del=''; if(m.reactions) Object.entries(m.reactions).forEach(([e,u])=>react+=`<span class="reaction-tag">${e} ${u.length}</span>`); if(m.image) img=`<div class="chat-img-container"><img src="${m.image}" class="chat-img" onclick="window.open(this.src)"></div>`; if(user && (user.name===m.user||user.role==='admin')) del=`<button class="delete-msg-btn" onclick="deleteChatMessage('${k}')">🗑️</button>`; h+=`<div class="chat-msg ${m.user==='المدير'?'admin':''}"><div class="chat-meta"><b>${m.user}</b><span>${new Date(m.date).toLocaleTimeString()}</span></div><div>${m.text||''}</div>${img}<div class="msg-actions"><div class="reactions-display">${react}</div><div><button class="reaction-btn" onclick="toggleReactionPicker('${k}')">😊</button>${del}</div></div><div id="react-picker-${k}" class="emoji-picker-msg">${['👍','❤️','😂','😮','😢','🦷'].map(e=>`<span class="emoji-item" onclick="addReaction('${k}','${e}')">${e}</span>`).join('')}</div></div>`; }); else h='<div class="empty">لا توجد رسائل</div>'; $('chat-body').innerHTML=h; $('chat-body').scrollTop=$('chat-body').scrollHeight; }); } window.addReaction=(k,e)=>{ if(!user) return; db.ref(`public_chat/${k}/reactions/${e}`).transaction(cur=>{ if(!cur) return [user.name]; if(cur.includes(user.name)) return cur.filter(u=>u!==user.name); return [...cur,user.name]; }); $(`react-picker-${k}`).classList.remove('active'); }; function sendChatMessage(){ if(!db) return; const t=$('chat-input').value.trim(); if(!t&&!pendingImage) return; if(!user) return; let obj={user:user.name,date:Date.now(),text:t}; if(pendingImage){ obj.image=pendingImage.data; obj.imageName=pendingImage.name; } db.ref('public_chat').push(obj).then(()=>{ $('chat-input').value=''; cancelImage(); toast('تم الإرسال'); }); } const inputEmojis=['🦷','👅','😷','🤕','💉','✅','⚠️','👍','👎','😂','😢','😡','🤔']; const inputPicker=$('emoji-picker-input'); inputEmojis.forEach(e=>{ const s=document.createElement('span'); s.className='emoji-item'; s.textContent=e; s.onclick=()=>{ $('chat-input').value+=e; $('chat-input').focus(); }; inputPicker.appendChild(s); }); window.toggleInputEmoji=()=>{ inputPicker.classList.toggle('active'); };
+        let pendingImage = null;
+        window.toggleChat=()=>{ $('chat-modal').classList.toggle('active'); if($('chat-modal').classList.contains('active')) loadChatMessages(); };
+        function handleImageSelect(inp){ if(inp.files[0]){ const f=inp.files[0],rd=new FileReader(); rd.onload=e=>{ pendingImage={data:e.target.result,name:f.name}; $('preview-img').src=e.target.result; $('preview-name').textContent=f.name.substring(0,20)+'...'; $('image-preview-area').style.display='flex'; toast('✅ تم اختيار الصورة'); }; rd.readAsDataURL(f); } }
+        function cancelImage(){ pendingImage=null; $('image-preview-area').style.display='none'; $('chat-img-input').value=''; }
+        window.deleteChatMessage=(key)=>{ if(!db||!user) return; db.ref(`public_chat/${key}`).once('value',s=>{ const m=s.val(); if(!m) return; if(user.name===m.user||user.role==='admin'){ if(confirm('حذف؟')) db.ref(`public_chat/${key}`).remove().then(()=>toast('تم الحذف')); } else toast('لا يمكنك الحذف'); }); };
+        function loadChatMessages(){ if(!db) return; db.ref('public_chat').limitToLast(50).on('value',s=>{ let h=''; if(s.exists()) s.forEach(c=>{ const m=c.val(),k=c.key; let react='',img='',del=''; if(m.reactions) Object.entries(m.reactions).forEach(([e,u])=>react+=`<span class="reaction-tag">${e} ${u.length}</span>`); if(m.image) img=`<div class="chat-img-container"><img src="${m.image}" class="chat-img" onclick="window.open(this.src)"></div>`; if(user && (user.name===m.user||user.role==='admin')) del=`<button class="delete-msg-btn" onclick="deleteChatMessage('${k}')">🗑️</button>`; h+=`<div class="chat-msg ${m.user==='المدير'?'admin':''}"><div class="chat-meta"><b>${m.user}</b><span>${new Date(m.date).toLocaleTimeString()}</span></div><div>${m.text||''}</div>${img}<div class="msg-actions"><div class="reactions-display">${react}</div><div><button class="reaction-btn" onclick="toggleReactionPicker('${k}')">😊</button>${del}</div></div><div id="react-picker-${k}" class="emoji-picker-msg">${['👍','❤️','😂','😮','😢','🦷'].map(e=>`<span class="emoji-item" onclick="addReaction('${k}','${e}')">${e}</span>`).join('')}</div></div>`; }); else h='<div class="empty">لا توجد رسائل</div>'; $('chat-body').innerHTML=h; $('chat-body').scrollTop=$('chat-body').scrollHeight; }); }
+        window.addReaction=(k,e)=>{ if(!user) return; db.ref(`public_chat/${k}/reactions/${e}`).transaction(cur=>{ if(!cur) return [user.name]; if(cur.includes(user.name)) return cur.filter(u=>u!==user.name); return [...cur,user.name]; }); $(`react-picker-${k}`).classList.remove('active'); };
+        function sendChatMessage(){ if(!db) return; const t=$('chat-input').value.trim(); if(!t&&!pendingImage) return; if(!user) return; let obj={user:user.name,date:Date.now(),text:t}; if(pendingImage){ obj.image=pendingImage.data; obj.imageName=pendingImage.name; } db.ref('public_chat').push(obj).then(()=>{ $('chat-input').value=''; cancelImage(); toast('تم الإرسال'); }); }
+        const inputEmojis=['🦷','👅','😷','🤕','💉','✅','⚠️','👍','👎','😂','😢','😡','🤔'];
+        const inputPicker=$('emoji-picker-input'); inputEmojis.forEach(e=>{ const s=document.createElement('span'); s.className='emoji-item'; s.textContent=e; s.onclick=()=>{ $('chat-input').value+=e; $('chat-input').focus(); }; inputPicker.appendChild(s); });
+        window.toggleInputEmoji=()=>{ inputPicker.classList.toggle('active'); };
         
-        // البوستر القديم (للتوافق)
-        window.savePoster=()=>{ if(user?.role!=='admin') return; const u=$('poster-url-input')?.value?.trim(); if(!u) return; db.ref('admin_poster').set({url:u,addedBy:user.name,date:Date.now(),active:true}).then(()=>{ toast('تم حفظ البوستر'); $('poster-url-input').value=''; loadPublicPoster(); }); }; 
-        window.deletePoster=()=>{ if(user?.role!=='admin') return; if(confirm('حذف البوستر القديم؟')) db.ref('admin_poster').remove().then(()=>{ toast('تم الحذف'); $('public-poster-banner').style.display='none'; }); };
+        // البوستر القديم        window.savePoster=()=>{ if(user?.role!=='admin') return; const u=$('poster-url-input').value.trim(); if(!u) return; db.ref('admin_poster').set({url:u,addedBy:user.name,date:Date.now(),active:true}).then(()=>{ toast('تم حفظ البوستر'); $('poster-url-input').value=''; loadPublicPoster(); if($('poster-preview-img')){ $('poster-preview-img').src=u; $('poster-preview').style.display='block'; } }); };
+        window.deletePoster=()=>{ if(user?.role!=='admin') return; if(confirm('حذف؟')) db.ref('admin_poster').remove().then(()=>{ toast('تم الحذف'); $('public-poster-banner').style.display='none'; $('poster-preview').style.display='none'; }); };
+        function loadPublicPoster(){ if(!db) return; db.ref('admin_poster').once('value',s=>{ const b=$('public-poster-banner'),i=$('public-poster-img'); if(s.exists()&&s.val().active){ i.src=s.val().url; b.style.display='block'; i.onerror=()=>b.style.display='none'; } else b.style.display='none'; }); }
+        window.closePosterBanner=()=>{ $('public-poster-banner').style.display='none'; };
         
         // الإشعارات والحضور
-        async function requestNotificationPermission(){ if("Notification"in window&&Notification.permission!=="denied") await Notification.requestPermission(); } function initAdminNotifications(){ if(user?.role==='admin'){ requestNotificationPermission(); listenForNewUsers(); } } function listenForNewUsers(){ if(!db) return; db.ref('users').on('child_added',s=>{ const u=s.val(); if(u&&u.date&&(Date.now()-u.date<5000)) toast(`📢 مستخدم جديد: ${u.name}`); }); } let presenceInterval=null; function setUserPresence(uid,nm,r){ if(!db) return; const ref=db.ref(`users/${uid}`); db.ref('.info/connected').on('value',s=>{ if(s.val()===true){ ref.child('state').set('online'); ref.child('last_seen').set(Date.now()); ref.child('state').onDisconnect().set('offline'); ref.child('last_seen').onDisconnect().set(Date.now()); if(presenceInterval) clearInterval(presenceInterval); presenceInterval=setInterval(()=>{ if(user&&user.id===uid) ref.child('last_seen').set(Date.now()); else clearInterval(presenceInterval); },60000); } }); } function recordLoginHistory(uid,nm,r){ if(db) db.ref('login_history').push({userId:uid,name:nm,role:r,timestamp:Date.now()}); } function loadOnlineUsers(){ if(!db||user?.role!=='admin') return; db.ref('users').orderByChild('state').equalTo('online').once('value',s=>{ let h=''; if(s.exists()) s.forEach(c=>{ const u=c.val(); h+=`<div class="online-user">🟢 <b>${u.name||'مجهول'}</b> (${u.role||'طبيب'}) – نشاط: ${new Date(u.last_seen).toLocaleString()}</div>`; }); else h='<div class="empty">لا يوجد مستخدمون نشطون</div>'; $('#online-users-list').innerHTML=h; }); } function loadRecentActivity(){ if(!db||user?.role!=='admin') return; const since=Date.now()-24*3600000; db.ref('login_history').orderByChild('timestamp').startAt(since).once('value',s=>{ if(s.exists()){ let items=[]; s.forEach(c=>items.push(c.val())); items.sort((a,b)=>b.timestamp-a.timestamp); $('#recent-activity-list').innerHTML=items.map(a=>`<div class="activity-item">📌 ${a.name} (${a.role}) – ${new Date(a.timestamp).toLocaleString()}</div>`).join(''); } else $('#recent-activity-list').innerHTML='<div class="empty">لا توجد أنشطة</div>'; }); } function startAdminMonitoring(){ if(user?.role==='admin'){ loadOnlineUsers(); loadRecentActivity(); setInterval(()=>{ loadOnlineUsers(); loadRecentActivity(); },10000); } }
+        async function requestNotificationPermission(){ if("Notification"in window&&Notification.permission!=="denied") await Notification.requestPermission(); }
+        function initAdminNotifications(){ if(user?.role==='admin'){ requestNotificationPermission(); listenForNewUsers(); } }
+        function listenForNewUsers(){ if(!db) return; db.ref('users').on('child_added',s=>{ const u=s.val(); if(u&&u.date&&(Date.now()-u.date<5000)) toast(`📢 مستخدم جديد: ${u.name}`); }); }
+        let presenceInterval=null;
+        function setUserPresence(uid,nm,r){ if(!db) return; const ref=db.ref(`users/${uid}`); db.ref('.info/connected').on('value',s=>{ if(s.val()===true){ ref.child('state').set('online'); ref.child('last_seen').set(Date.now()); ref.child('state').onDisconnect().set('offline'); ref.child('last_seen').onDisconnect().set(Date.now()); if(presenceInterval) clearInterval(presenceInterval); presenceInterval=setInterval(()=>{ if(user&&user.id===uid) ref.child('last_seen').set(Date.now()); else clearInterval(presenceInterval); },60000); } }); }
+        function recordLoginHistory(uid,nm,r){ if(db) db.ref('login_history').push({userId:uid,name:nm,role:r,timestamp:Date.now()}); }
+        function loadOnlineUsers(){ if(!db||user?.role!=='admin') return; db.ref('users').orderByChild('state').equalTo('online').once('value',s=>{ let h=''; if(s.exists()) s.forEach(c=>{ const u=c.val(); h+=`<div class="online-user">🟢 <b>${u.name||'مجهول'}</b> (${u.role||'طبيب'}) – نشاط: ${new Date(u.last_seen).toLocaleString()}</div>`; }); else h='<div class="empty">لا يوجد مستخدمون نشطون</div>'; $('#online-users-list').innerHTML=h; }); }
+        function loadRecentActivity(){ if(!db||user?.role!=='admin') return; const since=Date.now()-24*3600000; db.ref('login_history').orderByChild('timestamp').startAt(since).once('value',s=>{ if(s.exists()){ let items=[]; s.forEach(c=>items.push(c.val())); items.sort((a,b)=>b.timestamp-a.timestamp); $('#recent-activity-list').innerHTML=items.map(a=>`<div class="activity-item">📌 ${a.name} (${a.role}) – ${new Date(a.timestamp).toLocaleString()}</div>`).join(''); } else $('#recent-activity-list').innerHTML='<div class="empty">لا توجد أنشطة</div>'; }); }
+        function startAdminMonitoring(){ if(user?.role==='admin'){ loadOnlineUsers(); loadRecentActivity(); setInterval(()=>{ loadOnlineUsers(); loadRecentActivity(); },10000); } }
         
         // دوال الدخول والخروج
-        const SECRET_KEY="9591melas"; window.doStudentLogin = async()=>{ const sid=$('student-id').value.trim(), sp=$('student-pass').value.trim(); if(!sid||!sp) return toast('أكمل الحقول'); if(sp.length>=4){ const uid='student_'+Date.now(), un='طالب: '+sid, loc=await getUserLocation(); user={name:un,role:'student',id:uid}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; $('admin').classList.remove('active'); $('diag').classList.add('active'); if(db){ loadPublicPoster(); checkAndShowAnnouncements(); setUserPresence(uid,un,'student'); recordLoginHistory(uid,un,'student'); await recordUserLogin(uid,un,'student',loc); } toast('✅ أهلاً بك'); } else toast('❌ كلمة مرور قصيرة'); }; const doLoginComplex = async()=>{ const inp=$('login-input').value.trim(), btn=$('login-btn'); if(!inp) return; btn.disabled=true; btn.textContent='⏳...'; const loc=await getUserLocation(); if(inp===SECRET_KEY||inp.split('').reverse().join('')===SECRET_KEY){ user={name:'المدير',role:'admin',id:'admin_master'}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent='المدير'; $('admin').classList.add('active'); $('diag').classList.remove('active'); if(db){ load(); loadContributors(); loadActivationRequests(); loadPublicPoster(); loadPosterComponentsList(); loadAnnouncementsAdmin(); setUserPresence('admin_master','المدير','admin'); recordLoginHistory('admin_master','المدير','admin'); await recordUserLogin('admin_master','المدير','admin',loc); setTimeout(()=>loadLoginLogs(),500); startAdminMonitoring(); initAdminNotifications(); } toast('✅ تم الدخول كمدير'); btn.disabled=false; btn.textContent='دخول آمن 🔐'; return; } if(!db){ toast('❌ لا اتصال'); btn.disabled=false; return; } try{ const s=await db.ref('users').orderByChild('email').equalTo(inp).once('value'); let f=null; if(s.exists()) s.forEach(c=>{ f={id:c.key,...c.val()}; }); if(!f){ const s2=await db.ref('users').orderByChild('name').equalTo(inp).once('value'); if(s2.exists()) s2.forEach(c=>{ f={id:c.key,...c.val()}; }); } if(!f) toast('❌ بيانات غير صحيحة'); else if(f.status==='pending') toast('⏳ قيد المراجعة'); else { user={...f,role:'doc'}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; $('admin').classList.remove('active'); $('diag').classList.add('active'); updateUserStats(); if(db){ loadPublicPoster(); checkAndShowAnnouncements(); setUserPresence(user.id,user.name,'doc'); recordLoginHistory(user.id,user.name,'doc'); await recordUserLogin(user.id,user.name,'doc',loc); } toast('✅ أهلاً د/'+user.name); } }catch(err){ toast('❌ خطأ: '+err.message); } finally{ btn.disabled=false; btn.textContent='دخول آمن 🔐'; } }; const doRegister=()=>{ const n=$('r-name').value.trim(), e=$('r-email').value.trim().toLowerCase(), p=$('r-pass').value; if(!n||!e||!p) return; if(p.length<6) return toast('كلمة مرور 6 أحرف+'); if(!db) return; db.ref('users').push({name:n,email:e,pass:p,status:'pending',date:Date.now(),corrections:0}).then(()=>{ toast('✅ تم الإرسال'); setTimeout(()=>switchAuthTab('admin'),2000); }); }; const updateUserStats=()=>{ if(user?.id&&user.role==='doc'&&db) db.ref('users/'+user.id).once('value',s=>{ const d=s.val(); if(d?.corrections!==undefined){ $('user-corrections').textContent=d.corrections; $('user-stats').style.display='inline'; } }); }; const goDiag=()=>{ $('admin').classList.remove('active'); $('diag').classList.add('active'); $('backToAdminBtn').style.display='block'; if(user?.role==='doc') updateUserStats(); }; const goAdmin=()=>{ if(user && user.role === 'admin') { $('diag').classList.remove('active'); $('admin').classList.add('active'); $('backToAdminBtn').style.display='none'; if(db){ load(); loadContributors(); loadActivationRequests(); loadOnlineUsers(); loadRecentActivity(); loadLoginLogs(); loadPosterComponentsList(); loadAnnouncementsAdmin(); } } }; const doLogout=()=>{ if(db && user && user.id) { db.ref(`users/${user.id}/state`).set('offline'); if(presenceInterval) clearInterval(presenceInterval); } localStorage.removeItem('d_session'); location.reload(); };
+        const SECRET_KEY="9591melas";
+        window.doStudentLogin = async()=>{ const sid=$('student-id').value.trim(), sp=$('student-pass').value.trim(); if(!sid||!sp) return toast('أكمل الحقول'); if(sp.length>=4){ const uid='student_'+Date.now(), un='طالب: '+sid, loc=await getUserLocation(); user={name:un,role:'student',id:uid}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; $('admin').classList.remove('active'); $('diag').classList.add('active'); if(db){ loadPublicPoster(); loadPublicBanner(); setUserPresence(uid,un,'student'); recordLoginHistory(uid,un,'student'); await recordUserLogin(uid,un,'student',loc); } toast('✅ أهلاً بك'); } else toast('❌ كلمة مرور قصيرة'); };
+        const doLoginComplex = async()=>{ const inp=$('login-input').value.trim(), btn=$('login-btn'); if(!inp) return; btn.disabled=true; btn.textContent='⏳...'; const loc=await getUserLocation(); if(inp===SECRET_KEY||inp.split('').reverse().join('')===SECRET_KEY){ user={name:'المدير',role:'admin',id:'admin_master'}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent='المدير'; $('admin').classList.add('active'); $('diag').classList.remove('active'); if(db){ load(); loadContributors(); loadActivationRequests(); loadPublicPoster(); loadPublicBanner(); setUserPresence('admin_master','المدير','admin'); recordLoginHistory('admin_master','المدير','admin'); await recordUserLogin('admin_master','المدير','admin',loc); setTimeout(()=>loadLoginLogs(),500); startAdminMonitoring(); initAdminNotifications(); } toast('✅ تم الدخول كمدير'); btn.disabled=false; btn.textContent='دخول آمن 🔐'; return; } if(!db){ toast('❌ لا اتصال'); btn.disabled=false; return; } try{ const s=await db.ref('users').orderByChild('email').equalTo(inp).once('value'); let f=null; if(s.exists()) s.forEach(c=>{ f={id:c.key,...c.val()}; }); if(!f){ const s2=await db.ref('users').orderByChild('name').equalTo(inp).once('value'); if(s2.exists()) s2.forEach(c=>{ f={id:c.key,...c.val()}; }); } if(!f) toast('❌ بيانات غير صحيحة'); else if(f.status==='pending') toast('⏳ قيد المراجعة'); else { user={...f,role:'doc'}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; $('admin').classList.remove('active'); $('diag').classList.add('active'); updateUserStats(); if(db){ loadPublicPoster(); loadPublicBanner(); setUserPresence(user.id,user.name,'doc'); recordLoginHistory(user.id,user.name,'doc'); await recordUserLogin(user.id,user.name,'doc',loc); } toast('✅ أهلاً د/'+user.name); } }catch(err){ toast('❌ خطأ: '+err.message); } finally{ btn.disabled=false; btn.textContent='دخول آمن 🔐'; } };
+        const doRegister=()=>{ const n=$('r-name').value.trim(), e=$('r-email').value.trim().toLowerCase(), p=$('r-pass').value; if(!n||!e||!p) return; if(p.length<6) return toast('كلمة مرور 6 أحرف+'); if(!db) return; db.ref('users').push({name:n,email:e,pass:p,status:'pending',date:Date.now(),corrections:0}).then(()=>{ toast('✅ تم الإرسال'); setTimeout(()=>switchAuthTab('admin'),2000); }); };
+        const updateUserStats=()=>{ if(user?.id&&user.role==='doc'&&db) db.ref('users/'+user.id).once('value',s=>{ const d=s.val(); if(d?.corrections!==undefined){ $('user-corrections').textContent=d.corrections; $('user-stats').style.display='inline'; } }); };
+        const goDiag=()=>{ $('admin').classList.remove('active'); $('diag').classList.add('active'); $('backToAdminBtn').style.display='block'; if(user?.role==='doc') updateUserStats(); };
+        const goAdmin=()=>{ if(user && user.role === 'admin') { $('diag').classList.remove('active'); $('admin').classList.add('active'); $('backToAdminBtn').style.display='none'; if(db){ load(); loadContributors(); loadActivationRequests(); loadOnlineUsers(); loadRecentActivity(); loadLoginLogs(); loadPublicPoster(); loadPublicBanner(); } } };
+        const doLogout=()=>{ if(db && user && user.id) { db.ref(`users/${user.id}/state`).set('offline'); if(presenceInterval) clearInterval(presenceInterval); } localStorage.removeItem('d_session'); location.reload(); };
         
         // إدارة المستخدمين
-        function loadActivationRequests(){ if(!db||user?.role!=='admin') return; db.ref('activation_requests').once('value',s=>{ let h=''; if(s.exists()) s.forEach(c=>{ const r=c.val(); h+=`<div class="admin-alert"><div><b>🎓 ${r.userName}</b></div><div><button class="btn-approve" onclick="approveActivation('${c.key}','${r.userId}')">✅</button><button class="btn-ignore" onclick="ignoreActivation('${c.key}')">❌</button></div></div>`; }); $('activation-requests').innerHTML=h||''; }); } window.approveActivation=(rid,uid)=>{ db.ref('users/'+uid).update({status:'permanent'}); db.ref('activation_requests/'+rid).remove(); toast('✅ تم'); loadActivationRequests(); load(); }; window.ignoreActivation=(rid)=>{ db.ref('activation_requests/'+rid).remove(); loadActivationRequests(); }; function loadContributors(){ if(!db) return; db.ref('users').orderByChild('corrections').limitToLast(5).once('value',s=>{ let h='',c=[]; if(s.exists()) s.forEach(ch=>{ const u=ch.val(); if(u.corrections>0) c.push(u); }); c.reverse().forEach(u=>{ h+=`<div class="contributor-item"><span>${u.name||'مجهول'}</span><span style="color:#60a5fa">${u.corrections} تصحيح</span></div>`; }); $('contributors-list-content').innerHTML=h||'<div class="empty">لا توجد مساهمات</div>'; }); } window.load=()=>{ if(!db||user?.role!=='admin') return; db.ref('users').once('value',s=>{ const users=[]; if(s.exists()) s.forEach(c=>{ users.push({id:c.key,...c.val()}); }); users.sort((a,b)=>(b.date||0)-(a.date||0)); const pending=users.filter(u=>u.status==='pending'); $('c-p').textContent=pending.length; $('c-a').textContent=users.filter(u=>u.status==='active').length; $('c-t').textContent=users.length; $('badge').textContent=pending.length; $('badge').style.display=pending.length?'inline':'none'; $('req-list').innerHTML=pending.length?pending.map(u=>`<div style="background:#172554;padding:10px;border-radius:8px;margin:6px 0;display:flex;justify-content:space-between"><div><b>${u.name}</b></div><div><button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button></div></div>`).join(''):'<div class="empty">لا توجد طلبات</div>'; let t=''; users.forEach(u=>{ t+=`<tr><td>${u.name}</td><td>${u.email}</td><td><span class="status ${u.status==='active'?'st-act':'st-pend'}">${u.status}</span></td><td>${u.corrections||0}</td><td><button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button></td></tr>`; }); $('u-tbl').innerHTML=t; }); }; window.upd=(i,s)=>db.ref('users/'+i).update({status:s}).then(load); window.del=(i)=>{ if(confirm('حذف؟')) db.ref('users/'+i).remove().then(load); };
+        function loadActivationRequests(){ if(!db||user?.role!=='admin') return; db.ref('activation_requests').once('value',s=>{ let h=''; if(s.exists()) s.forEach(c=>{ const r=c.val(); h+=`<div class="admin-alert"><div><b>🎓 ${r.userName}</b></div><div><button class="btn-approve" onclick="approveActivation('${c.key}','${r.userId}')">✅</button><button class="btn-ignore" onclick="ignoreActivation('${c.key}')">❌</button></div></div>`; }); $('activation-requests').innerHTML=h||''; }); }
+        window.approveActivation=(rid,uid)=>{ db.ref('users/'+uid).update({status:'permanent'}); db.ref('activation_requests/'+rid).remove(); toast('✅ تم'); loadActivationRequests(); load(); };
+        window.ignoreActivation=(rid)=>{ db.ref('activation_requests/'+rid).remove(); loadActivationRequests(); };
+        function loadContributors(){ if(!db) return; db.ref('users').orderByChild('corrections').limitToLast(5).once('value',s=>{ let h='',c=[]; if(s.exists()) s.forEach(ch=>{ const u=ch.val(); if(u.corrections>0) c.push(u); }); c.reverse().forEach(u=>{ h+=`<div class="contributor-item"><span>${u.name||'مجهول'}</span><span style="color:#60a5fa">${u.corrections} تصحيح</span></div>`; }); $('contributors-list-content').innerHTML=h||'<div class="empty">لا توجد مساهمات</div>'; }); }
+        window.load=()=>{ if(!db||user?.role!=='admin') return; db.ref('users').once('value',s=>{ const users=[]; if(s.exists()) s.forEach(c=>{ users.push({id:c.key,...c.val()}); }); users.sort((a,b)=>(b.date||0)-(a.date||0)); const pending=users.filter(u=>u.status==='pending'); $('c-p').textContent=pending.length; $('c-a').textContent=users.filter(u=>u.status==='active').length; $('c-t').textContent=users.length; $('badge').textContent=pending.length; $('badge').style.display=pending.length?'inline':'none'; $('req-list').innerHTML=pending.length?pending.map(u=>`<div style="background:#172554;padding:10px;border-radius:8px;margin:6px 0;display:flex;justify-content:space-between"><div><b>${u.name}</b></div><div><button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button></div></div>`).join(''):'<div class="empty">لا توجد طلبات</div>'; let t=''; users.forEach(u=>{ t+=`<tr><td>${u.name}</td><td>${u.email}</td><td><span class="status ${u.status==='active'?'st-act':'st-pend'}">${u.status}</span></td><td>${u.corrections||0}</td><td><button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button></td></tr>`; }); $('u-tbl').innerHTML=t; }); };
+        window.upd=(i,s)=>db.ref('users/'+i).update({status:s}).then(load);
+        window.del=(i)=>{ if(confirm('حذف؟')) db.ref('users/'+i).remove().then(load); };
         
         // التشخيص
-        const STATIC_DB = [ {id:"pericoronitis", name:"التهاب حول ضرس العقل", cat:"جراحة", sev:"عالي", location:"خلف", keywords:["التهاب حول ضرس العقل","غطاء لثوي","صعوبة فتح الفم","رائحة فم","ألم خلف الضرس الأخير"], signs:"انتفاخ حول التاج، صعوبة فتح الفم، رائحة كريهة.", xray:"سن منطمر جزئياً.", treat:"غسل، مضادات، قلع.", diff:"موقع خلفي + غطاء ملتهب + رائحة."}, {id:"caries", name:"تسوس سني", cat:"لبية", sev:"متوسط", location:"سن", keywords:["ألم بارد","ألم حلو","ثقب","حفرة","مسوس"], signs:"تجويف نخرى", xray:"شفافية", treat:"حشوة", diff:"ألم مثير"}, {id:"abscess", name:"خراج ذروي", cat:"عدوى", sev:"طوارئ", location:"سن", keywords:["تورم وجه","وزمة","صديد","قيح","حمى"], signs:"تورم متموج", xray:"شفافية ذروية", treat:"تصريف", diff:"تورم + صديد"} ]; window.runDiagnosis=()=>{ const s=$('sym').value.trim().toLowerCase(); if(!s){ toast('اكتب الأعراض'); return; } let r=STATIC_DB.filter(d=>d.keywords.some(k=>s.includes(k))); let h=r.length?r.map(d=>`<div class="card clinical-report"><div class="report-header"><div class="report-title">🦷 ${d.name}</div><div class="conf-badge conf-high">موثق</div></div><div class="section"><h5>📊 العلامات السريرية:</h5><p>${d.signs}</p></div><div class="section"><h5>🩻 التشخيص الشعاعي:</h5><p>${d.xray}</p></div><div class="section"><h5>💊 خطة العلاج:</h5><p>${d.treat}</p></div><div class="diff-note"><b>💡 التشخيص التفريقي:</b> ${d.diff}</div></div>`).join(''):'<div class="empty">لم يتم العثور على تشخيص دقيق.</div>'; $('res').innerHTML=h; }; window.addCasesFromJSON=()=>{ const i=$('json-input').value.trim(); if(!i) return; try{ const d=JSON.parse(i); if(db) db.ref('cases').push(d).then(()=>{ toast('✅ تم الحفظ'); $('json-input').value=''; }); } catch(e){ toast('❌ خطأ في JSON'); } };
+        const STATIC_DB = [
+            {id:"pericoronitis", name:"التهاب حول ضرس العقل", cat:"جراحة", sev:"عالي", location:"خلف", keywords:["التهاب حول ضرس العقل","غطاء لثوي","صعوبة فتح الفم","رائحة فم","ألم خلف الضرس الأخير"], signs:"انتفاخ حول التاج، صعوبة فتح الفم، رائحة كريهة.", xray:"سن منطمر جزئياً.", treat:"غسل، مضادات، قلع.", diff:"موقع خلفي + غطاء ملتهب + رائحة."},
+            {id:"caries", name:"تسوس سني", cat:"لبية", sev:"متوسط", location:"سن", keywords:["ألم بارد","ألم حلو","ثقب","حفرة","مسوس"], signs:"تجويف نخرى", xray:"شفافية", treat:"حشوة", diff:"ألم مثير"},
+            {id:"abscess", name:"خراج ذروي", cat:"عدوى", sev:"طوارئ", location:"سن", keywords:["تورم وجه","وزمة","صديد","قيح","حمى"], signs:"تورم متموج", xray:"شفافية ذروية", treat:"تصريف", diff:"تورم + صديد"}
+        ];
+        window.runDiagnosis=()=>{ const s=$('sym').value.trim().toLowerCase(); if(!s){ toast('اكتب الأعراض'); return; } let r=STATIC_DB.filter(d=>d.keywords.some(k=>s.includes(k))); let h=r.length?r.map(d=>`<div class="card clinical-report"><div class="report-header"><div class="report-title">🦷 ${d.name}</div><div class="conf-badge conf-high">موثق</div></div><div class="section"><h5>📊 العلامات السريرية:</h5><p>${d.signs}</p></div><div class="section"><h5>🩻 التشخيص الشعاعي:</h5><p>${d.xray}</p></div><div class="section"><h5>💊 خطة العلاج:</h5><p>${d.treat}</p></div><div class="diff-note"><b>💡 التشخيص التفريقي:</b> ${d.diff}</div></div>`).join(''):'<div class="empty">لم يتم العثور على تشخيص دقيق.</div>'; $('res').innerHTML=h; };
+        window.addCasesFromJSON=()=>{ const i=$('json-input').value.trim(); if(!i) return; try{ const d=JSON.parse(i); if(db) db.ref('cases').push(d).then(()=>{ toast('✅ تم الحفظ'); $('json-input').value=''; }); } catch(e){ toast('❌ خطأ في JSON'); } };
         
         // أحداث إضافية
-        document.addEventListener('DOMContentLoaded', () => {            if ($('ann-close-btn')) { $('ann-close-btn').onclick = () => hideAnnouncementModal(); }
+        document.addEventListener('DOMContentLoaded', () => {
             if ($('announcement-overlay')) { $('announcement-overlay').onclick = (e) => { if (e.target === $('announcement-overlay')) hideAnnouncementModal(); }; }
             document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && $('announcement-modal')?.classList.contains('active')) { hideAnnouncementModal(); } });
-            
-            // تهيئة البوستر
-            setPosterMode('both');
-            if ($('poster-duration')) {
-                $('poster-duration').addEventListener('input', function() { updateDurationDisplay(this.value); });
-            }
         });
-    </script>
-</body>
+    </script></body>
 </html>
