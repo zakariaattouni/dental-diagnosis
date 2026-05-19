@@ -47,7 +47,8 @@
         @keyframes twinkle { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
         .auth-screen { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .auth-card { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 30px; width: 100%; max-width: 360px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; }
-        .logo { font-size: 60px; margin-bottom: 15px; }        h1 { font-size: 22px; margin-bottom: 8px; color: #fff; }        .sub { font-size: 13px; color: var(--muted); margin-bottom: 25px; }
+        .logo { font-size: 60px; margin-bottom: 15px; }        h1 { font-size: 22px; margin-bottom: 8px; color: #fff; }
+        .sub { font-size: 13px; color: var(--muted); margin-bottom: 25px; }
         .input { width: 100%; padding: 14px; border: 1px solid #334155; border-radius: 12px; font-size: 15px; text-align: center; margin-bottom: 15px; background: #0f172a; color: #fff; transition: 0.3s; }
         .input:focus { border-color: var(--primary); background: #1e293b; outline: none; box-shadow: 0 0 15px rgba(59,130,246,0.3); }
         .btn { width: 100%; padding: 15px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border: none; border-radius: 12px; color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: transform 0.2s; }
@@ -96,7 +97,8 @@
         th { background: #0f172a; padding: 12px; text-align: right; color: var(--muted); font-weight: 600; border-bottom: 1px solid #334155; }
         td { padding: 10px 12px; border-bottom: 1px solid #334155; }
         tr:hover { background: #334155; }        .status { padding: 4px 8px; border-radius: 20px; font-size: 10px; font-weight: 600; }
-        .st-act { background: #064e3b; color: #34d399; }        .st-pend { background: #451a03; color: #fbbf24; }
+        .st-act { background: #064e3b; color: #34d399; }
+        .st-pend { background: #451a03; color: #fbbf24; }
         .act-btn { padding: 4px 8px; border: none; border-radius: 6px; font-size: 10px; cursor: pointer; margin-left: 4px; font-weight: 600; }
         .act-ok { background: var(--success); color: #fff; }
         .act-del { background: #7f1d1d; color: #fca5a5; }
@@ -145,7 +147,8 @@
         .image-preview { display: flex; align-items: center; gap: 8px; padding: 6px; background: #0f172a; border-radius: 6px; margin-bottom: 6px; }
         .image-preview img { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; }        .image-preview button { background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; }
         .chat-input-row { display: flex; gap: 5px; align-items: center; }
-        .chat-input { flex: 1; padding: 8px; border: 1px solid #334155; border-radius: 20px; font-size: 13px; outline: none; background: #0f172a; color: #fff; }        .chat-tools { display: flex; gap: 5px; }
+        .chat-input { flex: 1; padding: 8px; border: 1px solid #334155; border-radius: 20px; font-size: 13px; outline: none; background: #0f172a; color: #fff; }
+        .chat-tools { display: flex; gap: 5px; }
         .tool-btn { background: none; border: none; font-size: 18px; cursor: pointer; padding: 5px; border-radius: 50%; color: #cbd5e1; }
         .tool-btn:hover { background: #334155; }
         .emoji-picker-input { position: absolute; bottom: 60px; right: 10px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 5px; display: none; grid-template-columns: repeat(6, 1fr); gap: 5px; z-index: 902; width: 200px; }
@@ -194,7 +197,8 @@
             margin: 15px 0;            border: 1px solid #e2e8f0;
         }
         .search-box input { flex: 1; border: none; padding: 10px 0; background: transparent; color: #1e293b; }
-        .search-box input:focus { outline: none; }        .search-icon { color: #94a3b8; font-size: 1.2rem; }
+        .search-box input:focus { outline: none; }
+        .search-icon { color: #94a3b8; font-size: 1.2rem; }
         .logs-container { max-height: 380px; overflow-y: auto; border-radius: 20px; }
         .log-card {
             background: #0f172a;
@@ -243,7 +247,8 @@
         .banner-admin-card { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 16px; margin-bottom: 16px; }
         .banner-tabs { display: flex; gap: 6px; margin-bottom: 12px; background: #0f172a; padding: 4px; border-radius: 10px; border: 1px solid #334155; }
         .banner-tab { flex: 1; padding: 8px; border: none; background: transparent; color: var(--muted); font-size: 12px; font-weight: 600; cursor: pointer; border-radius: 6px; transition: 0.2s; }
-        .banner-tab.active { background: var(--primary); color: #fff; }        .banner-tab:hover:not(.active) { background: #1e293b; color: #cbd5e1; }
+        .banner-tab.active { background: var(--primary); color: #fff; }
+        .banner-tab:hover:not(.active) { background: #1e293b; color: #cbd5e1; }
         .banner-preview {
             background: #0f172a; border: 1px dashed #334155; border-radius: 10px; padding: 15px;
             margin: 12px 0; min-height: 80px; display: flex; align-items: center; justify-content: center;
@@ -292,7 +297,8 @@
             border: 1px solid #475569;
             color: white;
             border-radius: 8px;
-            padding: 6px;            text-align: center;
+            padding: 6px;
+            text-align: center;
             font-size: 13px;
         }
         .multi-image-item button {
@@ -308,6 +314,27 @@
             display: flex;
             gap: 8px;
             margin-top: 8px;
+        }
+        /* صفحة التعريف بالدكتور */
+        .dr-about-container {
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+            line-height: 1.8;
+            color: #cbd5e1;
+            font-size: 15px;
+        }
+        .dr-about-container h2 {
+            color: #60a5fa;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 10px;
+        }
+        .dr-about-content {
+            white-space: pre-wrap;
+            word-break: break-word;
         }
         @media (max-width: 480px) { .stats { grid-template-columns: 1fr; } .auth-card { padding: 24px 18px; } .stats-grid { grid-template-columns: 1fr 1fr; } }
     </style>
@@ -341,7 +368,8 @@
                 <div class="logo">📝</div>
                 <h1>طلب انضمام</h1>
                 <p class="sub">ساهم في تطوير النظام</p>                <input type="text" id="r-name" class="input" placeholder="الاسم الكامل">
-                <input type="email" id="r-email" class="input" placeholder="البريد الإلكتروني">                <input type="password" id="r-pass" class="input" placeholder="كلمة المرور (6 أحرف+)">
+                <input type="email" id="r-email" class="input" placeholder="البريد الإلكتروني">
+                <input type="password" id="r-pass" class="input" placeholder="كلمة المرور (6 أحرف+)">
                 <button class="btn" onclick="doRegister()">📤 إرسال الطلب</button>
                 <span class="link" onclick="switchAuthTab('admin')">← العودة للدخول</span>
             </div>
@@ -366,8 +394,6 @@
                 <span class="badge" id="badge" style="display:none">0</span>
                 <span id="user-stats" class="user-stats" style="display:none">المساهمات: <b id="user-corrections">0</b></span>
                 <span style="font-size:12px;font-weight:600" id="uname">مستخدم</span>
-                <!-- 🆕 زر صفحة الدكتور عطوني -->
-                <button id="dr-page-btn" class="btn btn-gray" onclick="openDrPage()" style="display:none;padding:5px 10px;font-size:11px;">👨‍⚕️ د. عطوني</button>
                 <button class="logout-btn" onclick="doLogout()">خروج</button>
             </div>
         </header>
@@ -377,20 +403,8 @@
                 <div class="banner-body" id="banner-body"></div>
             </div>
             
-            <!-- 📄 صفحة: تعرف إلى الدكتور عطوني -->
-            <div id="dr-atouni-page" class="view" style="display:none;">
-                <div class="card">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
-                        <h3 style="color:#60a5fa;">👨‍⚕️ تعرف إلى الدكتور عطوني</h3>
-                        <button class="btn btn-gray" onclick="closeDrPage()" style="padding:6px 12px;font-size:12px;">✕ إغلاق</button>
-                    </div>
-                    <div id="dr-atouni-content" style="font-size:14px;line-height:1.8;color:#cbd5e1;">
-                        <div class="empty">جاري تحميل المحتوى...</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div id="admin" class="view active">                <div class="tracking-header">
+            <div id="admin" class="view active">
+                <div class="tracking-header">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                         <span style="font-weight: bold;">📍 تتبع دخول المستخدمين</span>
                         <button class="refresh-btn" onclick="refreshTrackingData()" style="background: rgba(255,255,255,0.2); color: white;">⟳ تحديث</button>
@@ -439,7 +453,8 @@
                             <div class="banner-preview" id="b-preview">
                                 <div class="preview-empty">أدخل البيانات للمعاينة...</div>
                             </div>
-                                                        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+                            
+                            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
                                 <button class="btn btn-green" onclick="addBannerItemToList()" style="flex:1; min-width:100px;">➕ إضافة للمعرض</button>
                                 <button class="btn btn-gray" onclick="previewBanner()" style="flex:1; min-width:100px;">👁️ معاينة</button>
                             </div>
@@ -468,27 +483,28 @@
                     </div>
                 </div>
 
-                <!-- 📄 إدارة صفحة: تعرف إلى الدكتور عطوني -->
+                <!-- قسم تحرير صفحة "تعرف إلى الدكتور عطوني" -->
                 <div class="card">
-                    <div class="collapsible-header" onclick="toggleCollapse('dr-admin-container', 'dr-admin-icon')">
-                        <h3>📝 إدارة صفحة "تعرف إلى الدكتور عطوني"</h3>
-                        <span id="dr-admin-icon" class="toggle-icon">▼</span>
+                    <div class="collapsible-header" onclick="toggleCollapse('dr-about-editor', 'dr-editor-icon')">
+                        <h3>📝 تحرير صفحة "تعرف إلى الدكتور عطوني"</h3>
+                        <span id="dr-editor-icon" class="toggle-icon">▼</span>
                     </div>
-                    <div id="dr-admin-container" class="collapsible-content collapsed">
-                        <textarea id="dr-bio-input" class="input" placeholder="اكتب نص التعريف بالدكتور هنا... (يدعم تنسيق بسيط)" style="min-height:200px;font-size:13px;line-height:1.7;"></textarea>
-                        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
-                            <button class="btn btn-green" onclick="saveDrBio()" style="flex:1;min-width:120px;">💾 حفظ المحتوى</button>
-                            <button class="btn btn-gray" onclick="loadDrBioForEdit()" style="flex:1;min-width:120px;">📥 تحميل للتعديل</button>
-                            <button class="btn" style="flex:1;min-width:120px;background:#7f1d1d;" onclick="deleteDrBio()">🗑️ مسح المحتوى</button>
+                    <div id="dr-about-editor" class="collapsible-content collapsed">
+                        <textarea id="dr-about-input" class="input" placeholder="اكتب النص التعريفي الكامل للدكتور عطوني هنا..." style="min-height: 200px;"></textarea>
+                        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                            <button class="btn btn-green" onclick="saveDrAbout()">💾 حفظ النص</button>
+                            <button class="btn btn-gray" onclick="deleteDrAbout()" style="background:#7f1d1d;">🗑️ مسح النص</button>
                         </div>
-                        <div class="speed-hint" style="margin-top:10px;">
-                            💡 <b>نصيحة:</b> يمكنك استخدام <code><b>نص</b></code> للعريض، <code><br></code> لسطر جديد، و <code><ul><li></code> للقوائم.
+                        <div class="speed-hint">✏️ يمكنك كتابة نص طويل، سيظهر للمستخدمين المسجلين في صفحة "تعرف إلى الدكتور عطوني".</div>
+                        <div id="admin-dr-preview" style="margin-top: 12px; background:#0f172a; padding:10px; border-radius:8px;">
+                            <div class="empty" id="admin-dr-preview-text">المعاينة: سيظهر هنا النص المحفوظ</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="card"><h3>📊 إحصائيات المستخدمين</h3><div class="stats"><div class="stat"><div class="stat-num" id="c-p">0</div><div class="stat-label">معلق</div></div><div class="stat"><div class="stat-num" id="c-a">0</div><div class="stat-label">نشط</div></div><div class="stat"><div class="stat-num" id="c-t">0</div><div class="stat-label">الكل</div></div></div></div>
-                <div class="card"><h3>🟢 المستخدمون النشطون الآن</h3><div id="online-users-list" class="empty">جاري التحميل...</div></div>                <div class="card"><h3>📅 آخر النشاطات (24 ساعة)</h3><div id="recent-activity-list" class="empty">جاري التحميل...</div></div>
+                <div class="card"><h3>🟢 المستخدمون النشطون الآن</h3><div id="online-users-list" class="empty">جاري التحميل...</div></div>
+                <div class="card"><h3>📅 آخر النشاطات (24 ساعة)</h3><div id="recent-activity-list" class="empty">جاري التحميل...</div></div>
                 <div class="card"><div class="collapsible-header" onclick="toggleCollapse('poster-container', 'poster-icon')"><h3>🖼️ البوستر الإعلاني (قديم)</h3><span id="poster-icon" class="toggle-icon">▼</span></div><div id="poster-container" class="collapsible-content collapsed"><input type="url" id="poster-url-input" class="input" placeholder="رابط الصورة" style="margin-bottom:10px;"><button class="btn btn-green" onclick="savePoster()">💾 حفظ البوستر</button><button class="btn btn-gray" onclick="deletePoster()">🗑️ حذف البوستر</button><div id="poster-preview" style="margin-top:12px; display:none;"><img id="poster-preview-img" style="max-width:100%; max-height:200px; border-radius:8px;"></div></div></div>
                 <div class="card"><div class="collapsible-header" onclick="toggleCollapse('add-case-container', 'add-case-icon')"><h3>➕ إضافة حالات (JSON)</h3><span id="add-case-icon" class="toggle-icon">▼</span></div><div id="add-case-container" class="collapsible-content"><textarea id="json-input" class="input json-input" placeholder='{"id":"x","name":"حالة","cat":"تصنيف","sev":"عالي","keywords":["كلمة"],"signs":"علامات","xray":"أشعة","treat":"علاج","diff":"تفريق"}'></textarea><button class="btn btn-green" onclick="addCasesFromJSON()">💾 حفظ</button></div></div>
                 <div id="activation-requests"></div>
@@ -499,7 +515,31 @@
                 <a href="https://wa.me/963939436998" target="_blank" class="whatsapp-support"><span class="whatsapp-icon">💚</span><div class="whatsapp-text"><span class="whatsapp-title">تواصل مع الدكتور زكريا مباشرة</span><span class="whatsapp-subtitle">استشارات - أسئلة - دعم فني <span class="whatsapp-badge">متاح 24/7</span></span></div><span style="font-size:1.1rem;">←</span></a>
             </div>
 
-            <div id="diag" class="view"><div class="card"><h3>📋 الوصف السريري للحالة</h3><textarea id="sym" placeholder="مثال: ألم خلف الضرس الأخير مع صعوبة فتح الفم ورائحة كريهة..."></textarea><button class="btn" onclick="runDiagnosis()">🔍 تحليل الخبير السريري</button></div><div id="res"></div><button class="btn btn-gray" id="backToAdminBtn" onclick="goAdmin()" style="display:none;">⚙️ العودة للإدارة</button></div>
+            <div id="diag" class="view">
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 10px;">
+                        <h3>📋 الوصف السريري للحالة</h3>
+                        <button class="btn btn-gray" onclick="showDrAboutPage()" style="width: auto; padding: 8px 15px; margin: 0;">📖 تعرف إلى الدكتور عطوني</button>
+                    </div>
+                    <textarea id="sym" placeholder="مثال: ألم خلف الضرس الأخير مع صعوبة فتح الفم ورائحة كريهة..."></textarea>
+                    <button class="btn" onclick="runDiagnosis()">🔍 تحليل الخبير السريري</button>
+                </div>
+                <div id="res"></div>
+                <button class="btn btn-gray" id="backToAdminBtn" onclick="goAdmin()" style="display:none;">⚙️ العودة للإدارة</button>
+            </div>
+
+            <!-- صفحة "تعرف إلى الدكتور عطوني" الجديدة -->
+            <div id="about-dr" class="view">
+                <div class="card" style="padding: 0;">
+                    <div style="padding: 15px 20px; background: linear-gradient(135deg, #1e3a8a, #0f172a); border-radius: 16px 16px 0 0;">
+                        <h2 style="color: #fff; margin: 0;">📖 تعرف إلى الدكتور عطوني</h2>
+                    </div>
+                    <div class="dr-about-container" id="dr-about-display">
+                        <div class="empty">جاري تحميل المحتوى...</div>
+                    </div>
+                    <button class="btn btn-gray" onclick="goBackFromAbout()" style="margin: 15px; width: auto;">↩️ العودة للتشخيص</button>
+                </div>
+            </div>
         </main>
         <footer><div><a href="https://wa.me/963939436998" target="_blank" class="wa-btn">📱 أرسل ملاحظاتك</a></div><div style="font-size:11px;">تطبيقات الدكتور عطوني | الإصدار v57.0 مستقر</div></footer>
     </div>
@@ -537,7 +577,8 @@
         // 🆕 متغير خاص بالصور المتعددة المؤقتة
         let tempMultiImages = []; // { dataURL, duration }
 
-        // 4️⃣ نظام البوستر المتسلسل (معزول وآمن)        function setBannerMode(m) {
+        // 4️⃣ نظام البوستر المتسلسل (معزول وآمن)
+        function setBannerMode(m) {
             bannerMode = m;
             document.querySelectorAll('.banner-tab').forEach(b => b.classList.toggle('active', b.textContent.includes(m==='image'?'صورة':'نص')));
             if($('b-img-section')) $('b-img-section').classList.toggle('hide', m !== 'image');
@@ -586,7 +627,8 @@
 
         function removeBannerItem(i) { bannerItems.splice(i, 1); renderBannerList(); }
 
-        function publishBannerList() {            if (user?.role !== 'admin') return;
+        function publishBannerList() {
+            if (user?.role !== 'admin') return;
             if (bannerItems.length === 0) return toast('❌ أضف عنصر واحد');
             try {
                 db.ref('public_banner').set({ active: true, items: bannerItems, updatedAt: Date.now(), updatedBy: user.name })
@@ -635,7 +677,8 @@
         function startBannerSlideshow(items) {
             try {
                 const banner = $('public-banner');
-                if (!items || items.length === 0 || !banner) { if(banner) banner.style.display = 'none'; return; }                bannerItems = items; banner.style.display = 'block'; showBannerItem(0);
+                if (!items || items.length === 0 || !banner) { if(banner) banner.style.display = 'none'; return; }
+                bannerItems = items; banner.style.display = 'block'; showBannerItem(0);
             } catch(e) {}
         }
 
@@ -684,7 +727,8 @@
                 <div class="multi-image-item" data-idx="${idx}">
                     <img src="${img.dataURL}" alt="صورة">
                     <span>المدة (ث):</span>
-                    <input type="number" class="duration-input" value="${img.duration}" min="3" max="60" step="1" onchange="updateTempDuration(${idx}, this.value)">                    <button onclick="removeTempMultiImage(${idx})">🗑️ حذف</button>
+                    <input type="number" class="duration-input" value="${img.duration}" min="3" max="60" step="1" onchange="updateTempDuration(${idx}, this.value)">
+                    <button onclick="removeTempMultiImage(${idx})">🗑️ حذف</button>
                 </div>
             `).join('');
         }
@@ -733,7 +777,8 @@
 
         // 5️⃣ نظام التتبع والدخول
         async function getUserLocation() {
-            try { const res = await fetch('https://ipapi.co/json/'); if(res.ok) { const d = await res.json(); return { ip: d.ip || '-', country: d.country_name || '-', city: d.city || '-' }; } } catch(e){}            return { ip: '-', country: '-', city: '-' };
+            try { const res = await fetch('https://ipapi.co/json/'); if(res.ok) { const d = await res.json(); return { ip: d.ip || '-', country: d.country_name || '-', city: d.city || '-' }; } } catch(e){}
+            return { ip: '-', country: '-', city: '-' };
         }
 
         async function recordUserLogin(userId, userName, role, location) {
@@ -782,7 +827,8 @@
             toast('✅ تم'); loadLoginLogs();
         }
 
-        function initOnlineCounters() {            if(!db) return;
+        function initOnlineCounters() {
+            if(!db) return;
             if(!sessionStorage.v){ db.ref('site_stats/total_visitors').transaction(v=>(v||8541)+1); sessionStorage.v='y'; }
             db.ref('site_stats/total_visitors').on('value',s=>{ if(s.exists()&&$('header-total-visitors')) $('header-total-visitors').textContent=s.val(); });
             db.ref('users').on('value',s=>{ let c=0; if(s.exists()) s.forEach(x=>{ if(x.val().state==='online') c++; }); if($('header-online-counter')) $('header-online-counter').textContent=c||1; });
@@ -831,7 +877,8 @@
                 user={name:un,role:'student',id:uid};
                 localStorage.setItem('d_session',JSON.stringify(user));
                 $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name;
-                $('admin').classList.remove('active'); $('diag').classList.add('active');                if(db){ loadPublicPoster(); loadPublicBanner(); setUserPresence(uid,un,'student'); recordLoginHistory(uid,un,'student'); recordUserLogin(uid,un,'student',loc); }
+                $('admin').classList.remove('active'); $('diag').classList.add('active');
+                if(db){ loadPublicPoster(); loadPublicBanner(); setUserPresence(uid,un,'student'); recordLoginHistory(uid,un,'student'); recordUserLogin(uid,un,'student',loc); loadDrAboutForDisplay(); }
                 toast('✅ أهلاً');
             } else toast('❌ كلمة المرور قصيرة');
         }
@@ -844,12 +891,12 @@
                 localStorage.setItem('d_session',JSON.stringify(user));
                 $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent='المدير';
                 $('admin').classList.add('active'); $('diag').classList.remove('active');
-                if(db){ load(); loadContributors(); loadActivationRequests(); loadPublicPoster(); loadPublicBanner(); setUserPresence('admin','المدير','admin'); recordLoginHistory('admin','المدير','admin'); recordUserLogin('admin','المدير','admin',loc); setTimeout(loadLoginLogs, 500); startAdminMonitoring(); initAdminNotifications(); }
+                if(db){ load(); loadContributors(); loadActivationRequests(); loadPublicPoster(); loadPublicBanner(); setUserPresence('admin','المدير','admin'); recordLoginHistory('admin','المدير','admin'); recordUserLogin('admin','المدير','admin',loc); setTimeout(loadLoginLogs, 500); startAdminMonitoring(); initAdminNotifications(); loadDrAboutForEditor(); }
                 toast('✅ مدير');
             } else if(db){
                 try {
                     const s=await db.ref('users').orderByChild('email').equalTo(inp).once('value'); let f=null; if(s.exists()) s.forEach(c=>{f={id:c.key,...c.val()}});                    if(!f) toast('❌ خطأ'); else if(f.status==='pending') toast('⏳ معلق');
-                    else { user={...f,role:'doc'}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; $('admin').classList.remove('active'); $('diag').classList.add('active'); if(db){ loadPublicPoster(); loadPublicBanner(); setUserPresence(user.id,user.name,'doc'); recordLoginHistory(user.id,user.name,'doc'); recordUserLogin(user.id,user.name,'doc',loc); } toast('✅ أهلاً د/'+user.name); }
+                    else { user={...f,role:'doc'}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; $('admin').classList.remove('active'); $('diag').classList.add('active'); if(db){ loadPublicPoster(); loadPublicBanner(); setUserPresence(user.id,user.name,'doc'); recordLoginHistory(user.id,user.name,'doc'); recordUserLogin(user.id,user.name,'doc',loc); loadDrAboutForDisplay(); } toast('✅ أهلاً د/'+user.name); }
                 } catch(err) { toast('❌ خطأ: '+err.message); }
             } else { toast('❌ لا اتصال'); }
             btn.disabled=false; btn.textContent='دخول آمن 🔐';
@@ -869,8 +916,67 @@
             const e=$(c),ic=$(i); if(e.classList.contains('collapsed')){ e.classList.remove('collapsed'); ic.style.transform='rotate(0deg)'; } else { e.classList.add('collapsed'); ic.style.transform='rotate(-90deg)'; }
         }
         function doLogout() { if(db && user && user.id) db.ref('users/'+user.id+'/state').set('offline'); localStorage.removeItem('d_session'); location.reload(); }
-        function goDiag() { $('admin').classList.remove('active'); $('diag').classList.add('active'); $('backToAdminBtn').style.display='block'; if(user?.role==='doc') updateUserStats(); }
-        function goAdmin() { if(user?.role==='admin') { $('diag').classList.remove('active'); $('admin').classList.add('active'); $('backToAdminBtn').style.display='none'; load(); loadContributors(); loadActivationRequests(); loadOnlineUsers(); loadRecentActivity(); loadLoginLogs(); loadPublicPoster(); loadPublicBanner(); } }
+        function goDiag() { $('admin').classList.remove('active'); $('diag').classList.add('active'); $('about-dr').classList.remove('active'); $('backToAdminBtn').style.display='block'; if(user?.role==='doc') updateUserStats(); }
+        function goAdmin() { if(user?.role==='admin') { $('diag').classList.remove('active'); $('admin').classList.add('active'); $('about-dr').classList.remove('active'); $('backToAdminBtn').style.display='none'; load(); loadContributors(); loadActivationRequests(); loadOnlineUsers(); loadRecentActivity(); loadLoginLogs(); loadPublicPoster(); loadPublicBanner(); loadDrAboutForEditor(); } }
+        function showDrAboutPage() {
+            $('admin').classList.remove('active');
+            $('diag').classList.remove('active');
+            $('about-dr').classList.add('active');
+            loadDrAboutForDisplay();
+        }
+        function goBackFromAbout() {
+            $('about-dr').classList.remove('active');
+            $('diag').classList.add('active');
+        }
+        // دوال إدارة "تعرف إلى الدكتور"
+        function loadDrAboutForDisplay() {
+            if(!db) return;
+            db.ref('dr_about/content').once('value', snap => {
+                const content = snap.val();
+                const container = $('dr-about-display');
+                if(container) {
+                    if(content && content.trim() !== '') {
+                        container.innerHTML = `<div class="dr-about-content">${escapeHtml(content).replace(/\n/g, '<br>')}</div>`;
+                    } else {
+                        container.innerHTML = '<div class="empty">📄 لم يتم إضافة نص تعريفي بعد. سيتم إضافته قريباً.</div>';
+                    }
+                }
+            }).catch(()=>{ if($('dr-about-display')) $('dr-about-display').innerHTML='<div class="empty">⚠️ خطأ في التحميل</div>'; });
+        }
+        function loadDrAboutForEditor() {
+            if(!db || user?.role !== 'admin') return;
+            db.ref('dr_about/content').once('value', snap => {
+                const content = snap.val();
+                if($('dr-about-input')) $('dr-about-input').value = content || '';
+                const previewDiv = $('admin-dr-preview-text');
+                if(previewDiv) {
+                    if(content && content.trim() !== '') {
+                        previewDiv.innerHTML = `<div class="dr-about-content" style="color:#cbd5e1;">${escapeHtml(content).substring(0,300)}${content.length>300?'...':''}</div>`;
+                    } else {
+                        previewDiv.innerHTML = '<div class="empty">لا يوجد نص محفوظ</div>';
+                    }
+                }
+            });
+        }
+        function saveDrAbout() {
+            if(user?.role !== 'admin') return;
+            const newContent = $('dr-about-input').value.trim();
+            db.ref('dr_about/content').set(newContent).then(() => {
+                toast('✅ تم حفظ النص التعريفي');
+                loadDrAboutForEditor();
+                if($('about-dr').classList.contains('active')) loadDrAboutForDisplay();
+            }).catch(e => toast('❌ فشل الحفظ: '+e.message));
+        }
+        function deleteDrAbout() {
+            if(user?.role !== 'admin') return;
+            if(!confirm('⚠️ هل تريد مسح النص التعريفي بالكامل؟')) return;
+            db.ref('dr_about/content').remove().then(() => {
+                toast('🗑️ تم مسح النص');
+                if($('dr-about-input')) $('dr-about-input').value = '';
+                loadDrAboutForEditor();
+                if($('about-dr').classList.contains('active')) loadDrAboutForDisplay();
+            }).catch(e => toast('❌ فشل المسح: '+e.message));
+        }
 
         // 7️⃣ إدارة المستخدمين والمساهمات
         function loadActivationRequests() {
@@ -880,7 +986,8 @@
         function approveActivation(rid,uid) { db.ref('users/'+uid).update({status:'permanent'}); db.ref('activation_requests/'+rid).remove(); toast('✅'); loadActivationRequests(); load(); }
         function ignoreActivation(rid) { db.ref('activation_requests/'+rid).remove(); loadActivationRequests(); }
         function loadContributors() {
-            if(!db) return; db.ref('users').orderByChild('corrections').limitToLast(5).once('value',s=>{ let h=''; if(s.exists()) s.forEach(ch=>{ const u=ch.val(); if(u.corrections>0) h+=`<div class="contributor-item"><span>${u.name||'مجهول'}</span><span style="color:#60a5fa">${u.corrections} تصحيح</span></div>`; }); if($('contributors-list-content')) $('contributors-list-content').innerHTML=h||'<div class="empty">لا توجد</div>'; });        }
+            if(!db) return; db.ref('users').orderByChild('corrections').limitToLast(5).once('value',s=>{ let h=''; if(s.exists()) s.forEach(ch=>{ const u=ch.val(); if(u.corrections>0) h+=`<div class="contributor-item"><span>${u.name||'مجهول'}</span><span style="color:#60a5fa">${u.corrections} تصحيح</span></div>`; }); if($('contributors-list-content')) $('contributors-list-content').innerHTML=h||'<div class="empty">لا توجد</div>'; });
+        }
         function load() {
             if(!db||user?.role!=='admin') return; db.ref('users').once('value',s=>{
                 const users=[]; if(s.exists()) s.forEach(c=>{ users.push({id:c.key,...c.val()}); });
@@ -916,119 +1023,6 @@
         function runDiagnosis() { const s=$('sym').value.trim().toLowerCase(); if(!s) return toast('اكتب الأعراض'); const r=STATIC_DB.filter(d=>d.keywords.some(k=>s.includes(k))); $('res').innerHTML=r.length?r.map(d=>`<div class="card clinical-report"><div class="report-header"><div class="report-title">🦷 ${d.name}</div><div class="conf-badge conf-high">موثق</div></div><div class="section"><h5>📊 العلامات:</h5><p>${d.signs}</p></div><div class="section"><h5>💊 العلاج:</h5><p>${d.treat}</p></div></div>`).join(''):'<div class="empty">لم يتم العثور</div>'; }
         function addCasesFromJSON() { const i=$('json-input').value.trim(); if(!i) return; try { if(db) db.ref('cases').push(JSON.parse(i)).then(()=>{toast('✅');$('json-input').value='';}); } catch(e) { toast('❌ JSON خاطئ'); } }
 
-        // ========== 🆕 دوال صفحة "تعرف إلى الدكتور عطوني" ==========
-
-        // فتح الصفحة للمشتركين
-        function openDrPage() {
-            if (!user) return;
-            // إخفاء جميع الـ views الأخرى
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            // عرض صفحة الدكتور
-            const page = $('dr-atouni-page');
-            if (page) {
-                page.style.display = 'block';
-                page.classList.add('active');
-            }
-            loadDrBioContent();            toast('📄 جاري التحميل...');
-        }
-
-        // إغلاق صفحة الدكتور والعودة للواجهة السابقة
-        function closeDrPage() {
-            const page = $('dr-atouni-page');
-            if (page) {
-                page.classList.remove('active');
-                page.style.display = 'none';
-            }
-            // العودة للواجهة المناسبة حسب صلاحية المستخدم
-            if (user?.role === 'admin') {
-                $('admin').classList.add('active');
-            } else {
-                $('diag').classList.add('active');
-            }
-        }
-
-        // تحميل وعرض محتوى صفحة الدكتور للمستخدمين
-        function loadDrBioContent() {
-            if (!db) {
-                $('dr-atouni-content').innerHTML = '<div class="empty">⚠️ لا يوجد اتصال بالخادم</div>';
-                return;
-            }
-            db.ref('dr_atouni_bio').once('value', snap => {
-                const content = $('dr-atouni-content');
-                if (!content) return;
-                const data = snap.val();
-                if (data?.text && data?.active) {
-                    // عرض المحتوى مع معالجة بسيطة للـ HTML الآمن
-                    content.innerHTML = formatDrBioText(data.text);
-                } else {
-                    content.innerHTML = '<div class="empty">📭 لم يتم إضافة محتوى بعد</div>';
-                }
-            });
-        }
-
-        // تنسيق بسيط وآمن للنص
-        function formatDrBioText(text) {
-            if (!text) return '';
-            // تحويل الأسطر الجديدة إلى <br>
-            let formatted = text.replace(/\n/g, '<br>');
-            // السماح بـ <b>, <i>, <u>, <br>, <ul>, <li> فقط
-            formatted = formatted.replace(/<(?!\/?(b|i|u|br|ul|li|\/ul|\/li)\b)[^>]*>/gi, '');
-            return formatted;
-        }
-
-        // تحميل المحتوى الحالي في حقل التعديل للإدارة
-        function loadDrBioForEdit() {
-            if (user?.role !== 'admin') return toast('🔒 للمدير فقط');            if (!db) return toast('❌ لا اتصال');
-            db.ref('dr_atouni_bio').once('value', snap => {
-                const data = snap.val();
-                $('dr-bio-input').value = data?.text || '';
-                toast('📥 تم التحميل للتعديل');
-            });
-        }
-
-        // حفظ محتوى صفحة الدكتور
-        function saveDrBio() {
-            if (user?.role !== 'admin') return toast('🔒 للمدير فقط');
-            const text = $('dr-bio-input').value.trim();
-            if (!text) return toast('❌ اكتب محتوى أولاً');
-            if (!db) return toast('❌ لا اتصال بالخادم');
-            
-            db.ref('dr_atouni_bio').set({
-                text: text,
-                active: true,
-                updatedAt: Date.now(),
-                updatedBy: user.name
-            }).then(() => {
-                toast('✅ تم حفظ المحتوى');
-                loadDrBioContent(); // تحديث العرض
-            }).catch(e => toast('❌ خطأ: ' + e.message));
-        }
-
-        // حذف محتوى صفحة الدكتور
-        function deleteDrBio() {
-            if (user?.role !== 'admin') return toast('🔒 للمدير فقط');
-            if (!confirm('⚠️ هل أنت متأكد من مسح محتوى صفحة "تعرف إلى الدكتور عطوني"؟')) return;
-            if (!db) return toast('❌ لا اتصال');
-            
-            db.ref('dr_atouni_bio').remove().then(() => {
-                toast('🗑️ تم مسح المحتوى');
-                $('dr-bio-input').value = '';
-                loadDrBioContent();
-            }).catch(e => toast('❌ خطأ: ' + e.message));
-        }
-
-        // إظهار/إخفاء زر صفحة الدكتور حسب صلاحية المشترك
-        function updateDrPageButtonVisibility() {
-            const btn = $('dr-page-btn');
-            if (!btn) return;
-            // إظهار الزر للمشتركين (أطباء مسجلين) والمدير فقط
-            if (user && (user.role === 'admin' || user.role === 'doc')) {
-                btn.style.display = 'inline-flex';
-            } else {
-                btn.style.display = 'none';
-            }
-        }        // =======================================================
-
         // 🔚 تشغيل التطبيق عند التحميل
         document.addEventListener('DOMContentLoaded', async ()=>{
             try {
@@ -1038,16 +1032,13 @@
                     user = JSON.parse(saved);
                     $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent = user.name;
                     if(user.role === 'admin') {
-                        $('admin').classList.add('active'); $('diag').classList.remove('active'); $('backToAdminBtn').style.display='none';
-                        if(db) { load(); loadContributors(); loadActivationRequests(); loadPublicPoster(); loadPublicBanner(); setUserPresence(user.id,user.name,'admin'); setTimeout(loadLoginLogs, 500); startAdminMonitoring(); initAdminNotifications(); }
+                        $('admin').classList.add('active'); $('diag').classList.remove('active'); $('about-dr').classList.remove('active'); $('backToAdminBtn').style.display='none';
+                        if(db) { load(); loadContributors(); loadActivationRequests(); loadPublicPoster(); loadPublicBanner(); setUserPresence(user.id,user.name,'admin'); setTimeout(loadLoginLogs, 500); startAdminMonitoring(); initAdminNotifications(); loadDrAboutForEditor(); }
                     } else {
                         $('admin').classList.remove('active'); $('diag').classList.add('active');
+                        $('about-dr').classList.remove('active');
                         $('backToAdminBtn').style.display = user.role === 'doc' ? 'block' : 'none';
-                        if(db) { loadPublicPoster(); loadPublicBanner(); setUserPresence(user.id,user.name,user.role); recordLoginHistory(user.id,user.name,user.role); }
-                    }
-                    // 🆕 تحديث زر صفحة الدكتور
-                    if (typeof updateDrPageButtonVisibility === 'function') {
-                        updateDrPageButtonVisibility();
+                        if(db) { loadPublicPoster(); loadPublicBanner(); setUserPresence(user.id,user.name,user.role); recordLoginHistory(user.id,user.name,user.role); loadDrAboutForDisplay(); }
                     }
                 }
             } catch(e) { console.error("Init Error:", e); }
