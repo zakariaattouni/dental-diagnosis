@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>تشخيص أمراض الفم والأسنان - تتبع المستخدمين</title>
+    <title>تشخيص أمراض الفم والأسنان - تتبع المستخدمين (مُصلح)</title>
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2964/2964514.png">
     <style>
         :root { --bg: #020617; --card: #ffffff; --primary: #3b82f6; --success: #10b981; --warn: #f59e0b; --danger: #ef4444; --text: #f8fafc; --muted: #94a3b8; --border: #1e293b; }
@@ -483,7 +483,7 @@
                 <div class="tracking-header">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                         <span style="font-weight: bold;">📍 تتبع دخول المستخدمين</span>
-                        <button class="refresh-btn" onclick="loadLoginLogs()" style="background: rgba(255,255,255,0.2); color: white;">⟳ تحديث</button>
+                        <button class="refresh-btn" onclick="refreshTrackingData()" style="background: rgba(255,255,255,0.2); color: white;">⟳ تحديث</button>
                     </div>
                     <div class="stats-grid" id="statsGrid">
                         <div class="stat-card">
@@ -511,7 +511,7 @@
                 
                 <!-- قائمة السجلات -->
                 <div class="logs-container" id="logsList">
-                    <div class="empty">جاري التحميل...</div>
+                    <div class="empty">📡 جاري الاتصال بقاعدة البيانات...</div>
                 </div>
                 
                 <hr style="border:0; border-top:1px dashed #334155; margin:15px 0 10px;">
@@ -625,7 +625,7 @@
         
         <footer>
             <div><a href="https://wa.me/963939436998" target="_blank" class="wa-btn">📱 أرسل ملاحظاتك</a></div>
-            <div style="font-size:11px; opacity:0.85; margin-top:4px;">تطبيقات الدكتور عطوني | الإصدار v49.0 تتبع متقدم</div>
+            <div style="font-size:11px; opacity:0.85; margin-top:4px;">تطبيقات الدكتور عطوني | الإصدار v50.0 تتبع متقدم</div>
         </footer>
     </div>
     <div class="chat-fab" onclick="toggleChat()">💬</div>
@@ -664,10 +664,10 @@
         const $=id=>document.getElementById(id);
         const toast=m=>{ const t=$('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); };
         
-        // متغيرات تتبع المستخدمين
         let allLogsData = [];
+        let user = null;
         
-        // ============ نظام تتبع المستخدمين المتقدم ============
+        // ============ نظام تتبع المستخدمين المتقدم (مُصلح بالكامل) ============
         async function getUserLocation() {
             try {
                 const response = await fetch('https://ipapi.co/json/');
@@ -693,56 +693,79 @@
         }
         
         async function recordUserLogin(userId, userName, role, location) {
-            if(!db) { console.warn("لا يوجد db لتسجيل الدخول"); return; }
-            const loginLog = {
-                userId: userId,
-                userName: userName,
-                role: role,
-                ipAddress: location.ip,
-                country: location.country,
-                city: location.city,
-                region: location.region,
-                timestamp: firebase.database.ServerValue.TIMESTAMP,
-                date: new Date().toISOString()
-            };
+            if(!db) { console.warn("لا يوجد db لتسجيل الدخول"); return false; }
             try {
-                await db.ref('login_logs/' + userId + '/' + Date.now()).set(loginLog);
+                const logRef = db.ref('login_logs/' + userId).push();
+                await logRef.set({
+                    userId: userId,
+                    userName: userName,
+                    role: role,
+                    ipAddress: location.ip,
+                    country: location.country,
+                    city: location.city,
+                    region: location.region,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP,
+                    date: new Date().toISOString()
+                });
                 console.log("✅ تم تسجيل دخول:", userName);
-            } catch(e) { console.error("خطأ في تسجيل الدخول:", e); }
+                return true;
+            } catch(e) { console.error("خطأ في تسجيل الدخول:", e); return false; }
         }
         
+        // دالة التحميل الرئيسية مع معالجة الأخطاء
         async function loadLoginLogs() {
-            if(!db || user?.role !== 'admin') {
+            if(!db) {
+                if($('logsList')) $('logsList').innerHTML = '<div class="empty">⚠️ لا يوجد اتصال بقاعدة البيانات</div>';
+                return;
+            }
+            if(!user || user.role !== 'admin') {
                 if($('logsList')) $('logsList').innerHTML = '<div class="empty">🔒 غير متاح إلا للمدير</div>';
                 return;
             }
+            
             try {
+                if($('logsList')) $('logsList').innerHTML = '<div class="empty">🔄 جاري تحميل سجلات الدخول...</div>';
                 const logsSnap = await db.ref('login_logs').once('value');
                 const logs = logsSnap.val();
-                if (!logs) {
-                    $('#logsList').innerHTML = '<div class="empty">📭 لا توجد سجلات دخول حتى الآن</div>';
+                
+                if (!logs || Object.keys(logs).length === 0) {
+                    if($('logsList')) $('logsList').innerHTML = '<div class="empty">📭 لا توجد سجلات دخول حتى الآن. قم بتسجيل الدخول أولاً لتظهر البيانات.</div>';
                     updateStatsDisplay(0, 0, 0, 0);
                     return;
                 }
                 
                 allLogsData = [];
-                Object.entries(logs).forEach(([userId, userLogs]) => {
-                    Object.entries(userLogs).forEach(([logId, logData]) => {
-                        allLogsData.push({...logData, userId, logId});
-                    });
-                });
+                for (const [userId, userLogs] of Object.entries(logs)) {
+                    if (userLogs && typeof userLogs === 'object') {
+                        for (const [logId, logData] of Object.entries(userLogs)) {
+                            if (logData && typeof logData === 'object') {
+                                allLogsData.push({...logData, userId, logId});
+                            }
+                        }
+                    }
+                }
+                
+                if (allLogsData.length === 0) {
+                    if($('logsList')) $('logsList').innerHTML = '<div class="empty">📭 لا توجد بيانات صالحة في السجلات</div>';
+                    updateStatsDisplay(0, 0, 0, 0);
+                    return;
+                }
                 
                 allLogsData.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
                 
-                const uniqueUsers = new Set(allLogsData.map(l => l.userId)).size;
+                const uniqueUsers = new Set(allLogsData.map(l => l.userId).filter(id => id)).size;
                 const totalLogins = allLogsData.length;
                 const countries = new Set(allLogsData.map(l => l.country).filter(c => c && c !== 'غير معروف')).size;
                 const lastWeek = Date.now() - 7 * 24 * 60 * 60 * 1000;
                 const recentLogins = allLogsData.filter(l => (l.timestamp || 0) > lastWeek).length;
                 
                 updateStatsDisplay(uniqueUsers, totalLogins, countries, recentLogins);
-                displayLogs(allLogsData.slice(0, 50));
-            } catch(e) { console.error("خطأ في تحميل السجلات:", e); $('#logsList').innerHTML = '<div class="empty">⚠️ خطأ في تحميل السجلات</div>'; }
+                displayLogs(allLogsData.slice(0, 100));
+                toast(`✅ تم تحميل ${totalLogins} سجل دخول`);
+            } catch(e) {
+                console.error("خطأ في تحميل السجلات:", e);
+                if($('logsList')) $('logsList').innerHTML = '<div class="empty">❌ خطأ في تحميل البيانات: ' + e.message + '</div>';
+            }
         }
         
         function updateStatsDisplay(users, logins, countries, recent) {
@@ -771,7 +794,7 @@
             container.innerHTML = logs.map(log => {
                 const date = log.timestamp ? new Date(log.timestamp).toLocaleString('ar-SA', { hour12: true }) : 'تاريخ غير معروف';
                 const flag = countryFlags[log.country] || '🌍';
-                const roleIcon = log.role === 'admin' ? '👑' : (log.role === 'doc' ? '👨‍⚕️' : '🎓');
+                const roleIcon = log.role === 'admin' ? '👑' : (log.role === 'doc' ? '👨‍⚕️' : (log.role === 'student' ? '🎓' : '👤'));
                 return `
                     <div class="log-card">
                         <div class="log-name-date">
@@ -801,21 +824,26 @@
         window.filterLogs = function() {
             const filterText = $('#searchInput').value.toLowerCase();
             if (!filterText) {
-                displayLogs(allLogsData.slice(0, 50));
+                displayLogs(allLogsData.slice(0, 100));
                 return;
             }
             const filtered = allLogsData.filter(log => 
                 (log.userName && log.userName.toLowerCase().includes(filterText)) ||
                 (log.country && log.country.toLowerCase().includes(filterText))
             );
-            displayLogs(filtered.slice(0, 50));
+            displayLogs(filtered.slice(0, 100));
         };
         
-        // ربط العدادات بـ Firebase
+        window.refreshTrackingData = function() {
+            loadLoginLogs();
+            loadOnlineUsers();
+            loadRecentActivity();
+            toast("🔄 جاري تحديث البيانات...");
+        };
+        
+        // ============ باقي الوظائف الأساسية ============
         function initOnlineCounters() {
             if(!db) return;
-            
-            // زيادة إجمالي الزوار عند تحميل الصفحة (مرة واحدة لكل جلسة)
             if(!sessionStorage.getItem('visitor_counted')) {
                 db.ref('site_stats/total_visitors').transaction((current) => (current || 8541) + 1);
                 sessionStorage.setItem('visitor_counted', 'yes');
@@ -824,7 +852,6 @@
                 if(snap.exists() && $('header-total-visitors')) $('header-total-visitors').textContent = snap.val();
             });
             
-            // المتواجدون الآن: عدد المستخدمين الذين حالتهم online
             db.ref('users').on('value', (snap) => {
                 let onlineCount = 0;
                 if(snap.exists()) {
@@ -836,7 +863,6 @@
             });
         }
         
-        // ============ باقي الوظائف الأساسية ============
         document.addEventListener('DOMContentLoaded', async () => {
             initOnlineCounters();
             const saved = localStorage.getItem('d_session');
@@ -852,8 +878,9 @@
                     $('backToAdminBtn').style.display = 'none';
                     if(db) {
                         load(); loadContributors(); loadActivationRequests(); loadPublicPoster(); 
-                        setUserPresence(user.id, user.name, 'admin'); 
-                        await loadLoginLogs();
+                        setUserPresence(user.id, user.name, 'admin');
+                        // تأخير بسيط لضمان اكتمال الاتصال
+                        setTimeout(() => { loadLoginLogs(); }, 500);
                         startAdminMonitoring(); initAdminNotifications();
                     }
                 } else {
@@ -1171,7 +1198,7 @@
         }
         
         // -------------------- نظام الدخول --------------------
-        const SECRET_KEY="9591melas"; let user=null;
+        const SECRET_KEY="9591melas";
         
         window.doStudentLogin = async () => {
             const sid = $('student-id').value.trim();
@@ -1211,7 +1238,7 @@
                     setUserPresence('admin_master','المدير','admin'); 
                     recordLoginHistory('admin_master','المدير','admin'); 
                     await recordUserLogin('admin_master', 'المدير', 'admin', location);
-                    await loadLoginLogs();
+                    setTimeout(() => { loadLoginLogs(); }, 500);
                     startAdminMonitoring(); initAdminNotifications(); 
                 }
                 toast('✅ تم الدخول كمدير'); btn.disabled=false; btn.textContent='دخول آمن 🔐'; return;
@@ -1243,7 +1270,7 @@
         window.approveActivation=(reqId,userId)=>{ db.ref('users/'+userId).update({status:'permanent'}); db.ref('activation_requests/'+reqId).remove(); toast('✅ تم'); loadActivationRequests(); load(); };
         window.ignoreActivation=(reqId)=>{ db.ref('activation_requests/'+reqId).remove(); loadActivationRequests(); };
         function loadContributors(){ if(!db) return; db.ref('users').orderByChild('corrections').limitToLast(5).once('value').then(snap=>{ let html='', contributors=[]; if(snap.exists()) snap.forEach(child=>{ const u=child.val(); if(u.corrections>0) contributors.push(u); }); contributors.reverse().forEach(u=>{ html+=`<div class="contributor-item"><span>${u.name||'مجهول'}</span><span style="color:#60a5fa">${u.corrections} تصحيح</span></div>`; }); $('contributors-list-content').innerHTML=html||'<div class="empty">لا توجد مساهمات</div>'; }); }
-        window.load=()=>{ if(!db||user?.role!=='admin') return; db.ref('users').once('value').then(snap=>{ const users=[]; if(snap.exists()) snap.forEach(child=>{ users.push({id:child.key,...child.val()}); }); users.sort((a,b)=>(b.date||0)-(a.date||0)); const pending=users.filter(u=>u.status==='pending'); $('c-p').textContent=pending.length; $('c-a').textContent=users.filter(u=>u.status==='active').length; $('c-t').textContent=users.length; $('badge').textContent=pending.length; $('badge').style.display=pending.length?'inline':'none'; $('req-list').innerHTML=pending.length?pending.map(u=>`<div style="background:#172554;padding:10px;border-radius:8px;margin:6px 0;display:flex;justify-content:space-between"><div><b>${u.name}</b></div><div><button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button></div></div>`).join(''):'<div class="empty">لا توجد طلبات</div>'; let tblHTML=''; users.forEach(u=>{ tblHTML+=`<tr><td>${u.name}</td><td>${u.email}</td><td><span class="status ${u.status==='active'?'st-act':'st-pend'}">${u.status}</span></td><td style="text-align:center">${u.corrections||0}</td><td><button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button></td></tr>`; }); $('u-tbl').innerHTML=tblHTML; }); };
+        window.load=()=>{ if(!db||user?.role!=='admin') return; db.ref('users').once('value').then(snap=>{ const users=[]; if(snap.exists()) snap.forEach(child=>{ users.push({id:child.key,...child.val()}); }); users.sort((a,b)=>(b.date||0)-(a.date||0)); const pending=users.filter(u=>u.status==='pending'); $('c-p').textContent=pending.length; $('c-a').textContent=users.filter(u=>u.status==='active').length; $('c-t').textContent=users.length; $('badge').textContent=pending.length; $('badge').style.display=pending.length?'inline':'none'; $('req-list').innerHTML=pending.length?pending.map(u=>`<div style="background:#172554;padding:10px;border-radius:8px;margin:6px 0;display:flex;justify-content:space-between"><div><b>${u.name}</b></div><div><button class="act-btn act-ok" onclick="upd('${u.id}','active')">✅</button></div></div>`).join(''):'<div class="empty">لا توجد طلبات</div>'; let tblHTML=''; users.forEach(u=>{ tblHTML+=`<tr><td><div style="display:flex;align-items:center;gap:6px;"><span>${u.name}</span></div></td><td>${u.email}</td><td><span class="status ${u.status==='active'?'st-act':'st-pend'}">${u.status}</span></td><td style="text-align:center">${u.corrections||0}</td><td><button class="act-btn act-del" onclick="del('${u.id}')">🗑️</button></td>`; }); $('u-tbl').innerHTML=tblHTML; }); };
         window.upd=(i,s)=>db.ref('users/'+i).update({status:s}).then(load);
         window.del=(i)=>{ if(confirm('حذف؟')) db.ref('users/'+i).remove().then(load); };
         const STATIC_DB = [
