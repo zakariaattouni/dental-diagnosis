@@ -261,6 +261,60 @@
         /* إخفاء أي عناصر صوت أو مكبرات غير مرغوبة نهائياً */
         audio, video, [class*="speaker"], [class*="volume"], [class*="sound"], .media-controls { display: none !important; pointer-events: none !important; visibility: hidden !important; }
 
+        /* --- إضافات خاصة بنافذة الصور المتعددة --- */
+        .multi-image-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #334155;
+        }
+        .multi-image-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 12px;
+            margin-bottom: 12px;
+        }
+        .multi-image-item {
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            border: 1px solid #334155;
+        }
+        .multi-image-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #000;
+        }
+        .multi-image-item .duration-input {
+            width: 90px;
+            background: #1e293b;
+            border: 1px solid #475569;
+            color: white;
+            border-radius: 8px;
+            padding: 6px;
+            text-align: center;
+            font-size: 13px;
+        }
+        .multi-image-item button {
+            background: #7f1d1d;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .multi-image-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
         @media (max-width: 480px) { .stats { grid-template-columns: 1fr; } .auth-card { padding: 24px 18px; } .stats-grid { grid-template-columns: 1fr 1fr; } }
     </style>
 </head>
@@ -391,6 +445,19 @@
                                     <button class="btn btn-green" onclick="publishBannerList()" style="flex:1; min-width:100px;">📤 نشر المعرض كاملاً</button>
                                     <button class="btn btn-gray" onclick="deleteBanner()" style="flex:1; min-width:100px; background:#7f1d1d;">🗑️ مسح المعرض</button>
                                 </div>                            </div>
+
+                            <!-- ========== 🆕 نافذة إضافة صور متعددة دفعة واحدة ========== -->
+                            <div class="multi-image-section">
+                                <h5 style="color:#60a5fa; margin-bottom:6px;">📸 إدراج صور متعددة دفعة واحدة</h5>
+                                <input type="file" id="multiImageInput" multiple accept="image/*" style="margin-bottom:8px;" onchange="onMultiImageSelect(this.files)">
+                                <div id="multiImagePreviewContainer" class="multi-image-grid"></div>
+                                <div class="multi-image-actions">
+                                    <button class="btn btn-green" onclick="addMultiImagesToBanner()" style="padding:8px; font-size:13px;">➕ إضافة الصور المحددة إلى المعرض</button>
+                                    <button class="btn btn-gray" onclick="clearTempMultiImages()" style="padding:8px; font-size:13px;">❌ إلغاء الكل</button>
+                                </div>
+                            </div>
+                            <!-- ========== نهاية الإضافة ========== -->
+
                         </div>
                     </div>
                 </div>
@@ -439,8 +506,12 @@
         function toast(msg) { const t=$('toast'); if(t){t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);} }
         function escapeHtml(s) { return s ? s.replace(/[&<>]/g, m => m==='&'?'&':m==='<'?'<':'>') : ''; }
 
-        // 3️⃣ متغيرات الحالة العامة        let allLogsData = [], user = null, bannerTimeout = null, bannerMode = 'image', bannerItems = [], currentBannerIndex = 0;
+        // 3️⃣ متغيرات الحالة العامة
+        let allLogsData = [], user = null, bannerTimeout = null, bannerMode = 'image', bannerItems = [], currentBannerIndex = 0;
         const SECRET_KEY = "9591melas";
+
+        // 🆕 متغير خاص بالصور المتعددة المؤقتة
+        let tempMultiImages = []; // { dataURL, duration }
 
         // 4️⃣ نظام البوستر المتسلسل (معزول وآمن)
         function setBannerMode(m) {
@@ -564,6 +635,82 @@
             } catch(e){}
         }
 
+        // 🆕 دوال التعامل مع الصور المتعددة
+        function onMultiImageSelect(files) {
+            if (!files || files.length === 0) return;
+            tempMultiImages = [];
+            for (let file of files) {
+                if (!file.type.startsWith('image/')) continue;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    tempMultiImages.push({ dataURL: e.target.result, duration: 10 });
+                    if (tempMultiImages.length === Array.from(files).filter(f => f.type.startsWith('image/')).length) {
+                        renderMultiImagePreview();
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function renderMultiImagePreview() {
+            const container = $('multiImagePreviewContainer');
+            if (!container) return;
+            if (tempMultiImages.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+            container.innerHTML = tempMultiImages.map((img, idx) => `
+                <div class="multi-image-item" data-idx="${idx}">
+                    <img src="${img.dataURL}" alt="صورة">
+                    <span>المدة (ث):</span>
+                    <input type="number" class="duration-input" value="${img.duration}" min="3" max="60" step="1" onchange="updateTempDuration(${idx}, this.value)">
+                    <button onclick="removeTempMultiImage(${idx})">🗑️ حذف</button>
+                </div>
+            `).join('');
+        }
+
+        function updateTempDuration(index, value) {
+            if (tempMultiImages[index]) {
+                let dur = parseInt(value);
+                if (isNaN(dur)) dur = 10;
+                dur = Math.min(60, Math.max(3, dur));
+                tempMultiImages[index].duration = dur;
+            }
+        }
+
+        function removeTempMultiImage(index) {
+            tempMultiImages.splice(index, 1);
+            renderMultiImagePreview();
+        }
+
+        function clearTempMultiImages() {
+            tempMultiImages = [];
+            renderMultiImagePreview();
+            // إعادة تعيين حقل الملفات
+            const fileInput = $('multiImageInput');
+            if (fileInput) fileInput.value = '';
+        }
+
+        function addMultiImagesToBanner() {
+            if (tempMultiImages.length === 0) {
+                toast('❌ لا توجد صور محددة');
+                return;
+            }
+            // إضافة كل صورة كعنصر في bannerItems
+            for (let img of tempMultiImages) {
+                bannerItems.push({
+                    mode: 'image',
+                    title: '',
+                    url: img.dataURL,
+                    duration: img.duration
+                });
+            }
+            renderBannerList();
+            toast(`✅ تم إضافة ${tempMultiImages.length} صورة إلى المعرض`);
+            // مسح القائمة المؤقتة
+            clearTempMultiImages();
+        }
+
         // 5️⃣ نظام التتبع والدخول
         async function getUserLocation() {
             try { const res = await fetch('https://ipapi.co/json/'); if(res.ok) { const d = await res.json(); return { ip: d.ip || '-', country: d.country_name || '-', city: d.city || '-' }; } } catch(e){}
@@ -684,7 +831,7 @@
                 toast('✅ مدير');
             } else if(db){
                 try {
-                    const s=await db.ref('users').orderByChild('email').equalTo(inp).once('value'); let f=null; if(s.exists()) s.forEach(c=>{f={id:c.key,...c.val()};});                    if(!f) toast('❌ خطأ'); else if(f.status==='pending') toast('⏳ معلق');
+                    const s=await db.ref('users').orderByChild('email').equalTo(inp).once('value'); let f=null; if(s.exists()) s.forEach(c=>{f={id:c.key,...c.val()}});                    if(!f) toast('❌ خطأ'); else if(f.status==='pending') toast('⏳ معلق');
                     else { user={...f,role:'doc'}; localStorage.setItem('d_session',JSON.stringify(user)); $('auth').classList.add('hide'); $('app').classList.remove('hide'); $('uname').textContent=user.name; $('admin').classList.remove('active'); $('diag').classList.add('active'); if(db){ loadPublicPoster(); loadPublicBanner(); setUserPresence(user.id,user.name,'doc'); recordLoginHistory(user.id,user.name,'doc'); recordUserLogin(user.id,user.name,'doc',loc); } toast('✅ أهلاً د/'+user.name); }
                 } catch(err) { toast('❌ خطأ: '+err.message); }
             } else { toast('❌ لا اتصال'); }
