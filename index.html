@@ -591,7 +591,8 @@
                     <div id="doc-list-container" class="collapsible-content">
                         <div class="table-wrap" style="margin-top:15px;">
                             <table>
-                                <thead><tr><th>الاسم</th><th>البريد</th><th>الحالة</th><th>المساهمات</th><th>إجراء</th></tr></thead>
+                                <thead><tr><th>الاسم</th><th>البريد</th><th>الحالة</th><th>المساهمات</th><th>إجراء</th></tr>
+                                </thead>
                                 <tbody id="u-tbl"></tbody>
                             </table>
                         </div>
@@ -658,7 +659,7 @@
     <script>
         const cfg = { apiKey:"AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE", authDomain:"diagnosis-6ea4b.firebaseapp.com", databaseURL:"https://diagnosis-6ea4b-default-rtdb.firebaseio.com", projectId:"diagnosis-6ea4b" };
         let db;
-        try { firebase.initializeApp(cfg); db = firebase.database(); } catch(e) { console.warn("⚠️ Offline Mode"); db = null; }
+        try { firebase.initializeApp(cfg); db = firebase.database(); console.log("✅ Firebase متصل"); } catch(e) { console.warn("⚠️ Offline Mode", e); db = null; }
         
         const $=id=>document.getElementById(id);
         const toast=m=>{ const t=$('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); };
@@ -692,7 +693,7 @@
         }
         
         async function recordUserLogin(userId, userName, role, location) {
-            if(!db) return;
+            if(!db) { console.warn("لا يوجد db لتسجيل الدخول"); return; }
             const loginLog = {
                 userId: userId,
                 userName: userName,
@@ -704,47 +705,56 @@
                 timestamp: firebase.database.ServerValue.TIMESTAMP,
                 date: new Date().toISOString()
             };
-            await db.ref('login_logs/' + userId + '/' + Date.now()).set(loginLog);
+            try {
+                await db.ref('login_logs/' + userId + '/' + Date.now()).set(loginLog);
+                console.log("✅ تم تسجيل دخول:", userName);
+            } catch(e) { console.error("خطأ في تسجيل الدخول:", e); }
         }
         
         async function loadLoginLogs() {
-            if(!db || user?.role !== 'admin') return;
-            const logsSnap = await db.ref('login_logs').once('value');
-            const logs = logsSnap.val();
-            if (!logs) {
-                $('#logsList').innerHTML = '<div class="empty">📭 لا توجد سجلات دخول حتى الآن</div>';
-                updateStatsDisplay(0, 0, 0, 0);
+            if(!db || user?.role !== 'admin') {
+                if($('logsList')) $('logsList').innerHTML = '<div class="empty">🔒 غير متاح إلا للمدير</div>';
                 return;
             }
-            
-            allLogsData = [];
-            Object.entries(logs).forEach(([userId, userLogs]) => {
-                Object.entries(userLogs).forEach(([logId, logData]) => {
-                    allLogsData.push({...logData, userId, logId});
+            try {
+                const logsSnap = await db.ref('login_logs').once('value');
+                const logs = logsSnap.val();
+                if (!logs) {
+                    $('#logsList').innerHTML = '<div class="empty">📭 لا توجد سجلات دخول حتى الآن</div>';
+                    updateStatsDisplay(0, 0, 0, 0);
+                    return;
+                }
+                
+                allLogsData = [];
+                Object.entries(logs).forEach(([userId, userLogs]) => {
+                    Object.entries(userLogs).forEach(([logId, logData]) => {
+                        allLogsData.push({...logData, userId, logId});
+                    });
                 });
-            });
-            
-            allLogsData.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
-            
-            const uniqueUsers = new Set(allLogsData.map(l => l.userId)).size;
-            const totalLogins = allLogsData.length;
-            const countries = new Set(allLogsData.map(l => l.country).filter(c => c && c !== 'غير معروف')).size;
-            const lastWeek = Date.now() - 7 * 24 * 60 * 60 * 1000;
-            const recentLogins = allLogsData.filter(l => (l.timestamp || 0) > lastWeek).length;
-            
-            updateStatsDisplay(uniqueUsers, totalLogins, countries, recentLogins);
-            displayLogs(allLogsData.slice(0, 50));
+                
+                allLogsData.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
+                
+                const uniqueUsers = new Set(allLogsData.map(l => l.userId)).size;
+                const totalLogins = allLogsData.length;
+                const countries = new Set(allLogsData.map(l => l.country).filter(c => c && c !== 'غير معروف')).size;
+                const lastWeek = Date.now() - 7 * 24 * 60 * 60 * 1000;
+                const recentLogins = allLogsData.filter(l => (l.timestamp || 0) > lastWeek).length;
+                
+                updateStatsDisplay(uniqueUsers, totalLogins, countries, recentLogins);
+                displayLogs(allLogsData.slice(0, 50));
+            } catch(e) { console.error("خطأ في تحميل السجلات:", e); $('#logsList').innerHTML = '<div class="empty">⚠️ خطأ في تحميل السجلات</div>'; }
         }
         
         function updateStatsDisplay(users, logins, countries, recent) {
-            $('#statStudents').innerText = users;
-            $('#statLogins').innerText = logins;
-            $('#statCountries').innerText = countries;
-            $('#statRecent').innerText = recent;
+            if($('statStudents')) $('statStudents').innerText = users;
+            if($('statLogins')) $('statLogins').innerText = logins;
+            if($('statCountries')) $('statCountries').innerText = countries;
+            if($('statRecent')) $('statRecent').innerText = recent;
         }
         
         function displayLogs(logs) {
             const container = $('#logsList');
+            if (!container) return;
             if (!logs.length) {
                 container.innerHTML = '<div class="empty">🔍 لا توجد سجلات مطابقة للبحث</div>';
                 return;
@@ -805,14 +815,16 @@
         function initOnlineCounters() {
             if(!db) return;
             
-            db.ref('site_stats/total_visitors').transaction((currentValue) => {
-                if (currentValue === null) return 8542;
-                return currentValue + 1;
-            });
+            // زيادة إجمالي الزوار عند تحميل الصفحة (مرة واحدة لكل جلسة)
+            if(!sessionStorage.getItem('visitor_counted')) {
+                db.ref('site_stats/total_visitors').transaction((current) => (current || 8541) + 1);
+                sessionStorage.setItem('visitor_counted', 'yes');
+            }
             db.ref('site_stats/total_visitors').on('value', (snap) => {
-                if(snap.exists()) $('header-total-visitors').textContent = snap.val();
+                if(snap.exists() && $('header-total-visitors')) $('header-total-visitors').textContent = snap.val();
             });
             
+            // المتواجدون الآن: عدد المستخدمين الذين حالتهم online
             db.ref('users').on('value', (snap) => {
                 let onlineCount = 0;
                 if(snap.exists()) {
@@ -820,7 +832,7 @@
                         if(child.val().state === 'online') onlineCount++;
                     });
                 }
-                $('header-online-counter').textContent = onlineCount > 0 ? onlineCount : 1;
+                if($('header-online-counter')) $('header-online-counter').textContent = onlineCount > 0 ? onlineCount : 1;
             });
         }
         
@@ -1161,17 +1173,25 @@
         // -------------------- نظام الدخول --------------------
         const SECRET_KEY="9591melas"; let user=null;
         
-        window.doStudentLogin = () => {
+        window.doStudentLogin = async () => {
             const sid = $('student-id').value.trim();
             const spass = $('student-pass').value.trim();
             if(!sid || !spass) return toast('⚠️ أكمل الحقول');
             if(spass.length >= 4) {
-                user = {name: 'طالب: '+sid, role: 'student', id: 'student_'+Date.now()};
+                const userId = 'student_' + Date.now();
+                const userName = 'طالب: '+sid;
+                const location = await getUserLocation();
+                user = {name: userName, role: 'student', id: userId};
                 localStorage.setItem('d_session', JSON.stringify(user));
                 $('auth').classList.add('hide'); $('app').classList.remove('hide');
                 $('uname').textContent = user.name;
                 $('admin').classList.remove('active'); $('diag').classList.add('active');
-                if(db) { loadPublicPoster(); setUserPresence(user.id, user.name, 'student'); recordLoginHistory(user.id, user.name, 'student'); }
+                if(db) { 
+                    loadPublicPoster(); 
+                    setUserPresence(user.id, user.name, 'student'); 
+                    recordLoginHistory(user.id, user.name, 'student');
+                    await recordUserLogin(user.id, user.name, 'student', location);
+                }
                 toast('✅ أهلاً بك');
             } else toast('❌ كلمة المرور قصيرة');
         };
